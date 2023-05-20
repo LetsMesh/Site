@@ -1,11 +1,11 @@
 # Before Getting Started
 
 Please be sure when running the front end repository that you have the correct versions of npm and node.
-The correct version can be found and installed [here](https://nodejs.org/download/release/v14.17.0/).
+The correct version can be found and installed [here](https://nodejs.org/en/download/current).
 
 To check if your versions are correct you can use the following commands:
-Check node version with `node -v` -> This should show v14.17.0 in the console
-Check npm version with `npm -v` -> This should show 6.14.x in the console
+Check node version with `node -v` -> This should show v20.2.0 in the console
+Check npm version with `npm -v` -> This should show 9.6.7 in the console
 
 # Getting Started with Create React App
 
