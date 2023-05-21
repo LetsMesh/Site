@@ -4,7 +4,7 @@ import { rowStyle, informationSectionStyle } from './SignUp';
 
 export default function StepOne(){
 	return (
-		<>
+		<div style={informationSectionStyle}>
 			<Grid container justifyContent="center" spacing={8} style={rowStyle}>
 				<Grid item xs={4}>
 					<TextField fullWidth focused id="standard-basic" label="First Name *" variant="standard" />
@@ -21,6 +21,6 @@ export default function StepOne(){
 					<TextField fullWidth focused id="standard-basic" label="Phone Number" variant="standard" />
 				</Grid>
 			</Grid>
-		</>
+		</div>
 	)
 }

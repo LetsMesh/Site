@@ -1,4 +1,6 @@
 import StepOne from "./StepOne";
+import StepTwo from "./StepTwo";
+import StepThree from "./StepThree";
 
 export const informationSectionStyle = {
 	borderBottom: "2px solid lightgray"
@@ -12,9 +14,9 @@ export const rowStyle = {
 export default function SignUp() {
 	return(
 		<>
-			<div style={informationSectionStyle}>
-				<StepOne/>
-			</div>
+			<StepOne/>
+			<StepTwo/>
+			<StepThree/>
 		</>
 	);
 };
