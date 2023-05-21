@@ -7,6 +7,8 @@ import Checkbox from "@mui/material/Checkbox";
 
 const informationSectionStyle = {
   borderBottom: "2px solid lightgray",
+	paddingTop: 15,
+	paddingBottom: 15
 };
 
 const rowStyle = {
@@ -14,146 +16,141 @@ const rowStyle = {
   paddingBottom: 15,
 };
 
-const textFieldStyle = {
-  "& .MuiOutlinedInput-root": {
-    "&.Mui-focused fieldset": {
-      borderColor: "grey"
-    }
-  }
-}    
-
 export default function StepOne() {
   return (
     <>
-      <Grid container justifyContent="center">
+      <Grid container justifyContent="center" style={informationSectionStyle}>
         <Grid item xs={8}>
-          <div style={informationSectionStyle}>
-            <Grid container justifyContent="center" spacing={8}>
-              <Grid item xs={12}>
-                <Typography variant="h5">Contact Information</Typography>
-              </Grid>
+          <Grid container justifyContent="center" spacing={8}>
+            <Grid item xs={12}>
+              <Typography variant="h5">Contact Information</Typography>
             </Grid>
-            <Grid
-              container
-              justifyContent="center"
-              spacing={4}
-              style={rowStyle}
-            >
-              <Grid item xs={6}>
-                <TextField
-									sx={textFieldStyle}
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="First Name *"
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="Last Name *"
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="Nickname"
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="Phone Number"
-                  variant="standard"
-                />
-              </Grid>
+          </Grid>
+          <Grid container justifyContent="center" columnSpacing={4} style={rowStyle}>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                fullWidth
+                focused
+                id="standard-basic"
+                label="First Name *"
+                variant="standard"
+              />
             </Grid>
-          </div>
-          <div style={informationSectionStyle}>
-            <Grid container justifyContent="center" spacing={8}>
-              <Grid item xs={12}>
-                <Typography variant="h5">Location Information</Typography>
-              </Grid>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                fullWidth
+                focused
+                id="standard-basic"
+                label="Last Name *"
+                variant="standard"
+              />
             </Grid>
-            <Grid
-              container
-              justifyContent="center"
-              spacing={4}
-              style={rowStyle}
-            >
-              <Grid item xs={6}>
-                <TextField
-                  select
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="Country"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  select
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="State"
-                  variant="outlined"
-                />
-              </Grid>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                fullWidth
+                focused
+                id="standard-basic"
+                label="Nickname"
+                variant="standard"
+              />
             </Grid>
-          </div>
-          <div style={informationSectionStyle}>
-            <Grid
-              container
-              justifyContent="center"
-							columnSpacing={4}
-            >
-              <Grid item xs={6}>
-                <TextField
-									margin="normal"
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="Email *"
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-									margin="normal"
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="Password *"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={6}>
-								<FormControlLabel control={<Checkbox />} label="I accept the terms and conditions" />
-								<FormControlLabel control={<Checkbox />} label="Yes, spam my email" />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-									margin="normal"
-                  fullWidth
-                  focused
-                  id="standard-basic"
-                  label="Confirm Password *"
-                  variant="outlined"
-                />
-              </Grid>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                fullWidth
+                focused
+                id="standard-basic"
+                label="Phone Number"
+                variant="standard"
+              />
             </Grid>
-          </div>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid container justifyContent="center" style={informationSectionStyle}>
+        <Grid item xs={8}>
+          <Grid container justifyContent="center">
+            <Grid item xs={12}>
+              <Typography variant="h5">Location Information</Typography>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="center" columnSpacing={4} style={rowStyle}>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                select
+                fullWidth
+                focused
+                id="standard-basic"
+                label="Country"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                select
+                fullWidth
+                focused
+                id="standard-basic"
+                label="State"
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid container justifyContent="center" style={informationSectionStyle}>
+        <Grid item xs={8}>
+          <Grid container justifyContent="center" columnSpacing={4}>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                fullWidth
+                focused
+                id="standard-basic"
+                label="Email *"
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                fullWidth
+                focused
+                id="standard-basic"
+                label="Password *"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label="I accept the terms & conditions"
+                />
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label="Yes, spam my email"
+                />
+              </FormGroup>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                margin="normal"
+                fullWidth
+                focused
+                id="standard-basic"
+                label="Confirm Password *"
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </>
