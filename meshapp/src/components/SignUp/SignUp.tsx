@@ -25,6 +25,8 @@ export default function SignUp() {
 	return(
 		<>
 			{
+				// not sure if this is a good practice
+				// implementation of loading symbol probably requires something different
 				stepComponents[activeStep]
 			}
 			<Grid container justifyContent="space-between" style={{paddingTop:20}}>
