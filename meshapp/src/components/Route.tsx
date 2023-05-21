@@ -1,9 +1,9 @@
-interface Route {
+interface RouteProps {
     path: string,
     children: JSX.Element
 }
 
-const Route = ({ path, children }:Route) => {
+const Route = ({ path, children }:RouteProps) => {
     return window.location.pathname === path ? children : null
 }
   
