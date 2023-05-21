@@ -22,7 +22,7 @@ export default function StepOne() {
   return (
     <>
       <Grid container justifyContent="center" style={informationSectionStyle}>
-        <Grid item xs={8}>
+        <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center" spacing={8}>
             <Grid item xs={12}>
               <Typography variant="h5">Contact Information</Typography>
@@ -34,7 +34,7 @@ export default function StepOne() {
             columnSpacing={4}
             style={rowStyle}
           >
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -46,7 +46,7 @@ export default function StepOne() {
                 variant="standard"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -58,7 +58,7 @@ export default function StepOne() {
                 variant="standard"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -70,7 +70,7 @@ export default function StepOne() {
                 variant="standard"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -87,7 +87,7 @@ export default function StepOne() {
       </Grid>
 
       <Grid container justifyContent="center" style={informationSectionStyle}>
-        <Grid item xs={8}>
+        <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center">
             <Grid item xs={12}>
               <Typography variant="h5">Location Information</Typography>
@@ -99,7 +99,7 @@ export default function StepOne() {
             columnSpacing={4}
             style={rowStyle}
           >
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -111,7 +111,7 @@ export default function StepOne() {
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -128,9 +128,9 @@ export default function StepOne() {
       </Grid>
 
       <Grid container justifyContent="center" style={informationSectionStyle}>
-        <Grid item xs={8}>
+        <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center" columnSpacing={4}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -142,7 +142,7 @@ export default function StepOne() {
                 variant="standard"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -154,7 +154,7 @@ export default function StepOne() {
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6} order={{xs:3, sm:2}}>
               <FormGroup>
                 <FormControlLabel
                   control={<Checkbox />}
@@ -166,7 +166,7 @@ export default function StepOne() {
                 />
               </FormGroup>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6} order={{xs:2, sm:3}}>
               <TextField
                 margin="normal"
                 fullWidth
