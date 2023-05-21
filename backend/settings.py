@@ -94,8 +94,8 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASS'),
-        'HOST': os.environ.get('DB_HOST'),  # Or the appropriate hostname if not localhost
-        'PORT': os.environ.get('DB_PORT'),       # Default port for MySQL
+        'HOST': os.environ.get('DB_HOST'), # Or the appropriate hostname if not localhost
+        'PORT': os.environ.get('DB_PORT', '3360'), # Falls back to port 3360 if DB_PORT is not in .env file
     }
 }
 
