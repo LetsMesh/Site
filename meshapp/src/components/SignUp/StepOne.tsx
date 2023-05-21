@@ -7,8 +7,8 @@ import Checkbox from "@mui/material/Checkbox";
 
 const informationSectionStyle = {
   borderBottom: "2px solid lightgray",
-	paddingTop: 15,
-	paddingBottom: 15
+  paddingTop: 15,
+  paddingBottom: 15,
 };
 
 const rowStyle = {
@@ -16,7 +16,9 @@ const rowStyle = {
   paddingBottom: 15,
 };
 
+
 export default function StepOne() {
+
   return (
     <>
       <Grid container justifyContent="center" style={informationSectionStyle}>
@@ -26,12 +28,19 @@ export default function StepOne() {
               <Typography variant="h5">Contact Information</Typography>
             </Grid>
           </Grid>
-          <Grid container justifyContent="center" columnSpacing={4} style={rowStyle}>
+          <Grid
+            container
+            justifyContent="center"
+            columnSpacing={4}
+            style={rowStyle}
+          >
             <Grid item xs={6}>
               <TextField
                 margin="normal"
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="First Name *"
                 variant="standard"
@@ -41,7 +50,9 @@ export default function StepOne() {
               <TextField
                 margin="normal"
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="Last Name *"
                 variant="standard"
@@ -51,7 +62,9 @@ export default function StepOne() {
               <TextField
                 margin="normal"
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="Nickname"
                 variant="standard"
@@ -61,7 +74,9 @@ export default function StepOne() {
               <TextField
                 margin="normal"
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="Phone Number"
                 variant="standard"
@@ -78,13 +93,19 @@ export default function StepOne() {
               <Typography variant="h5">Location Information</Typography>
             </Grid>
           </Grid>
-          <Grid container justifyContent="center" columnSpacing={4} style={rowStyle}>
+          <Grid
+            container
+            justifyContent="center"
+            columnSpacing={4}
+            style={rowStyle}
+          >
             <Grid item xs={6}>
               <TextField
                 margin="normal"
-                select
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="Country"
                 variant="outlined"
@@ -93,9 +114,10 @@ export default function StepOne() {
             <Grid item xs={6}>
               <TextField
                 margin="normal"
-                select
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="State"
                 variant="outlined"
@@ -112,7 +134,9 @@ export default function StepOne() {
               <TextField
                 margin="normal"
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="Email *"
                 variant="standard"
@@ -122,7 +146,9 @@ export default function StepOne() {
               <TextField
                 margin="normal"
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="Password *"
                 variant="outlined"
@@ -144,7 +170,9 @@ export default function StepOne() {
               <TextField
                 margin="normal"
                 fullWidth
-                focused
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 id="standard-basic"
                 label="Confirm Password *"
                 variant="outlined"
