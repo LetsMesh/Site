@@ -18,7 +18,7 @@ const rowStyle = {
 
 
 export default function StepOne() {
-
+  
   return (
     <>
       <Grid container justifyContent="center" style={informationSectionStyle}>
@@ -151,6 +151,7 @@ export default function StepOne() {
                 }}
                 id="standard-basic"
                 label="Password *"
+                type="password"
                 variant="outlined"
               />
             </Grid>
@@ -175,6 +176,7 @@ export default function StepOne() {
                 }}
                 id="standard-basic"
                 label="Confirm Password *"
+                type="password"
                 variant="outlined"
               />
             </Grid>
