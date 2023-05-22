@@ -4,14 +4,13 @@ from django.contrib import admin
 from django.urls import path, include
 import views
 
-
 urlpatterns = [
     # GET    /api/accounts/ 
-    path('', views.get_all_accounts, name='get_all_accounts'), 
-    # POST   /api/accounts/create/ 
-    path('create/', views.create_account, name='create_account'), 
-    # PATCH  /api/accounts/update/:account_id
-    path('update/<int:account_id>/', views.update_account, name='update_account'), 
+    # POST   /api/accounts/
+    path('', views.AccountView.as_view(), name='account'),
+    # GET    /api/accounts/:account_id
+    # PATCH  /api/accounts/:account_id
+    path('<int:account_id>/', views.AccountDetailView.as_view(), name='create_account'), 
 ]
 
 # urlpatterns = [

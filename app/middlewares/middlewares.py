@@ -1,6 +1,5 @@
 from django.http import JsonResponse
-
-from .exceptions import InvalidJSONError, MissingRequiredFieldsError
+from .exceptions import CustomException
 
 class CustomExceptionMiddleware:
     def __init__(self, get_response):
@@ -9,9 +8,7 @@ class CustomExceptionMiddleware:
     def __call__(self, request):
         try:
             response = self.get_response(request)
-        except InvalidJSONError:
-            response = JsonResponse({'error': 'Invalid JSON format'}, status=400)
-        except MissingRequiredFieldsError:
-            response = JsonResponse({'error': 'Missing one or more required fields'}, status=400)
+        except CustomException as e:
+            response = JsonResponse({'error': e.message}, status=400)
 
         return response

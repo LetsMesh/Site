@@ -1,5 +1,3 @@
-class InvalidJSONError(Exception):
-    """Raised when the request body is not a valid JSON"""
-
-class MissingRequiredFieldsError(Exception):
-    """Raised when one or more required fields are missing from the data"""
+class CustomException(Exception):
+    def __init__(self, message):
+        self.message = message
