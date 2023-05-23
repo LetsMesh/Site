@@ -10,8 +10,9 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 20,
+          borderRadius: 25,
           width: '75%',
+          height: '4.5rem',
           fontSize: '1.5rem',
         },
       },
@@ -21,8 +22,8 @@ const theme = createTheme({
 
 const SignUp = () => {
   return (
-    <Grid container direction="column" spacing={10} sx={{ textAlign: 'center', alignItems: 'center' }}>
-      <Grid item xs>
+    <Grid container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
+      <Grid item xs width={'80%'}>
         <Typography variant="h2" fontWeight={'bold'}>
           Don't have an account with us yet?
         </Typography>
@@ -41,7 +42,7 @@ const SignUp = () => {
 
 const LoginInput = () => {
   return (
-    <Grid spacing={5} container item direction="column" xs>
+    <Grid spacing={2} container item direction="column" xs>
       <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
         <Grid item xs mr={'10rem'}>
           <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto' }}>
@@ -50,7 +51,7 @@ const LoginInput = () => {
         </Grid>
         <Grid item xs sx={{ width: '70%' }}>
           <Stack spacing={2}>
-            <TextField type="text" label="Username" />
+            <TextField type="text" label="Email" />
             <TextField type="password" label="Password" />
           </Stack>
         </Grid>
@@ -59,8 +60,8 @@ const LoginInput = () => {
             <Button variant="contained" sx={{ width: '15em' }}>
               Login
             </Button>
-            <Link href="#" sx={{ textDecoration: 'underline' }}>
-              Forgot your password?
+            <Link href="#" sx={{ color: 'black', textDecoration: 'underline', fontSize: '1.5em' }}>
+              Forgot Password
             </Link>
             <Typography variant="h5" fontWeight="bold">
               OR
@@ -82,7 +83,7 @@ const Login = () => {
   return (
     <ThemeProvider theme={theme}>
       <Grid container spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', width: '50%', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
-        <Grid item xs p={5}>
+        <Grid item xs>
           <SignUp />
         </Grid>
         <Divider orientation="vertical" flexItem />
