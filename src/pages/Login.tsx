@@ -71,8 +71,12 @@ const LoginInput = () => {
       </Grid>
       <Grid item xs>
         <Stack spacing={2} sx={{ alignItems: 'center' }}>
-          <Button variant="contained">SIGN IN WITH GOOGLE</Button>
-          <Button variant="contained">SIGN IN WITH DISCORD</Button>
+          <Button variant="contained" sx={{ bgcolor: '#D9D9D9', color: 'black' }}>
+            SIGN IN WITH GOOGLE
+          </Button>
+          <Button variant="contained" sx={{ bgcolor: '#748ADA', color: 'white' }}>
+            SIGN IN WITH DISCORD
+          </Button>
         </Stack>
       </Grid>
     </Grid>
