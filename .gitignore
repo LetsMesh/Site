@@ -23,6 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # django stuff
-/backend/settings.py
+*.env
 *.pyc
 *.sqlite3
