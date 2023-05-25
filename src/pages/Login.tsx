@@ -3,9 +3,6 @@ import { Button, Divider, Grid, Link, Stack, Skeleton, Typography, TextField } f
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
-  palette: {
-    mode: 'light',
-  },
   components: {
     MuiButton: {
       styleOverrides: {
@@ -44,7 +41,7 @@ const LoginInput = () => {
   return (
     <Grid spacing={2} container item direction="column" xs>
       <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
-        <Grid item xs mr={'10rem'}>
+        <Grid item xs>
           <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto' }}>
             Login
           </Typography>
@@ -71,12 +68,8 @@ const LoginInput = () => {
       </Grid>
       <Grid item xs>
         <Stack spacing={2} sx={{ alignItems: 'center' }}>
-          <Button variant="contained" sx={{ bgcolor: '#D9D9D9', color: 'black' }}>
-            SIGN IN WITH GOOGLE
-          </Button>
-          <Button variant="contained" sx={{ bgcolor: '#748ADA', color: 'white' }}>
-            SIGN IN WITH DISCORD
-          </Button>
+          <Button sx={{ bgcolor: '#D9D9D9', color: 'black', '&:hover': { bgcolor: '#D9D9D9' } }}>SIGN IN WITH GOOGLE</Button>
+          <Button sx={{ bgcolor: '#748ADA', color: 'white', '&:hover': { bgcolor: '#748ADA' } }}>SIGN IN WITH DISCORD</Button>
         </Stack>
       </Grid>
     </Grid>
