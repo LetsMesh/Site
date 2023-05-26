@@ -32,15 +32,29 @@ def verify_email(request):
         email_message["To"] = recipient
         email_message["Subject"] = "LetMesh: Please Verify Your Email"
 
-        email_message.attach(MIMEText(f"Please enter this code on your signup page to verify your email: {code}", "plain"))
+        verify_link = "http://127.0.0.1:8000/api/user"
+        
+        # Would like to make this more personal, such as including the user's username in the email,
+        # as well as adding logos/more styling to the email overall.
+        email_message_body = f"""
+        <html>
+
+            <body>
+                <h1>Lets Mesh Email Verification</h1>
+                <p>Before you can begin matching with others, you must verify your email.</p>
+                <button><a href="{verify_link}">Verify Email</a></button>
+            </body>
+
+        </html>
+        """
+        
+        email_message.attach(MIMEText(email_message_body, "html"))
         
         try:
             server_365.sendmail(os.environ.get("EMAIL_NAME"), recipient, email_message.as_string())
             server_365.quit()
-            print("Success")
             return HttpResponse("Email successfully sent.")
         except:
-            print("ERROR: Unable to send email.")
             return HttpResponse("ERROR: Unable to send email.")
 
     return HttpResponse(request)
