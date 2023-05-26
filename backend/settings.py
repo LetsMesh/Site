@@ -110,6 +110,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Email handling
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'letsmesh_testing@outlook.com' 
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
