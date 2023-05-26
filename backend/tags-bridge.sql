@@ -1,0 +1,7 @@
+CREATE TABLE TagsBridge(
+    accountID INT NOT NULL AUTO_INCREMENT,
+    tagID INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (accountID, tagID),
+    FOREIGN KEY (accountID) REFERENCES Profiles (AccountID),
+    FOREIGN KEY (tagID) REFERENCES Tags (tagID)
+);
