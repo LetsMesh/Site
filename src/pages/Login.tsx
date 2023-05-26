@@ -79,11 +79,13 @@ const LoginInput = () => {
 const Login = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Grid container spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', width: '50%', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
+      <Grid container wrap="nowrap" spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', maxWidth: '50%', minWidth: '1000px', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
         <Grid item xs>
           <SignUp />
         </Grid>
-        <Divider orientation="vertical" flexItem />
+        <Grid item xs={1}>
+          <Divider orientation="vertical" />
+        </Grid>
         <Grid item xs>
           <LoginInput />
         </Grid>
