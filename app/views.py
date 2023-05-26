@@ -8,6 +8,6 @@ def index(request):
     
 def verify_email(request):
     if request.method == "POST":
-        print(request.email)
-        return HttpResponse(request.email)
+        print(request)
+        return HttpResponse(request)
     
