@@ -8,6 +8,7 @@ django = "==4.1.7"
 asgiref = "==3.6.0"
 sqlparse = "==0.4.3"
 tzdata = "==2022.7"
+mysqlclient = "*"
 
 [dev-packages]
 

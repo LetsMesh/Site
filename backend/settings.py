@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'NAME': 'user_data',
-        'ENGINE': 'mysql.connector.django',
+        'ENGINE': 'django.db.backends.mysql',
         'HOST': '127.0.0.1',
         'PORT': 3306,
-        'USER': 'mysql_user',
-        'PASSWORD': 'password',
+        'USER': 'root',
+        'PASSWORD': 'lmaozedong',  # change this to env variable maybe
         'OPTIONS': {
           'autocommit': True,
           'use_oure': True,
