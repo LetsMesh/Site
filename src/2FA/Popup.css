@@ -1,40 +1,34 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .container {
-    position: relative;
     width: 20vw;
     height: 20vw;
     background: #FFFFFF;
     border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .body {
-    position: relative;
-    width: 100%;
-    justify-content: center;
+
 }
 
 .icon {
-    position: absolute;
-    left: 37.14%;
-    right: 36.22%;
-    top: 15.06%;
-    bottom: 54.99%;
-
-    transform: rotate(3.53deg);
 }
 
 .text {
-    position: absolute;
-    left: 10.35%;
-    right: 11.34%;
-    top: 50.82%;
-    bottom: 45.84%;
-
-    font-family: 'Sansation';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 22px;
-    line-height: 25px;
-    text-align: center;
-
-    color: #000000;
 }
