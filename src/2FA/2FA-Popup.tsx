@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, IconButton, Typography } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 import './Popup.css';
 
@@ -25,10 +26,12 @@ function FAModalBody(props: any) {
     <div className="container">
       <div className="closeBtn">
         <IconButton onClick={props.onClose}>
+          <CloseIcon />
         </IconButton>
       </div>
       <div className="body">
         <Typography>HELLO!</Typography>
+        <Typography>ANOTHER HELLO!</Typography>
       </div>
     </div>
   );
