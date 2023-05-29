@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Modal, Button, IconButton, Typography } from "@mui/material";
+import {
+  Modal,
+  Button,
+  IconButton,
+  Typography,
+  Fade,
+  Backdrop,
+} from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -7,6 +14,12 @@ import { ReactComponent as Logo } from "./2FA-icon.svg";
 
 import "./Popup.css";
 
+/**
+ * Component to render a modal to remind users to enable 2FA
+ * It should only render once per user
+ *
+ * @param props
+ */
 function TwoFactorAuthModal(props: any) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -17,15 +30,30 @@ function TwoFactorAuthModal(props: any) {
       <Button variant="contained" onClick={handleOpen}>
         Open Modal
       </Button>
-      <Modal open={open} onClose={handleClose}>
-        <div className="modal">
-          <FAModalBody onClose={handleClose} />
-        </div>
+      <Modal
+        aria-labelledby="2FA-popup"
+        aria-describedby="remind-users-to-enable-2FA"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{ backdrop: { timeout: 175 } }}
+      >
+        <Fade in={open}>
+          <div className="modal">
+            <FAModalBody onClose={handleClose} />
+          </div>
+        </Fade>
       </Modal>
     </div>
   );
 }
 
+/**
+ * Contents inside TwoFactorAuthModal
+ *
+ * @param props
+ */
 function FAModalBody(props: any) {
   return (
     <div className="container">
@@ -39,10 +67,7 @@ function FAModalBody(props: any) {
       </div>
       <div className="text">
         <Typography sx={{ fontSize: 17, fontFamily: "cocogoose" }}>
-          Secure your account with
-        </Typography>
-        <Typography sx={{ fontSize: 17, fontFamily: "cocogoose" }}>
-          Two-Factor Authentication
+          Secure your account with Two-Factor Authentication
         </Typography>
       </div>
       <div className="btn">
@@ -57,6 +82,7 @@ function FAModalBody(props: any) {
             },
           }}
           endIcon={<ChevronRightIcon />}
+          onClick={props.handleOptIn}
         >
           OPT-IN
         </Button>
@@ -73,6 +99,7 @@ function FAModalBody(props: any) {
               color: "gray",
             },
           }}
+          onClick={props.onClose}
         >
           No thanks
         </Typography>

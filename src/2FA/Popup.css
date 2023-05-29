@@ -32,8 +32,9 @@
 
 .text {
   text-align: center;
+  width: 75%;
 }
 
 .btn {
-  width: 12vw;
+  width: 75%;
 }
