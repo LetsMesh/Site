@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useForm } from "react-hook-form";
 import { Button, Divider, Grid, Link, Stack, Skeleton, Typography, TextField } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -38,6 +39,33 @@ const SignUp = () => {
 };
 
 const LoginInput = () => {
+
+  // log in form input validation 
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [serverError, setServerError] = useState('');
+
+  // stores log in form data in state
+  const [formData, setFormData] = useState({
+		email: '',
+    password: '',
+
+	});
+  
+  // updates form data in state when input fields detect change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    }
+
+    )
+  }
+
+  const onSubmit = () => {
+    console.log("email: " + formData.email);
+    console.log("password: " + formData.password);
+  }
+
   return (
     <Grid spacing={2} container item direction="column" xs>
       <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
@@ -48,13 +76,15 @@ const LoginInput = () => {
         </Grid>
         <Grid item xs sx={{ width: '70%' }}>
           <Stack spacing={2}>
-            <TextField type="text" label="Email" />
-            <TextField type="password" label="Password" />
+            <TextField type="text" label="Email" {...register("email", { required: true })} onChange={handleChange} />
+            {errors.email && <p>Email required to log in</p>}
+            <TextField type="password" label="Password" {...register("password", { required: true})} onChange={handleChange} />
+            {errors.password && <p>Password required to log in</p>}
           </Stack>
         </Grid>
         <Grid item xs>
           <Stack spacing={2}>
-            <Button variant="contained" sx={{ width: '15em' }}>
+            <Button variant="contained" sx={{ width: '15em' }} onClick={handleSubmit(onSubmit)}>
               Login
             </Button>
             <Link href="#" sx={{ color: 'black', textDecoration: 'underline', fontSize: '1.5em' }}>
