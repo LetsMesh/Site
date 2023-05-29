@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  IconButton,
-  Typography,
-  Fade,
-  Backdrop,
-} from "@mui/material";
+import { Modal, Button, Typography, Fade, Backdrop } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
