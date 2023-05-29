@@ -1,34 +1,39 @@
 .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .container {
-    width: 20vw;
-    height: 20vw;
-    background: #FFFFFF;
-    border-radius: 20px;
+  width: 20vw;
+  height: 20vw;
+  background: #ffffff;
+  border-radius: 20px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  gap: 10px;
 }
 
 .closeBtn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
-.body {
-
-}
-
-.icon {
+@font-face {
+  font-family: "cocogoose";
+  src: url("../../public/fonts/cocogoose.ttf");
 }
 
 .text {
+  text-align: center;
+}
+
+.btn {
+  width: 12vw;
 }
