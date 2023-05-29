@@ -118,7 +118,6 @@ EMAIL_USE_STARTTLS = True
 EMAIL_HOST_USER = 'letsmesh_testing@outlook.com' 
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
