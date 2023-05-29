@@ -5,6 +5,10 @@
   transform: translate(-50%, -50%);
 }
 
+.modal:focus {
+  outline: none;
+}
+
 .container {
   width: 20vw;
   height: 20vw;

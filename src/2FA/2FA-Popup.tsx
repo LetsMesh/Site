@@ -19,13 +19,14 @@ function TwoFactorAuthModal(props: any) {
   const handleClose = () => setOpen(false);
 
   // On page load, check if user has already been prompted to enable 2FA
+  // If not, open the modal and set a flag in localStorage
   useEffect(() => {
     const prompted = localStorage.getItem("promptedFor2FA");
     if (!prompted) {
       handleOpen();
       localStorage.setItem("promptedFor2FA", "true");
     }
-  });
+  }, []);
 
   return (
     <div>
