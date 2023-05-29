@@ -58,9 +58,17 @@ function FAModalBody(props: any) {
   return (
     <div className="container">
       <div className="closeBtn">
-        <IconButton onClick={props.onClose}>
-          <CloseIcon />
-        </IconButton>
+        <CloseIcon
+          sx={{
+            color: "#848484",
+            "&:hover": {
+              color: "black",
+            },
+            cursor: "pointer",
+            transition: "color 0.15s ease-in-out",
+          }}
+          fontSize="small"
+        />
       </div>
       <div>
         <Logo />
@@ -96,7 +104,7 @@ function FAModalBody(props: any) {
             cursor: "pointer",
             transition: "color 0.2s ease-in-out",
             "&:hover": {
-              color: "gray",
+              color: "#353535",
             },
           }}
           onClick={props.onClose}
