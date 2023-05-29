@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Button, Divider, Grid, Link, Stack, Skeleton, Typography, TextField } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { PropaneSharp } from '@mui/icons-material';
+
+// define interface for prop 
+interface ComponentProps {
+  updateShowForgotPasswordState: () => void;
+}
 
 const theme = createTheme({
   components: {
@@ -38,7 +44,7 @@ const SignUp = () => {
   );
 };
 
-const LoginInput = () => {
+const LoginInput = (props: ComponentProps) => {
 
   // log in form input validation 
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -61,6 +67,12 @@ const LoginInput = () => {
     )
   }
 
+  // show forgot password component if user clicks forgot password button
+  const forgotPasswordClicked = () => {
+    props.updateShowForgotPasswordState()
+  }
+
+  // submit user data to backend
   const onSubmit = () => {
     console.log("email: " + formData.email);
     console.log("password: " + formData.password);
@@ -87,7 +99,7 @@ const LoginInput = () => {
             <Button variant="contained" sx={{ width: '15em' }} onClick={handleSubmit(onSubmit)}>
               Login
             </Button>
-            <Link href="#" sx={{ color: 'black', textDecoration: 'underline', fontSize: '1.5em' }}>
+            <Link href="#" sx={{ color: 'black', textDecoration: 'underline', fontSize: '1.5em' }}  onClick={() => props.updateShowForgotPasswordState()}>
               Forgot Password
             </Link>
             <Typography variant="h5" fontWeight="bold">
@@ -106,7 +118,43 @@ const LoginInput = () => {
   );
 };
 
+const ForgotPassword = () => {
+  
+  return (
+    <Grid spacing={2} container item direction="column" xs>
+      <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
+        <Grid item xs>
+          <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto' }}>
+            Forgot Password
+          </Typography>
+        </Grid>
+        <Grid item xs sx={{ width: '70%' }}>
+          <TextField type="text" label="Email" />
+        </Grid>
+        <Grid item xs>
+          <Button variant="contained" sx={{ width: '15em' }}>
+            Send Link to Email
+          </Button>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
+
 const Login = () => {
+
+    // show forgot password reset form or not
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+    const updateShowForgotPasswordState = () => {
+      if (showForgotPassword == false) {
+        setShowForgotPassword(true)
+      }
+      if (showForgotPassword == true) {
+        setShowForgotPassword(false)
+      }
+    }
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container wrap="nowrap" spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', maxWidth: '50%', minWidth: '1000px', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
@@ -117,7 +165,7 @@ const Login = () => {
           <Divider orientation="vertical" />
         </Grid>
         <Grid item xs>
-          <LoginInput />
+          {showForgotPassword ? <ForgotPassword /> : <LoginInput updateShowForgotPasswordState={updateShowForgotPasswordState} />}
         </Grid>
       </Grid>
     </ThemeProvider>
