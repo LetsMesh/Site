@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Typography, Fade, Backdrop } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -17,6 +17,15 @@ function TwoFactorAuthModal(props: any) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // On page load, check if user has already been prompted to enable 2FA
+  useEffect(() => {
+    const prompted = localStorage.getItem("promptedFor2FA");
+    if (!prompted) {
+      handleOpen();
+      localStorage.setItem("promptedFor2FA", "true");
+    }
+  });
 
   return (
     <div>
@@ -61,6 +70,7 @@ function FAModalBody(props: any) {
             transition: "color 0.15s ease-in-out",
           }}
           fontSize="small"
+          onClick={props.onClose}
         />
       </div>
       <div>
