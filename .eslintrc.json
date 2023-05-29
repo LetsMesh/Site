@@ -1,0 +1,30 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "react-app",
+        "react-app/jest",
+        "prettier",
+        "plugin:react/recommended"
+      ],
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {  
+        "eqeqeq":[
+            "error",
+            "always"
+        ],
+        "no-multiple-empty-lines": [
+            "error", {
+                "max": 1
+            }
+        ]
+
+
+    }
+}
