@@ -30,6 +30,7 @@ function TwoFactorAuthModal(props: any) {
 
   return (
     <div>
+      {/* This "Open Modal" button is only used for testing; remove before merging */}
       <Button variant="contained" onClick={handleOpen}>
         Open Modal
       </Button>
