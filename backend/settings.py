@@ -89,8 +89,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': '127.0.0.1',
         'PORT': 3306,
-        'USER': 'root',
-        'PASSWORD': 'lmaozedong',  # change this to env variable maybe
+        'USER': os.getenv("USER"),
+        'PASSWORD': os.getenv("PASS"),  
         'OPTIONS': {
           'autocommit': True,
           'use_oure': True,
