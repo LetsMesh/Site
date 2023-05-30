@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Divider, Grid, Link, Stack, Skeleton, Typography, TextField } from '@mui/material';
+import { Button, Divider, Grid, Skeleton, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import LoginInput from '../components/LoginForm';
 
 const theme = createTheme({
   components: {
@@ -32,45 +33,6 @@ const SignUp = () => {
       </Grid>
       <Grid item xs>
         <Skeleton variant="rounded" height={'15em'} width={'30em'} />
-      </Grid>
-    </Grid>
-  );
-};
-
-const LoginInput = () => {
-  return (
-    <Grid spacing={2} container item direction="column" xs>
-      <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
-        <Grid item xs>
-          <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto' }}>
-            Login
-          </Typography>
-        </Grid>
-        <Grid item xs sx={{ width: '70%' }}>
-          <Stack spacing={2}>
-            <TextField type="text" label="Email" />
-            <TextField type="password" label="Password" />
-          </Stack>
-        </Grid>
-        <Grid item xs>
-          <Stack spacing={2}>
-            <Button variant="contained" sx={{ width: '15em' }}>
-              Login
-            </Button>
-            <Link href="#" sx={{ color: 'black', textDecoration: 'underline', fontSize: '1.5em' }}>
-              Forgot Password
-            </Link>
-            <Typography variant="h5" fontWeight="bold">
-              OR
-            </Typography>
-          </Stack>
-        </Grid>
-      </Grid>
-      <Grid item xs>
-        <Stack spacing={2} sx={{ alignItems: 'center' }}>
-          <Button sx={{ bgcolor: '#D9D9D9', color: 'black', '&:hover': { bgcolor: '#D9D9D9' } }}>SIGN IN WITH GOOGLE</Button>
-          <Button sx={{ bgcolor: '#748ADA', color: 'white', '&:hover': { bgcolor: '#748ADA' } }}>SIGN IN WITH DISCORD</Button>
-        </Stack>
       </Grid>
     </Grid>
   );
