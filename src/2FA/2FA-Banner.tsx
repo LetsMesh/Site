@@ -9,7 +9,7 @@ import "./Banner.css";
 
 function TwoFactorBanner(props: any) {
   return (
-    <div className="banner" style={{ width: props.width, height: 50 }}>
+    <div className="banner">
       <div className="bannerLogo">
         <Logo
           style={{
