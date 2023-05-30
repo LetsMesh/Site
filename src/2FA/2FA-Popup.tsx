@@ -96,6 +96,7 @@ function FAModalBody(props: any) {
             "&:hover": {
               backgroundColor: "#0A6B57",
             },
+            borderRadius: 3,
           }}
           endIcon={<ChevronRightIcon />}
           onClick={props.handleOptIn}
