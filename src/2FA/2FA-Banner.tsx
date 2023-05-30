@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Typography, Fade, Backdrop } from "@mui/material";
+import React from "react";
+import { Button, Typography } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
