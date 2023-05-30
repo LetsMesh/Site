@@ -1,0 +1,48 @@
+.banner{
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: baseline;
+    padding: 1em;
+    margin-bottom: 2em;
+    background-color: rgb(35, 204, 170);
+    color: #fff;
+    position: fixed;
+        top: 0px;
+}
+
+.bannerLogo{
+    position: relative;
+    top: -25px;
+    left: -10px;
+}
+
+.flexbox-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.bannerCloseBtn {
+    position: fixed;
+    top: 10px;
+    right: 15px;
+  }
+
+
+.descText{
+    
+    position: fixed;
+    top: 15px;
+    left: 4.5%;
+}
+
+
+.bannerBtn {
+  text-align: center;
+  width: 12%;
+  overflow-wrap: break-word;
+  position: fixed;
+    top: 5px;
+    left: 30%;
+}
