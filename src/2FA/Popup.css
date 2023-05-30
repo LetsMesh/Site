@@ -10,8 +10,6 @@
 }
 
 .container {
-  width: 20vw;
-  height: 20vw;
   background: #ffffff;
   border-radius: 20px;
 
@@ -20,7 +18,9 @@
   align-items: center;
   flex-direction: column;
 
+  padding: 20px;
   gap: 10px;
+  overflow: auto;
 }
 
 .closeBtn {
@@ -34,11 +34,9 @@
   src: url("../../public/fonts/cocogoose.ttf");
 }
 
-.text {
+.text,
+.btn {
   text-align: center;
   width: 75%;
-}
-
-.btn {
-  width: 75%;
+  overflow-wrap: break-word;
 }

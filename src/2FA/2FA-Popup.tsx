@@ -45,7 +45,7 @@ function TwoFactorAuthModal(props: any) {
       >
         <Fade in={open}>
           <div className="modal">
-            <FAModalBody onClose={handleClose} />
+            <FAModalBody onClose={handleClose} width={350} />
           </div>
         </Fade>
       </Modal>
@@ -60,7 +60,10 @@ function TwoFactorAuthModal(props: any) {
  */
 function FAModalBody(props: any) {
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{ width: props.width, height: props.width }}
+    >
       <div className="closeBtn">
         <CloseIcon
           sx={{
