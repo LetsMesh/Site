@@ -38,7 +38,6 @@ function TwoFactorAuthModal(props: any) {
         aria-labelledby="2FA-popup"
         aria-describedby="remind-users-to-enable-2FA"
         open={open}
-        onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{ backdrop: { timeout: 175 } }}
