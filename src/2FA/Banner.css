@@ -1,48 +1,50 @@
+
 .banner{
     box-sizing: border-box;
     width: 100%;
     display: flex;
+        flex-wrap: nowrap;
     justify-content: left;
-    align-items: baseline;
+    align-items: center;
     padding: 1em;
-    margin-bottom: 2em;
     background-color: rgb(35, 204, 170);
     color: #fff;
-    position: fixed;
+    column-gap: 25px;
+    position: absolute;
         top: 0px;
 }
 
 .bannerLogo{
-    position: relative;
+    /* position: relative;
     top: -25px;
-    left: -10px;
-}
-
-.flexbox-container {
-    display: flex;
-    flex-direction: row;
+    left: -10px; */
 }
 
 .bannerCloseBtn {
-    position: fixed;
-    top: 10px;
-    right: 15px;
+    display: flex;
+    justify-content: flex-end;
+
+    /* width: 55%; */
+    position: absolute;
+    right: 30px;
+
   }
 
 
 .descText{
     
-    position: fixed;
-    top: 15px;
-    left: 4.5%;
+    /* position: relative;
+    top: -40px;
+    left: 1%; */
 }
 
 
 .bannerBtn {
-  text-align: center;
-  width: 12%;
+    /* display: inline;
+  /* text-align: center;
+  width: 30%;
   overflow-wrap: break-word;
-  position: fixed;
+  position: relative;
     top: 5px;
-    left: 30%;
+    left: 30%; */
 }

@@ -13,70 +13,66 @@ import "./Banner.css";
 
 function TwoFactorBanner(props: any) {
 
-    return(
-        <div 
+    return (
+        <div
             className="banner"
-            style={{ width: props.width, height: 50}}
+            style={{ width: props.width, height: 50 }}
         >
 
-            <div className="flexbox-container">
 
-                <div className="bannerLogo">
+
+            <div className="bannerLogo">
                 <Logo
                     style={{
-                    width: "50px",
-                    height: "50px"
+                        width: "50px",
+                        height: "50px"
                     }}
                 />
-                </div>
+            </div>
 
-                <div className="descText">
-                <Typography sx={{ fontSize: 16, fontFamily: "cocogoose" }}>
+            <div className="descText">
+                <Typography sx={{ fontSize: 21, fontFamily: "cocogoose" }}>
                     Secure your account with Two-Factor Authentication.
                 </Typography>
-                </div>
+            </div>
 
-                <div className="bannerBtn">
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{
-                            backgroundColor: "#0B7D66",
-                            fontFamily: "cocogoose",
-                            "&:hover": {
-                            backgroundColor: "#0A6B57",
-                            },
-                            borderRadius: 3,
-                        }}
-                        endIcon={<ChevronRightIcon />}
-                        onClick={props.handleOptIn}
-                        >
-                        GO TO SETTINGS
-                    </Button>
-                <div/>
-
-                <div className="bannerCloseBtn">
-                    <CloseIcon
+            <div className="bannerBtn">
+                <Button
+                    fullWidth variant="contained"
                     sx={{
-                        color: "#848484",
+                        fontSize: 16,
+                        backgroundColor: "#0B7D66",
+                        fontFamily: "cocogoose",
                         "&:hover": {
-                        color: "black",
+                            backgroundColor: "#0A6B57",
                         },
-                        cursor: "pointer",
-                        transition: "color 0.15s ease-in-out",
+                        borderRadius: 3,
                     }}
-                    fontSize="small"
-                    onClick={props.onClose}
+                    endIcon={<ChevronRightIcon />}
+                    onClick={props.handleOptIn}
+                >
+                    GO TO SETTINGS
+                </Button>
+                <div />
+            </div>
+
+            <div className="bannerCloseBtn">
+                    <CloseIcon
+                        sx={{
+                            color: "#848484",
+                            "&:hover": {
+                                color: "black",
+                            },
+                            cursor: "pointer",
+                            transition: "color 0.15s ease-in-out",
+                        }}
+                        fontSize="small"
+                        onClick={props.onClose}
                     />
                 </div>
 
-
-
-            </div>
-
-            </div>
-
         </div>
+
     );
 
 }
