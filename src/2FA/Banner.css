@@ -9,38 +9,26 @@
   padding: 1em;
   background-color: rgb(35, 204, 170);
   color: #fff;
-  column-gap: 25px;
+  column-gap: 10px;
   position: absolute;
   top: 0px;
 }
 
 .bannerLogo {
-  /* position: relative;
-    top: -25px;
-    left: -10px; */
+  display: flex;
 }
 
 .bannerCloseBtn {
   display: flex;
-  justify-content: flex-end;
-
-  /* width: 55%; */
   position: absolute;
   right: 30px;
 }
 
 .descText {
-  /* position: relative;
-    top: -40px;
-    left: 1%; */
+  display: flex;
+  margin-right: 10px;
 }
 
 .bannerBtn {
-  /* display: inline;
-  /* text-align: center;
-  width: 30%;
-  overflow-wrap: break-word;
-  position: relative;
-    top: 5px;
-    left: 30%; */
+  display: flex;
 }

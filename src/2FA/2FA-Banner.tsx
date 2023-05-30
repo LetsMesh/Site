@@ -13,15 +13,15 @@ function TwoFactorBanner(props: any) {
       <div className="bannerLogo">
         <Logo
           style={{
-            width: "50px",
-            height: "50px",
+            width: "45px",
+            height: "45px",
           }}
         />
       </div>
 
       <div className="descText">
-        <Typography sx={{ fontSize: 21, fontFamily: "cocogoose" }}>
-          Secure your account with Two-Factor Authentication.
+        <Typography sx={{ fontSize: 17, fontFamily: "cocogoose" }}>
+          Secure your account with Two-Factor Authentication
         </Typography>
       </div>
 
@@ -49,10 +49,7 @@ function TwoFactorBanner(props: any) {
       <div className="bannerCloseBtn">
         <CloseIcon
           sx={{
-            color: "#848484",
-            "&:hover": {
-              color: "black",
-            },
+            color: "black",
             cursor: "pointer",
             transition: "color 0.15s ease-in-out",
           }}
