@@ -11,3 +11,5 @@ class Accounts(models.Model):
     ]
     displayTheme = models.CharField(max_length=1, choices=DISPLAY_THEMES, default='L')
     enabled2Factor = models.BooleanField(default=False)
+    isMentor = models.BooleanField(default=False)
+    isMentee = models.BooleanField(default=False)

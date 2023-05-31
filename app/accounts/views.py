@@ -18,14 +18,16 @@ class AccountView(View):
         return JsonResponse(accounts_list, safe=False)
 
     def post(self, request, *args, **kwargs):
-        REQUIRED_FIELDS = ['email', 'encryptedPass', 'phoneNum', 'displayTheme', 'enabled2Factor']
+        REQUIRED_FIELDS = ['email', 'encryptedPass', 'phoneNum', 'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee']
         data = validate_data(request.body, REQUIRED_FIELDS)
         account = Accounts.objects.create(
             email = data['email'], 
             encryptedPass = data['encryptedPass'], 
             phoneNum = data['phoneNum'], 
             displayTheme = data['displayTheme'], 
-            enabled2Factor = data['enabled2Factor']
+            enabled2Factor = data['enabled2Factor'],
+            isMentor = data['isMentor'],
+            isMentee = data['isMentee']
         )
         return JsonResponse({'account_id': account.id}, status=201)  # Return a 201 status code
 
@@ -45,12 +47,14 @@ class AccountDetailView(View):
             account = Accounts.objects.get(id=account_id)
         except Accounts.DoesNotExist:
             return JsonResponse({'error': 'Account does not exist'}, status=404)
-        
+
         data = json.loads(request.body)
         account.email = data.get('email', account.email)
         account.encryptedPass = data.get('encryptedPass', account.encryptedPass)
         account.phoneNum = data.get('phoneNum', account.phoneNum)
         account.displayTheme = data.get('displayTheme', account.displayTheme)
         account.enabled2Factor = data.get('enabled2Factor', account.enabled2Factor)
+        account.isMentor = data.get('isMentor', account.isMentor)
+        account.isMentee = data.get('isMentee', account.isMentee)
         account.save()
         return HttpResponse(status=204)
