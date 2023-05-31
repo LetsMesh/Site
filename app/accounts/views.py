@@ -12,6 +12,7 @@ import json
 @method_decorator(csrf_exempt, name='dispatch')
 class AccountView(View):
     def get(self, request, *args, **kwargs):
+        print('request get all accounts')
         accounts = Accounts.objects.all()
         accounts_list = serializers.serialize('json', accounts)
         return JsonResponse(accounts_list, safe=False)
@@ -26,7 +27,7 @@ class AccountView(View):
             displayTheme = data['displayTheme'], 
             enabled2Factor = data['enabled2Factor']
         )
-        return JsonResponse({'account_id': account.id})        
+        return JsonResponse({'account_id': account.id}, status=201)  # Return a 201 status code
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AccountDetailView(View):
