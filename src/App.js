@@ -1,3 +1,4 @@
+// need to convert to typescript
 import React from 'react';
 import Footer from './Footer';
 function App() {
