@@ -23,6 +23,13 @@
             "error", {
                 "max": 1
             }
+        ],
+        "quotes":[
+            "error",
+            "single"
+        ],
+        "no-multi-spaces": [
+            "error"
         ]
 
 
