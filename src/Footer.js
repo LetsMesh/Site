@@ -17,7 +17,7 @@ const Footer = () => {
       <h1 style={{ color: "#1db272", 
                    textAlign: "start", 
                    marginTop: "-50px" }}>
-        LetsMesh
+        mesh
       </h1>
       <Container>
         <Row>
