@@ -1,10 +1,40 @@
 .Header {
   background-color: #0b7d66;
 }
+.MeshTitle {
+  font-size: 200px;
+  color: #f2e8de;
+  justify-content: "flex-end";
+  
+}
 .Body {
   background-color: #0b7d66;
 }
+#AlertBox {
+  background: #FDEDED;
+}
+#Notice {
+  font-size: 14;
+}
+#PleaseUpdate {
+  font-size: 14;
+}
+#TextBox1 {
+  color: #f2e8de;
+  font-size: 70px;
+  padding-bottom: 40px;
+  font-weight: 20;
+}
+#TextBox2 {
+  color: #f2e8de;
+  font-size: 48;
+  padding-bottom: 50;
+}
+#StartSwipingButton {
+  background: #68d391;
+  border-radius: 10;
+}
 .Footer {
-  background-color: #F2E8DE;
+  background-color: #f2e8de;
   justify-content: "right";
 }
