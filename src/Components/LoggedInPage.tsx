@@ -9,9 +9,9 @@ import EmailIcon from "@mui/icons-material/Email";
 import SideMenuButton from "./Images/SideMenuButton.png";
 import GroupImage from "./Images/image8.png";
 import NotifcationButton from "./Images/NotifcationButton.png";
+import ToggleButton from "@mui/material/ToggleButton";
 
 import "./LoggedInPage.css";
-import { FormatAlignCenter } from "@mui/icons-material";
 
 export default function LoggedInPage() {
   return (
@@ -19,16 +19,20 @@ export default function LoggedInPage() {
       <header className="Header">
         <Grid container>
           <Grid item xs={0} padding={2}>
-            <img src={SideMenuButton}></img>
+            <ToggleButton value="left" aria-label="left aligned">
+              <img src={SideMenuButton}></img>
+            </ToggleButton>
           </Grid>
           <Grid item xs={0} padding={2}>
-            <img src={NotifcationButton}></img>
+            <ToggleButton value="left" aria-label="left aligned">
+              <img src={NotifcationButton}></img>
+            </ToggleButton>
           </Grid>
           <Grid item xs={9}></Grid>
-          <Grid item xs={2}>
+          <Grid item xs={1}>
             <Typography
               variant="h1"
-              style={{ color: "#F2E8DE", justifyContent: "flex-end" }}
+              style={{ color: "#F2E8DE", justifyContent: "flex-end" ,fontWeight:"bold"}}
             >
               mesh
             </Typography>
@@ -75,7 +79,7 @@ export default function LoggedInPage() {
           <Grid item xs={4}>
             <Typography
               variant="h1"
-              style={{ color: "#F2E8DE", fontSize: 72, paddingBottom: 40 }}
+              style={{ color: "#F2E8DE", fontSize: 72, paddingBottom: 40, fontWeight:250}}
               align="center"
             >
               Find Your Perfect Mentor or Mentee with Mesh
@@ -103,19 +107,18 @@ export default function LoggedInPage() {
         <br />
       </body>
 
-      <footer style={{ backgroundColor: "#F2E8DE" }}>
+      <footer className = "Footer">
         <br />
         <br />
         <EmailIcon
           color="action"
-          fontSize="large"
           style={{
-            justifyContent: "right",
-            alignItems: "right",
+            display: "flex",
+            marginLeft: "auto",
             fontSize: 50,
+            padding: 10,
           }}
         ></EmailIcon>
-        <br />
       </footer>
     </>
   );

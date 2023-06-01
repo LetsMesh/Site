@@ -1,7 +1,10 @@
-.Header{
-    background-color: #0B7D66;
+.Header {
+  background-color: #0b7d66;
 }
 .Body {
-    background-color: #0B7D66;
-
+  background-color: #0b7d66;
+}
+.Footer {
+  background-color: #F2E8DE;
+  justify-content: "right";
 }
