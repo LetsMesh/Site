@@ -1,11 +1,19 @@
 import { useForm } from "react-hook-form";
-import { Button, Divider, Grid, Link, Stack, Skeleton, Typography, TextField } from '@mui/material';
+import { Button, Divider, Grid, Link, Stack, Skeleton, Typography, TextField, Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React, { useState } from "react";
 import { axiosInstance } from "../config/axiosConfig";
-import axios from "axios";
+import '../fonts/fonts.css'
 
 const theme = createTheme({
+    palette:{
+      primary: {
+        main: '#68D391'
+      },
+    },
+    typography:{
+      fontFamily: 'CustomFont'
+    },
     components: {
       MuiButton: {
         styleOverrides: {
@@ -61,14 +69,18 @@ export const PasswordReset = () => {
     }
 
     return (
+      <Box sx={{ backgroundColor: '#097D66', padding: '20px' }}>
         <ThemeProvider theme={theme}>
-        <Grid container wrap="wrap" spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', maxWidth: '50%', minWidth: '1000px', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
-          <Grid item xs>
-          <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto' }}>
-            Complete password reset request
+        <Grid container wrap="nowrap" direction="column" spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', maxWidth: '50%', minWidth: '480px', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
+          <Grid item>
+          <Typography variant="h2" fontWeight={550} sx={{ marginLeft: 'auto' }} align='center'>
+            Password Reset
+          </Typography>
+          <Typography variant="h5" fontWeight={400} sx={{ marginLeft: 'auto' }} align='center'>
+            Please enter your new password
           </Typography>
         </Grid>
-        <Grid item xs sx={{ width: '70%' }}>
+        <Grid item  sx={{ width: '70%' }}>
           <Stack spacing={2}>
             <TextField type="password" label="Password" {...register("password", { required: true })} onChange={handleChange} />
             {errors.password && <p>New password required to reset password</p>}
@@ -76,12 +88,15 @@ export const PasswordReset = () => {
             {errors.confirmedPassword && <p>Please re-enter new password</p>}
           </Stack>
         </Grid>
-        <Grid item xs>
-            <Button variant="contained" sx={{ width: '15em' }} onClick={handleSubmit(onSubmit)}>
-                Reset password
+        <Grid item >
+            <Button variant="contained" sx={{ width: '15em', color: 'white' }} onClick={handleSubmit(onSubmit)}>
+              <Typography variant="button" >
+                Reset Password
+              </Typography>
             </Button>
           </Grid>
         </Grid>
       </ThemeProvider>
+      </Box>
     )
 }
