@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { Button, Divider, Grid, Link, Stack, Skeleton, Typography, TextField } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React, { useState } from "react";
+import { axiosInstance } from "../config/axiosConfig";
+import axios from "axios";
 
 const theme = createTheme({
     components: {
@@ -19,6 +21,8 @@ const theme = createTheme({
   });
 
 export const PasswordReset = () => {
+
+    const passwordResetConfirmedEndpoint = 'user/reset/confirmed'
 
     // input validation on password reset form 
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -40,12 +44,25 @@ export const PasswordReset = () => {
 
     // submit user data to backend
     const onSubmit = () => {
+        if (formData.password == formData.confirmedPassword){
+            const res = axiosInstance.post(passwordResetConfirmedEndpoint,{
+              newpassword: formData.confirmedPassword
+          }).then(
+            (res) => {
+              console.log(res.data)
+            }
+          )
+        } else {
+          console.log("Passwords must match!")
+        }
+
         console.log("password: " + formData.password)
         console.log("confirmed password: " + formData.confirmedPassword)
     }
+
     return (
         <ThemeProvider theme={theme}>
-        <Grid container wrap="nowrap" spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', maxWidth: '50%', minWidth: '1000px', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
+        <Grid container wrap="wrap" spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', maxWidth: '50%', minWidth: '1000px', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
           <Grid item xs>
           <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto' }}>
             Complete password reset request

@@ -8,7 +8,7 @@ import { PasswordReset } from './pages/PasswordReset'
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
-    <App />
+    <PasswordReset />
   </React.StrictMode>
 );
 
