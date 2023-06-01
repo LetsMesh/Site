@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,9 +53,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -110,13 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Email handling
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
-EMAIL_PORT = 587
-EMAIL_USE_STARTTLS = True
-EMAIL_HOST_USER = 'letsmesh_testing@outlook.com' 
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
