@@ -23,6 +23,9 @@ export interface IFormInput {
 	confirmPassword: string;
 	acceptedTermsConditions: boolean;
 	emailUpdates: boolean;
+	name: string;
+	location: string;
+	title: string;
 }
 
 export default function SignUp() {
@@ -43,7 +46,7 @@ export default function SignUp() {
 	console.log(errors);
   };
 
-  const stepComponents = [<StepOne register={register}/>, <StepTwo/>, <StepThree/>];
+  const stepComponents = [<StepOne register={register}/>, <StepTwo/>, <StepThree register={register}/>];
 
 	return(
 		<>

@@ -5,6 +5,9 @@ import Box from "@mui/material/Box"
 import Autocomplete from "@mui/material/Autocomplete";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button"
+import { UseFormRegister } from "react-hook-form";
+
+import { IFormInput } from "./SignUp";
 
 const interests = [
     {title: "MLP"},
@@ -22,7 +25,9 @@ const profileFillStyle = {
     paddingRight: 10
 }
 
-export default function StepThree(){
+export default function StepThree(props:
+{register:UseFormRegister<IFormInput>}) {
+
     return (
         <>
             <Grid container justifyContent="center" style={profileSectionStyle}>
@@ -58,6 +63,10 @@ export default function StepThree(){
                             <TextField
                                 margin="normal"
                                 fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                {...props.register('name', {required:true})}
                                 id="standard-basic"
                                 label="Name"
                                 variant="standard"
@@ -67,6 +76,10 @@ export default function StepThree(){
                             <TextField 
                                 margin="normal"
                                 fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                {...props.register('location', {required:true})}
                                 id="standard-basic"
                                 label="Location"
                                 variant="standard"
@@ -76,6 +89,10 @@ export default function StepThree(){
                             <TextField 
                                 margin="normal"
                                 fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                {...props.register('title', {required:true})}
                                 id="standard-basic"
                                 label="Title"
                                 variant="standard"
