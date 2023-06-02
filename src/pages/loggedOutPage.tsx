@@ -36,43 +36,10 @@ export default function LoggedOutPage() {
 
                     {/*-------------------------------Login Bubble--------------------------------------*/}
 
-                    <Grid item container xs={8} sm={6} md={4} sx={{ background: "blue" }}>
+                    <Grid item container xs={8} sm={6} md={4} >
 
 
-                        <Grid spacing={2} container item direction="column" xs>
-                            <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
-                                <Grid item xs>
-                                    <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto' }}>
-                                        Login
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs sx={{ width: '70%' }}>
-                                    <Stack spacing={2}>
-                                        <TextField type="text" label="Email" />
-                                        <TextField type="password" label="Password" />
-                                    </Stack>
-                                </Grid>
-                                <Grid item xs>
-                                    <Stack spacing={2}>
-                                        <Button variant="contained" sx={{ width: '15em' }}>
-                                            Login
-                                        </Button>
-                                        <Link href="#" sx={{ color: 'black', textDecoration: 'underline', fontSize: '1.5em' }}>
-                                            Forgot Password
-                                        </Link>
-                                        <Typography variant="h5" fontWeight="bold">
-                                            OR
-                                        </Typography>
-                                    </Stack>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs>
-                                <Stack spacing={2} sx={{ alignItems: 'center' }}>
-                                    <Button sx={{ bgcolor: '#D9D9D9', color: 'black', '&:hover': { bgcolor: '#D9D9D9' } }}>SIGN IN WITH GOOGLE</Button>
-                                    <Button sx={{ bgcolor: '#748ADA', color: 'white', '&:hover': { bgcolor: '#748ADA' } }}>SIGN IN WITH DISCORD</Button>
-                                </Stack>
-                            </Grid>
-                        </Grid>
+
 
                     </Grid>
                 </Grid>
