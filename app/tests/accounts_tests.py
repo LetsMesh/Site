@@ -1,8 +1,14 @@
 from django.test import TestCase, Client
-from .models import Accounts  
+from accounts.models import Accounts  
 
 class AccountsTest(TestCase):
+    """
+    Test case for the Accounts model.
+    """
     def setUp(self):
+        """
+        Set up test environment. Create a Client instance and a test account.
+        """
         self.client = Client()
         self.test_account = Accounts.objects.create(
             email = 'test@example.com',
@@ -15,14 +21,32 @@ class AccountsTest(TestCase):
         )
 
     def test_get_all_accounts(self):
+        """
+        Test case for getting all accounts. 
+
+        A GET request is sent to the '/api/accounts/' endpoint.
+        The test passes if the response status code is 200.
+        """
         response = self.client.get('/api/accounts/')
         self.assertEqual(response.status_code, 200)
 
     def test_get_specific_account(self):
+        """
+        Test case for getting a specific account. 
+
+        A GET request is sent to the '/api/accounts/{account_id}/' endpoint.
+        The test passes if the response status code is 200.
+        """
         response = self.client.get(f'/api/accounts/{self.test_account.id}/')
         self.assertEqual(response.status_code, 200)
 
     def test_post_create_account(self):
+        """
+        Test case for creating a new account.
+
+        A POST request containing new account data is sent to the '/api/accounts/' endpoint.
+        The test passes if the response status code is 201.
+        """
         new_account_data = {
             'email': 'new@example.com',
             'encryptedPass': 'newpass',
@@ -36,6 +60,12 @@ class AccountsTest(TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_patch_update_account(self):
+        """
+        Test case for updating an account. 
+
+        A PATCH request containing updated account data is sent to the '/api/accounts/{account_id}/' endpoint.
+        The test passes if the response status code is 204 and the account data is successfully updated in the database.
+        """
         updated_account_data = {
             'email': 'updated@example.com',
             'encryptedPass': 'updatedpass',
