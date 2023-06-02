@@ -1,14 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import Login from './pages/Login';
 
-const root = ReactDOM.createRoot(document.getElementById('root')!);
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import TwoFactorAuthReminders from "./2FA/2FA-Remind";
+
+const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
-    <Login />
+    <TwoFactorAuthReminders />
   </React.StrictMode>
 );
 
