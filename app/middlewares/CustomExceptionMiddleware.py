@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from exceptions.BaseCustomException import BaseCustomException
+from ..exceptions.BaseCustomException import BaseCustomException
 
 class CustomExceptionMiddleware:
     """
