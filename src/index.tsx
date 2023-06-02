@@ -2,12 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import LoggedOutPage from "./pages/loggedOutPage";
 import reportWebVitals from "./reportWebVitals";
+import TwoFactorAuthReminders from "./2FA/2FA-Remind";
+import LoggedOutPage from "./pages/loggedOutPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
+    <TwoFactorAuthReminders />
     <LoggedOutPage />
   </React.StrictMode>
 );
