@@ -1,5 +1,12 @@
+'''
+you can run this test with
+
+python manage.py test app.tests.accounts_tests
+
+'''
+
 from django.test import TestCase, Client
-from accounts.models import Accounts  
+from ..accounts.models import Accounts  
 
 class AccountsTest(TestCase):
     """

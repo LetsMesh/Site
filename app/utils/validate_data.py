@@ -1,6 +1,6 @@
 import json
-from exceptions.InvalidJsonFormat import InvalidJsonFormat
-from exceptions.MissingRequiredFields import MissingRequiredFields
+from ..exceptions.InvalidJsonFormat import InvalidJsonFormat
+from ..exceptions.MissingRequiredFields import MissingRequiredFields
 
 def validate_json_and_required_fields(request_body, required_fields):
     """
