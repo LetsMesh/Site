@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Grid, Link, Stack, Typography, TextField } from '@mui/material';
 const LoginInput = () => {
+  const [formData, setFormData] = useState({ user: null, pass: null });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+    console.log(formData);
+  };
+
   return (
     <Grid spacing={2} container item direction="column" xs>
       <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
         <Grid item xs>
-          <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto' }}>
+          <Typography variant="h2" fontWeight={'bold'}>
             Login
           </Typography>
         </Grid>
         <Grid item xs sx={{ width: '70%' }}>
           <Stack spacing={2}>
-            <TextField type="text" label="Email" />
-            <TextField type="password" label="Password" />
+            <TextField id="user" type="text" onChange={handleChange} label="Email" />
+            <TextField id="pass" type="password" onChange={handleChange} label="Password" />
           </Stack>
         </Grid>
         <Grid item xs>
