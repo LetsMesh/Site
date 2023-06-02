@@ -1,15 +1,25 @@
-import React from "react";
-import { Button, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Button, Typography, Slide } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ReactComponent as Logo } from "./2FA-icon.svg";
 
+
 import "./Banner.css";
 
+
+
 function TwoFactorBanner(props: any) {
+  const [visible, setVisible] = useState(true);
+
+  const removeElement = () => {
+    setVisible((prev) => !prev);
+  };
+
   return (
-    <div className="banner">
+    <div className="banner"
+    style={{visibility: visible ? 'visible' : 'hidden' }}>
       <div className="bannerLogo">
         <Logo
           style={{
@@ -54,7 +64,9 @@ function TwoFactorBanner(props: any) {
             transition: "color 0.15s ease-in-out",
           }}
           fontSize="small"
-          onClick={props.onClose}
+          
+          onClick={removeElement}
+
         />
       </div>
     </div>
