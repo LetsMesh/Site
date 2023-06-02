@@ -6,6 +6,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button"
 import Modal from "@mui/material/Modal";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { UseFormRegister } from "react-hook-form";
 import { useState } from "react";
@@ -51,6 +52,7 @@ export default function StepThree(props:
                 <Grid item xs={2}>
                     <Grid container direction="column" alignItems="center">
                         <Grid item>
+                            {/* <AccountCircleIcon sx={{width: 300, height: 300}} /> */}
                             <Avatar
                                 alt="Default Profile Picture"
                                 src="DefaultProfile.png"

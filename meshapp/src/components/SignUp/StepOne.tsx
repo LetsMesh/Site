@@ -171,11 +171,11 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
               <FormGroup>
                 <FormControlLabel
                   control={<Checkbox {...props.register('acceptedTermsConditions')}/>}
-                  label="I accept the terms & conditions"
+                  label="* I Accept the Terms & Conditions"
                 />
                 <FormControlLabel
                   control={<Checkbox {...props.register('emailUpdates')}/>}
-                  label="Yes, spam my email"
+                  label="* Yes! Sign me up for annoying emails"
                 />
               </FormGroup>
             </Grid>

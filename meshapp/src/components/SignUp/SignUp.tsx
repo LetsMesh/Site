@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid"
 import Button from "@mui/material/Button"
 import { useForm, SubmitHandler } from "react-hook-form";
 
-const steps = ["Confirm Account", "Verify Email", "Go to Profile"];	
+const steps = ["Create Account", "Verify Email", "Go to Profile"];	
 
 export interface IFormInput {
 	firstName: string;
