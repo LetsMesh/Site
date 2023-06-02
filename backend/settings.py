@@ -90,7 +90,6 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'root',
-        'PASSWORD': 'lmaozedong',
         'OPTIONS': {
             'autocommit': True,
             'use_oure': True,
