@@ -85,8 +85,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'user-data',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+        'USER': 'root',
+        'PASSWORD': 'lmaozedong',
+        'OPTIONS': {
+            'autocommit': True,
+            'use_oure': True,
+            'init_command': "SET foo='bar';"
+        }
     }
 }
 
