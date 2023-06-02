@@ -84,8 +84,10 @@ class AccountsTest(TestCase):
         }
 
         response = self.client.patch(f'/api/accounts/{self.test_account.id}/', updated_account_data, content_type='application/json')
+        # check if the update operation went successfully
         self.assertEqual(response.status_code, 204)
 
+        # check if the account is actually updated by comparing the account in the database and the updated_account_data object
         updated_account = Accounts.objects.get(id=self.test_account.id)
         self.assertEqual(updated_account.email, updated_account_data['email'])
         self.assertEqual(updated_account.encryptedPass, updated_account_data['encryptedPass'])
