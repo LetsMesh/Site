@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Typography, Slide } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,8 +14,8 @@ function TwoFactorBanner(props: any) {
         <div className="bannerLogo">
           <Logo
             style={{
-              width: "45px",
-              height: "45px",
+              width: "40px",
+              height: "40px",
             }}
           />
         </div>
