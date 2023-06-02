@@ -11,7 +11,7 @@ export default function loggedOutNav() {
 
     return (
 
-        
+
         <Grid container direction="row" xs={12} sx={{ background: "#0B7D66" }} p={"20px"}>
 
 
@@ -37,7 +37,7 @@ export default function loggedOutNav() {
                 </Grid>
                 <Grid item>
                     <Button size="medium" color="primary" variant="contained" sx={{ background: "#68D391", padding: "6px 16px" }}>
-                    <Typography variant = "button" >Sign In</Typography>
+                        <Typography variant="button" >Sign In</Typography>
                     </Button>
                 </Grid>
             </Grid>

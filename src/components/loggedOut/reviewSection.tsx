@@ -62,14 +62,14 @@ export default function reviewsSection() {
 
             //holds the review, stacks it vertically
             <Stack alignItems={"center"} p={5} rowGap={3} width={'30%'} sx={{
-                '@media (min-width:900px)':{
+                '@media (min-width:900px)': {
                     width: '10%'
                 },
-                '@media (min-width: 1100px':{
+                '@media (min-width: 1100px': {
                     width: '40%'
                 }
-            
-                
+
+
             }}>
                 {/*grey circle container for the reviewer image*/}
                 <Box width="135px" height="120px" borderRadius="50%" sx={{ background: "#D9D9D9", }}>
@@ -84,13 +84,13 @@ export default function reviewsSection() {
                 {/*stacks the review, reviewer's name, and their position*/}
 
                 <Stack width={"100%"}>
-                    <Typography variant="body2" color="#26383A"  textAlign={'center'} >
+                    <Typography variant="body2" color="#26383A" textAlign={'center'} >
                         {message}
                     </Typography>
-                    <Typography variant="body2" color="#26383A"  textAlign={'center'} >
+                    <Typography variant="body2" color="#26383A" textAlign={'center'} >
                         {reviewers[index]}
                     </Typography>
-                    <Typography variant="body2" color="#26383A"  textAlign={'center'} >
+                    <Typography variant="body2" color="#26383A" textAlign={'center'} >
                         {positions[index]}
                     </Typography>
                 </Stack>
@@ -105,10 +105,10 @@ export default function reviewsSection() {
 
     return (
 
-        <Grid container item direction="column" xs={12} p={3} sx={{ background: "#F2E8DE",}}>
+        <Grid container item direction="column" xs={12} p={3} sx={{ background: "#F2E8DE", }}>
 
             <Grid item xs={12}>
-                <Typography variant="h3"  textAlign={'center'}>{title}</Typography>
+                <Typography variant="h3" textAlign={'center'}>{title}</Typography>
                 <Grid item container alignItems={"flex-start"} justifyContent={"space-evenly"} xs={12} >
                     {reviewColumns}
                 </Grid>

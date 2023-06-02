@@ -22,24 +22,25 @@ export default function advertSection() {
     const rows = advertMessages.map((message, index) => {
         return (
             <Grid item container xs={12} sm={8} flexBasis="content" gap={"20px"} alignItems="center" justifyContent="flex-start" flexWrap="nowrap" direction={(index % 2 === 0) ? "row" : "row-reverse"}>
-               
-               {/* grey image container for the sprout images*/ }
-                <Box  minHeight={"100px"} minWidth={"100px"} p={"0 0 10px 0"} borderRadius={"20%"} display={"flex"} alignItems="flex-end" justifyContent="center" 
-                sx={{ background: "#D9D9D9",
-                '@media (min-width: 600px)':{
-                    minWidth:'215px',
-                    minHeight:'215px',
-                    maxHeight:'215px',
-                    maxWidth:'215px'
-                }
-                
-                }} >
-                     {/*sprout image*/ }
+
+                {/* grey image container for the sprout images*/}
+                <Box minHeight={"100px"} minWidth={"100px"} p={"0 0 10px 0"} borderRadius={"20%"} display={"flex"} alignItems="flex-end" justifyContent="center"
+                    sx={{
+                        background: "#D9D9D9",
+                        '@media (min-width: 600px)': {
+                            minWidth: '215px',
+                            minHeight: '215px',
+                            maxHeight: '215px',
+                            maxWidth: '215px'
+                        }
+
+                    }} >
+                    {/*sprout image*/}
 
                     <img src={sproutImages[index]} width={"80%"} alt="sprout" />
                 </Box>
-                {/*advert message*/ }
-                <Typography variant="body1"  textAlign={(index % 2 === 0) ? "left" : "right"} >{message}</Typography>
+                {/*advert message*/}
+                <Typography variant="body1" textAlign={(index % 2 === 0) ? "left" : "right"} >{message}</Typography>
 
             </Grid>
 
@@ -67,7 +68,7 @@ export default function advertSection() {
                 padding: "20px 0"
 
             }}>
-                <Typography variant="h3"  textAlign={'center'}>{title}</Typography>
+                <Typography variant="h3" textAlign={'center'}>{title}</Typography>
 
             </Grid>
 

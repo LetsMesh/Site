@@ -94,7 +94,7 @@ export default function LoggedOutPage() {
 
 
 }
-/*theme for font sizes*/ 
+/*theme for font sizes*/
 function pageTheme() {
     const theme = createTheme();
 

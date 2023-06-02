@@ -8,7 +8,7 @@ export default function welcomeMessage() {
         <Grid item container xs={5} direction="column" p={5} rowGap={2} alignItems="center" color="#F2E8DE">
 
             <Typography variant="h2" textAlign={'center'}>Find Your Perfect Mentor or Mentee with Mesh</Typography>
-            <Typography variant="body1" fontWeight={250}  textAlign={'center'}>Unlock Your Potential with Expert Guidance and Support.</Typography>
+            <Typography variant="body1" fontWeight={250} textAlign={'center'}>Unlock Your Potential with Expert Guidance and Support.</Typography>
             <Button variant="contained"
                 sx={{
                     background: '#68D391',
@@ -22,8 +22,8 @@ export default function welcomeMessage() {
                     height: '50px',
                     borderRadius: '15px'
                 }}>
-                    <Typography variant = "button"  fontSize= '20px' lineHeight= '24px'>Sign Up</Typography>
-                </Button>
+                <Typography variant="button" fontSize='20px' lineHeight='24px'>Sign Up</Typography>
+            </Button>
         </Grid>
     )
 }
