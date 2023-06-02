@@ -16,7 +16,10 @@ import "./Popup.css";
 function TwoFactorAuthModal(props: any) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    localStorage.setItem("promptedFor2FA", "true");
+  };
 
   // On page load, check if user has already been prompted to enable 2FA
   // If not, open the modal and set a flag in localStorage
@@ -24,16 +27,15 @@ function TwoFactorAuthModal(props: any) {
     const prompted = localStorage.getItem("promptedFor2FA");
     if (!prompted) {
       handleOpen();
-      localStorage.setItem("promptedFor2FA", "true");
     }
   }, []);
 
   return (
     <div>
-      {/* This "Open Modal" button is only used for testing; remove before merging */}
-      <Button variant="contained" onClick={handleOpen}>
+      {/* This "Open Modal" button is only used for testing */}
+      {/* <Button variant="contained" onClick={handleOpen}>
         Open Modal
-      </Button>
+      </Button> */}
       <Modal
         aria-labelledby="2FA-popup"
         aria-describedby="remind-users-to-enable-2FA"
