@@ -2,16 +2,14 @@
   background-color: #0b7d66;
 }
 .MeshTitle {
-  font-size: 200px;
   color: #f2e8de;
   justify-content: "flex-end";
-  
 }
 .Body {
   background-color: #0b7d66;
 }
 #AlertBox {
-  background: #FDEDED;
+  background: #fdeded;
 }
 #Notice {
   font-size: 14;
