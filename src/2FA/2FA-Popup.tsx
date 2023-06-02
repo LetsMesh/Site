@@ -14,39 +14,23 @@ import "./Popup.css";
  * @param props
  */
 function TwoFactorAuthModal(props: any) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-    localStorage.setItem("promptedFor2FA", "true");
-  };
-
-  // On page load, check if user has already been prompted to enable 2FA
-  // If not, open the modal and set a flag in localStorage
-  useEffect(() => {
-    const prompted = localStorage.getItem("promptedFor2FA");
-    if (!prompted) {
-      handleOpen();
-    }
-  }, []);
-
   return (
     <div>
       {/* This "Open Modal" button is only used for testing */}
-      {/* <Button variant="contained" onClick={handleOpen}>
+      {/* <Button variant="contained" onClick={props.handleOpen}>
         Open Modal
       </Button> */}
       <Modal
         aria-labelledby="2FA-popup"
         aria-describedby="remind-users-to-enable-2FA"
-        open={open}
+        open={props.visible}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{ backdrop: { timeout: 175 } }}
       >
-        <Fade in={open}>
+        <Fade in={props.visible}>
           <div className="modal">
-            <FAModalBody onClose={handleClose} width={350} />
+            <FAModalBody onClose={props.handleClose} width={350} />
           </div>
         </Fade>
       </Modal>

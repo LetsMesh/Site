@@ -8,14 +8,8 @@ import { ReactComponent as Logo } from "./2FA-icon.svg";
 import "./Banner.css";
 
 function TwoFactorBanner(props: any) {
-  const [visible, setVisible] = useState(true);
-
-  const removeElement = () => {
-    setVisible(!visible);
-  };
-
   return (
-    <Slide direction="down" in={visible} mountOnEnter unmountOnExit>
+    <Slide direction="down" in={props.visible} mountOnEnter unmountOnExit>
       <div className="banner">
         <div className="bannerLogo">
           <Logo
@@ -61,7 +55,7 @@ function TwoFactorBanner(props: any) {
               transition: "color 0.15s ease-in-out",
             }}
             fontSize="small"
-            onClick={removeElement}
+            onClick={props.handleClose}
           />
         </div>
       </div>

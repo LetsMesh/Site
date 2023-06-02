@@ -2,15 +2,22 @@ import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
 
-import TwoFactorAuthModal from "./2FA/2FA-Popup";
-import TwoFactorBanner from "./2FA/2FA-Banner";
-
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <TwoFactorBanner />
-        <TwoFactorAuthModal />
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
       </header>
     </div>
   );
