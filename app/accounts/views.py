@@ -5,18 +5,21 @@ from django.utils.decorators import method_decorator
 from django.views import View
 
 from .models import Accounts
-from ..utils.validate_data import validate_data
+from ..utils.validate_data import validate_json_and_required_fields
 import json
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AccountView(View):
     """
-    View for listing all Accounts or creating a new Account.
+    Handles HTTP requests related to the collection of Accounts, supporting GET to 
+    retrieve the list of all Accounts and POST to create a new Account.
     """
     def get(self, request, *args, **kwargs):
         """
         Handle GET requests.
+
+        Retrieves a list of all accounts in JSON format.
 
         Returns a JSON response containing all Accounts.
         """
@@ -28,11 +31,15 @@ class AccountView(View):
         """
         Handle POST requests.
 
-        Validates request data against REQUIRED_FIELDS and creates a new Account. 
+        Creates a new account. The required fields are 'email', 'encryptedPass', 'phoneNum', 
+        'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee'. If all fields are 
+        present and valid, it returns a JSON response with the newly created account's ID and 
+        a HTTP status code 201, indicating that the account has been successfully created.
+        
         Returns a JSON response with the newly created account's ID and a 201 status code.
         """
         REQUIRED_FIELDS = ['email', 'encryptedPass', 'phoneNum', 'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee']
-        data = validate_data(request.body, REQUIRED_FIELDS)
+        data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
         account = Accounts.objects.create(
             email = data['email'], 
             encryptedPass = data['encryptedPass'], 
