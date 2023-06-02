@@ -3,12 +3,12 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import TwoFactorReminders from "./2FA/2FA-Remind";
+import TwoFactorAuthReminders from "./2FA/2FA-Remind";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
-    <TwoFactorReminders />
+    <TwoFactorAuthReminders />
   </React.StrictMode>
 );
 
