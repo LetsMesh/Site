@@ -5,8 +5,10 @@ import Box from "@mui/material/Box"
 import Autocomplete from "@mui/material/Autocomplete";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button"
-import { UseFormRegister } from "react-hook-form";
+import Modal from "@mui/material/Modal";
 
+import { UseFormRegister } from "react-hook-form";
+import { useState } from "react";
 import { IFormInput } from "./SignUp";
 
 const interests = [
@@ -25,8 +27,23 @@ const profileFillStyle = {
     paddingRight: 10
 }
 
+const modalStyle = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function StepThree(props:
 {register:UseFormRegister<IFormInput>}) {
+    const [click, setClick] = useState(false);
+    const handleOpen = () => setClick(true);
+    const handleClose = () => setClick(false);
 
     return (
         <>
@@ -44,6 +61,7 @@ export default function StepThree(props:
                             <Button
                                 variant="contained"
                                 color="success"
+                                onClick={handleOpen}
                             >
                                 UPLOAD PICTURE
                             </Button>
@@ -51,7 +69,7 @@ export default function StepThree(props:
                     </Grid>
                 </Grid>
 
-                <Grid item>
+                <Grid item xs={6}>
                     <Grid container justifyContent="center">
                         <Grid item xs={8}>
                             <Typography variant="h2">Start Your Profile!</Typography>
@@ -133,6 +151,22 @@ export default function StepThree(props:
                     </Grid>
                 </Grid>
             </Grid>
+
+            <Modal
+                open={click}
+                onClose={handleClose}
+                aria-labelledby="title"
+                aria-describedby="description"
+            >
+                <Box sx={modalStyle}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Text in modal
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Description in modal
+                    </Typography>
+                </Box>
+            </Modal>
         </>
     );
 }
