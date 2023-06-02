@@ -15,7 +15,7 @@ class Account(models.Model):
 
 class Message(models.Model):
     fromAccount = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='send')
-    toAccount = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='recieve')
+    toAccount = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='received_messages')
     message = models.TextField()
     timestamp = models.DateTimeField()
 
