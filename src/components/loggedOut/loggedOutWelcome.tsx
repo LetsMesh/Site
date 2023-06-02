@@ -25,7 +25,7 @@ export default function welcomeMessage() {
         sx={{
           background: "#68D391",
           "&:hover": {
-            backgroundColor: "#0A6B57",
+            backgroundColor: "#0e977b",
           },
           textDecoration: "uppercase",
           padding: "6px 16px",

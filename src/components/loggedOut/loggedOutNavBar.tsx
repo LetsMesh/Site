@@ -61,7 +61,7 @@ export default function loggedOutNav() {
               background: "#68D391",
               padding: "6px 16px",
               "&:hover": {
-                backgroundColor: "#0A6B57",
+                backgroundColor: "#0e977b",
               },
             }}
           >
