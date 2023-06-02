@@ -31,8 +31,8 @@ const LoginInput = () => {
       </Grid>
       <Grid item xs>
         <Stack spacing={2} sx={{ alignItems: 'center' }}>
-          <Button sx={{ bgcolor: '#D9D9D9', color: 'black', '&:hover': { bgcolor: '#D9D9D9' } }}>SIGN IN WITH GOOGLE</Button>
-          <Button sx={{ bgcolor: '#748ADA', color: 'white', '&:hover': { bgcolor: '#748ADA' } }}>SIGN IN WITH DISCORD</Button>
+          <Button sx={{ px: 7, bgcolor: '#D9D9D9', color: 'black', whiteSpace: 'nowrap', '&:hover': { bgcolor: '#D9D9D9' } }}>SIGN IN WITH GOOGLE</Button>
+          <Button sx={{ px: 7, bgcolor: '#748ADA', color: 'white', whiteSpace: 'nowrap', '&:hover': { bgcolor: '#748ADA' } }}>SIGN IN WITH DISCORD</Button>
         </Stack>
       </Grid>
     </Grid>
