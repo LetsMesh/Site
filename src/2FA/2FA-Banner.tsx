@@ -7,6 +7,15 @@ import { ReactComponent as Logo } from "./2FA-icon.svg";
 
 import "./Banner.css";
 
+/**
+ * A React component that renders a banner to remind users to enable Two-Factor Authentication (2FA).
+ * This banner should only render if the user has already seen the modal and 2FA is not enabled.
+ *
+ * @param props - Properties of the component
+ * @param {boolean} props.visible - A boolean value indicating whether the banner is visible or not
+ * @param {function} props.handleClose - A function for handling the closing of the banner
+ * @param {function} props.handleOptIn - A function for handling the user's decision to enable 2FA
+ */
 function TwoFactorBanner(props: any) {
   return (
     <Slide direction="down" in={props.visible} mountOnEnter unmountOnExit>

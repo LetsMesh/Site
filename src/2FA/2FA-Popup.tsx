@@ -8,10 +8,17 @@ import { ReactComponent as Logo } from "./2FA-icon.svg";
 import "./Popup.css";
 
 /**
- * Component to render a modal to remind users to enable 2FA
- * It should only render once per user
+ * A React component that renders a modal pop-up to remind users to enable Two-Factor Authentication (2FA).
+ * This modal should only render once per user.
  *
- * @param props
+ * A button for opening the modal is also included in this component for testing.
+ * It is currently commented out.
+ *
+ * @param props - Properties of the component
+ * @param {boolean} props.visible - A boolean value indicating whether the modal is visible or not
+ * @param {function} props.handleOpen - A function for handling the opening of the modal
+ * @param {function} props.handleClose - A function for handling the closing of the modal
+ * @param {function} props.handleOptIn - A function for handling the user's decision to enable 2FA
  */
 function TwoFactorAuthModal(props: any) {
   return (
@@ -30,7 +37,11 @@ function TwoFactorAuthModal(props: any) {
       >
         <Fade in={props.visible}>
           <div className="modal">
-            <FAModalBody onClose={props.handleClose} width={350} />
+            <FAModalBody
+              onClose={props.handleClose}
+              width={350}
+              handleOptIn={props.handleOptIn}
+            />
           </div>
         </Fade>
       </Modal>
@@ -39,9 +50,12 @@ function TwoFactorAuthModal(props: any) {
 }
 
 /**
- * Contents inside TwoFactorAuthModal
+ * A React component representing the contents of TwoFactorAuthModal
  *
- * @param props
+ * @param props - Properties of the component
+ * @param {function} props.onClose - A function for handling the closing of the modal
+ * @param {number} props.width - The width and height of the modal
+ * @param {function} props.handleOptIn - A function for handling the user's decision to enable 2FA
  */
 function FAModalBody(props: any) {
   return (
