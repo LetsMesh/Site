@@ -8,8 +8,8 @@ import Alert from "@mui/material/Alert";
 import EmailIcon from "@mui/icons-material/Email";
 import ToggleButton from "@mui/material/ToggleButton";
 import Box from "@mui/material/Box";
-import GroupImage from "./Images/group_image.png";
-import NotificationButton from "./Images/NotifcationButton.png";
+import GroupImage from "../Images/group_image.png";
+import NotificationButton from "@mui/icons-material/Notifications";
 import SignInMenu from "./SideMenu";
 import "./LoggedInPage.css";
 
@@ -22,18 +22,23 @@ export default function LoggedInPage() {
           style={{ backgroundColor: "#0b7d66", flexDirection: "row" }}
         >
           <Grid item xs={0} padding={2}>
-            <SignInMenu />
+            <SignInMenu/>
           </Grid>
 
           <Grid item xs={0} padding={2}>
-            <Button value="left" sx = {{border:0}}>
-              <img src={NotificationButton}></img>
+            <Button value="left" sx={{ border: 0 }}>
+              <NotificationButton color="action" />
             </Button>
           </Grid>
           <Grid item xs={8}></Grid>
           <Grid item xs={0}>
             {/* TODO: Need to use title image to fit into here, fix sizing */}
-            <Typography className = "MeshTitle" sx = {{fontWeight:"bold", fontSize:60}}>mesh</Typography>
+            <Typography
+              className="MeshTitle"
+              sx={{ fontWeight: "bold", fontSize: 60 }}
+            >
+              mesh
+            </Typography>
           </Grid>
         </Grid>
       </header>

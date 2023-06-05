@@ -10,7 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import SideMenuButton from "./Images/SideMenuButton.png";
+import SideMenuButton from "@mui/icons-material/Menu";
 
 type Anchor = "left";
 
@@ -58,7 +58,7 @@ export default function SideMenu() {
       {(["left"] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>
-            <img src={SideMenuButton}></img>
+            <SideMenuButton  color="action"/>
           </Button>
           <Drawer
             anchor={anchor}
