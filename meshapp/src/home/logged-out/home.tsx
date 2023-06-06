@@ -2,10 +2,10 @@ import { Grid, ThemeProvider, createTheme } from "@mui/material";
 import React from "react";
 import "../App.css";
 
-import loggedOutNav from "../components/loggedOut/loggedOutNavBar";
-import welcomeMessage from "../components/loggedOut/loggedOutWelcome";
-import advertSection from "../components/loggedOut/advertSection";
-import reviewsSection from "../components/loggedOut/reviewSection";
+import loggedOutNav from "../../components/home-logged-out/loggedOutNavBar";
+import welcomeMessage from "../../components/home-logged-out/loggedOutWelcome";
+import advertSection from "../../components/home-logged-out/advertSection";
+import reviewsSection from "../../components/home-logged-out/reviewSection";
 
 export default function LoggedOutPage() {
   const theme = pageTheme();

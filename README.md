@@ -1,4 +1,21 @@
-# Getting Your Environment Set Up: 
+# Mesh
+
+## About Mesh
+
+## Getting Involved
+
+## Developer Checklist: 
+
+### Project Structure
+Project is designed to utilize django's powerful features. 
+- meshapp: React Files, Image Assets, Styling & Front-End
+- mesh: Django Files, API folders, Middle & Back-End
+- .gitignore: ignores files that shouldn't be tracked by git
+- manage.py: Django related file for running our project. 
+- PipFile & PipFile.lock: virtual environment dependencies, settings, and standardization for pipenv
+- requirements.txt: requirements for the project
+
+### Getting Your Environment Set Up: 
 **This project was initialized with python 3.11.3.**
 Please be sure when building the front end repository that you have the correct versions of npm and node.
 The correct version can be found and installed [here](https://nodejs.org/en/download/current).
@@ -24,7 +41,7 @@ Development is done on the `dev` branch. Ensure you are working either on `dev` 
 - *Mac users will need to install homebrew and use brew instead of pip*
 - *For Windows users, I recommend WSL (Windows Subsystem for Linux)*
 
-# Running the Application:
+### Running the Application:
 
 - Build The app using `npm run build` within the meshapp\ directory
 - Return to the root directory of the repository
@@ -35,12 +52,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 npm commands for the application (front end React app) that can be run at the meshapp/ directory
 
-### `npm test`
+#### `npm test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+#### `npm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -50,7 +67,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+#### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
@@ -60,33 +77,3 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-# React Docs: 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

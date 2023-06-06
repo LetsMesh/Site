@@ -3,9 +3,9 @@ import { Modal, Button, Typography, Fade, Backdrop } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { ReactComponent as Logo } from "./2FA-icon.svg";
+import { ReactComponent as Logo } from "../assets/two-factor-assets/two-factor-icon.svg";
 
-import "./Popup.css";
+import "./styling/two-factor-popup.css";
 
 /**
  * A React component that renders a modal pop-up to remind users to enable Two-Factor Authentication (2FA).

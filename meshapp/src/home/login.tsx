@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Divider, Grid, Skeleton, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import LoginInput from '../components/LoginForm';
+import LoginInput from '../components/login-form';
 
 const theme = createTheme({
   components: {

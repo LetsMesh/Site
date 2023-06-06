@@ -3,9 +3,9 @@ import { Button, Typography, Slide } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { ReactComponent as Logo } from "./2FA-icon.svg";
+import { ReactComponent as Logo } from "../assets/two-factor-assets/two-factor-icon.svg";
 
-import "./Banner.css";
+import "./styling/two-factor-banner.css";
 
 /**
  * A React component that renders a banner to remind users to enable Two-Factor Authentication (2FA).
