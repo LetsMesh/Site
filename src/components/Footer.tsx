@@ -45,9 +45,6 @@ const Footer = () => {
     },
   });
 
-  /**
-   * @TODO : add actual links to the link elements (https://github.com/LetsMesh/Site/issues/191)
-   * */
   return (
     <ThemeProvider theme={theme}>
       {/*footer*/}
@@ -76,6 +73,9 @@ const Footer = () => {
             sm={6}
             sx={{ flexWrap: "nowrap" }}
           >
+            {/**
+             * @TODO : add actual links to the link elements (https://github.com/LetsMesh/Site/issues/191)
+             * */}
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
               <Link href="">home</Link>
