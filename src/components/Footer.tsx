@@ -1,14 +1,4 @@
-// need to convert to typescript
-
 import React from "react";
-// import {
-//   Box,
-//   Container,
-//   Row,
-//   Column,
-//   FooterLink,
-//   Heading,
-// } from "./FooterStyles"
 import {
   Grid,
   Link,
@@ -55,6 +45,9 @@ const Footer = () => {
     },
   });
 
+  /**
+   * @TODO : add actual links to the link elements (https://github.com/LetsMesh/Site/issues/191)
+   * */
   return (
     <ThemeProvider theme={theme}>
       {/*footer*/}
@@ -90,7 +83,6 @@ const Footer = () => {
               <Link href="">sign up</Link>
               <Link href="">login</Link>
             </Stack>
-
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">Contact Us</Typography>
               <Link href="">Organization</Link>
