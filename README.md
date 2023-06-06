@@ -1,27 +1,28 @@
 # Before Getting Started
+1. Install python3
+2. Install pip3
+3. Install nvm & then install npm/node using nvm
+4. Install pipenv
+5. Set up pipenv virtual environment
+6. use pipenv to install django
 
-Please be sure when running the front end repository that you have the correct versions of npm and node.
+Please be sure when building the front end repository that you have the correct versions of npm and node.
 The correct version can be found and installed [here](https://nodejs.org/en/download/current).
 
 To check if your versions are correct you can use the following commands:
 Check node version with `node -v` -> This should show v20.2.0 in the console
 Check npm version with `npm -v` -> This should show 9.6.7 in the console
 
-# Getting Started with Create React App
+# Getting Started with running the Project:
+
+- Build The app using `npm run build` within the meshapp\ directory
+- Return to the root directory of the repository
+- Run `python manage.py runserver`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+npm commands for the application (front end React app) that can be run at the meshapp/ directory
 
 ### `npm test`
 
@@ -48,6 +49,7 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+# React Docs: 
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
