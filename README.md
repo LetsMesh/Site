@@ -15,8 +15,9 @@ Development is done on the `dev` branch. Ensure you are working either on `dev` 
 4. Initialize the virtual environment for yourself and installs virtual environment dependencies -> `pipenv install`
 5. **IMPORTANT** Get the .env file from someone and store it on your root directory '/SITE'
 6. Activate the virtual environment -> `pipenv shell`
-7. Build the frontend -> go to meshapp directory and run `npm run build`
-7. Return to the root directory and start the backend server / run the application ->  `python manage.py runserver`
+7. Go to `Site/meshapp/` and run an `npm install`
+8. Build the frontend -> in the same directory as step 7 run `npm run build`
+9. Return to the root directory and start the backend server / run the application ->  `python manage.py runserver`
 
 #### Tips: 
 - *I prefer to use Insomnia's rest client, you can use Postman or whatever tool you prefer for testing endpoints*
