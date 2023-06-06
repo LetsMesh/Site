@@ -9,10 +9,10 @@ Check npm version with `npm -v` -> This should show 9.6.7 in the console
 
 1.  Clone and change directories to the repository in the directory (ex. Desktop) you would like to work in. `git clone [repo link]`. 
 Development is done on the `dev` branch. Ensure you are working either on `dev` or a branch that has branched off of `dev`. 
--> To Switch to `dev` or another branch, `git checkout branch_name` ex: `git checkout dev` will switch to branch. 
+- To Switch to `dev` or another branch, `git checkout branch_name` ex: `git checkout dev` will switch to branch. 
 2. Install the correct version of python & pip.
 3. Install pipenv with pip -> `pip install pipenv`
-4. Initialize the virtual environment for yourself -> `pipenv install`
+4. Initialize the virtual environment for yourself and installs virtual environment dependencies -> `pipenv install`
 5. **IMPORTANT** Get the .env file from someone and store it on your root directory '/SITE'
 6. Activate the virtual environment -> `pipenv shell`
 7. Build the frontend -> go to meshapp directory and run `npm run build`
