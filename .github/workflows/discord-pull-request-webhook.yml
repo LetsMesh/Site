@@ -1,0 +1,16 @@
+name: GitHub Pull Request Opened Discord Webhook
+on:
+    pull_request:
+        types: 
+            - opened
+jobs:
+    send_message:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: appleboy/discord-action@master
+              with: 
+                webhook_id: ${{ secrets.DISCORD_GITHUB_UPDATES_WEBHOOK_ID }}
+                webhook_token: ${{ secrets.DISCORD_GITHUB_UPDATES_WEBHOOK_TOKEN }}
+                message: |
+                    ${{ github.event.pull_request.user }} just opened a pull-request.
+                    ${{ github.event.pull_request.url }}
