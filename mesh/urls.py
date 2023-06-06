@@ -1,26 +1,38 @@
-"""
-URL configuration for mesh project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
 from django.views.generic import TemplateView
 
-# re_path('.*', TemplateView.as_view(template_name='index.html')),
+# API URLs: 
+from mesh.exampleapi import urls as example_urls
+
+
+'''
+# How to Add URL -> Best Practices
+-----------------------------------------
+Add URLs suggested like below in the "example" 
+To do this: 
+ 1. Ensure the API you want to add has a urls.py file. 
+ 2. Ensure the API you want to add has a views.py file. 
+ 3. Within the urls.py file of the API ensure the following: 
+      -> includes the urls you want for the api. 
+      -> organized to represent the kinds of urls. 
+      -> specific kinds of urls
+    An example of this can be observed in the urls.py example file. 
+4. Add the urls here following the format of the example. 
+    " path('url_or_api_base_name', include('api_folder_name.urls'))"
+5. Test by running ` python manage.py runserver ` and going to the url
+     by appending 'url_or_api_base_name' and any other arguments. 
+
+Example Test:
+    - Go to http://127.0.0.1:8000/example/ 
+    This gives you a "You Got Home." 
+    - Go to http://127.0.0.1:8000/example/helloworld/
+    This gives you a "Hello World."
+
+'''
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html')),
+    path('admin/', admin.site.urls),
+    path('example/', include(example_urls)),
 ]
