@@ -1,0 +1,45 @@
+name: Frontend Pull-Request Sanity Checks
+
+on:
+    pull_request:
+        branches:
+            - main
+            - dev
+
+env:
+    NODE_VERSION: 20        
+    
+jobs:
+    prepare-workflow:
+      name: Prepare Workflow
+      runs-on: ubuntu-latest
+      steps:
+        - name: Install NodeJS
+          uses: actions/setup-node@v2
+          with: 
+            node-version: ${{env.NODE_VERSION}}
+        - name: Checkout Code
+          uses: actions/checkout@v2
+        - name: Install Dependencies
+          run: npm clean-install
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+        needs: prepare-workflow
+        steps:
+            - name: Run ESLint
+              run: npm run eslint
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        needs: prepare-workflow
+        steps:
+            - name: Run NPM Build Script
+              run: npm run build
+    test:
+        name: Test
+        runs-on: ubuntu-latest
+        needs: [prepare-workflow, build]
+        steps:
+            - name: Run NPM Test Script
+              run: npm run test

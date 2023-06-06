@@ -27,11 +27,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "npm run eslint",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "eslint": "eslint --ext .js,.ts,.jsx,.tsx src --no-fix --max-warnings=0"
+    "lint": "prettier --config '**/*.{js,jsx,ts,tsx,json}' eslint --ext .js,.ts,.jsx,.tsx src --no-fix --max-warnings=0"
   },
   "browserslist": {
     "production": [
@@ -46,8 +45,9 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.41.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-react": "^7.32.2"
+    "eslint": "^8.x",
+    "eslint-config-prettier": "^8.x",
+    "eslint-plugin-react": "^7.x",
+    "prettier": "^2.x"
   }
 }

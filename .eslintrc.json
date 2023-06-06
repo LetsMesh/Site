@@ -14,10 +14,19 @@
         "react",
         "@typescript-eslint"
     ],
-    "rules": {  
+    "rules": {
+        "array-bracket-spacing": [
+            "error"
+        ],
+        "comma-spacing": [
+            "error"
+        ],
         "eqeqeq":[
             "error",
             "always"
+        ],
+        "no-multi-spaces": [
+            "error"
         ],
         "no-multiple-empty-lines": [
             "error", {
@@ -27,11 +36,6 @@
         "quotes":[
             "error",
             "single"
-        ],
-        "no-multi-spaces": [
-            "error"
         ]
-
-
     }
 }
