@@ -1,11 +1,5 @@
-# Before Getting Started
-1. Install python3
-2. Install pip3
-3. Install nvm & then install npm/node using nvm
-4. Install pipenv
-5. Set up pipenv virtual environment
-6. use pipenv to install django
-
+# Getting Your Environment Set Up: 
+**This project was initialized with python 3.11.3.**
 Please be sure when building the front end repository that you have the correct versions of npm and node.
 The correct version can be found and installed [here](https://nodejs.org/en/download/current).
 
@@ -13,7 +7,23 @@ To check if your versions are correct you can use the following commands:
 Check node version with `node -v` -> This should show v20.2.0 in the console
 Check npm version with `npm -v` -> This should show 9.6.7 in the console
 
-# Getting Started with running the Project:
+1.  Clone and change directories to the repository in the directory (ex. Desktop) you would like to work in. `git clone [repo link]`. 
+Development is done on the `dev` branch. Ensure you are working either on `dev` or a branch that has branched off of `dev`. 
+-> To Switch to `dev` or another branch, `git checkout branch_name` ex: `git checkout dev` will switch to branch. 
+2. Install the correct version of python & pip.
+3. Install pipenv with pip -> `pip install pipenv`
+4. Initialize the virtual environment for yourself -> `pipenv install`
+5. **IMPORTANT** Get the .env file from someone and store it on your root directory '/SITE'
+6. Activate the virtual environment -> `pipenv shell`
+7. Build the frontend -> go to meshapp directory and run `npm run build`
+7. Return to the root directory and start the backend server / run the application ->  `python manage.py runserver`
+
+#### Tips: 
+- *I prefer to use Insomnia's rest client, you can use Postman or whatever tool you prefer for testing endpoints*
+- *Mac users will need to install homebrew and use brew instead of pip*
+- *For Windows users, I recommend WSL (Windows Subsystem for Linux)*
+
+# Running the Application:
 
 - Build The app using `npm run build` within the meshapp\ directory
 - Return to the root directory of the repository
