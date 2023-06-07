@@ -1,5 +1,5 @@
 -- @block 
-CREATE TABLE IF NOT EXISTS Accounts (
+CREATE TABLE IF NOT EXISTS Account (
     accountID INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(254) NOT NULL,
     encryptedPass VARCHAR(255) NOT NULL,
