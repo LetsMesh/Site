@@ -27,6 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "clean": "rm -rfv build; rm -rfv coverage; rm -rfv node_modules; rm -f package-lock.json;",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
