@@ -4,9 +4,11 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Login from "./pages/Login";
 import Footer from "./components/Footer";
+import TwoFactorAuthReminders from "./2FA/2FA-Remind";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
+    <TwoFactorAuthReminders />
     <Login />
     <Footer />
   </React.StrictMode>
