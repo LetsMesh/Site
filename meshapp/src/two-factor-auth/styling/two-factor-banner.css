@@ -1,0 +1,37 @@
+.banner {
+  box-sizing: border-box;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: left;
+  align-items: center;
+  padding: 1em;
+  background-color: rgb(35, 204, 170);
+  color: #fff;
+  column-gap: 10px;
+  position: absolute;
+  top: 0px;
+
+  box-shadow: 0px 1.5px 5px black;
+}
+
+.bannerLogo {
+  display: flex;
+}
+
+.bannerCloseBtn {
+  display: flex;
+  position: absolute;
+  right: 30px;
+}
+
+.descText {
+  display: flex;
+  margin-top: 2px;
+  margin-right: 10px;
+}
+
+.bannerBtn {
+  display: flex;
+}
