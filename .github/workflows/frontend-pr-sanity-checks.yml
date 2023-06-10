@@ -1,7 +1,7 @@
 name: Frontend Pull-Request Sanity Checks
 on:
     pull_request:
-        types: [opened, reopened, edited]
+        types: [opened, reopened, synchronize]
 env:
     NODE_VERSION: 20
 jobs:
@@ -15,10 +15,8 @@ jobs:
                 node-version: ${{env.NODE_VERSION}}
             - name: Checkout Code
               uses: actions/checkout@v2
-            - name: Move To 'meshapp' Directory
-              run: |
-                cd meshapp  
             - name: Install Node Modules
+              working-directory: ./meshapp
               run: |
                 npm install
     build:
@@ -27,6 +25,7 @@ jobs:
         needs: prepare_workflow
         steps:
             - name: Run NPM 'build' Script
+              working-directory: ./meshapp
               run: |
                 npm run build
     test:
@@ -35,5 +34,6 @@ jobs:
         needs: [prepare_workflow, build]
         steps:
             - name: Run NPM 'test' Script
+              working-directory: ./meshapp
               run: |
                 npm run test
