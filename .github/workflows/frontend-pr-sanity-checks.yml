@@ -20,7 +20,7 @@ jobs:
                 cd meshapp  
             - name: Install Node Modules
               run: |
-                npm clean-install
+                npm install
     build:
         name: Build
         runs-on: ubuntu-latest
