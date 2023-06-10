@@ -5,8 +5,8 @@ on:
 env:
     NODE_VERSION: 20
 jobs:
-    prepare_workflow:
-        name: Prepare Workflow
+    build_lint_and_test_frontend:
+        name: Build, Lint, and Test Frontend
         runs-on: ubuntu-latest
         steps:
             - name: Install NodeJS
@@ -19,20 +19,10 @@ jobs:
               working-directory: ./meshapp
               run: |
                 npm install
-    build:
-        name: Build
-        runs-on: ubuntu-latest
-        needs: prepare_workflow
-        steps:
-            - name: Run NPM 'build' Script
+            - name: Run NPM 'build' Script (implicitly runs eslint)
               working-directory: ./meshapp
               run: |
                 npm run build
-    test:
-        name: Test
-        runs-on: ubuntu-latest
-        needs: [prepare_workflow, build]
-        steps:
             - name: Run NPM 'test' Script
               working-directory: ./meshapp
               run: |
