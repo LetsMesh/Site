@@ -1,45 +1,39 @@
 name: Frontend Pull-Request Sanity Checks
-
 on:
     pull_request:
-        branches:
-            - main
-            - dev
-
+        types: [opened, reopened, edited]
 env:
-    NODE_VERSION: 20        
-    
+    NODE_VERSION: 20
 jobs:
-    prepare-workflow:
-      name: Prepare Workflow
-      runs-on: ubuntu-latest
-      steps:
-        - name: Install NodeJS
-          uses: actions/setup-node@v2
-          with: 
-            node-version: ${{env.NODE_VERSION}}
-        - name: Checkout Code
-          uses: actions/checkout@v2
-        - name: Install Dependencies
-          run: npm clean-install
-    lint:
-        name: Lint
+    prepare_workflow:
+        name: Prepare Workflow
         runs-on: ubuntu-latest
-        needs: prepare-workflow
         steps:
-            - name: Run ESLint
-              run: npm run eslint
+            - name: Install NodeJS
+              uses: actions/setup-node@v2
+              with: 
+                node-version: ${{env.NODE_VERSION}}
+            - name: Checkout Code
+              uses: actions/checkout@v2
+            - name: Move To 'meshapp' Directory
+              run: |
+                cd meshapp  
+            - name: Install Node Modules
+              run: |
+                npm clean-install
     build:
         name: Build
         runs-on: ubuntu-latest
-        needs: prepare-workflow
+        needs: prepare_workflow
         steps:
-            - name: Run NPM Build Script
-              run: npm run build
+            - name: Run NPM 'build' Script
+              run: |
+                npm run build
     test:
         name: Test
         runs-on: ubuntu-latest
-        needs: [prepare-workflow, build]
+        needs: [prepare_workflow, build]
         steps:
-            - name: Run NPM Test Script
-              run: npm run test
+            - name: Run NPM 'test' Script
+              run: |
+                npm run test

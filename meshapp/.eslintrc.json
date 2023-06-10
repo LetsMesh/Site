@@ -1,0 +1,45 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "prettier",
+        "react-app",
+        "react-app/jest"
+    ],
+    "plugins": ["react", "@typescript-eslint"],
+    "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/semi": ["error"],
+        "@typescript-eslint/type-annotation-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "array-bracket-spacing": ["error"],
+        "comma-spacing": ["error"],
+        "eqeqeq": ["error", "always"],
+        "key-spacing": [
+            "error",
+            {
+                "beforeColon": true,
+                "afterColon": true
+            }
+        ],
+        "no-multi-spaces": ["error"],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1
+            }
+        ],
+        "object-curly-spacing": ["error", "always"],
+        "quotes": ["error", "single"],
+        "semi": ["error"]
+    }
+}
