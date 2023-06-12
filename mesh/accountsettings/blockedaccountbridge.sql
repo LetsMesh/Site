@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS BlockedAccountBridge(
-	settingID INT,
+    blockerAccountID INT,
     blockedAccountID INT,
 
-    PRIMARY KEY (settingID, blockedAccountID),
-    FOREIGN KEY (settingID) REFERENCES AccountSettings(settingID),
-    FOREIGN KEY (blockedAccountID) REFERENCES Accounts(accountID)
+    PRIMARY KEY (blockerAccountID, blockedAccountID),
+    FOREIGN KEY (blockerAccountID) REFERENCES Account(accountID),
+    FOREIGN KEY (blockedAccountID) REFERENCES Account(accountID)
 );
