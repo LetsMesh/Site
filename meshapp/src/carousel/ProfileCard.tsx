@@ -33,12 +33,12 @@ function ProfileCard(
   onTop: number,
   visible: number,
   image: string,
+  name: string,
+  job: string,
   biography: string,
   interests: string[],
   details: string[]
 ) {
-
-
   const interestChips = interests.map((interest) => {
     return <Chip label={interest} />;
   });
@@ -84,8 +84,8 @@ function ProfileCard(
     >
       <CardHeader
         avatar={<Avatar src={image} variant="square"></Avatar>}
-        title="THUG SHAKER"
-        subheader="THE THUG SHAKER"
+        title={name}
+        subheader={job}
       />
       <CardContent>
         <TextField
