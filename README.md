@@ -1,6 +1,8 @@
 # Mesh
+A project full of software engineers acting as mentors to students in order to expose them to software engineering processes and skills. This project employs an Agile approach using aspects from kanban, scrum and XP. 
 
 ## About Mesh
+A site for mentors and mentees to swipe and meet each other. 
 
 ## Getting Involved
 
