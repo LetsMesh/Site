@@ -15,7 +15,7 @@ export default function LoggedOutPage() {
             <Grid
                 container
                 sx={{
-                    flexDirection: 'column',
+                    flexDirection : 'column',
                 }}
             >
                 {loggedOutNav()}
@@ -29,9 +29,9 @@ export default function LoggedOutPage() {
                     alignItems="center"
                     xs={12}
                     sx={{
-                        background: '#0B7D66',
-                        '@media (min-width: 600px)': {
-                            flexDirection: 'row',
+                        background : '#0B7D66',
+                        '@media (min-width: 600px)' : {
+                            flexDirection : 'row',
                         },
                     }}
                 >
@@ -58,125 +58,125 @@ function pageTheme() {
     const theme = createTheme();
 
     theme.typography.h1 = {
-        fontSize: '30px',
-        lineHeight: '30px',
-        fontWeight: '600',
-        '@media (min-width:600px)': {
-            fontSize: '40px',
-            lineHeight: '40px',
+        fontSize : '30px',
+        lineHeight : '30px',
+        fontWeight : '600',
+        '@media (min-width:600px)' : {
+            fontSize : '40px',
+            lineHeight : '40px',
         },
-        '@media (min-width:900px)': {
-            fontSize: '48px',
-            lineHeight: '48px',
+        '@media (min-width:900px)' : {
+            fontSize : '48px',
+            lineHeight : '48px',
         },
-        '@media (min-width: 1600px)': {
-            fontSize: '60px',
-            lineHeight: '60px',
+        '@media (min-width: 1600px)' : {
+            fontSize : '60px',
+            lineHeight : '60px',
         },
     };
 
     theme.typography.h2 = {
-        fontSize: '22.5px',
-        lineHeight: '22.5px',
-        fontWeight: '600',
-        '@media (min-width:600px)': {
-            fontSize: '30px',
-            lineHeight: '30px',
+        fontSize : '22.5px',
+        lineHeight : '22.5px',
+        fontWeight : '600',
+        '@media (min-width:600px)' : {
+            fontSize : '30px',
+            lineHeight : '30px',
         },
-        '@media (min-width:900px)': {
-            fontSize: '36px',
-            lineHeight: '36px',
+        '@media (min-width:900px)' : {
+            fontSize : '36px',
+            lineHeight : '36px',
         },
-        '@media (min-width: 1600px)': {
-            fontSize: '45px',
-            lineHeight: '45px',
+        '@media (min-width: 1600px)' : {
+            fontSize : '45px',
+            lineHeight : '45px',
         },
     };
 
     theme.typography.h3 = {
-        fontSize: '20px',
-        lineHeight: '20px',
-        fontWeight: '600',
-        '@media (min-width:600px)': {
-            fontSize: '27px',
-            lineHeight: '27px',
+        fontSize : '20px',
+        lineHeight : '20px',
+        fontWeight : '600',
+        '@media (min-width:600px)' : {
+            fontSize : '27px',
+            lineHeight : '27px',
         },
-        '@media (min-width:900px)': {
-            fontSize: '30px',
-            lineHeight: '40px',
+        '@media (min-width:900px)' : {
+            fontSize : '30px',
+            lineHeight : '40px',
         },
-        '@media (min-width: 1600px)': {
-            fontSize: '40px',
-            lineHeight: '40px',
+        '@media (min-width: 1600px)' : {
+            fontSize : '40px',
+            lineHeight : '40px',
         },
     };
 
     theme.typography.h4 = {
-        fontSize: '18.75px',
-        lineHeight: '25px',
-        fontWeight: '250',
-        '@media (min-width:600px)': {
-            fontSize: '30px',
-            lineHeight: '33.5px',
+        fontSize : '18.75px',
+        lineHeight : '25px',
+        fontWeight : '250',
+        '@media (min-width:600px)' : {
+            fontSize : '30px',
+            lineHeight : '33.5px',
         },
-        '@media (min-width:900px)': {
-            fontSize: '30px',
-            lineHeight: '40px',
+        '@media (min-width:900px)' : {
+            fontSize : '30px',
+            lineHeight : '40px',
         },
-        '@media (min-width: 1600px)': {
-            fontSize: '37.5px',
-            lineHeight: '50px',
+        '@media (min-width: 1600px)' : {
+            fontSize : '37.5px',
+            lineHeight : '50px',
         },
     };
 
     theme.typography.body1 = {
-        fontSize: '15px',
-        lineHeight: '20px',
-        '@media (min-width:600px)': {
-            fontSize: '20px',
-            lineHeight: '27px',
+        fontSize : '15px',
+        lineHeight : '20px',
+        '@media (min-width:600px)' : {
+            fontSize : '20px',
+            lineHeight : '27px',
         },
-        '@media (min-width:900px)': {
-            fontSize: '24px',
-            lineHeight: '32px',
+        '@media (min-width:900px)' : {
+            fontSize : '24px',
+            lineHeight : '32px',
         },
-        '@media (min-width: 1600px)': {
-            fontSize: '30px',
-            lineHeight: '40px',
+        '@media (min-width: 1600px)' : {
+            fontSize : '30px',
+            lineHeight : '40px',
         },
     };
 
     theme.typography.body2 = {
-        fontSize: '10px',
-        lineHeight: '13px',
-        '@media (min-width:600px)': {
-            fontSize: '13.5px',
-            lineHeight: '17.5px',
+        fontSize : '10px',
+        lineHeight : '13px',
+        '@media (min-width:600px)' : {
+            fontSize : '13.5px',
+            lineHeight : '17.5px',
         },
-        '@media (min-width:900px)': {
-            fontSize: '16px',
-            lineHeight: '21px',
+        '@media (min-width:900px)' : {
+            fontSize : '16px',
+            lineHeight : '21px',
         },
-        '@media (min-width: 1600px)': {
-            fontSize: '20px',
-            lineHeight: '26.25px',
+        '@media (min-width: 1600px)' : {
+            fontSize : '20px',
+            lineHeight : '26.25px',
         },
     };
 
     theme.typography.button = {
-        fontSize: '12.5px',
-        lineHeight: '15px',
-        '@media (min-width:600px)': {
-            fontSize: '16.5px',
-            lineHeight: '20px',
+        fontSize : '12.5px',
+        lineHeight : '15px',
+        '@media (min-width:600px)' : {
+            fontSize : '16.5px',
+            lineHeight : '20px',
         },
-        '@media (min-width:900px)': {
-            fontSize: '20px',
-            lineHeight: '24px',
+        '@media (min-width:900px)' : {
+            fontSize : '20px',
+            lineHeight : '24px',
         },
-        '@media (min-width: 1600px)': {
-            fontSize: '25px',
-            lineHeight: '30px',
+        '@media (min-width: 1600px)' : {
+            fontSize : '25px',
+            lineHeight : '30px',
         },
     };
 

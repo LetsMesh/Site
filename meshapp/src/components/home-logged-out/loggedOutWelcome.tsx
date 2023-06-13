@@ -14,19 +14,19 @@ export default function welcomeMessage() {
             <Button
                 variant="contained"
                 sx={{
-                    background: '#68D391',
-                    '&:hover': {
-                        backgroundColor: '#0e977b',
+                    background : '#68D391',
+                    '&:hover' : {
+                        backgroundColor : '#0e977b',
                     },
-                    textDecoration: 'uppercase',
-                    padding: '6px 16px',
-                    fontSize: '20px',
-                    lineHeight: '24px',
-                    maxWidth: '250px',
-                    minWidth: '120px',
-                    width: '30%',
-                    height: '50px',
-                    borderRadius: '15px',
+                    textDecoration : 'uppercase',
+                    padding : '6px 16px',
+                    fontSize : '20px',
+                    lineHeight : '24px',
+                    maxWidth : '250px',
+                    minWidth : '120px',
+                    width : '30%',
+                    height : '50px',
+                    borderRadius : '15px',
                 }}
             >
                 <Typography variant="button" fontSize="20px" lineHeight="24px">

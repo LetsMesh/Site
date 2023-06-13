@@ -19,27 +19,27 @@ export default function reviewsSection() {
     const numStars = [5, 4.5, 4, 5];
 
     //contains array holding the rating of each review formatted into stars in a row
-    function rowStars(starNum: number) {
+    function rowStars(starNum : number) {
         const stars = [];
 
         //put in whole stars
 
-        let numWholeStars = Math.floor(starNum);
+        const numWholeStars = Math.floor(starNum);
 
         for (let i = 0; i < numWholeStars; i++) {
-            stars.push(<StarIcon sx={{ color: '#FFB400' }} />);
+            stars.push(<StarIcon sx={{ color : '#FFB400' }} />);
         }
         //put in half stars
 
-        let numHalfStars = starNum % 1 > 0 ? 1 : 0;
+        const numHalfStars = starNum % 1 > 0 ? 1 : 0;
 
         if (numHalfStars > 0) {
-            stars.push(<StarHalfIcon sx={{ color: '#FFB400' }} />);
+            stars.push(<StarHalfIcon sx={{ color : '#FFB400' }} />);
         }
         //put in empty stars
-        let numEmptyStars = 5 - Math.ceil(starNum);
+        const numEmptyStars = 5 - Math.ceil(starNum);
         for (let i = 0; i < numEmptyStars; i++) {
-            stars.push(<StarOutlineIcon sx={{ color: '#FFB400' }} />);
+            stars.push(<StarOutlineIcon sx={{ color : '#FFB400' }} />);
         }
 
         return stars;
@@ -48,7 +48,7 @@ export default function reviewsSection() {
     //contains array of the columns of each review
     const reviewColumns = reviewMessages.map((message, index) => {
         //get the star row for the current rating
-        let stars = rowStars(numStars[index]);
+        const stars = rowStars(numStars[index]);
         return (
             //holds the review, stacks it vertically
             <Stack
@@ -57,16 +57,17 @@ export default function reviewsSection() {
                 rowGap={3}
                 width={'30%'}
                 sx={{
-                    '@media (min-width:900px)': {
-                        width: '10%',
+                    '@media (min-width:900px)' : {
+                        width : '10%',
                     },
-                    '@media (min-width: 1100px': {
-                        width: '40%',
+                    '@media (min-width: 1100px' : {
+                        width : '40%',
                     },
                 }}
+                key={index}
             >
                 {/*grey circle container for the reviewer image*/}
-                <Box width="135px" height="120px" borderRadius="50%" sx={{ background: '#D9D9D9' }}>
+                <Box width="135px" height="120px" borderRadius="50%" sx={{ background : '#D9D9D9' }}>
                     <img src="" alt=""></img>
                 </Box>
 
@@ -93,7 +94,7 @@ export default function reviewsSection() {
     //returns the title of the section and the review container vertically stacked on each other
 
     return (
-        <Grid container item direction="column" xs={12} p={3} sx={{ background: '#F2E8DE' }}>
+        <Grid container item direction="column" xs={12} p={3} sx={{ background : '#F2E8DE' }}>
             <Grid item xs={12}>
                 <Typography variant="h3" textAlign={'center'}>
                     {title}

@@ -35,6 +35,7 @@
         "start": "react-scripts start",
         "clean": "rm -rfv build; rm -rfv coverage; rm -rfv node_modules; rm -f package-lock.json;",
         "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json}'",
+        "eslint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix --debug",
         "prebuild": "npm run prettier",
         "build": "react-scripts build",
         "test": "react-scripts test --watchAll=false",

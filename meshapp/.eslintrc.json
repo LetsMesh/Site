@@ -40,6 +40,7 @@
         ],
         "object-curly-spacing": ["error", "always"],
         "quotes": ["error", "single"],
+        "react/react-in-jsx-scope": "off",
         "semi": ["error"]
     }
 }

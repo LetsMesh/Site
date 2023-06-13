@@ -31,6 +31,7 @@ export default function advertSection() {
                 justifyContent="flex-start"
                 flexWrap="nowrap"
                 direction={index % 2 === 0 ? 'row' : 'row-reverse'}
+                key={index}
             >
                 {/* grey image container for the sprout images*/}
                 <Box
@@ -42,12 +43,12 @@ export default function advertSection() {
                     alignItems="flex-end"
                     justifyContent="center"
                     sx={{
-                        background: '#D9D9D9',
-                        '@media (min-width: 600px)': {
-                            minWidth: '215px',
-                            minHeight: '215px',
-                            maxHeight: '215px',
-                            maxWidth: '215px',
+                        background : '#D9D9D9',
+                        '@media (min-width: 600px)' : {
+                            minWidth : '215px',
+                            minHeight : '215px',
+                            maxHeight : '215px',
+                            maxWidth : '215px',
                         },
                     }}
                 >
@@ -77,8 +78,8 @@ export default function advertSection() {
                 item
                 xs={12}
                 sx={{
-                    background: '#F2E8DE',
-                    padding: '20px 0',
+                    background : '#F2E8DE',
+                    padding : '20px 0',
                 }}
             >
                 <Typography variant="h3" textAlign={'center'}>

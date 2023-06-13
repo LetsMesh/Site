@@ -16,21 +16,21 @@ import './styling/two-factor-banner.css';
  * @param {function} props.handleClose - A function for handling the closing of the banner
  * @param {function} props.handleOptIn - A function for handling the user's decision to enable 2FA
  */
-function TwoFactorBanner(props: any) {
+function TwoFactorBanner(props : any) {
     return (
         <Slide direction="down" in={props.visible} mountOnEnter unmountOnExit>
             <div className="banner">
                 <div className="bannerLogo">
                     <Logo
                         style={{
-                            width: '40px',
-                            height: '40px',
+                            width : '40px',
+                            height : '40px',
                         }}
                     />
                 </div>
 
                 <div className="descText">
-                    <Typography sx={{ fontSize: 17, fontFamily: 'cocogoose' }}>
+                    <Typography sx={{ fontSize : 17, fontFamily : 'cocogoose' }}>
                         Secure your account with Two-Factor Authentication
                     </Typography>
                 </div>
@@ -40,13 +40,13 @@ function TwoFactorBanner(props: any) {
                         fullWidth
                         variant="contained"
                         sx={{
-                            fontSize: 16,
-                            backgroundColor: '#0B7D66',
-                            fontFamily: 'cocogoose',
-                            '&:hover': {
-                                backgroundColor: '#0A6B57',
+                            fontSize : 16,
+                            backgroundColor : '#0B7D66',
+                            fontFamily : 'cocogoose',
+                            '&:hover' : {
+                                backgroundColor : '#0A6B57',
                             },
-                            borderRadius: 3,
+                            borderRadius : 3,
                         }}
                         endIcon={<ChevronRightIcon />}
                         onClick={props.handleOptIn}
@@ -59,9 +59,9 @@ function TwoFactorBanner(props: any) {
                 <div className="bannerCloseBtn">
                     <CloseIcon
                         sx={{
-                            color: 'black',
-                            cursor: 'pointer',
-                            transition: 'color 0.15s ease-in-out',
+                            color : 'black',
+                            cursor : 'pointer',
+                            transition : 'color 0.15s ease-in-out',
                         }}
                         fontSize="small"
                         onClick={props.handleClose}

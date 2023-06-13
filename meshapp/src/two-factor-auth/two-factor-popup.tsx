@@ -20,7 +20,7 @@ import './styling/two-factor-popup.css';
  * @param {function} props.handleClose - A function for handling the closing of the modal
  * @param {function} props.handleOptIn - A function for handling the user's decision to enable 2FA
  */
-function TwoFactorAuthModal(props: any) {
+function TwoFactorAuthModal(props : any) {
     return (
         <div>
             {/* This "Open Modal" button is only used for testing */}
@@ -32,8 +32,8 @@ function TwoFactorAuthModal(props: any) {
                 aria-describedby="remind-users-to-enable-2FA"
                 open={props.visible}
                 closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{ backdrop: { timeout: 175 } }}
+                slots={{ backdrop : Backdrop }}
+                slotProps={{ backdrop : { timeout : 175 } }}
             >
                 <Fade in={props.visible}>
                     <div className="modal">
@@ -53,18 +53,18 @@ function TwoFactorAuthModal(props: any) {
  * @param {number} props.width - The width and height of the modal
  * @param {function} props.handleOptIn - A function for handling the user's decision to enable 2FA
  */
-function FAModalBody(props: any) {
+function FAModalBody(props : any) {
     return (
-        <div className="container" style={{ width: props.width, height: props.width }}>
+        <div className="container" style={{ width : props.width, height : props.width }}>
             <div className="closeBtn">
                 <CloseIcon
                     sx={{
-                        color: '#848484',
-                        '&:hover': {
-                            color: 'black',
+                        color : '#848484',
+                        '&:hover' : {
+                            color : 'black',
                         },
-                        cursor: 'pointer',
-                        transition: 'color 0.15s ease-in-out',
+                        cursor : 'pointer',
+                        transition : 'color 0.15s ease-in-out',
                     }}
                     fontSize="small"
                     onClick={props.onClose}
@@ -74,7 +74,7 @@ function FAModalBody(props: any) {
                 <Logo />
             </div>
             <div className="text">
-                <Typography sx={{ fontSize: 17, fontFamily: 'cocogoose' }}>
+                <Typography sx={{ fontSize : 17, fontFamily : 'cocogoose' }}>
                     Secure your account with Two-Factor Authentication
                 </Typography>
             </div>
@@ -83,12 +83,12 @@ function FAModalBody(props: any) {
                     fullWidth
                     variant="contained"
                     sx={{
-                        backgroundColor: '#0B7D66',
-                        fontFamily: 'cocogoose',
-                        '&:hover': {
-                            backgroundColor: '#0A6B57',
+                        backgroundColor : '#0B7D66',
+                        fontFamily : 'cocogoose',
+                        '&:hover' : {
+                            backgroundColor : '#0A6B57',
                         },
-                        borderRadius: 3,
+                        borderRadius : 3,
                     }}
                     endIcon={<ChevronRightIcon />}
                     onClick={props.handleOptIn}
@@ -99,13 +99,13 @@ function FAModalBody(props: any) {
             <div>
                 <Typography
                     sx={{
-                        fontSize: 12,
-                        fontFamily: 'cocogoose',
-                        color: '#C1C1C1',
-                        cursor: 'pointer',
-                        transition: 'color 0.2s ease-in-out',
-                        '&:hover': {
-                            color: '#353535',
+                        fontSize : 12,
+                        fontFamily : 'cocogoose',
+                        color : '#C1C1C1',
+                        cursor : 'pointer',
+                        transition : 'color 0.2s ease-in-out',
+                        '&:hover' : {
+                            color : '#353535',
                         },
                     }}
                     onClick={props.onClose}
