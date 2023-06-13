@@ -1,14 +1,10 @@
 import {
-  Autocomplete,
-  AutocompleteRenderInputParams,
   Avatar,
-  Box,
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  CardMedia,
   Chip,
   Grid,
   IconButton,
@@ -20,13 +16,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import WorkIcon from '@mui/icons-material/Work';
-import FolderIcon from '@mui/icons-material/Folder';
-import GroupIcon from '@mui/icons-material/Group';
+import WorkIcon from "@mui/icons-material/Work";
+import FolderIcon from "@mui/icons-material/Folder";
+import GroupIcon from "@mui/icons-material/Group";
 
-import CloseIcon from '@mui/icons-material/Close';
-import HeartIcon from '@mui/icons-material/Favorite';
-
+import CloseIcon from "@mui/icons-material/Close";
+import HeartIcon from "@mui/icons-material/Favorite";
 
 import { motion } from "framer-motion";
 import React from "react";
@@ -37,32 +32,28 @@ function ProfileCard(
   leftPos: string,
   onTop: number,
   visible: number,
-  image: string
+  image: string,
+  biography: string,
+  interests: string[],
+  details: string[]
 ) {
-  const interests = ["cats", "meow", "el gato", "kitty"];
-  const details = ["cat programmer in training", "B.S in Milk Drinking", "Looking for a Mentor"]
+
 
   const interestChips = interests.map((interest) => {
-    return <Chip label={interest} />
-  })
+    return <Chip label={interest} />;
+  });
 
-  const icons = [(<WorkIcon />), (<FolderIcon />), (<GroupIcon />)]
+  const icons = [<WorkIcon />, <FolderIcon />, <GroupIcon />];
 
   const detailListItems = [];
   for (let i = 0; i < (details.length < 3 ? details.length : 3); i++) {
-    detailListItems.push((
+    detailListItems.push(
       <ListItem>
-        <ListItemIcon>
-          {icons[i]}
-        </ListItemIcon>
-        <ListItemText>
-          {details[i]}
-        </ListItemText>
+        <ListItemIcon>{icons[i]}</ListItemIcon>
+        <ListItemText>{details[i]}</ListItemText>
       </ListItem>
-
-    ))
+    );
   }
-
 
   return (
     <Card
@@ -88,7 +79,7 @@ function ProfileCard(
         overflow: "hidden",
         background: "white",
         borderRadius: "30px",
-        border: "15px solid #D9D9D9"
+        border: "15px solid #D9D9D9",
       }}
     >
       <CardHeader
@@ -104,7 +95,7 @@ function ProfileCard(
           maxRows={4}
           disabled
           fullWidth
-          defaultValue="I LOVE THUG SHAKING PLEASE SHOW ME MORE GIVE ME MORE THUG SHAKER"
+          defaultValue={biography}
           sx={{
             ".Mui-disabled textarea": {
               WebkitTextFillColor: "black",
@@ -122,33 +113,47 @@ function ProfileCard(
           </Grid>
         </Grid>
 
-        <List>
-          {detailListItems}
-        </List>
-
+        <List>{detailListItems}</List>
       </CardContent>
 
-      <CardActions  sx={{background: '#F1E8DF',
-    display: 'flex',
-    flexFlow:"row nowrap",
-    justifyContent:"space-around",
-    alignItems: "center",
-    p:4,
-    marginTop:"50px"}}>
+      <CardActions
+        sx={{
+          background: "#F1E8DF",
+          display: "flex",
+          flexFlow: "row nowrap",
+          justifyContent: "space-around",
+          alignItems: "center",
+          p: 4,
+          marginTop: "50px",
+        }}
+      >
+        <IconButton
+          disabled={position === index ? false : true}
+          sx={{ color: "#FF00008F" }}
+          children={<CloseIcon sx={{ fontSize: "50px" }} />}
+        />
 
-        <IconButton disabled={(position === index) ? false : true} sx={{color: "#FF00008F"}} children={(<CloseIcon sx={{fontSize: '50px'}} />)}/>
-
-        <Button disabled={(position === index) ? false : true} variant="contained" sx={{background:"#74D194", padding:"15px 20px", color:"#F1E8DF", "&:hover": {
-                backgroundColor: "#0e977b",
-              }}}>
+        <Button
+          disabled={position === index ? false : true}
+          variant="contained"
+          sx={{
+            background: "#74D194",
+            padding: "15px 20px",
+            color: "#F1E8DF",
+            "&:hover": {
+              backgroundColor: "#0e977b",
+            },
+          }}
+        >
           See Full Profile
         </Button>
-        
-        <IconButton disabled={(position === index) ? false : true} sx={{color: "#0094FF8F"}} children={(<HeartIcon sx={{fontSize: '50px'}}/>)}/>
 
-
+        <IconButton
+          disabled={position === index ? false : true}
+          sx={{ color: "#0094FF8F" }}
+          children={<HeartIcon sx={{ fontSize: "50px" }} />}
+        />
       </CardActions>
-
     </Card>
   );
 }

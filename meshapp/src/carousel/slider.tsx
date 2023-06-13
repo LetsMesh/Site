@@ -2,25 +2,68 @@ import React from "react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
-import { Card, CardMedia, CardTypeMap, Grid, IconButton, Paper } from "@mui/material";
+import {
+  Card,
+  CardMedia,
+  CardTypeMap,
+  Grid,
+  IconButton,
+  Paper,
+} from "@mui/material";
 import profileCard from "./ProfileCard";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function Slider() {
   const images = [
     "https://media.tenor.com/cOvqBWFm4gIAAAAd/svod-thug-shaker.gif",
-    "https://www.wideopenpets.com/wp-content/uploads/sites/6/2018/02/AdobeStock_109255057.jpg",
-    "https://images.livemint.com/img/2021/09/08/1140x641/erik-jan-leusink-IbPxGLgJiMI-unsplash_1631079336162_1631079359671.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFmpv3VDfx13aPqlY__oyW4Xpmi7VoEYo3cMcejNL9A&usqp=CAU&ec=48665698",
+    "https://media.tenor.com/59a5ljZD-uMAAAAd/cat-shut-up.gif",
     "https://www.wideopenpets.com/wp-content/uploads/sites/6/2018/02/AdobeStock_109255057.jpg",
     "https://images.livemint.com/img/2021/09/08/1140x641/erik-jan-leusink-IbPxGLgJiMI-unsplash_1631079336162_1631079359671.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFmpv3VDfx13aPqlY__oyW4Xpmi7VoEYo3cMcejNL9A&usqp=CAU&ec=48665698",
   ];
+
+  const profiles = [
+    {
+      image: "https://media.tenor.com/cOvqBWFm4gIAAAAd/svod-thug-shaker.gif",
+      biography:
+        "BARK BARK WOOF WOOF RUFF RUFF BARK WOOF RUFF RUFF WOOF GRRR BARK BARK RUFF RUFF GRR WOOF WOOF GRRRR MEOW GRRRR MEOW MEOW MEWWWWW WOOOF WOOF GRRR RUFF MEWO MEWO",
+      interests: ["cats", "meow", "el gato", "kitty"],
+      details: ["cat programmer in training","B.S in Milk Drinking","Looking for a Mentor"]
+    },
+    {
+      image:"https://media.tenor.com/59a5ljZD-uMAAAAd/cat-shut-up.gif",
+      biography:
+        "BARK BARK WOOF WOOF RUFF RUFF BARK WOOF RUFF RUFF WOOF GRRR BARK BARK RUFF RUFF GRR WOOF WOOF GRRRR MEOW GRRRR MEOW MEOW MEWWWWW WOOOF WOOF GRRR RUFF MEWO MEWO",
+      interests: ["cats", "meow", "el gato", "kitty"],
+      details: ["cat programmer in training","B.S in Milk Drinking","Looking for a Mentor"]
+    },
+    {
+      image: "https://www.wideopenpets.com/wp-content/uploads/sites/6/2018/02/AdobeStock_109255057.jpg",
+      biography:
+        "BARK BARK WOOF WOOF RUFF RUFF BARK WOOF RUFF RUFF WOOF GRRR BARK BARK RUFF RUFF GRR WOOF WOOF GRRRR MEOW GRRRR MEOW MEOW MEWWWWW WOOOF WOOF GRRR RUFF MEWO MEWO",
+      interests: ["cats", "meow", "el gato", "kitty"],
+      details: ["cat programmer in training","B.S in Milk Drinking","Looking for a Mentor"]
+    },
+    {
+      image: "https://images.livemint.com/img/2021/09/08/1140x641/erik-jan-leusink-IbPxGLgJiMI-unsplash_1631079336162_1631079359671.jpg",
+      biography:
+        "BARK BARK WOOF WOOF RUFF RUFF BARK WOOF RUFF RUFF WOOF GRRR BARK BARK RUFF RUFF GRR WOOF WOOF GRRRR MEOW GRRRR MEOW MEOW MEWWWWW WOOOF WOOF GRRR RUFF MEWO MEWO",
+      interests: ["cats", "meow", "el gato", "kitty"],
+      details: ["cat programmer in training","B.S in Milk Drinking","Looking for a Mentor"]
+    },
+    {
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFmpv3VDfx13aPqlY__oyW4Xpmi7VoEYo3cMcejNL9A&usqp=CAU&ec=48665698",
+      biography:
+        "BARK BARK WOOF WOOF RUFF RUFF BARK WOOF RUFF RUFF WOOF GRRR BARK BARK RUFF RUFF GRR WOOF WOOF GRRRR MEOW GRRRR MEOW MEOW MEWWWWW WOOOF WOOF GRRR RUFF MEWO MEWO",
+      interests: ["cats", "meow", "el gato", "kitty"],
+      details: ["cat programmer in training","B.S in Milk Drinking","Looking for a Mentor"]
+    },
+  ];
   const [position, positionSet] = useState(0);
 
   const onRight = () => {
-    if (position < images.length - 1) {
+    if (position < profiles.length - 1) {
       positionSet(position + 1);
     }
   };
@@ -37,9 +80,9 @@ function Slider() {
     trackMouse: true,
   });
 
-  let divs = images.map((image: string, index: number) => {
+  let divs = profiles.map(( {image, biography, interests, details}, index: number) => {
     let onTop: number = 0;
-    let leftPos: string = `${(index - position) * 20 + 20 }vw`;
+    let leftPos: string = `${(index - position) * 20 + 19}vw`;
     let visible: number = 1;
     if (position === index) {
       onTop = 1;
@@ -49,7 +92,7 @@ function Slider() {
         visible = 0;
       }
     }
-    let profile = profileCard(index, position, leftPos, onTop, visible, image);
+    let profile = profileCard(index, position, leftPos, onTop, visible, image, biography, interests, details);
 
     return profile;
   });
@@ -63,7 +106,7 @@ function Slider() {
       sx={{
         background: "#0B7D66",
         minHeight: "100vh",
-        overflowX:"hidden"
+        overflowX: "hidden",
       }}
     >
       <Grid
@@ -71,19 +114,29 @@ function Slider() {
         sx={{
           position: "relative",
           width: "80vw",
-          height: "50vh"
+          height: "50vh",
         }}
         {...handlers}
       >
         {divs}
       </Grid>
-      <Grid container sm={10} justifyContent={"space-between"}>
+      <Grid
+        container
+        sm={10}
+        justifyContent={"space-between"}
+        sx={{ marginTop: "200px" }}
+      >
         <Grid item>
-          <IconButton  children={(<ArrowBackIcon sx={{fontSize: '50px'}} />)} onClick={onLeft}/>
+          <IconButton
+            children={<ArrowBackIcon sx={{ fontSize: "50px" }} />}
+            onClick={onLeft}
+          />
         </Grid>
         <Grid item>
-        <IconButton   children={(<ArrowForwardIcon sx={{fontSize: '50px'}}/>)} onClick={onRight}/>
-
+          <IconButton
+            children={<ArrowForwardIcon sx={{ fontSize: "50px" }} />}
+            onClick={onRight}
+          />
         </Grid>
       </Grid>
     </Grid>
