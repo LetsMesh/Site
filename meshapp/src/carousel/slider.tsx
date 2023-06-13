@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import "./slider.css";
 import { motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
-import { Card, CardMedia, CardTypeMap, Grid, Paper } from "@mui/material";
+import { Card, CardMedia, CardTypeMap, Grid, IconButton, Paper } from "@mui/material";
 import profileCard from "./ProfileCard";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function Slider() {
   const images = [
@@ -38,7 +39,7 @@ function Slider() {
 
   let divs = images.map((image: string, index: number) => {
     let onTop: number = 0;
-    let leftPos: string = `${(index - position) * 15 + 15}vw`;
+    let leftPos: string = `${(index - position) * 20 + 20 }vw`;
     let visible: number = 1;
     if (position === index) {
       onTop = 1;
@@ -60,31 +61,30 @@ function Slider() {
       justifyContent="center"
       alignItems="center"
       sx={{
-        height: "100vh",
-        background: "grey",
+        background: "#0B7D66",
+        minHeight: "100vh",
+        overflowX:"hidden"
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 30,
-          left: 30,
-        }}
-      >
-        <button onClick={onLeft}>&lt;&lt;</button>
-        <button onClick={onRight}>&gt;&gt;</button>
-      </div>
       <Grid
         item
         sx={{
           position: "relative",
-          width: "60vw",
-          height: "50vh",
-          overflow: "hidden",
+          width: "80vw",
+          height: "50vh"
         }}
         {...handlers}
       >
         {divs}
+      </Grid>
+      <Grid container sm={10} justifyContent={"space-between"}>
+        <Grid item>
+          <IconButton  children={(<ArrowBackIcon sx={{fontSize: '50px'}} />)} onClick={onLeft}/>
+        </Grid>
+        <Grid item>
+        <IconButton   children={(<ArrowForwardIcon sx={{fontSize: '50px'}}/>)} onClick={onRight}/>
+
+        </Grid>
       </Grid>
     </Grid>
   );
