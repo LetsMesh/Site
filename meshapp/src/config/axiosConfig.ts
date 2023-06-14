@@ -9,6 +9,8 @@ To use axios with your form, import instance as such:
 import { axiosInstance } from './config/axiosConfig'
 
 Then you can make calls as such -> axiosInstance.get(), axiosInstance.post(), etc
+
+For more detailed explanation dive into the documentation: https://axios-http.com/docs/example
 */
 
 const baseURL: string = 'http://localhost:8000/'
