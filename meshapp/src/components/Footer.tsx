@@ -16,7 +16,7 @@ const Footer = () => {
         styleOverrides: {
           root: {
             textDecoration: "none",
-            color: "black",
+            color: "#000000bf",
             fontSize: "11px",
             fontWeight: "600",
             "&:hover": {
