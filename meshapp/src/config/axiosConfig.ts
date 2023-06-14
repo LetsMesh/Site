@@ -16,5 +16,6 @@ For more detailed explanation dive into the documentation: https://axios-http.co
 const baseURL: string = 'http://localhost:8000/'
 
 export const axiosInstance = axios.create({
-    baseURL: baseURL,
+    baseURL: baseURL, 
+    timeout: 5000,
   });
