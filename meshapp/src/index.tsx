@@ -1,16 +1,15 @@
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
 
 import LoggedOutPage from "./home/logged-out/home";
-import Slider from './carousel/slider'
+import Slider from "./ProfileCardCarousel/Swiper";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
     {/* <TwoFactorAuthReminders /> */}
-    <Slider/>
+    <Slider />
   </React.StrictMode>
 );
 
