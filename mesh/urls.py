@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 
 # API URLs: 
 from mesh.exampleapi import urls as example_urls
+from mesh.confirmation import urls as confirmation_urls
 
 
 '''
@@ -35,4 +36,5 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('admin/', admin.site.urls),
     path('example/', include(example_urls)),
+    path('confirmation/', include(confirmation_urls))
 ]

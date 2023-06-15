@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import redirect
+from django.shortcuts import render
 
 def email_confirmation(request, token):
     
@@ -31,3 +32,11 @@ def email_confirmation(request, token):
     
     else:
         return redirect("confirmation_error")
+
+def confirmation_error(request):
+    print("ERROR: Failed to confirm email.")
+    return render(request, 'confirmation_error.html')
+
+def confirmation_success(request):
+    print("Email confirmation successful!")
+    return render(request, 'confirmation_success.html')
