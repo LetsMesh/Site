@@ -1,3 +1,5 @@
 from django.shortcuts import render
-
-# Create your views here.
+from django.http import HttpResponse
+def passsword(request):
+    if request.method == "POST":
+        return HttpResponse(request.method)
