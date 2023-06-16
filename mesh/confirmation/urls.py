@@ -2,8 +2,6 @@ from django.urls import path, include
 from . import views as confirmation_views
 
 urlpatterns = [
-    
-    path('<str:token>/', confirmation_views.email_confirmation, name="email_confirmation"),
-    path('error/', confirmation_views.confirmation_error, name="confirmation_error"),
-    path('success/', confirmation_views.confirmation_success, name="confirmation_success")
+    path('<str:user_email>/', confirmation_views.email_confirmation, name="email_confirmation"),
+    path('<str:user_email>/<str:token>', confirmation_views.confirm_token, name="confirm_token"),
 ]

@@ -1,42 +1,29 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth.tokens import default_token_generator
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+import secrets
 
-def email_confirmation(request, token):
-    
-    # TODO: Grab user trying to confirm their email, check that user exists.
-    # Somewhere during signup, user should be sent a confirmation email.
+def email_confirmation(request, user_email):
+    # Generate a token (using Django's default token generator)
+    confirmation_token = secrets.token_hex(16)  # 16 bytes converted to hex string
 
-    # Probably something like this
-    User = "" # get_user_model()
+    # Construct the confirmation URL
+    confirmation_url = request.build_absolute_uri(f"/confirmation/{user_email}/{confirmation_token}/")
 
-    # Confirm user exists
-    try:
-        user = "" # User.objects.get(email=user.email)
-    except User.DoesNotExist:
-        pass
+    # Render the email template with the confirmation URL
+    email_subject = 'Account Confirmation'
+    email_template = 'confirmation_email.html'
+    email_context = {'confirmation_url': confirmation_url}
+    email_message = render_to_string(email_template, email_context)
+    email_plain_message = strip_tags(email_message)
 
-    # If the user token matches the one from the email, then
-    # the user has been confirmed.
-    if default_token_generator.check_token(user, token):
-        
-        # For our UML, the user's email_confirmed flag is actually
-        # called isVerified in the AccountSettings table
-        # so this should be changed most likely.
-        user.email_confirmed = True
-        user.save()
+    # Send the confirmation email
+    send_mail(email_subject, email_plain_message, 'letsmesh_testing02@outlook.com', 
+              [user_email], html_message=email_message)
 
-        return redirect("confirmation_success")
-    
-    else:
-        return redirect("confirmation_error")
+    # Redirect the user to a success page or display a success message
+    return HttpResponse(user_email + ": Confirmation email sent!")
 
-def confirmation_error(request):
-    print("ERROR: Failed to confirm email.")
-    return render(request, 'confirmation_error.html')
-
-def confirmation_success(request):
-    print("Email confirmation successful!")
-    return render(request, 'confirmation_success.html')
+def confirm_token(request, user_email, token):
+    return HttpResponse(user_email + ": Email confirmation success!")

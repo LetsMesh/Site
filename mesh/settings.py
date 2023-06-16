@@ -114,6 +114,7 @@ EMAIL_PORT = 587
 EMAIL_USE_STARTTLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_NAME')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_USE_TLS = True
 
 
 # Internationalization
