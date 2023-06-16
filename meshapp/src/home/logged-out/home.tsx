@@ -6,7 +6,6 @@ import welcomeMessage from "../../components/home-logged-out/loggedOutWelcome";
 import advertSection from "../../components/home-logged-out/advertSection";
 import reviewsSection from "../../components/home-logged-out/reviewSection";
 import LoginInput from "../../components/login-form";
-import { isWhiteSpaceLike } from "typescript";
 export default function LoggedOutPage() {
   const theme = pageTheme();
 
