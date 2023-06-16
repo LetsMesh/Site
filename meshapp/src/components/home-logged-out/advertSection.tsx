@@ -1,10 +1,10 @@
 import { Grid, Typography, Box, Stack } from "@mui/material";
 import React from "react";
 
-import sprout1 from "../../assets/media/sprout1.png";
-import sprout2 from "../../assets/media/sprout2.png";
-import sprout3 from "../../assets/media/sprout3.png";
-import sprout4 from "../../assets/media/sprout4.png";
+import sprout1 from "../../images/sprout1.png";
+import sprout2 from "../../images/sprout2.png";
+import sprout3 from "../../images/sprout3.png";
+import sprout4 from "../../images/sprout4.png";
 
 //contains the whole section for the advertising messages
 export default function advertSection() {
