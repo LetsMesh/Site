@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { Grid, IconButton } from "@mui/material";
@@ -75,15 +75,6 @@ function Swiper() {
     },
   ];
 
-  //keeps track of window width
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    function setWidth() {
-      setWindowWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", setWidth);
-  });
-
   //keeps track of the current card we're on
   const [position, positionSet] = useState(0);
 
@@ -108,6 +99,33 @@ function Swiper() {
     onSwipedRight: () => onLeft(),
     preventScrollOnSwipe: true,
     trackMouse: true,
+  });
+
+  //keeps track of window width
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    //keeps track of screen width
+    function setWidth() {
+      setWindowWidth(window.innerWidth);
+    }
+
+    //adds keyboard event listeners, goes to the right if arrow right or 'd' key, goes to left if arrow left or 'a' key
+    function keyPress(e: KeyboardEvent) {
+      let { key } = e;
+      key = key.toLowerCase();
+      if (key === "arrowright" || key === "d") {
+        onRight();
+      } else if (key === "arrowleft" || key === "a") {
+        onLeft();
+      }
+    }
+    window.addEventListener("resize", setWidth);
+    window.addEventListener("keydown", keyPress);
+
+    return () => {
+      window.removeEventListener("resize", setWidth);
+      window.removeEventListener("keydown", keyPress);
+    };
   });
 
   //array of all the user profile cards
