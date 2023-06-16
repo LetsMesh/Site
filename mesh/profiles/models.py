@@ -11,4 +11,4 @@ class Profile(models.Model):
     image = models.ImageField(upload_to = "image")
 
     def __str__(self):
-        return str(self.AccountID)
+        return str(self.accountID)
