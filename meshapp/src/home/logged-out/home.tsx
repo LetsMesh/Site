@@ -6,6 +6,7 @@ import welcomeMessage from "../../components/home-logged-out/loggedOutWelcome";
 import advertSection from "../../components/home-logged-out/advertSection";
 import reviewsSection from "../../components/home-logged-out/reviewSection";
 import LoginInput from "../../components/login-form";
+import shadows from "@mui/material/styles/shadows";
 export default function LoggedOutPage() {
   const theme = pageTheme();
 
@@ -45,8 +46,13 @@ export default function LoggedOutPage() {
             container
             xs={8}
             sm={6}
-            md={4}
-            sx={{ background: "white", borderRadius: "5%", padding: "20px 0" }}
+            md={3.2}
+            sx={{
+              background: "white",
+              borderRadius: "10%",
+              padding: "20px 10px",
+              filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
+            }}
           >
             {LoginInput()}
           </Grid>
