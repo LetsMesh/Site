@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 
 # API URLs: 
 from mesh.exampleapi import urls as example_urls
+from mesh.accounts import urls as account
 from mesh.confirmation import urls as confirmation_urls
 
 

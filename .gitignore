@@ -1,3 +1,5 @@
+#vscode settings 
+.vscode
 # Project Protection: 
 *.env
 
