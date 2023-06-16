@@ -4,4 +4,3 @@
 # Django
 *.pyc
 *.sqlite3
-node_modules
