@@ -41,7 +41,14 @@ export default function LoggedOutPage() {
 
           {/*-------------------------------Login Bubble--------------------------------------*/}
 
-          <Grid item container xs={8} sm={6} md={4} sx={{background: 'white', borderRadius: '5%', padding: '20px 0'}}>
+          <Grid
+            item
+            container
+            xs={8}
+            sm={6}
+            md={4}
+            sx={{ background: "white", borderRadius: "5%", padding: "20px 0" }}
+          >
             {LoginInput()}
           </Grid>
         </Grid>
