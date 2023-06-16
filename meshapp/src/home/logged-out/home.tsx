@@ -1,12 +1,12 @@
 import { Grid, ThemeProvider, createTheme } from "@mui/material";
 import React from "react";
-import "../App.css";
 
 import loggedOutNav from "../../components/home-logged-out/loggedOutNavBar";
 import welcomeMessage from "../../components/home-logged-out/loggedOutWelcome";
 import advertSection from "../../components/home-logged-out/advertSection";
 import reviewsSection from "../../components/home-logged-out/reviewSection";
-
+import LoginInput from "../../components/login-form";
+import { isWhiteSpaceLike } from "typescript";
 export default function LoggedOutPage() {
   const theme = pageTheme();
 
@@ -41,7 +41,9 @@ export default function LoggedOutPage() {
 
           {/*-------------------------------Login Bubble--------------------------------------*/}
 
-          <Grid item container xs={8} sm={6} md={4}></Grid>
+          <Grid item container xs={8} sm={6} md={4} sx={{background: 'white', borderRadius: '5%', padding: '20px 0'}}>
+            {LoginInput()}
+          </Grid>
         </Grid>
 
         {/*-----------------------Advertisement Section-------------------------------------*/}
