@@ -1,6 +1,0 @@
-CREATE TABLE Tags (
-    tagID INT NOT NULL AUTO_INCREMENT,
-    tagName VARCHAR(255) NOT NULL,
-    isDefault BOOLEAN NOT NULL,
-    PRIMARY KEY (tagID)
-);
