@@ -1,4 +1,3 @@
-DROp TAble app_accounts
-
+SELECT * FROM accounts_account
 -- @block
-show tables 
+SELECT * FROM account
