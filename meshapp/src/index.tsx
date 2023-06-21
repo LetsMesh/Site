@@ -5,12 +5,12 @@ import Login from "./home/login";
 import Footer from "./components/Footer";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
 import LoggedOutPage from "./home/logged-out/home";
+import Slider from "./ProfileCardCarousel/Swiper";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
     <TwoFactorAuthReminders />
-    <Login />
-    <Footer />
+    <Slider />
   </React.StrictMode>
 );
 

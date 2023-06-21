@@ -38,5 +38,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('example/', include(example_urls)),
     path('profiles/', include(profile_urls)),
-    path('password/', include(account)),
 ]
