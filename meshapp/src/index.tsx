@@ -6,11 +6,18 @@ import Footer from "./components/Footer";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
 import LoggedOutPage from "./home/logged-out/home";
 import Slider from "./ProfileCardCarousel/Swiper";
+
+import ProfilePage from "./profile/profile-page";
+import { exampleProfile } from "./profile/test/profile-examples";
+
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
-    <TwoFactorAuthReminders />
-    <Slider />
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <TwoFactorAuthReminders />
+      <ProfilePage {...exampleProfile} />
+      <Footer />
+    </div>
   </React.StrictMode>
 );
 
