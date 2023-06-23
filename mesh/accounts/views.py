@@ -24,7 +24,7 @@ def decrypt(password, salt):
 
 
 @csrf_exempt
-def account(request):
+def create_account(request):
     if request.method == "POST":
         #post endpoint is creation
         body = request.POST
@@ -70,7 +70,7 @@ def account(request):
         )
     
 @csrf_exempt
-def checkpassword(request):
+def check_password(request):
     if request.method == "POST":
         body = request.POST
         email = body.get("email",False)
