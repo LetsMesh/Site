@@ -80,7 +80,12 @@ const ProfileTextField = (props: {
           },
           "&.Mui-focused fieldset": {
             borderColor: "primary.main",
-            transition: "color 0.10s ease-in-out",
+          },
+          "&:not(.Mui-disabled):hover fieldset": {
+            borderColor: "primary.main",
+          },
+          "& .Mui-disabled": {
+            WebkitTextFillColor: "#000000",
           },
         },
       }}

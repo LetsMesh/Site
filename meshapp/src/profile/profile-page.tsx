@@ -96,20 +96,26 @@ const ProfilePage = (props: Profile) => {
 const ProfileHeader = (props: { name: string; pronouns: string }) => {
   return (
     <ThemeProvider theme={theme}>
-      <Box className="profile-page-header" sx={{ pl: "40px" }}>
+      <Box className="profile-page-header" sx={{ ml: "40px" }}>
         <Grid container alignItems="flex-end">
-          <Box>
+          <Box sx={{ maxWidth: "900px", wordBreak: "break-all" }}>
             <Typography
               sx={{
                 lineHeight: "0.85",
+                display: "inline",
               }}
               variant="h1"
             >
               {props.name}
+              <Typography
+                variant="h2"
+                sx={{
+                  display: "inline",
+                }}
+              >
+                ({props.pronouns})
+              </Typography>
             </Typography>
-          </Box>
-          <Box>
-            <Typography variant="h2">({props.pronouns})</Typography>
           </Box>
         </Grid>
       </Box>

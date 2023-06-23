@@ -8,7 +8,7 @@ import LoggedOutPage from "./home/logged-out/home";
 import Slider from "./ProfileCardCarousel/Swiper";
 
 import ProfilePage from "./profile/profile-page";
-import { exampleProfile } from "./profile/test/profile-examples";
+import { exampleProfile } from "./profile/tests/profile-examples";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
