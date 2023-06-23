@@ -4,7 +4,5 @@ from django.http import HttpRequest
 
 urlpatterns = [
     
-    # Home Path for Example API 'exampleapi'
-    path('biography/', profile_views.biography, name="biography"),
-    
+    path('biography', profile_views.bio_view)
 ]
