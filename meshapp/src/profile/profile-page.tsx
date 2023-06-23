@@ -76,7 +76,7 @@ const ProfilePage = (props: Profile) => {
             alignItems: "center",
             pb: "15px",
             transform: "translateY(-125px)",
-            marginBottom: "-125px", // Prevents content overlap w/ ProfilePicture
+            marginBottom: "-125px", // Adjusts container height to match transform
           }}
         >
           <ProfilePicture image={props.image} />
@@ -114,10 +114,15 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
     <ThemeProvider theme={theme}>
       <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
         <Grid container alignItems="flex-end">
-          <Box sx={{ maxWidth: "900px", wordBreak: "break-all" }}>
+          <Box
+            sx={{
+              maxWidth: "1000px",
+              wordBreak: "break-word",
+            }}
+          >
             <Typography
               sx={{
-                lineHeight: 0,
+                lineHeight: 1,
                 display: "inline",
               }}
               variant="h1"

@@ -13,13 +13,13 @@ export const exampleProfile: Profile = {
 };
 
 export const exampleProfile2: Profile = {
-  name: "John Doe",
-  pronouns: "he/him",
+  name: "Lysander Maximilian Bartholomew Fitzwilliam III Esquire IV",
+  pronouns: "he/he",
   image: "https://picsum.photos/200/300",
   isMentor: true,
   isMentee: false,
-  occupationTitle: "Construction Worker",
-  occupationBusiness: "Updog",
+  occupationTitle: "Valiant Swordmaster of the Empire",
+  occupationBusiness: "Walmart",
   biography:
-    "The best construction worker in the world. I have been working in construction for 90 years. I also took down Dr. Doofenshmirtz on February 2.",
+    "Trained in the art of the blade since being in the womb, became a swordmaster at the age of 3 months, and slayed approximately 4 rats throughout my perilous adventures. Also known as Michael Jackson.",
 };
