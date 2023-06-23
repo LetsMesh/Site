@@ -32,8 +32,8 @@ def create_account(request):
         phone_number = body["phoneNumber"]
         password = body["password"]
         salt,hash = encrypt(password)
-        is_mentee = bool(body.get("isMentee",False)) 
-        is_mentor = bool(body.get("isMentor",False))
+        is_mentee = body.get("isMentee",False)
+        is_mentor = body.get("isMentor",False)
 
         created_email = Account.objects.filter(email = email).values()
         created_phone = Account.objects.filter(phoneNum = phone_number).values()
