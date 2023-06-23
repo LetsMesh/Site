@@ -35,8 +35,9 @@ def create_account(request):
         is_mentee = bool(body.get("isMentee",False)) 
         is_mentor = bool(body.get("isMentor",False))
 
-        created = Account.objects.filter(email = email).values()
-        if not created:
+        created_email = Account.objects.filter(email = email).values()
+        created_phone = Account.objects.filter(phoneNum = phone_number).values()
+        if not created_email and not created_phone:
 
             user_account = Account(
                 email = email,
@@ -57,7 +58,7 @@ def create_account(request):
         else:
             return JsonResponse(
                 {
-                    "status":"account already exists"
+                    "status":"account with same email or phone number exists"
                 },
                 status = 409
             )
@@ -86,6 +87,7 @@ def check_password(request):
                 status = 404
             )
         else:
+            
             hash = user_created[0]["encryptedPass"]
             salt = user_created[0]["salt"]
             
