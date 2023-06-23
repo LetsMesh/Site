@@ -4,6 +4,18 @@ import { TextField, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 
+/**
+ * A React component that renders a text field with editing capabilities.
+ * Includes a character limit and an edit/save mode toggle.
+ *
+ * Used in the Profile page (src/profile/profile-page.tsx).
+ *
+ * @param props - Properties of the component
+ * @param {string} props.label - The label
+ * @param {string} props.placeholder - The placeholder text
+ * @param {string} props.text - The initial text content
+ * @param {number} props.charLimit - The max number of characters allowed
+ */
 const ProfileTextField = (props: {
   label: string;
   placeholder: string;
