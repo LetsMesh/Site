@@ -5,15 +5,15 @@ from mesh.profiles.models import Profile
 
 # Create your models here.
 class Occupation(models.Model):
-    educationID = models.AutoField(primary_key=True)
-    degreeName = models.CharField(max_length=255)
-    collegeName = models.CharField(max_length=255)
-    optionalDescription = models.TextField()
+    occupationID = models.AutoField(primary_key=True)
+    occupationName = models.CharField(max_length=255)
+    occupationTag = models.CharField(max_length=255)
+    occupationDescriptor = models.TextField()
 
     def __str__(self):
-        return str(self.educationID)
+        return str(self.occupationID)
 
 
 class OccupationBridge(models.Model):
     accountID = models.OneToOneField(Profile, primary_key=True, on_delete=models.CASCADE)
-    educationID = models.OneToOneField(Occupation, on_delete=models.CASCADE)
+    occupationID = models.OneToOneField(Occupation, on_delete=models.CASCADE)
