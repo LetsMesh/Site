@@ -8,7 +8,7 @@ class Tag(models.Model):
     isDefault = models.BooleanField()
 
 class TagBridge(models.Model):
-    class Bridge():
+    class Meta():
         unique_together = (('accountID', 'tagID'))
     tagID = models.OneToOneField(Tag, on_delete=models.CASCADE)
     accountID = models.ForeignKey(Account, on_delete=models.CASCADE)
