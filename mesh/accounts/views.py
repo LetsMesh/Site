@@ -10,13 +10,15 @@ import dotenv
 
 def encrypt(password ):
     salt = bcrypt.gensalt(12)
-    password = password.encode('utf-8')
     
+    pepper = os.getenv("PEPPER")
+    password = f"{password}{pepper}".encode('utf-8')
     
     return salt,bcrypt.hashpw(password,salt)
 
 def decrypt(password, salt):
-    password = password.encode('utf-8')
+    pepper = os.getenv("PEPPER")
+    password = f"{password}{pepper}".encode('utf-8')
     return bcrypt.hashpw(password,salt)
 def strongPass():
     pass
