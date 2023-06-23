@@ -4,14 +4,15 @@ from django.http import JsonResponse
 from .models import *
 import bcrypt
 import os
-import dotenv
 
-# dotenv.load_dotenv()
+
+
 
 def encrypt(password ):
     salt = bcrypt.gensalt(12)
     
     pepper = os.getenv("PEPPER")
+    
     password = f"{password}{pepper}".encode('utf-8')
     
     return salt,bcrypt.hashpw(password,salt)
@@ -20,8 +21,7 @@ def decrypt(password, salt):
     pepper = os.getenv("PEPPER")
     password = f"{password}{pepper}".encode('utf-8')
     return bcrypt.hashpw(password,salt)
-def strongPass():
-    pass
+
 
 @csrf_exempt
 def account(request):
