@@ -47,6 +47,20 @@ const theme = createTheme({
   },
 });
 
+/**
+ * A React component that renders a profile page.
+ * Displays a user's personal, professional, and educational information.
+ *
+ * @param props - Properties of the component
+ * @param {string} props.name - Name of user
+ * @param {string} props.pronouns - Pronouns used by user
+ * @param {string} props.occupationTitle - Title of user's occupation
+ * @param {string} props.occupationBusiness - Name of business/org the user affiliates with
+ * @param {string} props.biography - The initial text content of the bio
+ * @param {string} props.image - A URL to user's profile image
+ * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
+ * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
+ */
 const ProfilePage = (props: Profile) => {
   return (
     <Box className="profile-page-container">
@@ -109,6 +123,13 @@ const ProfilePage = (props: Profile) => {
   );
 };
 
+/**
+ * The header of the profile page.
+ *
+ * @param props - Properties of the component
+ * @param {string} props.name - Name of user
+ * @param {string} props.pronouns - Pronouns used by user
+ */
 const ProfileHeader = (props: { name: string; pronouns: string }) => {
   return (
     <ThemeProvider theme={theme}>
@@ -144,6 +165,12 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
   );
 };
 
+/**
+ * Displays the user's profile picture.
+ *
+ * @param props - Properties of the component
+ * @param {string} props.image - A URL to user's profile image
+ */
 const ProfilePicture = (props: { image: string }) => {
   return (
     <Box className="profile-page-picture-container">
@@ -156,6 +183,13 @@ const ProfilePicture = (props: { image: string }) => {
   );
 };
 
+/**
+ * Displays the user's current occupation.
+ *
+ * @param props - Properties of the component
+ * @param {string} props.occupationTitle - Title of user's occupation
+ * @param {string} props.occupationBusiness - Name of business/org the user affiliates with
+ */
 const ProfileOccupation = (props: {
   occupationTitle: string;
   occupationBusiness: string;
@@ -171,6 +205,12 @@ const ProfileOccupation = (props: {
   );
 };
 
+/**
+ * Displays the user's biography. It also has a max character limit of 300.
+ *
+ * @param props - Properties of the component
+ * @param {string} props.biography - The initial text content of the bio
+ */
 const ProfileBiography = (props: { biography: string }) => {
   return (
     <ThemeProvider theme={theme}>
@@ -186,6 +226,13 @@ const ProfileBiography = (props: { biography: string }) => {
   );
 };
 
+/**
+ * Displays the user's role(s) (mentor, mentee, or both).
+ *
+ * @param props - Properties of the component
+ * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
+ * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
+ */
 const ProfileRole = (props: { isMentor: boolean; isMentee: boolean }) => {
   const { isMentor, isMentee } = props;
   let currentRole: string = isMentor
@@ -213,7 +260,7 @@ const ProfileRole = (props: { isMentor: boolean; isMentee: boolean }) => {
   );
 };
 
-// To be fully implemented
+// TODO: To be fully implemented
 const ProfileExperience = (props: any) => {
   return (
     <ThemeProvider theme={theme}>
@@ -232,7 +279,7 @@ const ProfileExperience = (props: any) => {
   );
 };
 
-// To be fully implemented
+// TODO: To be fully implemented
 const ProfileEducation = (props: any) => {
   return (
     <ThemeProvider theme={theme}>
@@ -251,7 +298,7 @@ const ProfileEducation = (props: any) => {
   );
 };
 
-// To be fully implemented
+// TODO: To be fully implemented
 const ProfileInterests = (props: any) => {
   return (
     <ThemeProvider theme={theme}>
@@ -270,6 +317,7 @@ const ProfileInterests = (props: any) => {
   );
 };
 
+// Temporary component as a filler for empty spaces
 const TestComponent = (props: any) => {
   return (
     <ProfileTextField
