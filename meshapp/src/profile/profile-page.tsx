@@ -52,21 +52,37 @@ const ProfilePage = (props: Profile) => {
     <Box className="profile-page-container">
       <Box className="profile-page-header">
         <ProfileHeader name={props.name} pronouns={props.pronouns} />
-        <Box className="profile-page-details">
+      </Box>
+      <Grid container sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
+        <Grid
+          item
+          xs={9}
+          sx={{
+            pl: "40px",
+          }}
+        >
+          <ProfileOccupation
+            occupationTitle={props.occupationTitle}
+            occupationBusiness={props.occupationBusiness}
+          />
+          <ProfileBiography biography={props.biography} />
+        </Grid>
+        <Grid
+          item
+          xs={3}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            pb: "15px",
+            transform: "translateY(-125px)",
+            marginBottom: "-125px", // Prevents content overlap w/ ProfilePicture
+          }}
+        >
           <ProfilePicture image={props.image} />
           <ProfileRole isMentor={props.isMentor} isMentee={props.isMentee} />
-        </Box>
-      </Box>
-      <Box
-        className="profile-page-body"
-        sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}
-      >
-        <ProfileOccupation
-          occupationTitle={props.occupationTitle}
-          occupationBusiness={props.occupationBusiness}
-        />
-        <ProfileBiography biography={props.biography} />
-      </Box>
+        </Grid>
+      </Grid>
       <Box sx={{ display: "flex", flexDirection: "row", minHeight: "100vh" }}>
         <Grid container>
           <Grid item xs={9}>
@@ -96,12 +112,12 @@ const ProfilePage = (props: Profile) => {
 const ProfileHeader = (props: { name: string; pronouns: string }) => {
   return (
     <ThemeProvider theme={theme}>
-      <Box className="profile-page-header" sx={{ ml: "40px" }}>
+      <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
         <Grid container alignItems="flex-end">
           <Box sx={{ maxWidth: "900px", wordBreak: "break-all" }}>
             <Typography
               sx={{
-                lineHeight: "0.85",
+                lineHeight: 0,
                 display: "inline",
               }}
               variant="h1"
@@ -113,7 +129,7 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
                   display: "inline",
                 }}
               >
-                ({props.pronouns})
+                {` (${props.pronouns})`}
               </Typography>
             </Typography>
           </Box>
