@@ -1,0 +1,37 @@
+name: GitHub Pull Request Opened Discord Webhook
+on:
+    pull_request:
+        types: [opened]
+jobs:
+    on_pull_request_opened:
+        name: On Pull-Request Opened, Send PR Message
+        runs-on: ubuntu-latest
+        steps:
+            - name: Generate Random Number from 0 (0x000000) to 16777215 (0xFFFFFF) for the Embed Color
+              run: |
+                echo "random_number=$(( ((RANDOM << 32) | RANDOM) % 16777215 ))" >> $GITHUB_ENV
+            - name: Send PR Message
+              id: webhook_request
+              uses: fjogeleit/http-request-action@v1
+              with:
+                url: 'https://discord.com/api/webhooks/${{ secrets.DISCORD_GITHUB_UPDATES_WEBHOOK_ID }}/${{ secrets.DISCORD_GITHUB_UPDATES_WEBHOOK_TOKEN }}'
+                method: 'POST'
+                contentType: 'application/json'
+                data: >
+                    {
+                        "username": "${{ github.event.pull_request.user.login }}",
+                        "avatar_url": "${{ github.event.pull_request.user.avatar_url }}",
+                        "content": "Hey there, fellers! :eye::lips::eye:\nPlease check out my new pull-request!",
+                        "embeds": [
+                            {
+                                "title": "${{ github.event.pull_request.title }}",
+                                "description": ${{ toJSON(github.event.pull_request.body) }},
+                                "url": "${{ github.event.pull_request.html_url }}",
+                                "color": ${{ env.random_number }}
+                            }
+                        ]
+                    }
+            - name: Output HTTP Response
+              run: |
+                echo ${{ steps.webhook_request.outputs.response }}
+                echo ${{ steps.webhook_request.outputs.headers }}
