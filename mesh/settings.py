@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+MEDIA_URL = "media/"
+MEDIA_ROOT = os.path.join(BASE_DIR,"media/")
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,13 +39,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mesh.accounts',
+    'mesh.profiles',
+    'mesh.education',
+    'mesh.conversation',
+    'mesh.notifications',
+    'mesh.tags',
+    'mesh.occupations'
+    
 ]
+
+# TODO: https://github.com/LetsMesh/Site/issues/202
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -80,10 +91,15 @@ WSGI_APPLICATION = 'mesh.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'mesh',
+        'USER': os.getenv("USER"),
+        'PASSWORD': os.getenv("PASS"), 
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': 3306,
     }
 }
 
