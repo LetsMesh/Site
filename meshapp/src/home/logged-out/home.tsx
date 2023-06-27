@@ -11,60 +11,59 @@ export default function LoggedOutPage() {
   const theme = pageTheme();
 
   return (
-    <ThemeProvider theme={theme}>
+    <Grid
+      container
+      sx={{
+        flexDirection: "column",
+      }}
+    >
+      {loggedOutNav()}
+      {/*-------------------------HEADER-------------------------*/}
       <Grid
+        item
         container
+        direction="column"
+        justifyContent="space-evenly"
+        p={5}
+        alignItems="center"
+        xs={12}
         sx={{
-          flexDirection: "column",
+          backgroundColor: "primary.main",
+          "@media (min-width: 600px)": {
+            flexDirection: "row",
+          },
         }}
       >
-        {loggedOutNav()}
-        {/*-------------------------HEADER-------------------------*/}
+        {/*-------------------------------Welcome Message--------------------------------------*/}
+
+        {welcomeMessage()}
+
+        {/*-------------------------------Login Bubble--------------------------------------*/}
+
         <Grid
           item
           container
-          direction="column"
-          justifyContent="space-evenly"
-          p={5}
-          alignItems="center"
-          xs={12}
+          xs={8}
+          sm={6}
+          md={3.2}
+          color="text.primary"
           sx={{
-            background: "#0B7D66",
-            "@media (min-width: 600px)": {
-              flexDirection: "row",
-            },
+            backgroundColor: "cardBackground.main",
+            borderRadius: "10%",
+            padding: "20px 10px",
+            filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
           }}
         >
-          {/*-------------------------------Welcome Message--------------------------------------*/}
-
-          {welcomeMessage()}
-
-          {/*-------------------------------Login Bubble--------------------------------------*/}
-
-          <Grid
-            item
-            container
-            xs={8}
-            sm={6}
-            md={3.2}
-            sx={{
-              background: "white",
-              borderRadius: "10%",
-              padding: "20px 10px",
-              filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
-            }}
-          >
-            {LoginInput()}
-          </Grid>
+          {LoginInput()}
         </Grid>
-
-        {/*-----------------------Advertisement Section-------------------------------------*/}
-        {advertSection()}
-
-        {/*----------------------------Review Section-----------------------------------------*/}
-        {reviewsSection()}
       </Grid>
-    </ThemeProvider>
+
+      {/*-----------------------Advertisement Section-------------------------------------*/}
+      {advertSection()}
+
+      {/*----------------------------Review Section-----------------------------------------*/}
+      {reviewsSection()}
+    </Grid>
   );
 }
 /*theme for font sizes*/

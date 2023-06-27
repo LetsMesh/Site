@@ -6,11 +6,16 @@ import Footer from "./components/Footer";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
 import LoggedOutPage from "./home/logged-out/home";
 import Slider from "./ProfileCardCarousel/Swiper";
+import MainTheme from './theme/MainTheme'
+import { ThemeProvider } from "@emotion/react";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
-    <TwoFactorAuthReminders />
-    <Slider />
+    <ThemeProvider theme={MainTheme}>
+       <TwoFactorAuthReminders />
+      <LoggedOutPage/>
+    </ThemeProvider>
+   
   </React.StrictMode>
 );
 

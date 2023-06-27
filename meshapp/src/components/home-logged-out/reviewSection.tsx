@@ -114,7 +114,7 @@ export default function reviewsSection() {
       direction="column"
       xs={12}
       p={3}
-      sx={{ background: "#F2E8DE" }}
+      sx={{ backgroundColor: "secondary.main" }}
     >
       <Grid item xs={12}>
         <Typography variant="h3" textAlign={"center"}>
