@@ -8,7 +8,7 @@ import {
   Chip,
 } from "@mui/material";
 
-import ProfileTextField from "../components/profile/profile-textfield";
+import ProfileTextField from "./profile-textfield";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
 
