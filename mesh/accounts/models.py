@@ -1,7 +1,7 @@
 # in accounts folder: (accounts.models) models.py
 from django.db import models
 
-class Accounts(models.Model):
+class Account(models.Model):
     accountID = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=255, unique=True)
     encryptedPass = models.CharField(max_length=64)
