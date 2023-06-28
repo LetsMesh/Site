@@ -161,6 +161,8 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
  * @param {string} props.image - A URL to user's profile image
  */
 const ProfilePicture = (props: { image: string }) => {
+  const [image, setImage] = useState(props.image);
+
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -174,25 +176,39 @@ const ProfilePicture = (props: { image: string }) => {
       }}
     >
       <Box className="profile-page-picture-container">
-        <img
-          className="profile-page-picture-body"
-          src={props.image}
-          alt="profile"
-        />
+        <img className="profile-page-picture-body" src={image} alt="profile" />
       </Box>
       <Box className="profile-page-picture-icon-container">
         <EditIcon sx={{ width: "26px", height: "26px" }} />
-        {open && <ProfilePictureEdit handleClose={handleClose} />}
+        {open && (
+          <ProfilePictureEdit handleClose={handleClose} setImage={setImage} />
+        )}
       </Box>
     </Box>
   );
 };
 
 const ProfilePictureEdit = (props: any) => {
-  const { handleClose } = props;
+  const { handleClose, setImage } = props;
 
   const handleOptionClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent click from bubbling up to parent
+  };
+
+  const handleEditPicture = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent click from bubbling up to parent
+    const fileInput = document.getElementById("fileInput");
+    fileInput?.click(); // Trigger the file input click
+  };
+
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      const url = URL.createObjectURL(file);
+      setImage(url);
+    } else {
+      console.log("Bad image!");
+    }
   };
 
   return (
@@ -208,7 +224,18 @@ const ProfilePictureEdit = (props: any) => {
         }}
         onClick={handleOptionClick}
       >
-        <Grid item className="profile-page-picture-edit-section">
+        <input
+          type="file"
+          id="fileInput"
+          style={{ display: "none" }}
+          accept="image/*"
+          onChange={onFileChange}
+        />
+        <Grid
+          item
+          className="profile-page-picture-edit-section"
+          onClick={handleEditPicture}
+        >
           <Typography sx={{ fontFamily: "cocogoose", fontSize: "15px" }}>
             Edit
           </Typography>

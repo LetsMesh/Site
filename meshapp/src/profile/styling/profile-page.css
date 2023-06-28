@@ -46,7 +46,7 @@ body {
   border-radius: 50%;
   width: 250px;
   height: 250px;
-  background-color: #f2e8de;
+  background-color: lightgray;
   overflow: hidden;
   position: relative;
 }
