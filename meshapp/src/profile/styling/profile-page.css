@@ -21,7 +21,6 @@ body {
   background-color: #f2e8de;
   height: 200px;
   display: flex;
-  justify-content: space-between;
 }
 
 .profile-page-body {
@@ -35,19 +34,77 @@ body {
   word-break: break-all;
 }
 
+.profile-page-picture-parent-container {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .profile-page-picture-container {
   border-radius: 50%;
   width: 250px;
   height: 250px;
-  background-color: lightgray;
+  background-color: #f2e8de;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
 }
 .profile-page-picture-body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.profile-page-picture-icon-container {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  top: 75%;
+  left: 16px;
+  background-color: #1db272;
+  color: white;
+  padding: 5px;
+  border-radius: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-page-picture-edit-container {
+  position: absolute;
+  left: -100px;
+  min-width: 90px;
+  min-height: 80px;
+  border-radius: 10px;
+  background-color: #1db272;
+}
+
+.profile-page-picture-edit-container::after {
+  content: "";
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 7px;
+  border-style: solid;
+  border-color: transparent transparent transparent #1db272;
+}
+
+.profile-page-picture-edit-section,
+.profile-page-picture-delete-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  transition: color 0.075s ease-in-out;
+}
+
+.profile-page-picture-edit-section:hover,
+.profile-page-picture-delete-section:hover {
+  color: lightgray;
 }
 
 .profile-page-roles {

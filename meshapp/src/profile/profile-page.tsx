@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Grid,
@@ -6,7 +6,13 @@ import {
   createTheme,
   ThemeProvider,
   Chip,
+  Divider,
+  ClickAwayListener,
 } from "@mui/material";
+
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 import ProfileTextField from "./profile-textfield";
 import { Profile } from "./types/profile";
@@ -155,14 +161,70 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
  * @param {string} props.image - A URL to user's profile image
  */
 const ProfilePicture = (props: { image: string }) => {
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <Box className="profile-page-picture-container">
-      <img
-        className="profile-page-picture-body"
-        src={props.image}
-        alt="profile"
-      />
+    <Box
+      className="profile-page-picture-parent-container"
+      onClick={() => {
+        setOpen(!open);
+      }}
+    >
+      <Box className="profile-page-picture-container">
+        <img
+          className="profile-page-picture-body"
+          src={props.image}
+          alt="profile"
+        />
+      </Box>
+      <Box className="profile-page-picture-icon-container">
+        <EditIcon sx={{ width: "26px", height: "26px" }} />
+        {open && <ProfilePictureEdit handleClose={handleClose} />}
+      </Box>
     </Box>
+  );
+};
+
+const ProfilePictureEdit = (props: any) => {
+  const { handleClose } = props;
+
+  const handleOptionClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent click from bubbling up to parent
+  };
+
+  return (
+    <ClickAwayListener onClickAway={handleClose}>
+      <Grid
+        container
+        className="profile-page-picture-edit-container"
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          padding: "0 5px",
+        }}
+        onClick={handleOptionClick}
+      >
+        <Grid item className="profile-page-picture-edit-section">
+          <Typography sx={{ fontFamily: "cocogoose", fontSize: "15px" }}>
+            Edit
+          </Typography>
+          <AddPhotoAlternateIcon
+            sx={{ width: "18px", height: "18px", pl: "5px" }}
+          />
+        </Grid>
+        <Divider sx={{ width: "100%", borderTop: "1px solid white" }} />
+        <Grid item className="profile-page-picture-delete-section">
+          <Typography sx={{ fontFamily: "cocogoose", fontSize: "13px" }}>
+            Delete
+          </Typography>
+          <DeleteIcon sx={{ width: "18px", height: "18px", pl: "3px" }} />
+        </Grid>
+      </Grid>
+    </ClickAwayListener>
   );
 };
 
