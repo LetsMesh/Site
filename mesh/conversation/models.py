@@ -1,16 +1,16 @@
 from django.db import models
+from mesh.accounts.models import Account
 
 # Create your models here.
-<<<<<<< HEAD:mesh/messages/models.py
-class Message(models.Model):
-    message_id = models.AutoField(primary_key=True)
-    from_account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='messages_from')
-    to_account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='messages_to')
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-=======
+from django.db import models
 
 class Message(models.Model):
-    #TODO
-    pass
->>>>>>> dev_new:mesh/conversation/models.py
+    messageID = models.AutoField(primary_key=True)
+    from_account = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='message_from')
+    to_account = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='message_to')
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self) -> str:
+        return str(self.messageID)
