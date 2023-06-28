@@ -22,27 +22,8 @@ const theme = createTheme({
   typography: {
     h1: {
       fontFamily: "cocogoose",
-      fontSize: "60px",
       fontWeight: "bold",
       color: "#26383A",
-    },
-    h2: {
-      fontSize: "30px",
-      fontFamily: "cocogoose",
-      color: "#26383A",
-      fontWeight: "bold",
-    },
-    h3: {
-      fontSize: "24px",
-      fontFamily: "cocogoose",
-      color: "#26383A",
-      fontWeight: "bold",
-    },
-    h4: {
-      fontSize: "22px",
-      fontFamily: "cocogoose",
-      color: "#26383A",
-      fontWeight: "bold",
     },
   },
 });
@@ -142,17 +123,19 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
             }}
           >
             <Typography
+              variant="h1"
               sx={{
                 lineHeight: 1,
                 display: "inline",
+                fontSize: "60px",
               }}
-              variant="h1"
             >
               {props.name}
               <Typography
-                variant="h2"
+                variant="h1"
                 sx={{
                   display: "inline",
+                  fontSize: "30px",
                 }}
               >
                 {` (${props.pronouns})`}
@@ -197,7 +180,7 @@ const ProfileOccupation = (props: {
   return (
     <ThemeProvider theme={theme}>
       <Box className="profile-page-occupations">
-        <Typography variant="h3">
+        <Typography variant="h1" sx={{ fontSize: "24px" }}>
           {props.occupationTitle}, {props.occupationBusiness}
         </Typography>
       </Box>
@@ -266,9 +249,10 @@ const ProfileExperience = (props: any) => {
     <ThemeProvider theme={theme}>
       <Box className="profile-page-column-body">
         <Typography
-          variant="h4"
+          variant="h1"
           sx={{
             marginBottom: "20px",
+            fontSize: "22px",
           }}
         >
           Experience
@@ -285,9 +269,10 @@ const ProfileEducation = (props: any) => {
     <ThemeProvider theme={theme}>
       <Box className="profile-page-column-body">
         <Typography
-          variant="h4"
+          variant="h1"
           sx={{
             marginBottom: "20px",
+            fontSize: "22px",
           }}
         >
           Education
@@ -304,9 +289,10 @@ const ProfileInterests = (props: any) => {
     <ThemeProvider theme={theme}>
       <Box className="profile-page-column-body">
         <Typography
-          variant="h4"
+          variant="h1"
           sx={{
             marginBottom: "20px",
+            fontSize: "22px",
           }}
         >
           Interests
