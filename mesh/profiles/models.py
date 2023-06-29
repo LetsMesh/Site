@@ -1,5 +1,6 @@
 from django.db import models
 from mesh.accounts.models import Account
+
 # Create your models here.
 
 class Profile(models.Model):

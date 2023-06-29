@@ -1,17 +1,22 @@
-import { Grid, ThemeProvider, createTheme } from "@mui/material";
+import { Grid, Theme, ThemeProvider, createTheme } from "@mui/material";
 import React from "react";
-import "../App.css";
 
 import loggedOutNav from "../../components/home-logged-out/loggedOutNavBar";
 import welcomeMessage from "../../components/home-logged-out/loggedOutWelcome";
 import advertSection from "../../components/home-logged-out/advertSection";
 import reviewsSection from "../../components/home-logged-out/reviewSection";
+import LoginInput from "../../components/login-form";
+import { deepmerge } from "@mui/utils";
 
 export default function LoggedOutPage() {
-  const theme = pageTheme();
+  const pageTheme = PageTheme();
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider
+      theme={(theme: Theme) => {
+        return createTheme(deepmerge(pageTheme, theme));
+      }}
+    >
       <Grid
         container
         sx={{
@@ -29,7 +34,7 @@ export default function LoggedOutPage() {
           alignItems="center"
           xs={12}
           sx={{
-            background: "#0B7D66",
+            backgroundColor: "primary.main",
             "@media (min-width: 600px)": {
               flexDirection: "row",
             },
@@ -41,7 +46,21 @@ export default function LoggedOutPage() {
 
           {/*-------------------------------Login Bubble--------------------------------------*/}
 
-          <Grid item container xs={8} sm={6} md={4}></Grid>
+          <Grid
+            item
+            container
+            xs={8}
+            sm={6}
+            md={3.2}
+            sx={{
+              backgroundColor: "cardBackground.main",
+              borderRadius: "10%",
+              padding: "20px 10px",
+              filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
+            }}
+          >
+            {LoginInput()}
+          </Grid>
         </Grid>
 
         {/*-----------------------Advertisement Section-------------------------------------*/}
@@ -54,7 +73,7 @@ export default function LoggedOutPage() {
   );
 }
 /*theme for font sizes*/
-function pageTheme() {
+function PageTheme() {
   const theme = createTheme();
 
   theme.typography.h1 = {

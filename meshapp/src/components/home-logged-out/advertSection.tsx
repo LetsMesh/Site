@@ -1,10 +1,10 @@
 import { Grid, Typography, Box, Stack } from "@mui/material";
 import React from "react";
 
-import sprout1 from "../../images/sprout1.png";
-import sprout2 from "../../images/sprout2.png";
-import sprout3 from "../../images/sprout3.png";
-import sprout4 from "../../images/sprout4.png";
+import sprout1 from "../../assets/media/sprout1.png";
+import sprout2 from "../../assets/media/sprout2.png";
+import sprout3 from "../../assets/media/sprout3.png";
+import sprout4 from "../../assets/media/sprout4.png";
 
 //contains the whole section for the advertising messages
 export default function advertSection() {
@@ -75,12 +75,12 @@ export default function advertSection() {
 
   return (
     //contains the section title and the advert container
-    <Grid container item direction="column" xs={12}>
+    <Grid container item direction="column" xs={12} color="text.main">
       <Grid
         item
         xs={12}
         sx={{
-          background: "#F2E8DE",
+          backgroundColor: "secondary.main",
           padding: "20px 0",
         }}
       >
@@ -94,6 +94,7 @@ export default function advertSection() {
         xs={12}
         rowSpacing={1}
         p={5}
+        bgcolor={"cardBackground.main"}
         direction="column"
         alignItems="center"
         justifyContent="center"
