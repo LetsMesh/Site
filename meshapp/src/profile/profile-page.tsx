@@ -8,11 +8,13 @@ import {
   Chip,
   Divider,
   ClickAwayListener,
+  Tooltip,
 } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import ErrorIcon from "@mui/icons-material/Error";
 
 import ProfileTextField from "./profile-textfield";
 import { Profile } from "./types/profile";
@@ -30,6 +32,22 @@ const theme = createTheme({
       fontFamily: "cocogoose",
       fontWeight: "bold",
       color: "#26383A",
+    },
+  },
+});
+
+const tooltipErrorTheme = createTheme({
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: "#f44336",
+          color: "#ffffff",
+        },
+        arrow: {
+          color: "#f44336",
+        },
+      },
     },
   },
 });
@@ -162,10 +180,12 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
  */
 const ProfilePicture = (props: { image: string }) => {
   const [image, setImage] = useState(props.image);
+  const [showError, setShowError] = useState(false);
 
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
+    setShowError(false);
   };
 
   return (
@@ -173,6 +193,7 @@ const ProfilePicture = (props: { image: string }) => {
       className="profile-page-picture-parent-container"
       onClick={() => {
         setOpen(!open);
+        setShowError(false);
       }}
     >
       <Box className="profile-page-picture-container">
@@ -181,7 +202,12 @@ const ProfilePicture = (props: { image: string }) => {
       <Box className="profile-page-picture-icon-container">
         <EditIcon sx={{ width: "26px", height: "26px" }} />
         {open && (
-          <ProfilePictureEdit handleClose={handleClose} setImage={setImage} />
+          <ProfilePictureEdit
+            handleClose={handleClose}
+            setImage={setImage}
+            showError={showError}
+            setShowError={setShowError}
+          />
         )}
       </Box>
     </Box>
@@ -189,7 +215,7 @@ const ProfilePicture = (props: { image: string }) => {
 };
 
 const ProfilePictureEdit = (props: any) => {
-  const { handleClose, setImage } = props;
+  const { handleClose, setImage, showError, setShowError } = props;
 
   const handleOptionClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent click from bubbling up to parent
@@ -206,8 +232,10 @@ const ProfilePictureEdit = (props: any) => {
     if (file && file.type.startsWith("image/")) {
       const url = URL.createObjectURL(file);
       setImage(url);
+      setShowError(false);
+      handleClose();
     } else {
-      console.log("Bad image!");
+      setShowError(true);
     }
   };
 
@@ -250,6 +278,26 @@ const ProfilePictureEdit = (props: any) => {
           </Typography>
           <DeleteIcon sx={{ width: "18px", height: "18px", pl: "3px" }} />
         </Grid>
+
+        {/* Conditionally render error message */}
+        {showError && (
+          <ThemeProvider theme={tooltipErrorTheme}>
+            <Tooltip
+              disableFocusListener
+              disableTouchListener
+              arrow
+              sx={{
+                position: "absolute",
+                top: "-13px",
+                left: "-13px",
+              }}
+              title={"Invalid file! Please upload an image."}
+              placement="top"
+            >
+              <ErrorIcon color="error" />
+            </Tooltip>
+          </ThemeProvider>
+        )}
       </Grid>
     </ClickAwayListener>
   );
