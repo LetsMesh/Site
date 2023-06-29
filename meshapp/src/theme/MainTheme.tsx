@@ -222,6 +222,7 @@ function getComponents(mode: PaletteMode) {
   };
 }
 
+//change arg to light or dark, depending on which mode you want, to switch to that mode
 const theme = createTheme({
   ...getDesignTokens("dark"),
 });
