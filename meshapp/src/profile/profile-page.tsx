@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 import ProfileTextField from "./profile-textfield";
+import ProfilePicture from "./profile-picture";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
 
@@ -145,24 +146,6 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
         </Grid>
       </Box>
     </ThemeProvider>
-  );
-};
-
-/**
- * Displays the user's profile picture.
- *
- * @param props - Properties of the component
- * @param {string} props.image - A URL to user's profile image
- */
-const ProfilePicture = (props: { image: string }) => {
-  return (
-    <Box className="profile-page-picture-container">
-      <img
-        className="profile-page-picture-body"
-        src={props.image}
-        alt="profile"
-      />
-    </Box>
   );
 };
 
