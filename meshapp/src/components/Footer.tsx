@@ -3,24 +3,24 @@ import {
   Grid,
   Link,
   Stack,
+  Theme,
   ThemeProvider,
   Typography,
   createTheme,
 } from "@mui/material";
-document.body.style.color = "black";
 
 const Footer = () => {
-  let theme = createTheme({
+  let textTheme = createTheme({
     components: {
       MuiLink: {
         styleOverrides: {
           root: {
             textDecoration: "none",
-            color: "#000000bf",
             fontSize: "11px",
             fontWeight: "600",
+            color: "inherit",
             "&:hover": {
-              color: "#1db272",
+              filter: "brightness(2)",
               transition: "200ms ease-in",
             },
           },
@@ -46,9 +46,39 @@ const Footer = () => {
   });
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider
+      theme={(theme: Theme) => {
+        return createTheme(theme, {
+          components: {
+            ...theme.components,
+            MuiLink: {
+              ...(textTheme.components !== undefined
+                ? textTheme.components.MuiLink
+                : undefined),
+            },
+          },
+          typography: {
+            ...theme.typography,
+            h1: {
+              ...textTheme.typography.h1,
+            },
+            h2: {
+              ...textTheme.typography.h2,
+            },
+            h3: {
+              ...textTheme.typography.h3,
+            },
+          },
+        });
+      }}
+    >
       {/*footer*/}
-      <Grid container direction="column" xs={12} sx={{ background: "#F2E8DE" }}>
+      <Grid
+        container
+        direction="column"
+        xs={12}
+        sx={{ backgroundColor: "secondary.main" }}
+      >
         {/*footer logo and links container*/}
         <Grid
           container
@@ -60,7 +90,7 @@ const Footer = () => {
           p={2}
         >
           <Grid item>
-            <Typography color="#1DB272" variant="h1">
+            <Typography color="footerLogoColor.main" variant="h1">
               Mesh
             </Typography>
           </Grid>
@@ -72,6 +102,7 @@ const Footer = () => {
             xs={11}
             sm={6}
             sx={{ flexWrap: "nowrap" }}
+            color="text.main"
           >
             {/**
              * @TODO : add actual links to the link elements (https://github.com/LetsMesh/Site/issues/191)
@@ -103,20 +134,19 @@ const Footer = () => {
         <Grid
           container
           direction="row"
-          sx={{ flexWrap: "nowrap", background: "white" }}
+          sx={{ flexWrap: "nowrap", backgroundColor: "cardBackground.main" }}
           justifyContent="space-between"
           alignItems="center"
           p={2}
+          color="text.main"
         >
           <Grid item>
-            <Typography color="#26383A" variant="h3">
+            <Typography variant="h3">
               Mesh is a part of Let's Mesh @ 2023
             </Typography>
           </Grid>
           <Grid item>
-            <Typography color="#26383A" variant="h3">
-              This is not a real product
-            </Typography>
+            <Typography variant="h3">This is not a real product</Typography>
           </Grid>
         </Grid>
       </Grid>
