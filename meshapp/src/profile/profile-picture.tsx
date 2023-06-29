@@ -99,6 +99,9 @@ const ProfilePictureEdit = (props: any) => {
       setImage(url);
       setShowError(false);
       handleClose();
+
+      // TODO: Upload image to server via http (work here)
+      // ->
     } else {
       setShowError(true);
     }
