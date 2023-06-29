@@ -131,6 +131,7 @@ function getPalette(mode: PaletteMode) {
     sendMessageBorder: {
       main: "#000000CC",
     },
+    divider: "#0000001F"
   };
 }
 
