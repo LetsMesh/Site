@@ -9,6 +9,8 @@ class Tag(models.Model):
 
 class TagBridge(models.Model):
     class Meta:
-        unique_together = (('accountID', 'tagID'))
+         constraints = [
+             models.UniqueConstraint(fields=['tagID', 'accountID'], name='tag_account_composite')
+         ]
     tagID = models.OneToOneField(Tag, on_delete=models.CASCADE)
     accountID = models.ForeignKey(Account, on_delete=models.CASCADE)
