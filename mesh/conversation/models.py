@@ -6,8 +6,8 @@ from django.db import models
 
 class Message(models.Model):
     messageID = models.AutoField(primary_key=True)
-    from_account = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='message_from')
-    to_account = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='message_to')
+    from_account = models.OneToOneField(Account, unique = True, on_delete=models.CASCADE, related_name='message_from')
+    to_account = models.OneToOneField(Account, unique = True, on_delete=models.CASCADE, related_name='message_to')
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
