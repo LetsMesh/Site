@@ -9,7 +9,6 @@ from ..utils.validate_data import validate_json_and_required_fields
 import json
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class AccountsView(View):
     """
     Handles HTTP requests related to the collection of Account, supporting GET to 
@@ -52,7 +51,6 @@ class AccountsView(View):
         return JsonResponse({'account_id': account.id}, status=201)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class AccountsDetailView(View):
     """
     View for getting an Account by ID or updating an Account.
