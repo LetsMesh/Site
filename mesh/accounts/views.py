@@ -53,7 +53,7 @@ class AccountsView(View):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class AccountDetailView(View):
+class AccountsDetailView(View):
     """
     View for getting an Account by ID or updating an Account.
     """

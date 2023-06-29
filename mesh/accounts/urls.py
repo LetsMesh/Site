@@ -7,8 +7,8 @@ from . import views as accounts_views
 urlpatterns = [
     # GET    /api/accounts/ 
     # POST   /api/accounts/
-    path('', accounts_views.AccountView.as_view(), name='account'),
+    path('', accounts_views.AccountsView.as_view(), name='account'),
     # GET    /api/accounts/:account_id
     # PATCH  /api/accounts/:account_id
-    path('<int:account_id>/', accounts_views.AccountDetailView.as_view(), name='create_account'), 
+    path('<int:account_id>/', accounts_views.AccountsDetailView.as_view(), name='create_account'), 
 ]
