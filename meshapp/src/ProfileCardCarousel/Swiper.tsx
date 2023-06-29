@@ -152,21 +152,13 @@ function Swiper() {
       <Grid container xs={12} md={10} justifyContent={"space-between"}>
         <Grid item>
           <IconButton
-            children={
-              <ArrowBackIcon
-                sx={{ fontSize: "50px", color: "action.active" }}
-              />
-            }
+            children={<ArrowBackIcon sx={{ fontSize: "50px" }} />}
             onClick={goLeft}
           />
         </Grid>
         <Grid item>
           <IconButton
-            children={
-              <ArrowForwardIcon
-                sx={{ fontSize: "50px", color: "action.active" }}
-              />
-            }
+            children={<ArrowForwardIcon sx={{ fontSize: "50px" }} />}
             onClick={goRight}
           />
         </Grid>

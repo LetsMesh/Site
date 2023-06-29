@@ -20,7 +20,7 @@ const LoginInput = () => {
       container
       direction="column"
       spacing={3}
-      sx={{ alignItems: "center" }}
+      sx={{ alignItems: "center", color: "text.main" }}
     >
       <Grid
         item
@@ -57,9 +57,9 @@ const LoginInput = () => {
           <Link
             href="#"
             sx={{
-              color: "text.primary",
               textDecoration: "underline",
               fontSize: "1.5em",
+              color: "text.main",
             }}
           >
             Forgot Password

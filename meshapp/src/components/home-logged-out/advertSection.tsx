@@ -75,7 +75,7 @@ export default function advertSection() {
 
   return (
     //contains the section title and the advert container
-    <Grid container item direction="column" xs={12} color="text.primary">
+    <Grid container item direction="column" xs={12} color="text.main">
       <Grid
         item
         xs={12}

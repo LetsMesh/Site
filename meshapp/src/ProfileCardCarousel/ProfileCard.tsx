@@ -130,12 +130,7 @@ function InterestsSection(interests: String[]) {
     interestIndex++
   ) {
     if (interestIndex < 3) {
-      interestChips.push(
-        <Chip
-          label={interests[interestIndex]}
-          sx={{ backgroundColor: "chipBackground.main" }}
-        />
-      );
+      interestChips.push(<Chip label={interests[interestIndex]} />);
     } else {
       interestChips.push(
         <Typography alignSelf="flex-end" color="text.disabled">
@@ -245,7 +240,6 @@ function Actions(position: number, index: number) {
         disabled={position === index ? false : true}
         variant="contained"
         sx={{
-          backgroundColor: "buttonColor.main",
           padding: "10px 15px",
           color: "#F1E8DF",
           "&:hover": {

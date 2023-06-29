@@ -1,4 +1,4 @@
-import { Grid, ThemeProvider, createTheme } from "@mui/material";
+import { Grid, Theme, ThemeProvider, createTheme } from "@mui/material";
 import React from "react";
 
 import loggedOutNav from "../../components/home-logged-out/loggedOutNavBar";
@@ -6,68 +6,74 @@ import welcomeMessage from "../../components/home-logged-out/loggedOutWelcome";
 import advertSection from "../../components/home-logged-out/advertSection";
 import reviewsSection from "../../components/home-logged-out/reviewSection";
 import LoginInput from "../../components/login-form";
-import shadows from "@mui/material/styles/shadows";
+import { deepmerge } from "@mui/utils";
+
 export default function LoggedOutPage() {
-  const theme = pageTheme();
+  const pageTheme = PageTheme();
 
   return (
-    <Grid
-      container
-      sx={{
-        flexDirection: "column",
+    <ThemeProvider
+      theme={(theme: Theme) => {
+        return createTheme(deepmerge(pageTheme, theme));
       }}
     >
-      {loggedOutNav()}
-      {/*-------------------------HEADER-------------------------*/}
       <Grid
-        item
         container
-        direction="column"
-        justifyContent="space-evenly"
-        p={5}
-        alignItems="center"
-        xs={12}
         sx={{
-          backgroundColor: "primary.main",
-          "@media (min-width: 600px)": {
-            flexDirection: "row",
-          },
+          flexDirection: "column",
         }}
       >
-        {/*-------------------------------Welcome Message--------------------------------------*/}
-
-        {welcomeMessage()}
-
-        {/*-------------------------------Login Bubble--------------------------------------*/}
-
+        {loggedOutNav()}
+        {/*-------------------------HEADER-------------------------*/}
         <Grid
           item
           container
-          xs={8}
-          sm={6}
-          md={3.2}
-          color="text.primary"
+          direction="column"
+          justifyContent="space-evenly"
+          p={5}
+          alignItems="center"
+          xs={12}
           sx={{
-            backgroundColor: "cardBackground.main",
-            borderRadius: "10%",
-            padding: "20px 10px",
-            filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
+            backgroundColor: "primary.main",
+            "@media (min-width: 600px)": {
+              flexDirection: "row",
+            },
           }}
         >
-          {LoginInput()}
+          {/*-------------------------------Welcome Message--------------------------------------*/}
+
+          {welcomeMessage()}
+
+          {/*-------------------------------Login Bubble--------------------------------------*/}
+
+          <Grid
+            item
+            container
+            xs={8}
+            sm={6}
+            md={3.2}
+            sx={{
+              backgroundColor: "cardBackground.main",
+              borderRadius: "10%",
+              padding: "20px 10px",
+              filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
+            }}
+          >
+            {LoginInput()}
+          </Grid>
         </Grid>
+
+        {/*-----------------------Advertisement Section-------------------------------------*/}
+        {advertSection()}
+
+        {/*----------------------------Review Section-----------------------------------------*/}
+        {reviewsSection()}
       </Grid>
-
-      {/*-----------------------Advertisement Section-------------------------------------*/}
-      {advertSection()}
-
-      {/*----------------------------Review Section-----------------------------------------*/}
-      {reviewsSection()}
-    </Grid>
+    </ThemeProvider>
   );
 }
 /*theme for font sizes*/
-function pageTheme() {
+function PageTheme() {
   const theme = createTheme();
 
   theme.typography.h1 = {

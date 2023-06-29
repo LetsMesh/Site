@@ -1,9 +1,17 @@
 import React from "react";
-import { Button, Divider, Grid, Skeleton, Typography } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Grid,
+  Skeleton,
+  Theme,
+  Typography,
+} from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import LoginInput from "../components/login-form";
+import { deepmerge } from "@mui/utils";
 
-const theme = createTheme({
+const buttonTheme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
@@ -45,30 +53,36 @@ const SignUp = () => {
 
 const Login = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Grid
-        container
-        wrap="nowrap"
-        spacing={5}
-        p={2}
-        sx={{
-          boxShadow: 10,
-          margin: "20em auto",
-          maxWidth: "50%",
-          minWidth: "1000px",
-          bgcolor: "background.default",
-          color: "text.primary",
-          borderRadius: 5,
-        }}
-      >
-        <Grid item xs>
-          <SignUp />
-        </Grid>
-        <Grid item xs={1}>
-          <Divider orientation="vertical" />
-        </Grid>
-        <Grid item xs>
-          <LoginInput />
+    <ThemeProvider
+      theme={(theme: Theme) => {
+        return createTheme(deepmerge(buttonTheme, theme));
+      }}
+    >
+      <Grid container p={0} bgcolor="primary.main">
+        <Grid
+          container
+          wrap="nowrap"
+          spacing={5}
+          p={2}
+          sx={{
+            boxShadow: 10,
+            margin: "10em auto",
+            maxWidth: "50%",
+            minWidth: "1000px",
+            bgcolor: "cardBackground.main",
+            color: "text.main",
+            borderRadius: 5,
+          }}
+        >
+          <Grid item xs>
+            <SignUp />
+          </Grid>
+          <Grid item xs={1}>
+            <Divider orientation="vertical" />
+          </Grid>
+          <Grid item xs>
+            <LoginInput />
+          </Grid>
         </Grid>
       </Grid>
     </ThemeProvider>
