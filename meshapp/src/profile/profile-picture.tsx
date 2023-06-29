@@ -75,6 +75,10 @@ const ProfilePicture = (props: { image: string }) => {
   );
 };
 
+/**
+ * Sub-component of ProfilePicture
+ * Displays buttons that allow profile picture editing
+ */
 const ProfilePictureEdit = (props: any) => {
   const { handleClose, setImage, showError, setShowError } = props;
 
