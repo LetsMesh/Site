@@ -15,7 +15,6 @@ class Settings(models.Model):
     hasContentFilterEnabled = models.BooleanField(default=0)
     displayTheme = models.CharField(choices=Themes.choices, default=Themes.LIGHT, max_length=1)
     is2FAEnabled = models.BooleanField(default=0)
-    phoneNum = models.CharField(max_length=15, null=True)
 
     def __str__(self) -> str:
         return str(self.accountID)
