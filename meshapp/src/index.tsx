@@ -8,6 +8,11 @@ import LoggedOutPage from "./home/logged-out/home";
 import Slider from "./ProfileCardCarousel/Swiper";
 import MainTheme from "./theme/MainTheme";
 import { ThemeProvider } from "@emotion/react";
+import ProfilePage from "./profile/profile-page";
+import {
+  exampleProfile,
+  exampleProfile2,
+} from "./profile/tests/profile-examples";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
@@ -17,6 +22,7 @@ root.render(
       <Slider />
       <Login />
       <Footer />
+      <ProfilePage {...exampleProfile} />
     </ThemeProvider>
   </React.StrictMode>
 );
