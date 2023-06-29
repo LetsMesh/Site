@@ -6,10 +6,12 @@ import Footer from "./components/Footer";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
 import LoggedOutPage from "./home/logged-out/home";
 import Slider from "./ProfileCardCarousel/Swiper";
+import Header from "./components/Header";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
     <TwoFactorAuthReminders />
+    <Header />
     <Slider />
   </React.StrictMode>
 );
