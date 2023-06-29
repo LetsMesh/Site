@@ -10,6 +10,8 @@ import {
   Tooltip,
 } from "@mui/material";
 
+import Swal from "sweetalert2";
+
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
@@ -81,9 +83,11 @@ const ProfilePicture = (props: { image: string }) => {
  */
 const ProfilePictureEdit = (props: any) => {
   const { handleClose, setImage, showError, setShowError } = props;
+  const DEFAULT_IMAGE: string = ""; // TODO: Update this when a default image is setup
 
-  const handleOptionClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent click from bubbling up to parent
+  // Prevents entire container from closing when clicking on it
+  const handleOptionClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent click from bubbling up to parent
   };
 
   const handleEditPicture = (event: React.MouseEvent) => {
@@ -105,6 +109,26 @@ const ProfilePictureEdit = (props: any) => {
     } else {
       setShowError(true);
     }
+  };
+
+  const handleDeletePicture = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Delete your current profile picture.",
+      icon: "warning",
+      iconColor: "#0b7d66",
+      showCancelButton: true,
+      confirmButtonText: "Yes, remove it!",
+      confirmButtonColor: "#1db272",
+      cancelButtonText: "Cancel",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.value) {
+        setImage(DEFAULT_IMAGE);
+        handleClose();
+      }
+    });
   };
 
   return (
@@ -140,7 +164,11 @@ const ProfilePictureEdit = (props: any) => {
           />
         </Grid>
         <Divider sx={{ width: "100%", borderTop: "1px solid white" }} />
-        <Grid item className="profile-page-picture-delete-section">
+        <Grid
+          item
+          className="profile-page-picture-delete-section"
+          onClick={handleDeletePicture}
+        >
           <Typography sx={{ fontFamily: "cocogoose", fontSize: "13px" }}>
             Delete
           </Typography>
