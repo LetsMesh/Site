@@ -21,8 +21,8 @@ root.render(
       <LoggedOutPage />
       <Slider />
       <Login />
-      <Footer />
       <ProfilePage {...exampleProfile} />
+      <Footer />
     </ThemeProvider>
   </React.StrictMode>
 );
