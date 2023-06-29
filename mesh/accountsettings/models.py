@@ -1,7 +1,7 @@
 from django.db import models
 from mesh.accounts.models import Account
 from django.utils.translation import gettext as _
-from django.core.exceptions import ValidationError
+from django.db.models import Q
 
 class Settings(models.Model):
 
@@ -22,12 +22,19 @@ class Settings(models.Model):
 class BlockedAccountBridge(models.Model):
 
     class Meta:
-        unique_together = ('blockerAccountID', 'blockedAccountID')
-        verbose_name_plural = 'Blocked Account Bridges'
 
-    def clean(self):
-        if self.blockerAccountID == self.blockedAccountID:
-            raise ValidationError("blockerAccountID cannot be the same as blockedAccountID.")
+        constraints = [
+            models.UniqueConstraint(
+                fields=['blockerAccountID', 'blockedAccountID'],
+                name='unique blocked account'
+            ),
+            models.CheckConstraint(
+                check=~Q(blockerAccountID_id=models.F('blockedAccountID_id')),
+                name='different blocked accounts'
+            )
+        ]
+
+        verbose_name_plural = 'Blocked Account Bridges'
 
     blockerAccountID = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='blocker')
     blockedAccountID = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='blocked')
