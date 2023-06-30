@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mesh.accounts',
-    'mesh.accountSettings',
     'mesh.profiles',
     'mesh.education',
     'mesh.conversation',
