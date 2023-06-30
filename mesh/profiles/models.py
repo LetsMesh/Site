@@ -2,6 +2,7 @@ from django.db import models
 from mesh.accounts.models import Account
 
 # Create your models here.
+
 class Profile(models.Model):
     accountID = models.ForeignKey(Account, primary_key=True, on_delete=models.CASCADE)
     userName = models.CharField(max_length= 255)

@@ -2,17 +2,30 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import Login from "./home/login";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
 import LoggedOutPage from "./home/logged-out/home";
 import Slider from "./ProfileCardCarousel/Swiper";
-import Header from "./components/Header";
+import MainTheme from "./theme/MainTheme";
+import { ThemeProvider } from "@emotion/react";
+import ProfilePage from "./profile/profile-page";
+import {
+  exampleProfile,
+  exampleProfile2,
+} from "./profile/tests/profile-examples";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
-    <TwoFactorAuthReminders />
-    <Header />
-    <Slider />
+    <ThemeProvider theme={MainTheme}>
+      <TwoFactorAuthReminders />
+      <Header />
+      <LoggedOutPage />
+      <Slider />
+      <Login />
+      <Footer />
+      <ProfilePage {...exampleProfile} />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
