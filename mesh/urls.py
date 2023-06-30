@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from mesh.exampleapi import urls as example_urls
 from mesh.profiles import urls as profile_urls
 from mesh.accounts import urls as account
+from mesh.tags import urls as tags
 
 '''
 # How to Add URL -> Best Practices
@@ -38,4 +39,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('example/', include(example_urls)),
     path('profiles/', include(profile_urls)),
+    path('tags/', include(tags))
 ]
