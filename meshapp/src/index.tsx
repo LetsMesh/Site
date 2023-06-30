@@ -2,25 +2,30 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import Login from "./home/login";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
 import LoggedOutPage from "./home/logged-out/home";
 import Slider from "./ProfileCardCarousel/Swiper";
-
+import MainTheme from "./theme/MainTheme";
+import { ThemeProvider } from "@emotion/react";
 import ProfilePage from "./profile/profile-page";
 import {
   exampleProfile,
   exampleProfile2,
 } from "./profile/tests/profile-examples";
-
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <ThemeProvider theme={MainTheme}>
       <TwoFactorAuthReminders />
-      <ProfilePage {...exampleProfile} />
+      <Header />
+      <LoggedOutPage />
+      <Slider />
+      <Login />
       <Footer />
-    </div>
+      <ProfilePage {...exampleProfile} />
+    </ThemeProvider>
   </React.StrictMode>
 );
 

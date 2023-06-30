@@ -75,12 +75,12 @@ export default function advertSection() {
 
   return (
     //contains the section title and the advert container
-    <Grid container item direction="column" xs={12}>
+    <Grid container item direction="column" xs={12} color="text.main">
       <Grid
         item
         xs={12}
         sx={{
-          background: "#F2E8DE",
+          backgroundColor: "secondary.main",
           padding: "20px 0",
         }}
       >
@@ -94,6 +94,7 @@ export default function advertSection() {
         xs={12}
         rowSpacing={1}
         p={5}
+        bgcolor={"cardBackground.main"}
         direction="column"
         alignItems="center"
         justifyContent="center"
