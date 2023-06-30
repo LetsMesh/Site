@@ -8,7 +8,7 @@ export default function loggedOutNav() {
       container
       direction="row"
       xs={12}
-      sx={{ background: "#0B7D66" }}
+      sx={{ backgroundColor: "primary.main" }}
       p={"20px"}
     >
       {/*contains the app name, need to add in image later*/}
@@ -58,7 +58,6 @@ export default function loggedOutNav() {
             color="primary"
             variant="contained"
             sx={{
-              background: "#68D391",
               padding: "6px 16px",
               "&:hover": {
                 backgroundColor: "#0e977b",

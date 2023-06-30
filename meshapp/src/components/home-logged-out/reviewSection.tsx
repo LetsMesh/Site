@@ -91,13 +91,13 @@ export default function reviewsSection() {
         {/*stacks the review, reviewer's name, and their position*/}
 
         <Stack width={"100%"}>
-          <Typography variant="body2" color="#26383A" textAlign={"center"}>
+          <Typography variant="body2" textAlign={"center"}>
             {message}
           </Typography>
-          <Typography variant="body2" color="#26383A" textAlign={"center"}>
+          <Typography variant="body2" textAlign={"center"}>
             {reviewers[index]}
           </Typography>
-          <Typography variant="body2" color="#26383A" textAlign={"center"}>
+          <Typography variant="body2" textAlign={"center"}>
             {positions[index]}
           </Typography>
         </Stack>
@@ -114,9 +114,9 @@ export default function reviewsSection() {
       direction="column"
       xs={12}
       p={3}
-      sx={{ background: "#F2E8DE" }}
+      sx={{ backgroundColor: "secondary.main" }}
     >
-      <Grid item xs={12}>
+      <Grid item xs={12} color="text.main">
         <Typography variant="h3" textAlign={"center"}>
           {title}
         </Typography>
