@@ -130,8 +130,8 @@ function Swiper() {
       xs={12}
       justifyContent="center"
       alignItems="center"
+      bgcolor="primary.main"
       sx={{
-        background: "#0B7D66",
         minHeight: "100vh",
         padding: 0,
         margin: 0,
@@ -193,7 +193,7 @@ function ProfileCards(
       const LARGE_WINDOW_CARD_GAP = 15;
       const LARGE_WINDOW_CARD_CENTER = 14;
       const SMALL_WINDOW_CARD_GAP = 10;
-      const SMALL_WINDOW_CARD_CENTER = 14;
+      const SMALL_WINDOW_CARD_CENTER = 4.5;
       let leftPos: string =
         windowWidth > SMALL_WINDOW_WIDTH
           ? `${

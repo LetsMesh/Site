@@ -4,8 +4,10 @@ from django.views.generic import TemplateView
 
 # API URLs: 
 from mesh.exampleapi import urls as example_urls
-
+from mesh.profiles import urls as profile_urls
 from mesh.accounts import urls as account
+
+from mesh.accounts import urls as accounts_urls
 
 '''
 # How to Add URL -> Best Practices
@@ -37,5 +39,6 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('admin/', admin.site.urls),
     path('example/', include(example_urls)),
-    
+    path('profiles/', include(profile_urls)),
+    path('accounts/', include(accounts_urls)),
 ]

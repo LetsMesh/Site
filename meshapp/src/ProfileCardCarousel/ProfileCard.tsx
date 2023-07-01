@@ -61,10 +61,10 @@ function ProfileCard(
         damping: 20,
       }}
       sx={{
+        backgroundColor: "cardBackground.main",
         position: "absolute",
         width: `${cardWidth}`,
         overflow: "hidden",
-        background: "white",
         borderRadius: "30px",
         border: "1vw solid #D9D9D9",
       }}
@@ -100,13 +100,20 @@ function Biography(biography: string) {
       variant="outlined"
       multiline
       maxRows={2}
-      disabled
+      inputProps={{ readOnly: true }}
+      focused={false}
       fullWidth
       defaultValue={biography}
       sx={{
-        ".Mui-disabled textarea": {
-          WebkitTextFillColor: "black",
-          color: "black",
+        "& .MuiOutlinedInput-root": {
+          "& > fieldset": {
+            borderColor: "input.outlined.enabledBorder",
+          },
+        },
+        "& .MuiOutlinedInput-root:hover": {
+          "& > fieldset": {
+            borderColor: "input.outlined.enabledBorder",
+          },
         },
       }}
     />
@@ -125,7 +132,11 @@ function InterestsSection(interests: String[]) {
     if (interestIndex < 3) {
       interestChips.push(<Chip label={interests[interestIndex]} />);
     } else {
-      interestChips.push(<Typography>...</Typography>);
+      interestChips.push(
+        <Typography alignSelf="flex-end" color="text.disabled">
+          ...
+        </Typography>
+      );
       break;
     }
   }
@@ -206,7 +217,7 @@ function Actions(position: number, index: number) {
   return (
     <CardActions
       sx={{
-        background: "#F1E8DF",
+        backgroundColor: "secondary.main",
         display: "flex",
         flexFlow: "row nowrap",
         justifyContent: "space-around",
@@ -229,7 +240,6 @@ function Actions(position: number, index: number) {
         disabled={position === index ? false : true}
         variant="contained"
         sx={{
-          background: "#74D194",
           padding: "10px 15px",
           color: "#F1E8DF",
           "&:hover": {
