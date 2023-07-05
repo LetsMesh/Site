@@ -8,8 +8,6 @@ from mesh.profiles import urls as profile_urls
 from mesh.accounts import urls as account
 from mesh.confirmation import urls as confirmation_urls
 
-from mesh.accounts import urls as accounts_urls
-
 '''
 # How to Add URL -> Best Practices
 -----------------------------------------
