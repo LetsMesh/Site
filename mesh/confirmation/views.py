@@ -9,17 +9,12 @@ import secrets
 # Generate random token for user and send confirmation email
 def email_confirmation(request, user_email):
     
-    # Grab account data by user_email
-    raw_account_data = Account.objects.filter(email=user_email).values()
-    account_data = raw_account_data[0]
-    account_id = account_data["accountID"]
-    print(account_id)
+    # Grab account ID by user_email
+    account_id = get_account_id(user_email)
 
-    # Grab settings data by the account_id
-    raw_settings_data = Settings.objects.filter(accountID=account_id).values()
-    settings_data = raw_settings_data[0]
-    email_already_verified = settings_data["isVerified"]
-    print(settings_data)
+    # Grab settings data by account_id
+    settings_data = get_settings_data(account_id)
+    email_already_verified = get_verification_status(account_id)
 
     # Check if user email is verified yet or not
     # if so, skip generating new token
@@ -53,13 +48,17 @@ def email_confirmation(request, user_email):
 def confirm_token(request, user_email, url_token):
 
     # Grab account data by user_email
-    raw_account_data = Account.objects.filter(email=user_email).values()
-    account_data = raw_account_data[0]
-    account_id = account_data["accountID"]
+    account_id = get_account_id(user_email)
 
     # Grab settings data by the account_id
-    raw_settings_data = Settings.objects.filter(accountID=account_id).values()
-    settings_data = raw_settings_data[0]
+    settings_data = get_settings_data(account_id)
+    
+    email_already_verified = get_verification_status(account_id)
+
+    # Check if user email is verified yet or not
+    # if so, skip updating settings table
+    if email_already_verified:
+        return HttpResponse(user_email + ": Email confirmation success as user email is already verified!")
     
     # Grab the token stored in the database for this user
     db_token = settings_data["verificationToken"]
@@ -71,4 +70,26 @@ def confirm_token(request, user_email, url_token):
     else:
         return HttpResponse(user_email + ": Email confirmation failed!")
 
+# Grab account ID by user_email
+def get_account_id(user_email):
     
+    raw_account_data = Account.objects.filter(email=user_email).values()
+    account_data = raw_account_data[0]
+    account_id = account_data["accountID"]
+
+    return account_id
+
+# Grab settings data by the account_id
+def get_settings_data(account_id):
+    
+    raw_settings_data = Settings.objects.filter(accountID=account_id).values()
+    settings_data = raw_settings_data[0]
+
+    return settings_data
+
+# Returns true or false depending on if user email is already verified
+def get_verification_status(account_id):
+    settings_data = get_settings_data(account_id)
+    email_verification_status = settings_data["isVerified"]
+
+    return email_verification_status
