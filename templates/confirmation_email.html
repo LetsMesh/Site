@@ -1,11 +1,63 @@
 <!-- confirmation_email.html -->
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>Account Confirmation</h1>
-    <p>
-      Thank you for signing up! To confirm your email, click the following link:
-    </p>
-    <a href="{{ confirmation_url }}">Confirm Email</a>
-  </body>
+<html lang="en">
+  <head>
+    <title>Mesh Account Verification</title>
+    <style type="text/css">
+      .button {
+        font-size: 14px;
+        background-color: #28a745;
+        border-radius: 0.5em;
+        display: inline-block;
+        padding: 0.75em 1.5em;
+        text-decoration: none;
+      }
+      .logo {
+        width: 120px;
+        height: auto;
+      }
+      .text {
+        color: black;
+        margin: 1em;
+        font-size: 16px;
+        line-height: 1.5em;
+        text-align: left;
+      }
+      .buttonText {
+        color: #fff;
+      }
+      .container {
+        margin: 0 auto;
+        max-width: 600px;
+        font-family: Segoe UI;
+      }
+      .content {
+        margin: 0 auto;
+        max-width: 600px;
+        padding: 0.5em 1em 0 1em;
+        border: solid 1px #dedede;
+        border-radius: 5px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <html>
+    <body>
+      <div class="container">
+        <!-- use imgur link for source until images can be uploaded to an S3 source -->
+        <img src="https://i.imgur.com/MC4Z8DN.png" class="logo" alt="Mesh Logo" />
+        <div class="content">
+          <h1>Account Confirmation</h1>
+          <div class="text">
+            <p>Hi {{name}}!</p>
+            <p>Thank you for signing up! To confirm your email, click the following link:</p>
+          </div>
+          <a target="_blank" href="{{ confirmation_url }}" class="button">
+            <span class="buttonText">Confirm Email</span>
+          </a>
+          <p>or visit: <a href="{{ confirmation_url }}">{{ confirmation_url }}</a></p>
+        </div>
+      </div>
+    </body>
+  </html>
 </html>
