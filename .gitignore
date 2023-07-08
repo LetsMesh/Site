@@ -6,3 +6,4 @@
 # Django
 *.pyc
 *.sqlite3
+media

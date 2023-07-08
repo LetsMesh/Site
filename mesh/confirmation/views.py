@@ -4,12 +4,13 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from ..accounts.models import Account
 from ..accountSettings.models import Settings
+from ..profiles.models import Profile
 import secrets
 import os
+import time
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 # Generate random token for user, store it, and send confirmation email
 # which then leads into the confirm_token function
@@ -17,6 +18,7 @@ def email_confirmation(request, user_email):
     # Grab account ID by user_email
     account_id = get_account_id(user_email)
 
+    # Check if an account was found
     if account_id is None:
         return HttpResponse(user_email + ": User does not exist!")
     
@@ -28,8 +30,17 @@ def email_confirmation(request, user_email):
     if email_already_verified:
         return HttpResponse(user_email + ": User email already verified!")
 
+    # Prevent user from generating too many tokens/receiving too many emails
+    settings_data = get_settings_data(account_id)
+    
+    seconds_since_last_token = calculate_timestamp_difference(settings_data["verificationToken"])
+    minutes_since_last_token = seconds_since_last_token // 60
+    
+    if seconds_since_last_token <= 600:
+        return HttpResponse(user_email + ": It has been " + str(minutes_since_last_token) + " minutes since last attempt at verifying email! Please try again in " + str(10 - minutes_since_last_token) + " minutes.")
+    
     # Generate a token for the user
-    verification_token = secrets.token_hex(16)
+    verification_token = generate_token_with_timestamp()
 
     # update the settings table with the verification_token
     Settings.objects.filter(accountID=account_id).update(
@@ -41,14 +52,14 @@ def email_confirmation(request, user_email):
         f"/confirmation/{user_email}/{verification_token}/"
     )
 
+    user_preferred_name = get_preferred_name(account_id)
+    
     # Render the email template with the confirmation URL
     email_subject = "Account Confirmation"
     email_template = "confirmation_email.html"
-    email_context = {"confirmation_url": confirmation_url}
+    email_context = {"confirmation_url": confirmation_url, "name": user_preferred_name}
     email_message = render_to_string(email_template, email_context)
     email_plain_message = strip_tags(email_message)
-
-    print(os.environ.get("EMAIL_NAME"))
 
     # Send the confirmation email
     send_mail(
@@ -95,18 +106,17 @@ def confirm_token(request, user_email, url_token):
 # Note: For the Django function Model.objects.filter(...), the function
 # returns a QuerySet, which is just a set of objects (python dicts).
 # If the user has a unique email/accountID, then the user should be the only item in the set,
-# and thus will be the at the 0th index. Each function checks if the user exists.
+# and thus will be the at the 0th index. Each function checks if the user exists, if they don't
+# then the QuerySet will be empty.
 
 # Grab account ID by user_email
 def get_account_id(user_email):
     raw_account_data = Account.objects.filter(email=user_email).values()
-    print(raw_account_data)
     
     if not raw_account_data:
         return None
 
     account_data = raw_account_data[0]
-    print(account_data)
     account_id = account_data["accountID"]
 
     return account_id
@@ -132,3 +142,41 @@ def get_verification_status(account_id):
     email_verification_status = settings_data["isVerified"]
 
     return email_verification_status
+
+
+# Returns the preferred name of the user from their Profile Data
+def get_preferred_name(account_id):
+    raw_profile_data = Profile.objects.filter(accountID=account_id).values()
+    profile_data = raw_profile_data[0]
+    
+    preferred_name = profile_data["preferredName"]
+
+    return preferred_name
+
+
+# Returns a token of specified length + timestamp of current time appended to end
+# Note: Token is seemingly maxed at length 8 due to how the token is stored in DB.
+def generate_token_with_timestamp(token_length=12):
+    token = secrets.token_hex(token_length)
+    
+    timestamp = str(int(time.time()))
+
+    token = token + "_" + timestamp
+
+    return token
+
+# Returns the difference in seconds (as an int) between two timestamps,
+# in this case, this is only being used to calculate the time between the
+# timestamp stored in the verification token, and the current timestamp.
+def calculate_timestamp_difference(token):
+
+    # delimeter/marker is an "_", separates token from timestamp
+    marker_position = token.find("_")
+
+    first_timestamp = float(token[marker_position + 1:])
+
+    current_timestamp = int(time.time())
+
+    time_difference = abs(current_timestamp - first_timestamp)
+
+    return int(time_difference)
