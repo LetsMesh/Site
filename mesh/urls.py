@@ -8,6 +8,8 @@ from mesh.profiles import urls as profile_urls
 from mesh.accounts import urls as account
 from mesh.tags import urls as tags
 
+from mesh.accounts import urls as accounts_urls
+
 '''
 # How to Add URL -> Best Practices
 -----------------------------------------
@@ -39,5 +41,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('example/', include(example_urls)),
     path('profiles/', include(profile_urls)),
-    path('tags/', include(tags))
+    path('tags/', include(tags)),
+    path('accounts/', include(accounts_urls)),
 ]

@@ -23,7 +23,6 @@ export default function welcomeMessage() {
       <Button
         variant="contained"
         sx={{
-          background: "#68D391",
           "&:hover": {
             backgroundColor: "#0e977b",
           },
