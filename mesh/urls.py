@@ -5,9 +5,7 @@ from django.views.generic import TemplateView
 # API URLs: 
 from mesh.exampleapi import urls as example_urls
 from mesh.profiles import urls as profile_urls
-from mesh.accounts import urls as account
 from mesh.tags import urls as tags
-
 from mesh.accounts import urls as accounts_urls
 
 '''
