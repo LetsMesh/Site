@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 # API URLs: 
 from mesh.exampleapi import urls as example_urls
 from mesh.profiles import urls as profile_urls
-from mesh.tags import urls as tags
+from mesh.tags import urls as tags_urls
 from mesh.accounts import urls as accounts_urls
 
 '''
@@ -39,6 +39,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('example/', include(example_urls)),
     path('profiles/', include(profile_urls)),
-    path('tags/', include(tags)),
+    path('tags/', include(tags_urls)),
     path('accounts/', include(accounts_urls)),
 ]
