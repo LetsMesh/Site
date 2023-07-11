@@ -33,19 +33,20 @@ def email_confirmation(request, user_email):
     EMAIL_CONFIRMATION_COOLDOWN_SECONDS = 600
     EMAIL_CONFIRMATION_COOLDOWN_MINUTES = EMAIL_CONFIRMATION_COOLDOWN_SECONDS // 60
     
-    seconds_since_last_token = calculate_timestamp_difference(settings_data["verificationToken"])
+    seconds_since_last_token = calculate_timestamp_difference(settings_data.verificationToken)
     minutes_since_last_token = seconds_since_last_token // 60
     
     if seconds_since_last_token <= EMAIL_CONFIRMATION_COOLDOWN_SECONDS:
-        return HttpResponse(user_email + ": It has been " + str(minutes_since_last_token) + " minutes since last attempt at verifying email! Please try again in " + str(EMAIL_CONFIRMATION_COOLDOWN_MINUTES - minutes_since_last_token) + " minutes.")
+        return HttpResponse(user_email + ": It has been " + str(minutes_since_last_token) + 
+                            " minutes since last attempt at verifying email! Please try again in " + 
+                            str(EMAIL_CONFIRMATION_COOLDOWN_MINUTES - minutes_since_last_token) + " minutes.")
     
     # Generate a token for the user
     verification_token = generate_token_with_timestamp()
 
     # update the settings table with the verification_token
-    Settings.objects.filter(accountID=account_id).update(
-        verificationToken=verification_token
-    )
+    settings_data.verificationToken = verification_token
+    settings_data.save()
 
     # Construct the confirmation URL
     confirmation_url = request.build_absolute_uri(
@@ -93,17 +94,18 @@ def confirm_token(request, user_email, url_token):
         )
 
     # Grab the token stored in the database for this user
-    db_token = settings_data["verificationToken"]
+    db_token = settings_data.verificationToken
 
     # If the tokens match, then the user is verified
     if url_token == db_token:
-        Settings.objects.filter(accountID=account_id).update(isVerified=True)
+        settings_data.isVerified = True
+        settings_data.save()
         return HttpResponse(user_email + ": Email confirmation success!")
     else:
         return HttpResponse(user_email + ": Email confirmation failed!")
 
 
-# Note: For the Django function Model.objects.filter(...), the function
+# Note: For the Django function Model.objects.get(...), the function
 # returns a QuerySet, which is just a set of objects (python dicts).
 # If the user has a unique email/accountID, then the user should be the only item in the set,
 # and thus will be the at the 0th index. Each function checks if the user exists, if they don't
@@ -111,27 +113,22 @@ def confirm_token(request, user_email, url_token):
 
 # Grab account ID by user_email
 def get_account_id(user_email):
-    raw_account_data = Account.objects.filter(email=user_email).values()
+    account_data = Account.objects.get(email=user_email)
     
-    if not raw_account_data:
+    if not account_data:
         return None
 
-    account_data = raw_account_data[0]
-    account_id = account_data["accountID"]
-
-    return account_id
+    return account_data.accountID
 
 
 # Grab settings data by the account_id
 # settings_data is a python dict containing
 # data for each field in the Settings model
 def get_settings_data(account_id):
-    raw_settings_data = Settings.objects.filter(accountID=account_id).values()
-    
-    if not raw_settings_data:
-        return None
+    settings_data = Settings.objects.get(accountID=account_id)
 
-    settings_data = raw_settings_data[0]
+    if not settings_data:
+        return None
 
     return settings_data
 
@@ -139,19 +136,15 @@ def get_settings_data(account_id):
 # Returns true or false depending on if user email is already verified
 def get_verification_status(account_id):
     settings_data = get_settings_data(account_id) 
-    email_verification_status = settings_data["isVerified"]
 
-    return email_verification_status
+    return settings_data.isVerified
 
 
 # Returns the preferred name of the user from their Profile Data
 def get_preferred_name(account_id):
-    raw_profile_data = Profile.objects.filter(accountID=account_id).values()
-    profile_data = raw_profile_data[0]
-    
-    preferred_name = profile_data["preferredName"]
+    profile_data = Profile.objects.get(accountID=account_id)
 
-    return preferred_name
+    return profile_data.preferredName
 
 
 # Returns a token of specified length + timestamp of current time appended to end
