@@ -14,6 +14,8 @@ import {
   exampleProfile,
   exampleProfile2,
 } from "./profile/tests/profile-examples";
+
+import App from "./App"
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
@@ -26,6 +28,7 @@ root.render(
       <Footer />
       <ProfilePage {...exampleProfile} />
     </ThemeProvider>
+    <App/>
   </React.StrictMode>
 );
 

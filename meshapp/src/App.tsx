@@ -1,5 +1,3 @@
-import logo from './logo.svg';
-import React from 'react';
 import Route from './components/Route'
 import SignUp from './components/SignUp/SignUp';
 
