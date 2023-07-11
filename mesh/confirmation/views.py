@@ -30,11 +30,14 @@ def email_confirmation(request, user_email):
     # Prevent user from generating too many tokens/receiving too many emails
     settings_data = get_settings_data(account_id)
     
+    EMAIL_CONFIRMATION_COOLDOWN_SECONDS = 600
+    EMAIL_CONFIRMATION_COOLDOWN_MINUTES = EMAIL_CONFIRMATION_COOLDOWN_SECONDS // 60
+    
     seconds_since_last_token = calculate_timestamp_difference(settings_data["verificationToken"])
     minutes_since_last_token = seconds_since_last_token // 60
     
-    if seconds_since_last_token <= 600:
-        return HttpResponse(user_email + ": It has been " + str(minutes_since_last_token) + " minutes since last attempt at verifying email! Please try again in " + str(10 - minutes_since_last_token) + " minutes.")
+    if seconds_since_last_token <= EMAIL_CONFIRMATION_COOLDOWN_SECONDS:
+        return HttpResponse(user_email + ": It has been " + str(minutes_since_last_token) + " minutes since last attempt at verifying email! Please try again in " + str(EMAIL_CONFIRMATION_COOLDOWN_MINUTES - minutes_since_last_token) + " minutes.")
     
     # Generate a token for the user
     verification_token = generate_token_with_timestamp()
