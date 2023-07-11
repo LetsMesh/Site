@@ -8,9 +8,6 @@ from ..profiles.models import Profile
 import secrets
 import os
 import time
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Generate random token for user, store it, and send confirmation email
 # which then leads into the confirm_token function
