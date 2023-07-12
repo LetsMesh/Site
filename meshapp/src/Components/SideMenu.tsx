@@ -1,41 +1,24 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import SideMenuButton from "@mui/icons-material/Menu";
-
-type Anchor = "left";
+import MenuIcon from "@mui/icons-material/TableRows";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { Toolbar } from "@mui/material";
 
 export default function SideMenu() {
-  const [state, setState] = React.useState({
-    left: false,
-  });
-
-  const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
-
-      setState({ ...state, [anchor]: open });
-    };
-
-    // TODO: need to fix out icons for each.
-    //       Need to add account settings and logout on bottom of side menu
-  const list = (anchor: Anchor) => (
+  const [open, setOpen] = React.useState(false);
+  const toggleDrawer = () => setOpen(!open);
+  const MenuList = () => (
     <Box>
       <List>
         {["Home", "Profile", "Messaging", "Swiping"].map((text, index) => (
@@ -54,21 +37,39 @@ export default function SideMenu() {
   );
 
   return (
-    <div>
-      {(["left"] as const).map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>
-            <SideMenuButton  color="action"/>
-          </Button>
+    <>
+      <Grid container>
+        <IconButton sx={{ mr: 2, color: "#0000008F" }}>
+          <MenuIcon sx={{ fontSize: "40px" }} onClick={toggleDrawer} />
           <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
+            hideBackdrop
+            variant="persistent"
+            open={open}
+            onClose={toggleDrawer}
+            PaperProps={{ sx: { backgroundColor: "white", color: "black" } }}
+            sx={{ zIndex: -10 }}
           >
-            {list(anchor)}
+            <Toolbar sx={{ backgroundColor: "white" }} />
+            <MenuList />
           </Drawer>
-        </React.Fragment>
-      ))}
-    </div>
+        </IconButton>
+
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          sx={{ mr: 2, color: "#0000008F" }}
+        >
+          <NotificationsIcon sx={{ fontSize: "40px" }} />
+        </IconButton>
+      </Grid>
+      {/* <Button onClick={toggleDrawer(anchor, true)}>
+            <SideMenuButton color="action" />
+          </Button>
+          <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
+            {list(anchor)}
+          </Drawer> */}
+    </>
   );
 }
