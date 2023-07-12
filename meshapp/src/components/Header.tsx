@@ -1,4 +1,4 @@
-import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
 
 import SideMenu from "./SideMenu";
 import React from "react";
