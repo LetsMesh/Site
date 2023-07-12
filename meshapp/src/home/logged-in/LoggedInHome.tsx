@@ -29,10 +29,10 @@ function homeTheme() {
     "@media (min-width:600px)": {
       fontSize: "24px",
     },
-    "@media (min-width:900px)": {
+    "@media (min-width:1000px)": {
       fontSize: "32px",
     },
-    "@media (min-width: 1400px)": {
+    "@media (min-width: 1500px)": {
       fontSize: "46px",
     },
     "@media (min-width: 2000px)": {
@@ -45,10 +45,10 @@ function homeTheme() {
     "@media (min-width:600px)": {
       fontSize: "16px",
     },
-    "@media (min-width:900px)": {
+    "@media (min-width:1000px)": {
       fontSize: "21px",
     },
-    "@media (min-width: 1400px)": {
+    "@media (min-width: 1500px)": {
       fontSize: "30px",
     },
     "@media (min-width: 2000px)": {
@@ -61,10 +61,10 @@ function homeTheme() {
     "@media (min-width:600px)": {
       fontSize: "15px",
     },
-    "@media (min-width:900px)": {
+    "@media (min-width:1000px)": {
       fontSize: "18px",
     },
-    "@media (min-width: 1400px)": {
+    "@media (min-width: 1500px)": {
       fontSize: "21px",
     },
     "@media (min-width: 2000px)": {
@@ -77,10 +77,10 @@ function homeTheme() {
     "@media (min-width:600px)": {
       fontSize: "14px",
     },
-    "@media (min-width:900px)": {
+    "@media (min-width:1000px)": {
       fontSize: "16px",
     },
-    "@media (min-width: 1400px)": {
+    "@media (min-width: 1500px)": {
       fontSize: "19px",
     },
     "@media (min-width: 2000px)": {
@@ -93,10 +93,10 @@ function homeTheme() {
     "@media (min-width:600px)": {
       fontSize: "13px",
     },
-    "@media (min-width:900px)": {
+    "@media (min-width:1000px)": {
       fontSize: "16px",
     },
-    "@media (min-width: 1400px)": {
+    "@media (min-width: 1500px)": {
       fontSize: "21px",
     },
     "@media (min-width: 2000px)": {

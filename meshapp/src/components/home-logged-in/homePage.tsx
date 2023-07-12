@@ -14,13 +14,14 @@ export default function homePage() {
       justifyContent="center"
       bgcolor="#CCCCCC"
       sx={{
+        width: "60vw",
         "@media (min-width: 600px)": {
           width: "52vw",
         },
-        "@media (min-width: 900px)": {
+        "@media (min-width: 1000px)": {
           width: "45vw",
         },
-        "@media (min-width: 1400px)": {
+        "@media (min-width: 1500px)": {
           width: "40vw",
         },
         "@media (min-width: 2000px)": {
@@ -41,13 +42,14 @@ export default function homePage() {
       icon={
         <ErrorOutline
           sx={{
+            fontSize: "15px",
             "@media (min-width: 600px)": {
               fontSize: "19px",
             },
-            "@media (min-width: 900px)": {
+            "@media (min-width: 1000px)": {
               fontSize: "25px",
             },
-            "@media (min-width: 1400px)": {
+            "@media (min-width: 1500px)": {
               fontSize: "32px",
             },
             "@media (min-width: 2000px)": {
