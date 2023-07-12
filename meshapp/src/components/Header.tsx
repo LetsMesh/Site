@@ -7,11 +7,15 @@ import React from "react";
 
 const Header = () => {
   return (
-    <AppBar position="static" sx={{ background: "#0B7D66" }}>
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: "primary.main" }}
+      elevation={0}
+    >
       <Toolbar>
         {/*---Left Side Menu Elements (Menu/Notification Icon)---*/}
         <Grid container>
-          <IconButton sx={{ mr: 2, color: "#0000008F" }}>
+          <IconButton sx={{ mr: 2, color: "secondary.main" }}>
             <MenuIcon sx={{ fontSize: "40px" }} />
           </IconButton>
 
@@ -20,7 +24,7 @@ const Header = () => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, color: "#0000008F" }}
+            sx={{ mr: 2, color: "secondary.main" }}
           >
             <NotificationsIcon sx={{ fontSize: "40px" }} />
           </IconButton>
