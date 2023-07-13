@@ -10,6 +10,7 @@ import Slider from "./ProfileCardCarousel/Swiper";
 import MainTheme from "./theme/MainTheme";
 import { ThemeProvider } from "@emotion/react";
 import ProfilePage from "./profile/profile-page";
+import ForgotPassword from "./components/password-forms/forgot-password-form"
 import {
   exampleProfile,
   exampleProfile2,
