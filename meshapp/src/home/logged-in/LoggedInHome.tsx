@@ -25,6 +25,9 @@ function homeTheme() {
   const theme = createTheme();
 
   theme.typography.h1 = {
+    "@media (width < 600px)": {
+      fontSize: "23px",
+    },
     "@media (min-width:600px)": {
       fontSize: "20px",
     },
@@ -43,6 +46,9 @@ function homeTheme() {
   };
 
   theme.typography.h2 = {
+    "@media (width < 600px)": {
+      fontSize: "20px",
+    },
     "@media (min-width:600px)": {
       fontSize: "13px",
     },
@@ -61,6 +67,9 @@ function homeTheme() {
   };
 
   theme.typography.button = {
+    "@media (width < 600px)": {
+      fontSize: "13px",
+    },
     "@media (min-width:600px)": {
       fontSize: "10px",
     },

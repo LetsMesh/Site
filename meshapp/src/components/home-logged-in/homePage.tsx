@@ -1,10 +1,4 @@
-import {
-  Grid,
-  Typography,
-  Button,
-  Stack,
-  Alert,
-} from "@mui/material";
+import { Grid, Typography, Button, Stack, Alert } from "@mui/material";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import group_image from "../../assets/media/group_image.png";
 import React from "react";
@@ -18,7 +12,7 @@ export default function homePage() {
       <Grid item>
         <img
           srcSet={`${group_image} 500w`}
-          sizes="(min-width: 1450px) 740px, (min-width: 1200px) 590px, (min-width: 900px) 430px, (min-width: 600px) 280px"
+          sizes="(min-width: 1450px) 740px, (min-width: 1200px) 590px, (min-width: 900px) 430px, (min-width: 600px) 280px, 220px"
         ></img>
       </Grid>
     </Grid>
@@ -49,7 +43,7 @@ export default function homePage() {
   }
   const imgAlertItem = () => {
     return (
-      <Grid item xs={5}>
+      <Grid item xs={8} sm={5}>
         <Stack direction="column" flexWrap="wrap" spacing={2}>
           {imgContainer}
           {alertBox}
@@ -140,7 +134,8 @@ export default function homePage() {
         <Grid
           item
           container
-          xs={5}
+          sm={5}
+          xs={10}
           gap="45px"
           display="flex"
           justifyContent="center"
