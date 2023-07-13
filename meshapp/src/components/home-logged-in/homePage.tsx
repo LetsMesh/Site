@@ -1,4 +1,10 @@
-import { Grid, Typography, Button, Stack, Alert } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Button,
+  Stack,
+  Alert,
+} from "@mui/material";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import group_image from "../../assets/media/group_image.png";
 import React from "react";
@@ -8,28 +14,13 @@ export default function homePage() {
     /*-----------------Group image container------------*/
   }
   const imgContainer = (
-    <Grid
-      container
-      display="flex"
-      justifyContent="center"
-      bgcolor="#CCCCCC"
-      sx={{
-        width: "60vw",
-        "@media (min-width: 600px)": {
-          width: "52vw",
-        },
-        "@media (min-width: 1000px)": {
-          width: "45vw",
-        },
-        "@media (min-width: 1500px)": {
-          width: "40vw",
-        },
-        "@media (min-width: 2000px)": {
-          width: "43vw",
-        },
-      }}
-    >
-      <img src={group_image} width="550vw"></img>
+    <Grid container display="flex" justifyContent="center" bgcolor="#CCCCCC">
+      <Grid item>
+        <img
+          srcSet={`${group_image} 500w`}
+          sizes="(min-width: 1450px) 740px, (min-width: 1200px) 590px, (min-width: 900px) 430px, (min-width: 600px) 280px"
+        ></img>
+      </Grid>
     </Grid>
   );
 
@@ -37,38 +28,12 @@ export default function homePage() {
     /*-------------------Alert box------------------------*/
   }
   const alertBox = (
-    <Alert
-      severity="error"
-      icon={
-        <ErrorOutline
-          sx={{
-            fontSize: "15px",
-            "@media (min-width: 600px)": {
-              fontSize: "19px",
-            },
-            "@media (min-width: 1000px)": {
-              fontSize: "25px",
-            },
-            "@media (min-width: 1500px)": {
-              fontSize: "32px",
-            },
-            "@media (min-width: 2000px)": {
-              fontSize: "44px",
-            },
-          }}
-        />
-      }
-    >
-      <Stack
-        spacing={1}
-        direction="column"
-        flexWrap="wrap"
-        sx={{ height: "100%" }}
-      >
-        <Typography variant="subtitle1">
+    <Alert severity="error" icon={<ErrorOutline sx={{ fontSize: "4vh" }} />}>
+      <Stack spacing={1} direction="column" flexWrap="wrap">
+        <Typography fontSize="3vh">
           <strong>Notice</strong>
         </Typography>
-        <Typography variant="subtitle2">
+        <Typography fontSize="2.5vh">
           Please update your profile with the following items:
           <br /> - Biography
           <br /> - Years of Experience
@@ -84,7 +49,7 @@ export default function homePage() {
   }
   const imgAlertItem = () => {
     return (
-      <Grid item>
+      <Grid item xs={5}>
         <Stack direction="column" flexWrap="wrap" spacing={2}>
           {imgContainer}
           {alertBox}
@@ -98,7 +63,7 @@ export default function homePage() {
   }
   const topText = () => {
     return (
-      <Grid item xs={9}>
+      <Grid item>
         <Typography
           color="#F2E8DE"
           fontFamily="cocogoose"
@@ -151,7 +116,7 @@ export default function homePage() {
             variant="button"
             fontFamily="cocogoose"
           >
-            {"Start Swiping >"}
+            {`Start Swiping >`}
           </Typography>
         </Button>
       </Grid>
@@ -166,26 +131,25 @@ export default function homePage() {
         justifyContent="center"
         alignItems="center"
         bgcolor={"primary.main"}
-        height="100%"
         sx={{
           minHeight: "100vh",
-          gap: "15px",
         }}
       >
         {imgAlertItem()}
 
         <Grid
+          item
           container
           xs={5}
-          gap="50px"
+          gap="45px"
           display="flex"
           justifyContent="center"
-          mb="100px"
+          mb="75px"
         >
           {topText()}
 
           {/*-----------Grid item for bottom text & swipe button----------------*/}
-          <Grid item xs={7}>
+          <Grid item xs={9}>
             <Grid container gap="20px" display="flex" justifyContent="center">
               {bottomTextItem()}
               {swipeButton()}
