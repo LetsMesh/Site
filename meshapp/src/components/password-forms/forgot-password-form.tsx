@@ -65,7 +65,7 @@ export const PasswordReset = () => {
 
     }
 
-    // TODO: 
+    // TODO: https://github.com/LetsMesh/Site/issues/255
 
     return (
       <Box sx={{ backgroundColor: '#097D66', padding: '20px' }}>
