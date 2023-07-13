@@ -35,3 +35,40 @@ def user_tags(request):
         response_data.update({"status": "Success", "tags": user_tags})
 
         return JsonResponse(response_data, status=200)
+
+
+ def post(self, request):
+        if request.method == "POST":
+            data = request.POST
+
+            required_Fields = ["tagName", "isDefault", "acountID"]  
+            if not all(field in data for field in required_fields):
+                response_data = {'status': "Error : Missing field"}
+                return JsonResponse(response_data, status=400)
+
+            try:
+                #creating new tag object
+                tag=Tag.objects.create(
+                    tagName=request_data["tagName"],
+                    isDefault=BooleanField[request_data['isDefault']]
+                )
+
+                account = Account.objects.get(accountID=int(request_data["accountID"]))
+
+                #Create Tag Bridge object
+
+                tag_bridge= TagBridge.objects.create(
+                    tagID=tag,
+                    acountID=account
+                )
+
+                response_data={'status': 'Success', 'tagID', tag.tagID}
+
+                return JsonResponse(response_data, status=101)
+            
+             except Account.DoesNotExist:
+            response_data = {"status": "Error:  accountID does not exist."}
+            return JsonResponse(response_data, status=400)
+    else:
+        response_data = {"status": "Error: Invalid request method. "}
+        return JsonResponse(response_data, status=405)
