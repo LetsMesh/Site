@@ -1,6 +1,14 @@
-import { Avatar, Box, Button, Grid, Link, Modal, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Grid,
+  Link,
+  Modal,
+  Typography,
+} from "@mui/material";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import SyncIcon from '@mui/icons-material/Sync';
+import SyncIcon from "@mui/icons-material/Sync";
 import { useState } from "react";
 
 const signUpStyle = {
@@ -22,36 +30,38 @@ const modalStyle = {
   p: 4,
 };
 
-
-
 export default function StepTwo() {
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  function successVerification(){
+  function successVerification() {
     <Modal open={true}>
       <Box sx={modalStyle}>
-        <Grid container direction="column" alignItems={'center'}>
-            <Grid item>
-              <Typography variant='h4'>
-                <b>Yay, You're Verified!</b>
-              </Typography>
-            </Grid>
-            <Grid item sx={{ mt: 2 }}>
-              <Typography variant="body2">
-                <b>Continue on to the next step to start building your profile.</b>
-              </Typography>
-            </Grid>
-            <Grid item sx={{ mt: 2 }}>
-              <Typography variant="body2">
-                <b>Please consider some optional sign in settings such as 2-factor authentication or 3rd party account connection & login</b>
-              </Typography>
-            </Grid>
+        <Grid container direction="column" alignItems={"center"}>
+          <Grid item>
+            <Typography variant="h4">
+              <b>Yay, You're Verified!</b>
+            </Typography>
+          </Grid>
+          <Grid item sx={{ mt: 2 }}>
+            <Typography variant="body2">
+              <b>
+                Continue on to the next step to start building your profile.
+              </b>
+            </Typography>
+          </Grid>
+          <Grid item sx={{ mt: 2 }}>
+            <Typography variant="body2">
+              <b>
+                Please consider some optional sign in settings such as 2-factor
+                authentication or 3rd party account connection & login
+              </b>
+            </Typography>
+          </Grid>
         </Grid>
       </Box>
-    </Modal>
+    </Modal>;
   }
 
   return (
@@ -100,30 +110,34 @@ export default function StepTwo() {
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={modalStyle}>
-          <Grid container direction="column" alignItems={'center'}> 
+          <Grid container direction="column" alignItems={"center"}>
             <Grid item>
               <Typography variant="h4">
                 <b>Verification Sent!</b>
               </Typography>
             </Grid>
-            <Grid item sx={{ mt: 2 }} >
+            <Grid item sx={{ mt: 2 }}>
               <Typography variant="body2">
-                <b>Check your email!</b> We have sent you an email. Please follow the instructions sent in the email.
+                <b>Check your email!</b> We have sent you an email. Please
+                follow the instructions sent in the email.
               </Typography>
             </Grid>
-            <SyncIcon color="success" sx={{ mt: 2 }}/>
+            <SyncIcon color="success" sx={{ mt: 2 }} />
             <Grid item sx={{ mt: 2 }}>
               <Typography variant="subtitle1">
                 <b>email@address.com</b>
               </Typography>
             </Grid>
-            <Button variant = 'contained' sx={{ mt: 2 }} disabled>
+            <Button variant="contained" sx={{ mt: 2 }} disabled>
               Send Verify Link
             </Button>
-            <Link underline = "always" component={"button"} variant="h6" sx={{ mt: 4 }}>
-              <Typography>
-                Trouble Verifying? Give Up
-              </Typography>
+            <Link
+              underline="always"
+              component={"button"}
+              variant="h6"
+              sx={{ mt: 4 }}
+            >
+              <Typography>Trouble Verifying? Give Up</Typography>
             </Link>
           </Grid>
         </Box>

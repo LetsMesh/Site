@@ -102,7 +102,7 @@ export default function StepOne(props: {
           </Grid>
         </Grid>
       </Grid>
-      <Divider  sx={{ borderColor:"signUpDivider.main", opacity:.5}}/>
+      <Divider sx={{ borderColor: "signUpDivider.main", opacity: 0.5 }} />
       <Grid container justifyContent="center" style={informationSectionStyle}>
         <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center">
@@ -147,8 +147,8 @@ export default function StepOne(props: {
           </Grid>
         </Grid>
       </Grid>
-      <Divider  sx={{ borderColor:"signUpDivider.main", opacity:.5 }}/>
-      <Grid container justifyContent="center" style={informationSectionStyle} >
+      <Divider sx={{ borderColor: "signUpDivider.main", opacity: 0.5 }} />
+      <Grid container justifyContent="center" style={informationSectionStyle}>
         <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center" columnSpacing={4}>
             <Grid item xs={12} sm={6}>
@@ -247,8 +247,7 @@ export default function StepOne(props: {
           </Grid>
         </Grid>
       </Grid>
-      <Divider  sx={{ borderColor:"signUpDivider.main", opacity:.5}}/>
-
+      <Divider sx={{ borderColor: "signUpDivider.main", opacity: 0.5 }} />
     </Grid>
   );
 }

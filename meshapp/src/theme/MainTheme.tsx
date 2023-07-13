@@ -60,9 +60,9 @@ function getPalette(mode: PaletteMode) {
           mailIconColor: {
             main: "#74D194",
           },
-          signUpDivider:{
-            main: "#000000"
-          }
+          signUpDivider: {
+            main: "#000000",
+          },
         }
       : //dark mode
         {
@@ -107,9 +107,9 @@ function getPalette(mode: PaletteMode) {
           mailIconColor: {
             main: "#247C67",
           },
-          signUpDivider:{
-            main: "#F1E8DF"
-          }
+          signUpDivider: {
+            main: "#F1E8DF",
+          },
         }),
     //universal
     avatar: {
@@ -137,7 +137,7 @@ function getPalette(mode: PaletteMode) {
     sendMessageBorder: {
       main: "#000000CC",
     },
-    divider: "#0000001F"
+    divider: "#0000001F",
   };
 }
 
@@ -212,7 +212,7 @@ function getComponents(mode: PaletteMode) {
                 },
               },
             },
-          }
+          },
         }),
 
     //universal
@@ -226,16 +226,15 @@ function getComponents(mode: PaletteMode) {
         },
       },
     },
-    MuiStepConnector:{
-      styleOverrides:{
-        root:{
-          ".MuiStepConnector-line":{
-            borderColor:"#BDBDBD"
-          }
-          
-        }
-      }
-    }
+    MuiStepConnector: {
+      styleOverrides: {
+        root: {
+          ".MuiStepConnector-line": {
+            borderColor: "#BDBDBD",
+          },
+        },
+      },
+    },
   };
 }
 
