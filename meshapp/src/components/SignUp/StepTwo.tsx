@@ -1,7 +1,6 @@
 import { Avatar, Box, Button, Grid, Link, Modal, Typography } from "@mui/material";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import SyncIcon from '@mui/icons-material/Sync';
-import React from "react";
 import { useState } from "react";
 
 const signUpStyle = {

@@ -5,31 +5,40 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { UseFormRegister } from "react-hook-form";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import { IFormInput } from "./SignUp";
+import { useState } from "react";
+import { Divider, IconButton, InputAdornment } from "@mui/material";
 
 const informationSectionStyle = {
-  borderBottom: "2px solid lightgray",
   paddingTop: 15,
   paddingBottom: 15,
 };
-
 
 const rowStyle = {
   paddingTop: 15,
   paddingBottom: 15,
 };
 
-
-export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
+export default function StepOne(props: {
+  register: UseFormRegister<IFormInput>;
+}) {
+  const [passVisible, setPassVisible] = useState(false);
+  const [confirmPassVisible, setConfirmPassVisible] = useState(false);
+  const togglePass = () => setPassVisible(!passVisible);
+  const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
 
   return (
-    <>
+    <Grid container direction={"column"} bgcolor={"cardBackground.main"}>
       <Grid container justifyContent="center" style={informationSectionStyle}>
         <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center" spacing={8}>
             <Grid item xs={12}>
-              <Typography variant="h5">Contact Information</Typography>
+              <Typography variant="h5" color="text.main">
+                Contact Information
+              </Typography>
             </Grid>
           </Grid>
           <Grid
@@ -43,9 +52,9 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 margin="normal"
                 fullWidth
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
-                {...props.register('firstName', {required:true})}
+                {...props.register("firstName", { required: true })}
                 id="standard-basic"
                 label="First Name *"
                 variant="standard"
@@ -58,7 +67,7 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...props.register('lastName', {required:true})}
+                {...props.register("lastName", { required: true })}
                 id="standard-basic"
                 label="Last Name *"
                 variant="standard"
@@ -71,7 +80,7 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...props.register('nickName')}
+                {...props.register("nickName")}
                 id="standard-basic"
                 label="Nickname"
                 variant="standard"
@@ -84,7 +93,7 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...props.register('phoneNumber')}
+                {...props.register("phoneNumber")}
                 id="standard-basic"
                 label="Phone Number"
                 variant="standard"
@@ -93,12 +102,14 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
           </Grid>
         </Grid>
       </Grid>
-
+      <Divider  sx={{ borderColor:"signUpDivider.main", opacity:.5}}/>
       <Grid container justifyContent="center" style={informationSectionStyle}>
         <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center">
             <Grid item xs={12}>
-              <Typography variant="h5">Location Information</Typography>
+              <Typography variant="h5" color="text.main">
+                Location Information
+              </Typography>
             </Grid>
           </Grid>
           <Grid
@@ -114,7 +125,7 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...props.register('country')}
+                {...props.register("country")}
                 id="standard-basic"
                 label="Country"
                 variant="outlined"
@@ -127,7 +138,7 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...props.register('state')}
+                {...props.register("state")}
                 id="standard-basic"
                 label="State"
                 variant="outlined"
@@ -136,8 +147,8 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
           </Grid>
         </Grid>
       </Grid>
-
-      <Grid container justifyContent="center" style={informationSectionStyle}>
+      <Divider  sx={{ borderColor:"signUpDivider.main", opacity:.5 }}/>
+      <Grid container justifyContent="center" style={informationSectionStyle} >
         <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center" columnSpacing={4}>
             <Grid item xs={12} sm={6}>
@@ -147,7 +158,7 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...props.register('email', {required:true})}
+                {...props.register("email", { required: true })}
                 id="standard-basic"
                 label="Email *"
                 variant="standard"
@@ -160,21 +171,45 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...props.register('password', {required:true})}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        children={
+                          passVisible ? (
+                            <VisibilityOffIcon />
+                          ) : (
+                            <VisibilityIcon />
+                          )
+                        }
+                        onClick={togglePass}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                {...props.register("password", { required: true })}
                 id="standard-basic"
                 label="Password *"
-                type="password"
+                type={passVisible ? "text" : "password"}
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={12} sm={6} order={{ xs: 3, sm: 2 }}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              sx={{ color: "text.primary" }}
+              order={{ xs: 3, sm: 2 }}
+            >
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox {...props.register('acceptedTermsConditions')}/>}
+                  control={
+                    <Checkbox {...props.register("acceptedTermsConditions")} />
+                  }
                   label="* I Accept the Terms & Conditions"
                 />
                 <FormControlLabel
-                  control={<Checkbox {...props.register('emailUpdates')}/>}
+                  control={<Checkbox {...props.register("emailUpdates")} />}
                   label="* Yes! Sign me up for annoying emails"
                 />
               </FormGroup>
@@ -186,16 +221,34 @@ export default function StepOne(props:{register:UseFormRegister<IFormInput>}) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...props.register('confirmPassword')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        children={
+                          confirmPassVisible ? (
+                            <VisibilityOffIcon />
+                          ) : (
+                            <VisibilityIcon />
+                          )
+                        }
+                        onClick={toggleConfirmPass}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                {...props.register("confirmPassword")}
                 id="standard-basic"
                 label="Confirm Password *"
-                type="password"
+                type={confirmPassVisible ? "text" : "password"}
                 variant="outlined"
               />
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </>
+      <Divider  sx={{ borderColor:"signUpDivider.main", opacity:.5}}/>
+
+    </Grid>
   );
 }

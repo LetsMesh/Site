@@ -56,7 +56,7 @@ export default function SignUp() {
 					// implementation of loading symbol probably requires something different
 					stepComponents[activeStep]
 				}
-				<Grid container justifyContent="space-between" style={{paddingTop:20}}>
+				<Grid container justifyContent="space-between" sx={{padding:'20px 0', backgroundColor:"cardBackground.main"}}>
 					<Grid item xs={1} md={2}>
 					</Grid>
 					<Grid item xs={10} md={8}>
