@@ -15,7 +15,7 @@ const Header = () => {
       <Toolbar>
         {/*---Left Side Menu Elements (Menu/Notification Icon)---*/}
         <Grid container>
-          <IconButton sx={{ mr: 2, color: "secondary.main" }}>
+          <IconButton sx={{ mr: 2, color: "action.active" }}>
             <MenuIcon sx={{ fontSize: "40px" }} />
           </IconButton>
 
@@ -24,7 +24,7 @@ const Header = () => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, color: "secondary.main" }}
+            sx={{ mr: 2, color: "action.active" }}
           >
             <NotificationsIcon sx={{ fontSize: "40px" }} />
           </IconButton>
