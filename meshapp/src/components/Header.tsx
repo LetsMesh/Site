@@ -5,7 +5,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <AppBar position="relative" sx={{ background: "#0B7D66", zIndex: 1 }}>
+    <AppBar position="fixed" sx={{ background: "#0B7D66", zIndex: 1 }}>
       <Toolbar>
         {/*---Left Side Menu Elements (Menu/Notification Icon)---*/}
         <SideMenu />

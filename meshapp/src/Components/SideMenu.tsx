@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  Box,
-  Divider,
   Drawer,
   Grid,
   IconButton,
@@ -12,30 +10,50 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/TableRows";
+import {
+  TableRows as MenuIcon,
+  Notifications as NotificationsIcon,
+  Home as HomeIcon,
+  Receipt as ProfileIcon,
+  Inbox as MessagingIcon,
+  People as SwipingIcon,
+  Settings as SettingsIcon,
+  Logout as LogoutIcon,
+} from "@mui/icons-material";
+
+type ListItemTypes = { text: String; icon: JSX.Element };
+
+// TODO: Add routes to each menu item when routing is implemented
+const ListItemComponent = ({ text, icon }: ListItemTypes) => (
+  <ListItem>
+    <ListItemButton sx={{ borderBottom: "1px solid gray" }}>
+      <ListItemIcon sx={{ color: "gray" }} style={{ fontSize: 40 }}>
+        {icon}
+      </ListItemIcon>
+      <ListItemText
+        primaryTypographyProps={{ color: "gray", fontSize: 20 }}
+        primary={text}
+      />
+    </ListItemButton>
+  </ListItem>
+);
 
 export default function SideMenu() {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => setOpen(!open);
   const MenuList = () => (
-    <Box>
-      <List>
-        {["Home", "Profile", "Messaging", "Swiping"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+    <>
+      <List sx={{ color: "gray" }}>
+        <ListItemComponent text="Home" icon={<HomeIcon />} />
+        <ListItemComponent text="Profile" icon={<ProfileIcon />} />
+        <ListItemComponent text="Messaging" icon={<MessagingIcon />} />
+        <ListItemComponent text="Swiping" icon={<SwipingIcon />} />
       </List>
-      <Divider />
-    </Box>
+      <List sx={{ marginTop: "auto" }}>
+        <ListItemComponent text="Settings" icon={<SettingsIcon />} />
+        <ListItemComponent text="Logout" icon={<LogoutIcon />} />
+      </List>
+    </>
   );
 
   return (
@@ -48,10 +66,12 @@ export default function SideMenu() {
             variant="persistent"
             open={open}
             onClose={toggleDrawer}
-            PaperProps={{ sx: { backgroundColor: "white", color: "black" } }}
-            sx={{ zIndex: -10 }}
+            PaperProps={{
+              sx: { backgroundColor: "#F2E8DE", color: "black", width: 250 },
+            }}
+            sx={{ zIndex: -1 }}
           >
-            <Toolbar sx={{ backgroundColor: "white" }} />
+            <Toolbar sx={{ backgroundColor: "#F2E8DE", padding: 2 }} />
             <MenuList />
           </Drawer>
         </IconButton>
@@ -66,12 +86,6 @@ export default function SideMenu() {
           <NotificationsIcon sx={{ fontSize: "40px" }} />
         </IconButton>
       </Grid>
-      {/* <Button onClick={toggleDrawer(anchor, true)}>
-            <SideMenuButton color="action" />
-          </Button>
-          <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
-            {list(anchor)}
-          </Drawer> */}
     </>
   );
 }
