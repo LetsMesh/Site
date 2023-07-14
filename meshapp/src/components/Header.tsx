@@ -1,11 +1,10 @@
-import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
-
-import SideMenu from "./SideMenu";
 import React from "react";
+import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
+import SideMenu from "./SideMenu";
 
 const Header = () => {
   return (
-    <AppBar position="fixed" sx={{ background: "#0B7D66", zIndex: 1 }}>
+    <AppBar position="sticky" sx={{ background: "#0B7D66" }}>
       <Toolbar>
         {/*---Left Side Menu Elements (Menu/Notification Icon)---*/}
         <SideMenu />
