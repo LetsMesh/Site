@@ -23,7 +23,7 @@ import {
 
 type ListItemTypes = { text: String; Icon: React.ElementType };
 
-// TODO: Add routes to each menu item when routing is implemented
+// TODO: (#258) Add routes to each menu item when routing is implemented
 const ListItemComponent = ({ text, Icon }: ListItemTypes) => (
   <ListItem>
     <ListItemButton
