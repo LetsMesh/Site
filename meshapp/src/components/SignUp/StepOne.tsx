@@ -10,7 +10,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import { IFormInput } from "./SignUp";
 import { useState } from "react";
-import { Divider, IconButton, InputAdornment } from "@mui/material";
+import { Divider, IconButton, InputAdornment, MenuItem } from "@mui/material";
 
 const informationSectionStyle = {
   paddingTop: 15,
@@ -31,7 +31,16 @@ export default function StepOne(props: {
   const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
 
   return (
-    <Grid container direction={"column"} bgcolor={"cardBackground.main"}>
+    <Grid
+      container
+      direction={"column"}
+      bgcolor={"cardBackground.main"}
+      sx={{
+        ".MuiOutlinedInput-notchedOutline,.MuiInput-root:before": {
+          borderColor: "input.standard.enabledBorder",
+        },
+      }}
+    >
       <Grid container justifyContent="center" style={informationSectionStyle}>
         <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center" spacing={8}>
@@ -129,7 +138,12 @@ export default function StepOne(props: {
                 id="standard-basic"
                 label="Country"
                 variant="outlined"
-              />
+                select
+              >
+                <MenuItem key={1} value="United States">
+                  United States
+                </MenuItem>
+              </TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -142,7 +156,12 @@ export default function StepOne(props: {
                 id="standard-basic"
                 label="State"
                 variant="outlined"
-              />
+                select
+              >
+                <MenuItem key={1} value="California">
+                  California
+                </MenuItem>
+              </TextField>
             </Grid>
           </Grid>
         </Grid>

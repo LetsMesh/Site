@@ -14,7 +14,7 @@ import {
   exampleProfile,
   exampleProfile2,
 } from "./profile/tests/profile-examples";
-
+import SignUp from "./components/SignUp/SignUp";
 import App from "./App";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
@@ -27,7 +27,7 @@ root.render(
       <Login />
       <Footer />
       <ProfilePage {...exampleProfile} />
-      <App />
+      <SignUp />
     </ThemeProvider>
   </React.StrictMode>
 );

@@ -8,7 +8,9 @@ import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { Typography } from "@mui/material";
 const steps = ["Create Account", "Verify Email", "Go to Profile"];
 
 export interface IFormInput {
@@ -36,7 +38,9 @@ export default function SignUp() {
   };
 
   const handleContinue = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) =>
+      prevActiveStep < steps.length - 1 ? prevActiveStep + 1 : prevActiveStep
+    );
   };
 
   const {
@@ -66,43 +70,55 @@ export default function SignUp() {
         }
         <Grid
           container
-          justifyContent="space-between"
+          justifyContent="space-evenly"
+          alignItems="flex-end"
           sx={{ padding: "20px 0", backgroundColor: "cardBackground.main" }}
         >
-          <Grid item xs={1} md={2}></Grid>
-          <Grid item xs={10} md={8}>
-            <Stepper activeStep={activeStep} style={{ paddingBottom: 20 }}>
+          <Grid container justifyContent="center" xs={3}>
+            <Button
+              disabled={activeStep === 0}
+              variant="contained"
+              onClick={handlePrevious}
+              startIcon={<ChevronLeftIcon />}
+            >
+              <Typography>Previous</Typography>
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            sx={{
+              "@media(max-width:600px)": {
+                order: -1,
+                marginBottom: "10px",
+              },
+            }}
+          >
+            <Stepper activeStep={activeStep}>
               {steps.map((label, index) => {
                 const stepProps: { completed?: boolean } = {};
                 return (
                   <Step key={label} {...stepProps}>
-                    <StepLabel>{label}</StepLabel>
+                    <StepLabel sx={{ textAlign: "center" }}>{label}</StepLabel>
                   </Step>
                 );
               })}
             </Stepper>
           </Grid>
-          <Grid item xs={1} md={2}></Grid>
-          <Grid
-            item
-            xs={6}
-            style={{ display: "flex", justifyContent: "center" }}
-          >
+
+          <Grid container justifyContent="center" xs={3}>
             <Button
-              disabled={activeStep === 0}
               variant="contained"
-              onClick={handlePrevious}
+              type="submit"
+              onClick={handleContinue}
+              endIcon={<ArrowForwardIcon />}
             >
-              Previous
-            </Button>
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            <Button variant="contained" type="submit" onClick={handleContinue}>
-              Continue
+              {activeStep < steps.length - 1 ? (
+                <Typography>Continue</Typography>
+              ) : (
+                <Typography>Go to Profile</Typography>
+              )}
             </Button>
           </Grid>
         </Grid>
