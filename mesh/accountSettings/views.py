@@ -1,10 +1,8 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 from mesh.accountSettings.models import Settings
 
 
-@csrf_exempt
 def display_theme(request):
     if request.method == "GET":
         data = request.GET
