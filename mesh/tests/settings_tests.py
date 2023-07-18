@@ -6,7 +6,7 @@ from mesh.accountSettings.models import Settings
 from mesh.accounts.models import Account
 
 
-class SettingsTestCase(TestCase):
+class SettingsTest(TestCase):
     def setUp(self):
         self.client = Client()
         test_account = Account.objects.create(
@@ -29,18 +29,18 @@ class SettingsTestCase(TestCase):
 
     def test_display_theme(self):
         test_user = Account.objects.get(email="settingstest@gmail.com")
-        response = self.client.get("/settings/", {"accountID": test_user.accountID})
+        response = self.client.get("/settings/displayTheme", {"accountID": test_user.accountID})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("data"), {"get": {"displayTheme": "0"}})
 
     def test_missing_account_display_theme(self):
-        response = self.client.get("/settings/")
+        response = self.client.get("/settings/displayTheme")
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "Missing account ID.")
 
     def test_no_account_display_theme(self):
-        response = self.client.get("/settings/", {"accountID": 9999})
+        response = self.client.get("/settings/displayTheme", {"accountID": 9999})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
