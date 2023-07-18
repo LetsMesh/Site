@@ -10,6 +10,8 @@ import {
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import SyncIcon from "@mui/icons-material/Sync";
 import { useState } from "react";
+import { IFormInput } from "./SignUp";
+import { UseFormGetValues } from "react-hook-form";
 
 const modalStyle = {
   position: "absolute",
@@ -32,7 +34,12 @@ const modalStyle = {
   textAlign: "center",
 };
 
-export default function StepTwo() {
+export default function StepTwo(props: {
+  getValues: UseFormGetValues<IFormInput>;
+}) {
+  //this holds the email from the firststep to be used for verification
+  const emailAddress = props.getValues("email");
+
   //for opening/closing pending verification bubble
   const [pendingOpen, setPendingOpen] = useState(false);
   const handlePendingOpen = () => setPendingOpen(true);
@@ -45,7 +52,7 @@ export default function StepTwo() {
   const handleSuccessClose = () => setSuccessOpen(false);
 
   //returns modal for success verifcation
-  function successVerification() {
+  function SuccessVerification() {
     return (
       <Modal open={successOpen} onClose={handleSuccessClose}>
         <Box sx={modalStyle}>
@@ -79,7 +86,7 @@ export default function StepTwo() {
   //returns modal for pending verifcation
   //currently the "send verification link" serves to just close the pending bubble and open the success bubble
   //will need to rework button to actually send verification and open the success bubble upon actual verification
-  function pendingVerification() {
+  function PendingVerification() {
     return (
       <Modal open={pendingOpen} onClose={handlePendingClose}>
         <Box sx={modalStyle}>
@@ -98,7 +105,7 @@ export default function StepTwo() {
             <SyncIcon color="success" sx={{ mt: 2 }} />
             <Grid item sx={{ mt: 2 }}>
               <Typography variant="subtitle1">
-                <b>email@address.com</b>
+                <b>{emailAddress}</b>
               </Typography>
             </Grid>
             <Button
@@ -195,12 +202,11 @@ export default function StepTwo() {
                 </Typography>
               </Grid>
               <Grid item sx={{ mt: 5 }}>
-                {/*should contain user inputed email address from step 1, need to rework to contain that*/}
-                <Typography variant="h6">
-                  <b>email@address.com</b>
+                <Typography variant="h6" textAlign="center">
+                  <b>{emailAddress}</b>
                 </Typography>
 
-                {/*currently just opens the pending verifcation bubble, need to rework to actually send verification email"*/}
+                {/*currently just opens the pending verification bubble, need to rework to actually send verification email"*/}
                 <Button
                   sx={{ mt: 2 }}
                   variant="contained"
@@ -215,8 +221,8 @@ export default function StepTwo() {
         </Grid>
       </Grid>
 
-      {pendingVerification()}
-      {successVerification()}
+      <PendingVerification />
+      <SuccessVerification />
     </Grid>
   );
 }

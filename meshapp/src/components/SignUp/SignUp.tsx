@@ -13,6 +13,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Typography } from "@mui/material";
 const steps = ["Create Account", "Verify Email", "Go to Profile"];
 
+//interface for the form field names and types
 export interface IFormInput {
   firstName: string;
   lastName: string;
@@ -28,53 +29,121 @@ export interface IFormInput {
   name: string;
   location: string;
   title: string;
+  label: string;
+  interests: any;
+  picture: File;
 }
 
 export default function SignUp() {
-  const [activeStep, setActiveStep] = useState(0);
-
-  const handlePrevious = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleContinue = () => {
-    setActiveStep((prevActiveStep) =>
-      prevActiveStep < steps.length - 1 ? prevActiveStep + 1 : prevActiveStep
-    );
-  };
-
   const {
     register,
     handleSubmit,
     formState: { errors },
+    trigger,
+    setValue,
+    getValues,
   } = useForm<IFormInput>();
 
+  //contains which step we're on
+  const [activeStep, setActiveStep] = useState(0);
+
+  //goes to previous step
+  const handlePrevious = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  //handles the submission of the data in the current step
+  const handleContinue = async () => {
+    //states if current step data is valid
+    let currentStepValid: boolean;
+
+    //function for continuing to next step
+    const continueToNext = () =>
+      setActiveStep((prevActiveStep) =>
+        prevActiveStep < steps.length - 1 ? prevActiveStep + 1 : prevActiveStep
+      );
+
+    //for each step, evaluates the data
+    //if valid, then we continue to next step
+    //otherwise display error
+
+    switch (activeStep) {
+      case 0:
+        currentStepValid = await trigger([
+          "firstName",
+          "lastName",
+          "nickName",
+          "phoneNumber",
+          "country",
+          "state",
+          "email",
+          "password",
+          "confirmPassword",
+          "acceptedTermsConditions",
+          "emailUpdates",
+        ]);
+        if (currentStepValid) {
+          continueToNext();
+        } else {
+          console.log(errors);
+          alert("wrong");
+        }
+        break;
+      case 2:
+        currentStepValid = await trigger([
+          "name",
+          "location",
+          "interests",
+          "picture",
+        ]);
+        if (currentStepValid) {
+          continueToNext();
+        } else {
+          console.log(errors);
+          alert("wrong");
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  //for logging data and errors in console
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
     console.log(errors);
   };
 
+  //The steps of the form, need to pass in the react hook form methods
   const stepComponents = [
-    <StepOne register={register} />,
-    <StepTwo />,
-    <StepThree register={register} />,
+    <StepOne register={register} setValue={setValue} getValues={getValues} />,
+    <StepTwo getValues={getValues} />,
+    <StepThree register={register} setValue={setValue} />,
   ];
+
+  //initialize interests with empty array if it is empty
+  if (getValues("interests") === "") setValue("interests", []);
+
+  //TODO: need to get File object containing default profile picture to initialize picture form value
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {
-          // not sure if this is a good practice
-          // implementation of loading symbol probably requires something different
-          stepComponents[activeStep]
-        }
+        {/*Load step */}
+        {stepComponents[activeStep]}
+
+        {/* 
+        Stepper showing what step we are on and all of the steps, along with the buttons for traversing through steps
+        When going below 600px, the stepper will stack on top of the buttons.
+        */}
         <Grid
           container
           justifyContent="space-evenly"
           alignItems="flex-end"
           sx={{ padding: "20px 0", backgroundColor: "cardBackground.main" }}
         >
-          <Grid container justifyContent="center" xs={3}>
+          <Grid container justifyContent="center" xs={5} sm={3}>
+            {/*disables when we're on the first step*/}
             <Button
               disabled={activeStep === 0}
               variant="contained"
@@ -107,13 +176,14 @@ export default function SignUp() {
             </Stepper>
           </Grid>
 
-          <Grid container justifyContent="center" xs={3}>
+          <Grid container justifyContent="center" xs={5} sm={3}>
             <Button
               variant="contained"
               type="submit"
               onClick={handleContinue}
               endIcon={<ArrowForwardIcon />}
             >
+              {/*changes to Go to profile when we're on the last step*/}
               {activeStep < steps.length - 1 ? (
                 <Typography>Continue</Typography>
               ) : (

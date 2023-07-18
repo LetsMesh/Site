@@ -1,21 +1,27 @@
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Autocomplete from "@mui/material/Autocomplete";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+import {
+  Grid,
+  TextField,
+  Typography,
+  Box,
+  Autocomplete,
+  Avatar,
+  Button,
+  ThemeProvider,
+  Tooltip,
+  createTheme,
+} from "@mui/material";
+import ErrorIcon from "@mui/icons-material/Error";
 import CollectionsIcon from "@mui/icons-material/Collections";
-
-import { UseFormRegister } from "react-hook-form";
-import { useState } from "react";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { IFormInput } from "./SignUp";
+import React, { useState } from "react";
+import StandardTextField from "./inputs/StandardTextField";
 
-const interests = [{ title: "MLP" }, { title: "Software" }];
+const interests = ["MLP", "Software"];
 
 export default function StepThree(props: {
   register: UseFormRegister<IFormInput>;
+  setValue: UseFormSetValue<IFormInput>;
 }) {
   return (
     <Grid container bgcolor={"cardBackground.main"}>
@@ -30,42 +36,8 @@ export default function StepThree(props: {
       >
         {/*profile picture*/}
         <Grid item sm={4}>
-          <Grid container direction="column" alignItems="center" rowSpacing={2}>
-            <Grid item>
-              <Avatar
-                alt="Default Profile Picture"
-                src="DefaultProfile.png"
-                sx={{
-                  width: 300,
-                  height: 300,
-                  bgcolor: "#D9D9D9",
-                  "@media(max-width:1000px)": {
-                    width: 250,
-                    height: 250,
-                  },
-                  "@media(max-width:900px)": {
-                    width: 200,
-                    height: 200,
-                  },
-                  "@media(max-width:700px)": {
-                    width: 175,
-                    height: 175,
-                  },
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                endIcon={<CollectionsIcon />}
-                sx={{ padding: "10px" }}
-              >
-                <Typography>UPLOAD PICTURE</Typography>
-              </Button>
-            </Grid>
-          </Grid>
+          <ProfilePictureAndUploadButton />
         </Grid>
-
         <Grid item xs={11} sm={7} md={6}>
           {/*start profile form title*/}
           <Grid container justifyContent="center" marginBottom={2}>
@@ -112,81 +84,27 @@ export default function StepThree(props: {
             <Grid container xs={10} rowSpacing={1}>
               {/* name input*/}
               <Grid container xs={12}>
-                <TextField
-                  margin="normal"
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  {...props.register("name", { required: true })}
-                  id="standard-basic"
-                  label="Name"
-                  variant="standard"
-                />
+                <Name />
               </Grid>
 
               {/*location and title input*/}
               <Grid container justifyContent={"space-between"}>
                 <Grid item xs={12} sm={5.5}>
-                  <TextField
-                    margin="normal"
-                    fullWidth
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    {...props.register("location", { required: true })}
-                    id="standard-basic"
-                    label="Location"
-                    variant="standard"
-                  />
+                  <Location />
                 </Grid>
                 <Grid item xs={12} sm={5.5}>
-                  <TextField
-                    margin="normal"
-                    fullWidth
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    {...props.register("title", { required: true })}
-                    id="standard-basic"
-                    label="Title"
-                    variant="standard"
-                  />
+                  <Title />
                 </Grid>
               </Grid>
 
               {/*interests input*/}
               <Grid item xs={12}>
-                <Autocomplete
-                  multiple
-                  id="tags-standard"
-                  options={interests}
-                  getOptionLabel={(option) => option.title}
-                  defaultValue={[interests[0]]}
-                  filterSelectedOptions
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="standard"
-                      label="Interests"
-                    />
-                  )}
-                />
+                <Interests />
               </Grid>
 
               {/*Label input */}
               <Grid item xs={12}>
-                <Box component="form" noValidate>
-                  <TextField
-                    margin="normal"
-                    fullWidth
-                    multiline
-                    maxRows={10}
-                    id="outlined-multiline-static"
-                    label="Label"
-                    defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
-                  />
-                </Box>
+                <Label />
               </Grid>
             </Grid>
           </Grid>
@@ -194,4 +112,241 @@ export default function StepThree(props: {
       </Grid>
     </Grid>
   );
+
+  //---------------------------------------INPUTS-----------------------------------------------------------
+  //name text field
+
+  function Name() {
+    return (
+      // <TextField
+      //   margin="normal"
+      //   fullWidth
+      //   InputLabelProps={{
+      //     shrink: true,
+      //   }}
+      //   {...props.register("name", { required: "This is required" })}
+      //   id="name"
+      //   label="Name"
+      //   variant="standard"
+      // />
+      <StandardTextField
+        register={props.register}
+        id="name"
+        label="Name"
+        fieldName="name"
+        required={true}
+      />
+    );
+  }
+
+  //Location text field
+  function Location() {
+    return (
+      // <TextField
+      //   margin="normal"
+      //   fullWidth
+      //   InputLabelProps={{
+      //     shrink: true,
+      //   }}
+      //   {...props.register("location", { required: "This is required" })}
+      //   id="location"
+      //   label="Location"
+      //   variant="standard"
+      // />
+      <StandardTextField
+        register={props.register}
+        id="location"
+        label="Location"
+        fieldName="location"
+        required={true}
+      />
+    );
+  }
+
+  //Title text field
+  function Title() {
+    return (
+      // <TextField
+      //   margin="normal"
+      //   fullWidth
+      //   InputLabelProps={{
+      //     shrink: true,
+      //   }}
+      //   {...props.register("title", { required: "This is required" })}
+      //   id="title"
+      //   label="Title"
+      //   variant="standard"
+      // />
+      <StandardTextField
+        register={props.register}
+        id="title"
+        label="Title"
+        fieldName="title"
+        required={true}
+      />
+    );
+  }
+
+  //Interest Tag AutoComplete
+  function Interests() {
+    return (
+      <Autocomplete
+        multiple
+        id="tags-standard"
+        options={interests}
+        defaultValue={[]}
+        {...props.register("interests")}
+        getOptionLabel={(option) => option}
+        filterSelectedOptions
+        renderInput={(params) => (
+          <TextField {...params} variant="standard" label="Interests" />
+        )}
+        onChange={(event, data) => props.setValue("interests", data)}
+      />
+    );
+  }
+
+  //Label text field
+  function Label() {
+    return (
+      // <TextField
+      //   margin="normal"
+      //   fullWidth
+      //   multiline
+      //   maxRows={10}
+      //   id="label"
+      //   label="Label"
+      //   defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
+      //   {...props.register("label", { required: "This is required" })}
+      // />
+      <StandardTextField
+        register={props.register}
+        id="label"
+        label="Label"
+        fieldName="label"
+        required={true}
+        multiline={true}
+        maxRows={10}
+        defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
+      />
+    );
+  }
+  //Profile Picture and Upload Button
+  function ProfilePictureAndUploadButton() {
+    //start image with default profile picture
+    const [image, setImage] = useState("DefaultProfile.png");
+    const [showError, setShowError] = useState(false);
+
+    //trigger file input
+    const handleEditPicture = (event: React.MouseEvent) => {
+      event.stopPropagation();
+      const fileInput = document.getElementById("fileInput");
+      fileInput?.click();
+    };
+
+    //handle file change, if valid image then set image as the input and form value,, otherwise display the error
+    const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file && file.type.startsWith("image/")) {
+        const url = URL.createObjectURL(file);
+        setImage(url);
+        setShowError(false);
+        props.setValue("picture", file);
+      } else {
+        setShowError(true);
+      }
+    };
+
+    //styling for error
+    const tooltipErrorTheme = createTheme({
+      components: {
+        MuiTooltip: {
+          styleOverrides: {
+            tooltip: {
+              backgroundColor: "#f44336",
+              color: "#ffffff",
+            },
+            arrow: {
+              color: "#f44336",
+            },
+          },
+        },
+      },
+    });
+
+    //upload picture button
+    const UploadButton = () => (
+      <Grid item>
+        <Button
+          variant="contained"
+          endIcon={<CollectionsIcon />}
+          sx={{ padding: "10px" }}
+          onClick={handleEditPicture}
+        >
+          <input
+            type="file"
+            id="fileInput"
+            style={{ display: "none" }}
+            accept="image/*"
+            onChange={onFileChange}
+          />
+          <Typography>UPLOAD PICTURE</Typography>
+
+          {/* show error tooltip if there is an error */}
+          {showError ? (
+            <ThemeProvider theme={tooltipErrorTheme}>
+              <Tooltip
+                disableFocusListener
+                disableTouchListener
+                arrow
+                title={"Invalid file! Please upload an image."}
+                placement="top"
+                sx={{
+                  position: "absolute",
+                  top: "-13px",
+                  left: "-13px",
+                }}
+              >
+                <ErrorIcon color="error" />
+              </Tooltip>
+            </ThemeProvider>
+          ) : null}
+        </Button>
+      </Grid>
+    );
+
+    //profile picture
+    const ProfilePicture = () => (
+      <Grid item>
+        <Avatar
+          alt="Profile Picture"
+          src={image}
+          sx={{
+            width: 300,
+            height: 300,
+            bgcolor: "#D9D9D9",
+            "@media(max-width:1000px)": {
+              width: 250,
+              height: 250,
+            },
+            "@media(max-width:900px)": {
+              width: 200,
+              height: 200,
+            },
+            "@media(max-width:700px)": {
+              width: 175,
+              height: 175,
+            },
+          }}
+        />
+      </Grid>
+    );
+
+    return (
+      <Grid container direction="column" alignItems="center" rowSpacing={2}>
+        <ProfilePicture />
+        <UploadButton />
+      </Grid>
+    );
+  }
 }
