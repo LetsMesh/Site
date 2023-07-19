@@ -1,34 +1,17 @@
-import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material";
-
-import MenuIcon from "@mui/icons-material/TableRows";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-
 import React from "react";
+import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
+import SideMenu from "./SideMenu";
 
 const Header = () => {
   return (
     <AppBar
-      position="static"
+      position="sticky"
       sx={{ backgroundColor: "primary.main" }}
       elevation={0}
     >
       <Toolbar>
         {/*---Left Side Menu Elements (Menu/Notification Icon)---*/}
-        <Grid container>
-          <IconButton sx={{ mr: 2, color: "action.active" }}>
-            <MenuIcon sx={{ fontSize: "40px" }} />
-          </IconButton>
-
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, color: "action.active" }}
-          >
-            <NotificationsIcon sx={{ fontSize: "40px" }} />
-          </IconButton>
-        </Grid>
+        <SideMenu />
 
         {/*---Logo---*/}
         <Grid container justifyContent={"flex-end"}>
