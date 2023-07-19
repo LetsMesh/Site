@@ -1,31 +1,8 @@
 import { useForm } from "react-hook-form";
-import { Button, Grid, Stack, Typography, TextField, Box } from '@mui/material';
+import { Button, Divider, Grid, Link, Stack, Skeleton, Typography, TextField, Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React, { useState } from "react";
 import { axiosInstance } from "../../config/axiosConfig";
-
-const theme = createTheme({
-    palette:{
-      primary: {
-        main: '#68D391'
-      },
-    },
-    typography: {
-        fontFamily: 'cocogoose, sans-serif'
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: 25,
-            width: '75%',
-            height: '4.5rem',
-            fontSize: '1.5rem',
-          },
-        },
-      },
-    }
-  });
 
 export const PasswordReset = () => {
 
@@ -68,14 +45,13 @@ export const PasswordReset = () => {
     // TODO: https://github.com/LetsMesh/Site/issues/255
 
     return (
-      <Box sx={{ backgroundColor: '#097D66', padding: '20px' }}>
-        <ThemeProvider theme={theme}>
-        <Grid container wrap="nowrap" justifyContent="center" alignItems="center" direction="column" spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', maxWidth: '480px', minWidth: '480px', bgcolor: 'background.default', color: 'text.primary', borderRadius: 5 }}>
+      <Box sx={{ backgroundColor: 'primary.main', padding: '20px' }}>
+        <Grid container wrap="nowrap" alignItems="center" direction="column" spacing={5} p={2} sx={{ boxShadow: 10, margin: '20em auto', maxWidth: '480px', minWidth: '480px', bgcolor: 'secondary.main', color: 'text.primary', borderRadius: 5 }}>
           <Grid item>
-          <Typography variant="h3" fontWeight={500} sx={{ marginLeft: 'auto' }} align='center'>
+          <Typography variant="h3" fontWeight={500} sx={{ marginLeft: 'auto', fontFamily: "cocogoose, sans-serif" }} align='center'>
             Password Reset
           </Typography>
-          <Typography variant="h6" fontWeight={400} sx={{ marginLeft: 'auto' }} align='center'>
+          <Typography variant="h5" fontWeight={400} sx={{ marginLeft: 'auto', fontFamily: "cocogoose, sans-serif"}} align='center'>
             Please enter your new password
           </Typography>
         </Grid>
@@ -88,14 +64,13 @@ export const PasswordReset = () => {
           </Stack>
         </Grid>
         <Grid item>
-            <Button variant="contained" sx={{ width: '15em', color: 'white' }} onClick={handleSubmit(onSubmit)}>
+            <Button variant="contained" sx={{ fontSize: '1.5rem', borderRadius: 25, width: '15em', color: 'white' }} onClick={handleSubmit(onSubmit)}>
               <Typography variant="button" >
                 Reset Password
               </Typography>
             </Button>
           </Grid>
         </Grid>
-      </ThemeProvider>
       </Box>
     )
 }

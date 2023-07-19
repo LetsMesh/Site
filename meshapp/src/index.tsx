@@ -19,13 +19,14 @@ const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={MainTheme}>
-      <TwoFactorAuthReminders />
+      <ForgotPassword/>
+      {/* <TwoFactorAuthReminders />
       <Header />
       <LoggedOutPage />
       <Slider />
       <Login />
       <Footer />
-      <ProfilePage {...exampleProfile} />
+      <ProfilePage {...exampleProfile} /> */}
     </ThemeProvider>
   </React.StrictMode>
 );
