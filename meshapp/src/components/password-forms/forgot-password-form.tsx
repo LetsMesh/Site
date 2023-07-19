@@ -17,20 +17,17 @@ import { axiosInstance } from "../../config/axiosConfig";
 export const PasswordReset = () => {
   const passwordResetConfirmedEndpoint = "user/reset/confirmed";
 
-  // input validation on password reset form
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // stores password inputs in state
   const [formData, setFormData] = useState({
     password: "",
     confirmedPassword: "",
   });
 
-  // updates form data in state when input fields detect change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -38,7 +35,6 @@ export const PasswordReset = () => {
     });
   };
 
-  // submit user data to backend
   const onSubmit = () => {
     if (formData.password == formData.confirmedPassword) {
       const res = axiosInstance
@@ -52,8 +48,6 @@ export const PasswordReset = () => {
       console.log("Passwords must match!");
     }
   };
-
-  // TODO: https://github.com/LetsMesh/Site/issues/255
 
   return (
     <Grid
