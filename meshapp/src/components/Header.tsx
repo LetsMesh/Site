@@ -4,7 +4,11 @@ import SideMenu from "./SideMenu";
 
 const Header = () => {
   return (
-    <AppBar position="sticky" sx={{ background: "#0B7D66" }}>
+    <AppBar
+      position="sticky"
+      sx={{ backgroundColor: "primary.main" }}
+      elevation={0}
+    >
       <Toolbar>
         {/*---Left Side Menu Elements (Menu/Notification Icon)---*/}
         <SideMenu />
