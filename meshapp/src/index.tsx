@@ -9,7 +9,9 @@ import Slider from "./ProfileCardCarousel/Swiper";
 import MainTheme from "./theme/MainTheme";
 import { ThemeProvider } from "@emotion/react";
 import ProfilePage from "./profile/profile-page";
+import ForgotPassword from "./components/password-forms/forgot-password-form"
 import LoggedInHome from "./home/logged-in/LoggedInHome";
+
 import {
   exampleProfile,
   exampleProfile2,
@@ -20,6 +22,7 @@ root.render(
     <ThemeProvider theme={MainTheme}>
       <TwoFactorAuthReminders />
       <LoggedOutPage />
+      <ForgotPassword/>
       <Slider />
       <Login />
       <Footer />
