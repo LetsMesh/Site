@@ -30,10 +30,10 @@ export interface IFormInput {
   location: string;
   title: string;
   label: string;
-  interests: any;
+  interests: Array<string>;
   picture: File;
 }
-
+let render = 0;
 export default function SignUp() {
   const {
     register,
@@ -42,11 +42,31 @@ export default function SignUp() {
     trigger,
     setValue,
     getValues,
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      nickName: "",
+      phoneNumber: "",
+      country: "",
+      state: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      acceptedTermsConditions: false,
+      emailUpdates: false,
+      name: "",
+      title: "",
+      label: "",
+      interests: [],
+    },
+  });
 
   //contains which step we're on
   const [activeStep, setActiveStep] = useState(0);
-
+  //keep track of renders
+  render++;
+  console.log("render", render);
   //goes to previous step
   const handlePrevious = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -119,11 +139,8 @@ export default function SignUp() {
   const stepComponents = [
     <StepOne register={register} setValue={setValue} getValues={getValues} />,
     <StepTwo getValues={getValues} />,
-    <StepThree register={register} setValue={setValue} />,
+    <StepThree register={register} setValue={setValue} getValues={getValues} />,
   ];
-
-  //initialize interests with empty array if it is empty
-  if (getValues("interests") === "") setValue("interests", []);
 
   //TODO: need to get File object containing default profile picture to initialize picture form value
 

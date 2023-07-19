@@ -174,7 +174,8 @@ export default function StepTwo(props: {
                     order: "-1",
                     marginBottom: 5,
                   },
-                  "@media(max-width:300px),  (max-height:400px), (max-width:600px) and (max-height: 550px)": { margin: 0 }
+                  "@media(max-width:300px),  (max-height:400px), (max-width:600px) and (max-height: 550px)":
+                    { margin: 0 },
                 }}
               >
                 <Grid
@@ -200,12 +201,13 @@ export default function StepTwo(props: {
                         width: 150,
                         height: 150,
                         position: "static",
-                        margin:0
+                        margin: 0,
                       },
-                      "@media(max-height:400px), (max-width:300px), (max-width:480px) and (max-height:480px)": {
-                        width: 100,
-                        height: 100
-                      }
+                      "@media(max-height:400px), (max-width:300px), (max-width:480px) and (max-height:480px)":
+                        {
+                          width: 100,
+                          height: 100,
+                        },
                     }}
                   >
                     <MailOutlineIcon
@@ -230,9 +232,10 @@ export default function StepTwo(props: {
                 "@media(max-width:600px)": {
                   alignSelf: "center",
                 },
-                "*" : {
-                  "@media(max-width:430px),  (max-height:400px), (max-width:600px) and (max-height: 630px)": { margin: 0 }
-                }
+                "*": {
+                  "@media(max-width:430px),  (max-height:400px), (max-width:600px) and (max-height: 630px)":
+                    { margin: 0 },
+                },
               }}
             >
               <Grid container sm={6} sx={{ mt: 2 }}>
@@ -241,7 +244,12 @@ export default function StepTwo(props: {
                   can be accessed by you so we can send you more memes.
                 </Typography>
               </Grid>
-              <Grid item sx={{ mt: 5 }}>
+              <Grid
+                item
+                sx={{ mt: 5 }}
+                direction="column"
+                alignItems={"center"}
+              >
                 <Typography variant="h6" textAlign="center">
                   <b>{emailAddress}</b>
                 </Typography>

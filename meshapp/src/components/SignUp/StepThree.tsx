@@ -2,7 +2,6 @@ import {
   Grid,
   TextField,
   Typography,
-  Box,
   Autocomplete,
   Avatar,
   Button,
@@ -12,7 +11,11 @@ import {
 } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import CollectionsIcon from "@mui/icons-material/Collections";
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
+import {
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import { IFormInput } from "./SignUp";
 import React, { useState } from "react";
 import StandardTextField from "./inputs/StandardTextField";
@@ -22,6 +25,7 @@ const interests = ["MLP", "Software"];
 export default function StepThree(props: {
   register: UseFormRegister<IFormInput>;
   setValue: UseFormSetValue<IFormInput>;
+  getValues: UseFormGetValues<IFormInput>;
 }) {
   return (
     <Grid container bgcolor={"cardBackground.main"}>
@@ -189,19 +193,27 @@ export default function StepThree(props: {
 
   //Interest Tag AutoComplete
   function Interests() {
+    //keep track of interests chosen if we were to go back to the previous step and then come back
+    const [chosenInterests, setChosenInterests] = useState(
+      props.getValues("interests") || []
+    );
+
     return (
       <Autocomplete
         multiple
         id="tags-standard"
         options={interests}
-        defaultValue={[]}
+        defaultValue={chosenInterests}
         {...props.register("interests")}
         getOptionLabel={(option) => option}
         filterSelectedOptions
         renderInput={(params) => (
           <TextField {...params} variant="standard" label="Interests" />
         )}
-        onChange={(event, data) => props.setValue("interests", data)}
+        onChange={(event, data) => {
+          props.setValue("interests", data);
+          setChosenInterests(data);
+        }}
       />
     );
   }
@@ -233,8 +245,12 @@ export default function StepThree(props: {
   }
   //Profile Picture and Upload Button
   function ProfilePictureAndUploadButton() {
-    //start image with default profile picture
-    const [image, setImage] = useState("DefaultProfile.png");
+    //start image with default profile picture OR the chosen image if we have already gotten it
+    const [image, setImage] = useState(
+      props.getValues("picture")
+        ? URL.createObjectURL(props.getValues("picture"))
+        : "DefaultProfile.png"
+    );
     const [showError, setShowError] = useState(false);
 
     //trigger file input
@@ -249,6 +265,8 @@ export default function StepThree(props: {
       const file = event.target.files?.[0];
       if (file && file.type.startsWith("image/")) {
         const url = URL.createObjectURL(file);
+        console.log(file);
+        console.log(url);
         setImage(url);
         setShowError(false);
         props.setValue("picture", file);

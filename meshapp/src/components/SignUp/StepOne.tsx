@@ -96,22 +96,6 @@ export default function StepOne(props: {
   setValue: UseFormSetValue<IFormInput>;
   getValues: UseFormGetValues<IFormInput>;
 }) {
-  //not putting these into their respective functions because if I do that they will rerender upon submission
-  //if there is an error the country/states data and the toggle state of the passwords will reset, which is not what we want
-
-  //for setting countries/states options
-  const [stateOptions, setStateOptions] = useState([""]);
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-
-  //for toggling password text visibility
-  const [passVisible, setPassVisible] = useState(false);
-  const togglePass = () => setPassVisible(!passVisible);
-
-  //for toggling password text visibility
-  const [confirmPassVisible, setConfirmPassVisible] = useState(false);
-  const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
-
   //setting height of dropdown menu
   const menuStyle = { MenuProps: { style: { maxHeight: 200 } } };
 
@@ -209,28 +193,10 @@ export default function StepOne(props: {
               sx={{ color: "text.primary" }}
               order={{ xs: 3, sm: 2 }}
             >
-              {/*For some reason I am unable to refactor this into a separate function, if I do so, after the form is submited for the first time and there is an error, I am unable to click the service terms checkbox again */}
               <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      id="accepted-terms-and-conditions"
-                      {...props.register("acceptedTermsConditions", {
-                        required: "This is required",
-                      })}
-                    />
-                  }
-                  label="* I Accept the Terms & Conditions"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      id="email-updates"
-                      {...props.register("emailUpdates")}
-                    />
-                  }
-                  label="* Yes! Sign me up for annoying emails"
-                />
+                <TermsAndConditions />
+
+                <EmailUpdates />
               </FormGroup>
             </Grid>
 
@@ -402,6 +368,10 @@ export default function StepOne(props: {
 
   //password text field
   function Password() {
+    //for toggling password text visibility
+    const [passVisible, setPassVisible] = useState(false);
+    const togglePass = () => setPassVisible(!passVisible);
+
     return (
       // <TextField
       //   margin="normal"
@@ -454,6 +424,9 @@ export default function StepOne(props: {
 
   //confirm text field
   function ConfirmPassword() {
+    //for toggling password text visibility
+    const [confirmPassVisible, setConfirmPassVisible] = useState(false);
+    const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
     return (
       // <TextField
       //   margin="normal"
@@ -512,13 +485,80 @@ export default function StepOne(props: {
     );
   }
 
+  //Terms and Conditions checkbox
+  function TermsAndConditions() {
+    //keep track of whether checkbox is checked for if we go back after submitting
+    const [termsChecked, setTermsChecked] = useState(
+      props.getValues("acceptedTermsConditions") || false
+    );
+
+    useEffect(() => {
+      props.setValue("acceptedTermsConditions", termsChecked);
+    });
+    return (
+      <FormControlLabel
+        control={
+          <Checkbox
+            id="accepted-terms-and-conditions"
+            {...props.register("acceptedTermsConditions", {
+              required: "This is required",
+            })}
+            value={termsChecked}
+            checked={termsChecked}
+            onChange={(event, checked) => {
+              setTermsChecked(checked);
+            }}
+          />
+        }
+        label="* I Accept the Terms & Conditions"
+      />
+    );
+  }
+  // email update checkbox
+  function EmailUpdates() {
+    //keep track of whether checkbox is checked for if we go back after submitting
+    const [emailUpdateChecked, setEmailUpdateChecked] = useState(
+      props.getValues("emailUpdates") || false
+    );
+
+    useEffect(() => {
+      props.setValue("emailUpdates", emailUpdateChecked);
+    });
+    return (
+      <FormControlLabel
+        control={
+          <Checkbox
+            id="email-updates"
+            {...props.register("emailUpdates")}
+            value={emailUpdateChecked}
+            checked={emailUpdateChecked}
+            onChange={(event, checked) => {
+              setEmailUpdateChecked(checked);
+            }}
+          />
+        }
+        label="* Yes! Sign me up for annoying emails"
+      />
+    );
+  }
   //countries/states select
   function CountriesAndStatesSelect() {
+    //for setting countries/states options
+    const [stateOptions, setStateOptions] = useState(
+      CountriesAndStates[props.getValues("country")] || [""]
+    );
+    const [selectedCountry, setSelectedCountry] = useState(
+      props.getValues("country") || ""
+    );
+    const [selectedState, setSelectedState] = useState(
+      props.getValues("state") || ""
+    );
+
     //update form values when selected country/state changes
     useEffect(() => {
       props.setValue("country", selectedCountry);
       props.setValue("state", selectedState);
-    });
+    }, [selectedCountry, selectedState]);
 
     //country select
     const CountriesSelect = () => {
