@@ -70,11 +70,11 @@ Check npm version with `npm -v` -> This should show 9.6.7 in the console
 2. Install the correct version of python & pip.
 3. Install pipenv with pip -> `pip install pipenv`
 4. Initialize the virtual environment for yourself and installs virtual environment dependencies -> `pipenv install`
-5. **IMPORTANT** Get the .env file from someone and store it on your root directory '/SITE'
-6. Activate the virtual environment -> `pipenv shell`
-7. Go to `Site/meshapp/` and run an `npm install`
-8. Build the frontend -> in the same directory as step 7 run `npm run build`
-9. Return to the root directory and start the backend server / run the application -> `python manage.py runserver`
+**IMPORTANT** Get the .env file from someone and store it on your root directory '/SITE' if you haven't already before running this command.
+5. Activate the virtual environment -> `pipenv shell`
+6. Go to `Site/meshapp/` and run an `npm install`
+7. Build the frontend -> in the same directory as step 7 run `npm run build`
+8. Return to the root directory and start the backend server / run the application -> `python manage.py runserver`
 
 #### Tips:
 
