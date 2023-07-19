@@ -64,8 +64,8 @@ export const PasswordReset = () => {
         boxShadow: 10,
         margin: "auto",
         width: "480px",
-        bgcolor: "secondary.main",
-        color: "text.primary",
+        bgcolor: "cardBackground.main",
+        color: "text.main",
         borderRadius: 5,
       }}
     >
@@ -103,7 +103,6 @@ export const PasswordReset = () => {
               fontSize: "1.5rem",
               borderRadius: 25,
               width: "15em",
-              color: "white",
             }}
             onClick={handleSubmit(onSubmit)}
           >
