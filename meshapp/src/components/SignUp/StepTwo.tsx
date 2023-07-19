@@ -136,13 +136,19 @@ export default function StepTwo(props: {
   }
 
   return (
-    <Grid container bgcolor={"cardBackground.main"} color={"text.main"}>
+    <Grid
+      container
+      bgcolor={"cardBackground.main"}
+      color={"text.main"}
+      height="80vh"
+      alignItems={"center"}
+    >
       <Grid container justifyContent={"center"}>
-        <Grid item xs={10} marginTop={20} marginBottom={10}>
+        <Grid item xs={10}>
           {/*keeps header and mail icon vertically centered*/}
           <Grid container direction="column" alignItems="center">
             {/*header*/}
-            <Grid container xs={12}>
+            <Grid container xs={12} justifyContent={"center"}>
               <Grid
                 container
                 xs={8}
@@ -157,23 +163,49 @@ export default function StepTwo(props: {
               {/*mail icon*/}
               <Grid
                 container
-                xs={4}
+                xs={8}
+                sm={4}
                 height={0}
                 alignSelf={"center"}
                 alignItems="center"
+                sx={{
+                  "@media(max-width:600px)": {
+                    height: "auto",
+                    order: "-1",
+                    marginBottom: 5,
+                  },
+                  "@media(max-width:300px),  (max-height:400px), (max-width:600px) and (max-height: 550px)": { margin: 0 }
+                }}
               >
                 <Grid
                   container
                   height={0}
                   position={"relative"}
                   alignItems={"center"}
+                  sx={{
+                    "@media(max-width:600px)": {
+                      height: "auto",
+                      justifyContent: "center",
+                    },
+                  }}
                 >
                   <Avatar
                     sx={{
-                      width: 200,
-                      height: 200,
                       backgroundColor: "#D9D9D9",
                       position: "absolute",
+                      width: 200,
+                      height: 200,
+                      marginTop: 20,
+                      "@media(max-width:600px)": {
+                        width: 150,
+                        height: 150,
+                        position: "static",
+                        margin:0
+                      },
+                      "@media(max-height:400px), (max-width:300px), (max-width:480px) and (max-height:480px)": {
+                        width: 100,
+                        height: 100
+                      }
                     }}
                   >
                     <MailOutlineIcon
@@ -194,8 +226,16 @@ export default function StepTwo(props: {
               direction={"column"}
               alignItems={"center"}
               alignSelf={"flex-start"}
+              sx={{
+                "@media(max-width:600px)": {
+                  alignSelf: "center",
+                },
+                "*" : {
+                  "@media(max-width:430px),  (max-height:400px), (max-width:600px) and (max-height: 630px)": { margin: 0 }
+                }
+              }}
             >
-              <Grid container xs={6} sx={{ mt: 2 }}>
+              <Grid container sm={6} sx={{ mt: 2 }}>
                 <Typography variant="body1" textAlign={"center"}>
                   <b>Why do we verify?</b> To ensure that the email you provided
                   can be accessed by you so we can send you more memes.

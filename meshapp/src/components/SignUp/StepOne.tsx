@@ -112,6 +112,9 @@ export default function StepOne(props: {
   const [confirmPassVisible, setConfirmPassVisible] = useState(false);
   const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
 
+  //setting height of dropdown menu
+  const menuStyle = { MenuProps: { style: { maxHeight: 200 } } };
+
   return (
     <Grid
       container
@@ -120,6 +123,10 @@ export default function StepOne(props: {
       sx={{
         ".MuiOutlinedInput-notchedOutline,.MuiInput-root:before": {
           borderColor: "input.standard.enabledBorder",
+        },
+        ".MuiPaper-root.MuiMenu-paper": {
+          maxHeight: "100px",
+          backgroundColor: "blue",
         },
       }}
     >
@@ -528,6 +535,7 @@ export default function StepOne(props: {
           variant="outlined"
           select
           value={selectedCountry}
+          SelectProps={menuStyle}
           onChange={(event) => {
             //new country
             let newCountry = event.target.value;
@@ -566,6 +574,7 @@ export default function StepOne(props: {
           variant="outlined"
           select
           value={selectedState}
+          SelectProps={menuStyle}
           onChange={(event) => {
             //get new state and set it as current selected option
             let newState = event.target.value;

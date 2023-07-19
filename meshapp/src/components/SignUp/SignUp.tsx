@@ -104,6 +104,7 @@ export default function SignUp() {
         }
         break;
       default:
+        continueToNext();
         break;
     }
   };
