@@ -46,8 +46,8 @@ const ForgotPassword = () => {
             <Button variant="contained" sx={{ borderRadius: 25, width: '15em' }} onClick={onClickSend}>
               Send Link to Email
             </Button>
-          <Grid item xs>
-            <Link sx={{color:'text.main'}}>
+          <Grid item xs sx={{ padding:'16px' }}>
+            <Link sx={{ color:'text.main'}}>
               Return to Login
             </Link>
           </Grid>
