@@ -11,24 +11,15 @@ import {
 } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import CollectionsIcon from "@mui/icons-material/Collections";
-import {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { IFormInput } from "./SignUp";
 import React, { useState } from "react";
 import StandardTextField from "./inputs/StandardTextField";
 
 const interests = ["MLP", "Software"];
 
-export default function StepThree(props: {
-  register: UseFormRegister<IFormInput>;
-  errors: FieldErrors<IFormInput>;
-  setValue: UseFormSetValue<IFormInput>;
-  getValues: UseFormGetValues<IFormInput>;
-}) {
+export default function StepThree() {
+  const props = useFormContext<IFormInput>();
   return (
     <Grid container bgcolor={"cardBackground.main"}>
       <Grid
@@ -124,24 +115,11 @@ export default function StepThree(props: {
 
   function Name() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   {...props.register("name", { required: "This is required" })}
-      //   id="name"
-      //   label="Name"
-      //   variant="standard"
-      // />
       <StandardTextField
-        register={props.register}
         id="name"
         label="Name"
         fieldName="name"
         required={true}
-        errors={props.errors}
       />
     );
   }
@@ -149,24 +127,11 @@ export default function StepThree(props: {
   //Location text field
   function Location() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   {...props.register("location", { required: "This is required" })}
-      //   id="location"
-      //   label="Location"
-      //   variant="standard"
-      // />
       <StandardTextField
-        register={props.register}
         id="location"
         label="Location"
         fieldName="location"
         required={true}
-        errors={props.errors}
       />
     );
   }
@@ -174,24 +139,11 @@ export default function StepThree(props: {
   //Title text field
   function Title() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   {...props.register("title", { required: "This is required" })}
-      //   id="title"
-      //   label="Title"
-      //   variant="standard"
-      // />
       <StandardTextField
-        register={props.register}
         id="title"
         label="Title"
         fieldName="title"
         required={true}
-        errors={props.errors}
       />
     );
   }
@@ -204,38 +156,38 @@ export default function StepThree(props: {
     );
 
     return (
-      <Grid item sx={{position:'relative'}}>
-      <Autocomplete
-        multiple
-        id="tags-standard"
-        options={interests}
-        defaultValue={chosenInterests}
-        {...props.register("interests")}
-        getOptionLabel={(option) => option}
-        filterSelectedOptions
-        renderInput={(params) => (
-          <TextField {...params} variant="standard" label="Interests" />
-        )}
-        onChange={(event, data) => {
-          props.setValue("interests", data);
-          setChosenInterests(data);
-        }}
-      />
-      {props.errors.interests && (
-            <Tooltip
-              disableFocusListener
-              disableTouchListener
-              arrow
-              title={props.errors.interests?.message}
-              sx={{
-                position: "absolute",
-                top: "0px",
-                left: "-13px",
-              }}
-            >
-              <ErrorIcon color="error" />
-            </Tooltip>
+      <Grid item sx={{ position: "relative" }}>
+        <Autocomplete
+          multiple
+          id="tags-standard"
+          options={interests}
+          defaultValue={chosenInterests}
+          {...props.register("interests")}
+          getOptionLabel={(option) => option}
+          filterSelectedOptions
+          renderInput={(params) => (
+            <TextField {...params} variant="standard" label="Interests" />
           )}
+          onChange={(event, data) => {
+            props.setValue("interests", data);
+            setChosenInterests(data);
+          }}
+        />
+        {props.formState.errors.interests && (
+          <Tooltip
+            disableFocusListener
+            disableTouchListener
+            arrow
+            title={props.formState.errors.interests?.message}
+            sx={{
+              position: "absolute",
+              top: "0px",
+              left: "-13px",
+            }}
+          >
+            <ErrorIcon color="error" />
+          </Tooltip>
+        )}
       </Grid>
     );
   }
@@ -243,18 +195,7 @@ export default function StepThree(props: {
   //Label text field
   function Label() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   multiline
-      //   maxRows={10}
-      //   id="label"
-      //   label="Label"
-      //   defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
-      //   {...props.register("label", { required: "This is required" })}
-      // />
       <StandardTextField
-        register={props.register}
         id="label"
         label="Label"
         fieldName="label"
@@ -262,7 +203,6 @@ export default function StepThree(props: {
         multiline={true}
         maxRows={10}
         defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
-        errors={props.errors}
       />
     );
   }

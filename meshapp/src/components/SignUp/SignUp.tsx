@@ -7,7 +7,7 @@ import StepLabel from "@mui/material/StepLabel";
 import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Typography } from "@mui/material";
@@ -35,14 +35,7 @@ export interface IFormInput {
 }
 let render = 0;
 export default function SignUp() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    trigger,
-    setValue,
-    getValues,
-  } = useForm<IFormInput>({
+  const formMethods = useForm<IFormInput>({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -89,7 +82,7 @@ export default function SignUp() {
 
     switch (activeStep) {
       case 0:
-        currentStepValid = await trigger([
+        currentStepValid = await formMethods.trigger([
           "firstName",
           "lastName",
           "nickName",
@@ -105,11 +98,11 @@ export default function SignUp() {
         if (currentStepValid) {
           continueToNext();
         } else {
-          console.log(errors);
+          console.log(formMethods.formState.errors);
         }
         break;
       case 2:
-        currentStepValid = await trigger([
+        currentStepValid = await formMethods.trigger([
           "name",
           "location",
           "interests",
@@ -118,7 +111,7 @@ export default function SignUp() {
         if (currentStepValid) {
           continueToNext();
         } else {
-          console.log(errors);
+          console.log(formMethods.formState.errors);
         }
         break;
       default:
@@ -130,31 +123,17 @@ export default function SignUp() {
   //for logging data and errors in console
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
-    console.log(errors);
+    console.log(formMethods.formState.errors);
   };
 
   //The steps of the form, need to pass in the react hook form methods
-  const stepComponents = [
-    <StepOne
-      register={register}
-      setValue={setValue}
-      getValues={getValues}
-      errors={errors}
-    />,
-    <StepTwo getValues={getValues} />,
-    <StepThree
-      register={register}
-      setValue={setValue}
-      getValues={getValues}
-      errors={errors}
-    />,
-  ];
+  const stepComponents = [<StepOne />, <StepTwo />, <StepThree />];
 
   //TODO: need to get File object containing default profile picture to initialize picture form value
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         {/*Load step */}
         {stepComponents[activeStep]}
 
@@ -219,6 +198,6 @@ export default function SignUp() {
           </Grid>
         </Grid>
       </form>
-    </>
+    </FormProvider>
   );
 }

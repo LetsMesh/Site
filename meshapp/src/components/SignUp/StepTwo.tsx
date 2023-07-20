@@ -11,7 +11,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import SyncIcon from "@mui/icons-material/Sync";
 import { useState } from "react";
 import { IFormInput } from "./SignUp";
-import { UseFormGetValues } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 const modalStyle = {
   position: "absolute",
@@ -34,9 +34,9 @@ const modalStyle = {
   textAlign: "center",
 };
 
-export default function StepTwo(props: {
-  getValues: UseFormGetValues<IFormInput>;
-}) {
+export default function StepTwo() {
+  const props = useFormContext<IFormInput>();
+
   //this holds the email from the firststep to be used for verification
   const emailAddress = props.getValues("email");
 

@@ -1,9 +1,4 @@
-import {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import {
   Grid,
   Divider,
@@ -94,12 +89,8 @@ const CountriesAndStates: { [key: string]: Array<string> } = {
   ],
   "Absolutely Goddamn": ["Nowhere"],
 };
-export default function StepOne(props: {
-  register: UseFormRegister<IFormInput>;
-  setValue: UseFormSetValue<IFormInput>;
-  getValues: UseFormGetValues<IFormInput>;
-  errors: FieldErrors<IFormInput>;
-}) {
+export default function StepOne() {
+  const props = useFormContext<IFormInput>();
   //setting height of dropdown menu
   const menuStyle = { MenuProps: { style: { maxHeight: 200 } } };
 
@@ -220,26 +211,11 @@ export default function StepOne(props: {
   //first name text field
   function FirstName() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   {...props.register("firstName", {
-      //     required: "This is required",
-      //   })}
-      //   id="first-name"
-      //   label="First Name *"
-      //   variant="standard"
-      // />
       <StandardTextField
         label="First Name *"
-        register={props.register}
         id="first-name"
-        required={true}
         fieldName="firstName"
-        errors={props.errors}
+        required={true}
       />
     );
   }
@@ -248,26 +224,11 @@ export default function StepOne(props: {
 
   function LastName() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   {...props.register("lastName", {
-      //     required: "This is required",
-      //   })}
-      //   id="last-name"
-      //   label="Last Name *"
-      //   variant="standard"
-      // />
       <StandardTextField
         label="Last Name *"
-        register={props.register}
         id="last-name"
         required={true}
         fieldName="lastName"
-        errors={props.errors}
       />
     );
   }
@@ -276,25 +237,7 @@ export default function StepOne(props: {
 
   function Nickname() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   {...props.register("nickName")}
-      //   id="nickname"
-      //   label="Nickname"
-      //   variant="standard"
-      // />
-
-      <StandardTextField
-        label="Nickname"
-        register={props.register}
-        id="nickname"
-        fieldName="nickName"
-        errors={props.errors}
-      />
+      <StandardTextField label="Nickname" id="nickname" fieldName="nickName" />
     );
   }
 
@@ -302,26 +245,8 @@ export default function StepOne(props: {
 
   function PhoneNumber() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   {...props.register("phoneNumber", {
-      //     pattern: {
-      //       value: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/,
-      //       message: "Invalid phone number format",
-      //     },
-      //   })}
-      //   id="phone-number"
-      //   label="Phone Number"
-      //   variant="standard"
-      // />
-
       <StandardTextField
         label="Phone Number"
-        register={props.register}
         id="phone-number"
         fieldName="phoneNumber"
         validators={{
@@ -331,7 +256,6 @@ export default function StepOne(props: {
             return phoneNumRegex.test(value) || "Invalid phone number format";
           },
         }}
-        errors={props.errors}
       />
     );
   }
@@ -339,28 +263,8 @@ export default function StepOne(props: {
   //email address text field
   function EmailAddress() {
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   {...props.register("email", {
-      //     required: "This is required",
-      //     pattern: {
-      //       value:
-      //         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      //       message: "Invalid email address format",
-      //     },
-      //   })}
-      //   id="email-address"
-      //   label="Email *"
-      //   variant="standard"
-      // />
-
       <StandardTextField
         label="Email *"
-        register={props.register}
         id="email-address"
         fieldName="email"
         validators={{
@@ -370,7 +274,6 @@ export default function StepOne(props: {
             return emailRegex.test(value) || "Invalid email address format";
           },
         }}
-        errors={props.errors}
       />
     );
   }
@@ -382,39 +285,7 @@ export default function StepOne(props: {
     const togglePass = () => setPassVisible(!passVisible);
 
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   InputProps={{
-      //     endAdornment: (
-      //       <InputAdornment position="end">
-      //         <IconButton
-      //           children={
-      //             passVisible ? <VisibilityOffIcon /> : <VisibilityIcon />
-      //           }
-      //           onClick={togglePass}
-      //         />
-      //       </InputAdornment>
-      //     ),
-      //   }}
-      //   {...props.register("password", {
-      //     required: "This is required",
-      //     minLength: {
-      //       value: 8,
-      //       message: "Password length needs to be at least 8.",
-      //     },
-      //   })}
-      //   id="password"
-      //   label="Password *"
-      //   type={passVisible ? "text" : "password"}
-      //   variant="outlined"
-      // />
-
       <PasswordTextField
-        register={props.register}
         fieldName="password"
         id="password"
         label="Password *"
@@ -427,7 +298,6 @@ export default function StepOne(props: {
         }}
         passVisible={passVisible}
         togglePass={togglePass}
-        errors={props.errors}
       />
     );
   }
@@ -438,46 +308,7 @@ export default function StepOne(props: {
     const [confirmPassVisible, setConfirmPassVisible] = useState(false);
     const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
     return (
-      // <TextField
-      //   margin="normal"
-      //   fullWidth
-      //   InputLabelProps={{
-      //     shrink: true,
-      //   }}
-      //   InputProps={{
-      //     endAdornment: (
-      //       <InputAdornment position="end">
-      //         <IconButton
-      //           children={
-      //             confirmPassVisible ? (
-      //               <VisibilityOffIcon />
-      //             ) : (
-      //               <VisibilityIcon />
-      //             )
-      //           }
-      //           onClick={toggleConfirmPass}
-      //         />
-      //       </InputAdornment>
-      //     ),
-      //   }}
-      //   {...props.register("confirmPassword", {
-      //     required: "This is required",
-      //     validate: {
-      //       matchesPassword: (value) => {
-      //         return (
-      //           value === props.getValues("password") ||
-      //           "Does not match password."
-      //         );
-      //       },
-      //     },
-      //   })}
-      //   id="confirm-password"
-      //   label="Confirm Password *"
-      //   type={confirmPassVisible ? "text" : "password"}
-      //   variant="outlined"
-      // />
       <PasswordTextField
-        register={props.register}
         fieldName="confirmPassword"
         id="confirm-password"
         label="Confirm Password *"
@@ -491,7 +322,6 @@ export default function StepOne(props: {
         }}
         passVisible={confirmPassVisible}
         togglePass={toggleConfirmPass}
-        errors={props.errors}
       />
     );
   }
@@ -608,12 +438,12 @@ export default function StepOne(props: {
               );
             })}
           </TextField>
-          {props.errors.country && (
+          {props.formState.errors.country && (
             <Tooltip
               disableFocusListener
               disableTouchListener
               arrow
-              title={props.errors.country?.message}
+              title={props.formState.errors.country?.message}
               sx={{
                 position: "absolute",
                 top: "0px",
@@ -660,12 +490,12 @@ export default function StepOne(props: {
                 );
               })}
           </TextField>
-          {props.errors.state && (
+          {props.formState.errors.state && (
             <Tooltip
               disableFocusListener
               disableTouchListener
               arrow
-              title={props.errors.state?.message}
+              title={props.formState.errors.state?.message}
               sx={{
                 position: "absolute",
                 top: "0px",

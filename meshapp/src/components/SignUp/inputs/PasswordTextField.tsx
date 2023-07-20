@@ -1,4 +1,4 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { IFormInput } from "../SignUp";
 import {
   Grid,
@@ -19,8 +19,6 @@ import ErrorIcon from "@mui/icons-material/Error";
 //can also pass in validator functions
 
 export default function PasswordTextField(props: {
-  register: UseFormRegister<IFormInput>;
-  errors: FieldErrors<IFormInput>;
   label: string;
   id: string;
   fieldName: "password" | "confirmPassword";
@@ -28,6 +26,9 @@ export default function PasswordTextField(props: {
   passVisible: boolean;
   togglePass: () => void;
 }) {
+  const { register, formState } = useFormContext<IFormInput>();
+  const errors = formState.errors;
+
   return (
     <Grid sx={{ position: "relative" }}>
       <TextField
@@ -48,7 +49,7 @@ export default function PasswordTextField(props: {
             </InputAdornment>
           ),
         }}
-        {...props.register(props.fieldName, {
+        {...register(props.fieldName, {
           required: "This is required",
           validate: props.validators,
         })}
@@ -58,13 +59,12 @@ export default function PasswordTextField(props: {
         variant="outlined"
       />
 
-      {props.errors[props.fieldName] ? (
+      {errors[props.fieldName] ? (
         <Tooltip
           disableFocusListener
           disableTouchListener
           arrow
-          title={props.errors[props.fieldName]?.message}
-
+          title={errors[props.fieldName]?.message}
           sx={{
             position: "absolute",
             top: "0px",
