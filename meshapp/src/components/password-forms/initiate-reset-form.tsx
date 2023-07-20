@@ -1,4 +1,4 @@
-import { Grid, Typography, TextField, Button } from "@mui/material";
+import { Grid, Typography, TextField, Button, Link } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { axiosInstance } from "../../config/axiosConfig";
@@ -46,6 +46,11 @@ const ForgotPassword = () => {
             <Button variant="contained" sx={{ borderRadius: 25, width: '15em' }} onClick={onClickSend}>
               Send Link to Email
             </Button>
+          <Grid item xs>
+            <Link sx={{color:'text.main'}}>
+              Return to Login
+            </Link>
+          </Grid>
           </Grid>
         </Grid>
       </Grid>
