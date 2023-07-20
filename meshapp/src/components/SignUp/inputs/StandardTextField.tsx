@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { IFormInput } from "../SignUp";
 import { Grid, TextField, Tooltip } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -28,28 +28,34 @@ export default function StandardTextField(props: {
     | "phoneNumber";
   validators?: { [key: string]: (value: string) => boolean | string };
 }) {
-  const { register, formState } = useFormContext<IFormInput>();
+  const { formState, control } = useFormContext<IFormInput>();
   const errors = formState.errors;
 
   return (
     <Grid sx={{ position: "relative" }}>
-      <TextField
-        margin="normal"
-        fullWidth
-        InputLabelProps={{
-          shrink: true,
-        }}
-        label={props.label}
-        id={props.id}
-        multiline={props.multiline ? true : false}
-        maxRows={props.maxRows ? props.maxRows : 1}
-        {...register(props.fieldName, {
+      <Controller
+        name={props.fieldName}
+        control={control}
+        rules={{
           required: props.required ? "This is required." : false,
           validate: props.validators,
-        })}
-
-        // sx={{position:"relative"}}
+        }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            label={props.label}
+            id={props.id}
+            multiline={props.multiline ? true : false}
+            maxRows={props.maxRows ? props.maxRows : 1}
+          />
+        )}
       />
+
       {errors[props.fieldName] && (
         <Tooltip
           disableFocusListener
@@ -59,7 +65,7 @@ export default function StandardTextField(props: {
           sx={{
             position: "absolute",
             top: "0px",
-            left: "-13px",
+            left: "-12px",
           }}
         >
           <ErrorIcon color="error" />

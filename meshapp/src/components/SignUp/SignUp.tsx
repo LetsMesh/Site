@@ -53,6 +53,7 @@ export default function SignUp() {
       label: "",
       interests: [],
     },
+    mode: "onBlur",
   });
 
   //contains which step we're on
@@ -67,56 +68,41 @@ export default function SignUp() {
 
   //handles the submission of the data in the current step
   const handleContinue = async () => {
-    //states if current step data is valid
-    let currentStepValid: boolean;
-
     //function for continuing to next step
     const continueToNext = () =>
       setActiveStep((prevActiveStep) =>
         prevActiveStep < steps.length - 1 ? prevActiveStep + 1 : prevActiveStep
       );
 
-    //for each step, evaluates the data
-    //if valid, then we continue to next step
-    //otherwise display error
+    let isValid = false;
 
-    switch (activeStep) {
-      case 0:
-        currentStepValid = await formMethods.trigger([
-          "firstName",
-          "lastName",
-          "nickName",
-          "phoneNumber",
-          "country",
-          "state",
-          "email",
-          "password",
-          "confirmPassword",
-          "acceptedTermsConditions",
-          "emailUpdates",
-        ]);
-        if (currentStepValid) {
-          continueToNext();
-        } else {
-          console.log(formMethods.formState.errors);
-        }
-        break;
-      case 2:
-        currentStepValid = await formMethods.trigger([
-          "name",
-          "location",
-          "interests",
-          "picture",
-        ]);
-        if (currentStepValid) {
-          continueToNext();
-        } else {
-          console.log(formMethods.formState.errors);
-        }
-        break;
-      default:
-        continueToNext();
-        break;
+    //trigger validation for each step unless it is 2nd step (where there aren't any inputs)
+    if (activeStep === 0) {
+      isValid = await formMethods.trigger([
+        "firstName",
+        "lastName",
+        "nickName",
+        "phoneNumber",
+        "country",
+        "state",
+        "email",
+        "password",
+        "confirmPassword",
+        "acceptedTermsConditions",
+        "emailUpdates",
+      ]);
+    } else if (activeStep === 2) {
+      isValid = await formMethods.trigger([
+        "label",
+        "title",
+        "name",
+        "interests",
+      ]);
+    }
+
+    if (isValid || activeStep === 1) {
+      console.log(formMethods.getValues());
+      continueToNext();
     }
   };
 
@@ -136,7 +122,6 @@ export default function SignUp() {
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         {/*Load step */}
         {stepComponents[activeStep]}
-
         {/* 
         Stepper showing what step we are on and all of the steps, along with the buttons for traversing through steps
         When going below 600px, the stepper will stack on top of the buttons.
@@ -184,7 +169,7 @@ export default function SignUp() {
           <Grid container justifyContent="center" xs={5} sm={3}>
             <Button
               variant="contained"
-              type="submit"
+              type={activeStep === 2 ? "submit" : "button"}
               onClick={handleContinue}
               endIcon={<ArrowForwardIcon />}
             >

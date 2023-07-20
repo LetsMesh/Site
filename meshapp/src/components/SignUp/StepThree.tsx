@@ -1,8 +1,6 @@
 import {
   Grid,
-  TextField,
   Typography,
-  Autocomplete,
   Avatar,
   Button,
   ThemeProvider,
@@ -14,7 +12,8 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import { useFormContext } from "react-hook-form";
 import { IFormInput } from "./SignUp";
 import React, { useState } from "react";
-import StandardTextField from "./inputs/StandardTextField";
+import CustomSelect from "./inputs/StandardTextField";
+import CustomAutoComplete from "./inputs/CustomAutoComplete";
 
 const interests = ["MLP", "Software"];
 
@@ -114,19 +113,14 @@ export default function StepThree() {
 
 function Name() {
   return (
-    <StandardTextField
-      id="name"
-      label="Name"
-      fieldName="name"
-      required={true}
-    />
+    <CustomSelect id="name" label="Name" fieldName="name" required={true} />
   );
 }
 
 //Location text field
 function Location() {
   return (
-    <StandardTextField
+    <CustomSelect
       id="location"
       label="Location"
       fieldName="location"
@@ -138,65 +132,31 @@ function Location() {
 //Title text field
 function Title() {
   return (
-    <StandardTextField
-      id="title"
-      label="Title"
-      fieldName="title"
-      required={true}
-    />
+    <CustomSelect id="title" label="Title" fieldName="title" required={true} />
   );
 }
 
 //Interest Tag AutoComplete
 function Interests() {
-  const props = useFormContext<IFormInput>();
-
-  //keep track of interests chosen if we were to go back to the previous step and then come back
-  const [chosenInterests, setChosenInterests] = useState(
-    props.getValues("interests") || []
-  );
-
   return (
-    <Grid item sx={{ position: "relative" }}>
-      <Autocomplete
-        multiple
-        id="tags-standard"
-        options={interests}
-        defaultValue={chosenInterests}
-        {...props.register("interests")}
-        getOptionLabel={(option) => option}
-        filterSelectedOptions
-        renderInput={(params) => (
-          <TextField {...params} variant="standard" label="Interests" />
-        )}
-        onChange={(event, data) => {
-          props.setValue("interests", data);
-          setChosenInterests(data);
-        }}
-      />
-      {props.formState.errors.interests && (
-        <Tooltip
-          disableFocusListener
-          disableTouchListener
-          arrow
-          title={props.formState.errors.interests?.message}
-          sx={{
-            position: "absolute",
-            top: "0px",
-            left: "-13px",
-          }}
-        >
-          <ErrorIcon color="error" />
-        </Tooltip>
-      )}
-    </Grid>
+    <CustomAutoComplete
+      required={true}
+      label="Interests"
+      id="interests"
+      fieldName="interests"
+      options={interests}
+      //demonstrate validation
+      // validators={{
+      //   bob: (arr) => {return arr.includes("bob") || "WHERE IS BOB"}
+      // }}
+    />
   );
 }
 
 //Label text field
 function Label() {
   return (
-    <StandardTextField
+    <CustomSelect
       id="label"
       label="Label"
       fieldName="label"

@@ -1,22 +1,12 @@
 import { useFormContext } from "react-hook-form";
-import {
-  Grid,
-  Divider,
-  MenuItem,
-  TextField,
-  Typography,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Tooltip,
-} from "@mui/material";
+import { Grid, Divider, Typography, FormGroup } from "@mui/material";
 
 import { IFormInput } from "./SignUp";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StandardTextField from "./inputs/StandardTextField";
 import PasswordTextField from "./inputs/PasswordTextField";
-import ErrorIcon from "@mui/icons-material/Error";
-
+import CheckBoxInput from "./inputs/CheckBox";
+import CustomSelect from "./inputs/CustomSelect";
 const informationSectionStyle = {
   paddingTop: 15,
   paddingBottom: 15,
@@ -89,7 +79,6 @@ const CountriesAndStates: { [key: string]: Array<string> } = {
   ],
   "Absolutely Goddamn": ["Nowhere"],
 };
-const menuStyle = { MenuProps: { style: { maxHeight: 200 } } };
 
 export default function StepOne() {
   //setting height of dropdown menu
@@ -280,10 +269,6 @@ function EmailAddress() {
 
 //password text field
 function Password() {
-  //for toggling password text visibility
-  const [passVisible, setPassVisible] = useState(false);
-  const togglePass = () => setPassVisible(!passVisible);
-
   return (
     <PasswordTextField
       fieldName="password"
@@ -294,8 +279,6 @@ function Password() {
           return value.length > 8 || "Password length needs to be at least 8.";
         },
       }}
-      passVisible={passVisible}
-      togglePass={togglePass}
     />
   );
 }
@@ -303,9 +286,6 @@ function Password() {
 //confirm text field
 function ConfirmPassword() {
   const props = useFormContext<IFormInput>();
-  //for toggling password text visibility
-  const [confirmPassVisible, setConfirmPassVisible] = useState(false);
-  const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
   return (
     <PasswordTextField
       fieldName="confirmPassword"
@@ -318,69 +298,28 @@ function ConfirmPassword() {
           );
         },
       }}
-      passVisible={confirmPassVisible}
-      togglePass={toggleConfirmPass}
     />
   );
 }
 
 //Terms and Conditions checkbox
 function TermsAndConditions() {
-  const props = useFormContext<IFormInput>();
-
-  //keep track of whether checkbox is checked for if we go back after submitting
-  const [termsChecked, setTermsChecked] = useState(
-    props.getValues("acceptedTermsConditions") || false
-  );
-
-  useEffect(() => {
-    props.setValue("acceptedTermsConditions", termsChecked);
-  });
   return (
-    <FormControlLabel
-      control={
-        <Checkbox
-          id="accepted-terms-and-conditions"
-          {...props.register("acceptedTermsConditions", {
-            required: "This is required",
-          })}
-          value={termsChecked}
-          checked={termsChecked}
-          onChange={(event, checked) => {
-            setTermsChecked(checked);
-          }}
-        />
-      }
-      label="* I Accept the Terms & Conditions"
+    <CheckBoxInput
+      required={true}
+      label={"* I Accept the Terms & Conditions"}
+      id="accepted-terms-and-conditions"
+      fieldName="acceptedTermsConditions"
     />
   );
 }
 // email update checkbox
 function EmailUpdates() {
-  const props = useFormContext<IFormInput>();
-
-  //keep track of whether checkbox is checked for if we go back after submitting
-  const [emailUpdateChecked, setEmailUpdateChecked] = useState(
-    props.getValues("emailUpdates") || false
-  );
-
-  useEffect(() => {
-    props.setValue("emailUpdates", emailUpdateChecked);
-  });
   return (
-    <FormControlLabel
-      control={
-        <Checkbox
-          id="email-updates"
-          {...props.register("emailUpdates")}
-          value={emailUpdateChecked}
-          checked={emailUpdateChecked}
-          onChange={(event, checked) => {
-            setEmailUpdateChecked(checked);
-          }}
-        />
-      }
-      label="* Yes! Sign me up for annoying emails"
+    <CheckBoxInput
+      label={"* Yes! Sign me up for annoying emails"}
+      id="email-updates"
+      fieldName="emailUpdates"
     />
   );
 }
@@ -388,141 +327,48 @@ function EmailUpdates() {
 function CountriesAndStatesSelect() {
   const props = useFormContext<IFormInput>();
 
-  //for setting countries/states options
+  //keep track of which option we're on
   const [stateOptions, setStateOptions] = useState(
-    CountriesAndStates[props.getValues("country")] || [""]
+    CountriesAndStates[props.getValues("country")] || []
   );
-  const [selectedCountry, setSelectedCountry] = useState(
-    props.getValues("country") || ""
-  );
-  const [selectedState, setSelectedState] = useState(
-    props.getValues("state") || ""
-  );
-
-  //update form values when selected country/state changes
-  useEffect(() => {
-    props.setValue("country", selectedCountry);
-    props.setValue("state", selectedState);
-  }, [selectedCountry, selectedState]);
-
-  //country select
-  const CountriesSelect = () => {
-    return (
-      <Grid item sx={{ position: "relative" }}>
-        <TextField
-          margin="normal"
-          fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...props.register("country", { required: "This is required" })}
-          id="country"
-          label="Country"
-          variant="outlined"
-          select
-          value={selectedCountry}
-          SelectProps={menuStyle}
-          onChange={(event) => {
-            //new country
-            let newCountry = event.target.value;
-            //set new country
-            setSelectedCountry(newCountry);
-            //undo previous state selection
-            setSelectedState("");
-            //set new state options
-            let newStates = CountriesAndStates[newCountry];
-            setStateOptions(newStates);
-          }}
-        >
-          {Object.keys(CountriesAndStates).map((country, index) => {
-            return (
-              <MenuItem key={index} value={country}>
-                {country}
-              </MenuItem>
-            );
-          })}
-        </TextField>
-        {props.formState.errors.country && (
-          <Tooltip
-            disableFocusListener
-            disableTouchListener
-            arrow
-            title={props.formState.errors.country?.message}
-            sx={{
-              position: "absolute",
-              top: "0px",
-              left: "-13px",
-            }}
-          >
-            <ErrorIcon color="error" />
-          </Tooltip>
-        )}
-      </Grid>
-    );
-  };
-
-  //State select
-  const StatesSelect = () => {
-    return (
-      <Grid item sx={{ position: "relative" }}>
-        <TextField
-          margin="normal"
-          fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...props.register("state", { required: "This is required" })}
-          id="state"
-          label="State"
-          variant="outlined"
-          select
-          value={selectedState}
-          SelectProps={menuStyle}
-          onChange={(event) => {
-            //get new state and set it as current selected option
-            let newState = event.target.value;
-            setSelectedState(newState);
-          }}
-        >
-          {stateOptions.length > 0 &&
-            stateOptions[0].length > 0 &&
-            stateOptions.map((state, index) => {
-              return (
-                <MenuItem key={index} value={state}>
-                  {state}
-                </MenuItem>
-              );
-            })}
-        </TextField>
-        {props.formState.errors.state && (
-          <Tooltip
-            disableFocusListener
-            disableTouchListener
-            arrow
-            title={props.formState.errors.state?.message}
-            sx={{
-              position: "absolute",
-              top: "0px",
-              left: "-13px",
-            }}
-          >
-            <ErrorIcon color="error" />
-          </Tooltip>
-        )}
-      </Grid>
-    );
-  };
-
   return (
-    <Grid container justifyContent="center" columnSpacing={4} style={rowStyle}>
-      {/*Country*/}
+    <Grid
+      container
+      justifyContent="center"
+      columnSpacing={4}
+      rowGap={3}
+      style={rowStyle}
+    >
       <Grid item xs={12} sm={6}>
-        <CountriesSelect />
+        <CustomSelect
+          fieldName="country"
+          required={true}
+          id={"country"}
+          label="Country"
+          options={Object.keys(CountriesAndStates)}
+          callback={() => {
+            setStateOptions(CountriesAndStates[props.getValues("country")]);
+            props.resetField("state");
+          }}
+        />
       </Grid>
-
-      {/*State*/}
       <Grid item xs={12} sm={6}>
-        <StatesSelect />
+        <CustomSelect
+          fieldName="state"
+          required={true}
+          id={"state"}
+          label="State"
+          options={stateOptions}
+          validators={{
+            validState: (value) => {
+              return (
+                CountriesAndStates[props.getValues("country")].includes(
+                  value
+                ) || "This state does not belong to this country."
+              );
+            },
+          }}
+        />
       </Grid>
     </Grid>
   );
