@@ -12,6 +12,7 @@ import {
 import ErrorIcon from "@mui/icons-material/Error";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import {
+  FieldErrors,
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
@@ -24,6 +25,7 @@ const interests = ["MLP", "Software"];
 
 export default function StepThree(props: {
   register: UseFormRegister<IFormInput>;
+  errors: FieldErrors<IFormInput>;
   setValue: UseFormSetValue<IFormInput>;
   getValues: UseFormGetValues<IFormInput>;
 }) {
@@ -139,6 +141,7 @@ export default function StepThree(props: {
         label="Name"
         fieldName="name"
         required={true}
+        errors={props.errors}
       />
     );
   }
@@ -163,6 +166,7 @@ export default function StepThree(props: {
         label="Location"
         fieldName="location"
         required={true}
+        errors={props.errors}
       />
     );
   }
@@ -187,6 +191,7 @@ export default function StepThree(props: {
         label="Title"
         fieldName="title"
         required={true}
+        errors={props.errors}
       />
     );
   }
@@ -199,6 +204,7 @@ export default function StepThree(props: {
     );
 
     return (
+      <Grid item sx={{position:'relative'}}>
       <Autocomplete
         multiple
         id="tags-standard"
@@ -215,6 +221,22 @@ export default function StepThree(props: {
           setChosenInterests(data);
         }}
       />
+      {props.errors.interests && (
+            <Tooltip
+              disableFocusListener
+              disableTouchListener
+              arrow
+              title={props.errors.interests?.message}
+              sx={{
+                position: "absolute",
+                top: "0px",
+                left: "-13px",
+              }}
+            >
+              <ErrorIcon color="error" />
+            </Tooltip>
+          )}
+      </Grid>
     );
   }
 
@@ -240,6 +262,7 @@ export default function StepThree(props: {
         multiline={true}
         maxRows={10}
         defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
+        errors={props.errors}
       />
     );
   }

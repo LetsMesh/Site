@@ -1,4 +1,5 @@
 import {
+  FieldErrors,
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
@@ -12,12 +13,14 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
+  Tooltip,
 } from "@mui/material";
 
 import { IFormInput } from "./SignUp";
 import { useEffect, useState } from "react";
 import StandardTextField from "./inputs/StandardTextField";
 import PasswordTextField from "./inputs/PasswordTextField";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const informationSectionStyle = {
   paddingTop: 15,
@@ -95,6 +98,7 @@ export default function StepOne(props: {
   register: UseFormRegister<IFormInput>;
   setValue: UseFormSetValue<IFormInput>;
   getValues: UseFormGetValues<IFormInput>;
+  errors: FieldErrors<IFormInput>;
 }) {
   //setting height of dropdown menu
   const menuStyle = { MenuProps: { style: { maxHeight: 200 } } };
@@ -235,6 +239,7 @@ export default function StepOne(props: {
         id="first-name"
         required={true}
         fieldName="firstName"
+        errors={props.errors}
       />
     );
   }
@@ -262,6 +267,7 @@ export default function StepOne(props: {
         id="last-name"
         required={true}
         fieldName="lastName"
+        errors={props.errors}
       />
     );
   }
@@ -287,6 +293,7 @@ export default function StepOne(props: {
         register={props.register}
         id="nickname"
         fieldName="nickName"
+        errors={props.errors}
       />
     );
   }
@@ -324,6 +331,7 @@ export default function StepOne(props: {
             return phoneNumRegex.test(value) || "Invalid phone number format";
           },
         }}
+        errors={props.errors}
       />
     );
   }
@@ -362,6 +370,7 @@ export default function StepOne(props: {
             return emailRegex.test(value) || "Invalid email address format";
           },
         }}
+        errors={props.errors}
       />
     );
   }
@@ -418,6 +427,7 @@ export default function StepOne(props: {
         }}
         passVisible={passVisible}
         togglePass={togglePass}
+        errors={props.errors}
       />
     );
   }
@@ -481,6 +491,7 @@ export default function StepOne(props: {
         }}
         passVisible={confirmPassVisible}
         togglePass={toggleConfirmPass}
+        errors={props.errors}
       />
     );
   }
@@ -563,74 +574,108 @@ export default function StepOne(props: {
     //country select
     const CountriesSelect = () => {
       return (
-        <TextField
-          margin="normal"
-          fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...props.register("country", { required: "This is required" })}
-          id="country"
-          label="Country"
-          variant="outlined"
-          select
-          value={selectedCountry}
-          SelectProps={menuStyle}
-          onChange={(event) => {
-            //new country
-            let newCountry = event.target.value;
-            //set new country
-            setSelectedCountry(newCountry);
-            //undo previous state selection
-            setSelectedState("");
-            //set new state options
-            let newStates = CountriesAndStates[newCountry];
-            setStateOptions(newStates);
-          }}
-        >
-          {Object.keys(CountriesAndStates).map((country, index) => {
-            return (
-              <MenuItem key={index} value={country}>
-                {country}
-              </MenuItem>
-            );
-          })}
-        </TextField>
+        <Grid item sx={{ position: "relative" }}>
+          <TextField
+            margin="normal"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            {...props.register("country", { required: "This is required" })}
+            id="country"
+            label="Country"
+            variant="outlined"
+            select
+            value={selectedCountry}
+            SelectProps={menuStyle}
+            onChange={(event) => {
+              //new country
+              let newCountry = event.target.value;
+              //set new country
+              setSelectedCountry(newCountry);
+              //undo previous state selection
+              setSelectedState("");
+              //set new state options
+              let newStates = CountriesAndStates[newCountry];
+              setStateOptions(newStates);
+            }}
+          >
+            {Object.keys(CountriesAndStates).map((country, index) => {
+              return (
+                <MenuItem key={index} value={country}>
+                  {country}
+                </MenuItem>
+              );
+            })}
+          </TextField>
+          {props.errors.country && (
+            <Tooltip
+              disableFocusListener
+              disableTouchListener
+              arrow
+              title={props.errors.country?.message}
+              sx={{
+                position: "absolute",
+                top: "0px",
+                left: "-13px",
+              }}
+            >
+              <ErrorIcon color="error" />
+            </Tooltip>
+          )}
+        </Grid>
       );
     };
 
     //State select
     const StatesSelect = () => {
       return (
-        <TextField
-          margin="normal"
-          fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...props.register("state", { required: "This is required" })}
-          id="state"
-          label="State"
-          variant="outlined"
-          select
-          value={selectedState}
-          SelectProps={menuStyle}
-          onChange={(event) => {
-            //get new state and set it as current selected option
-            let newState = event.target.value;
-            setSelectedState(newState);
-          }}
-        >
-          {stateOptions.length > 0 &&
-            stateOptions[0].length > 0 &&
-            stateOptions.map((state, index) => {
-              return (
-                <MenuItem key={index} value={state}>
-                  {state}
-                </MenuItem>
-              );
-            })}
-        </TextField>
+        <Grid item sx={{ position: "relative" }}>
+          <TextField
+            margin="normal"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            {...props.register("state", { required: "This is required" })}
+            id="state"
+            label="State"
+            variant="outlined"
+            select
+            value={selectedState}
+            SelectProps={menuStyle}
+            onChange={(event) => {
+              //get new state and set it as current selected option
+              let newState = event.target.value;
+              setSelectedState(newState);
+            }}
+          >
+            {stateOptions.length > 0 &&
+              stateOptions[0].length > 0 &&
+              stateOptions.map((state, index) => {
+                return (
+                  <MenuItem key={index} value={state}>
+                    {state}
+                  </MenuItem>
+                );
+              })}
+          </TextField>
+          {props.errors.state && (
+            <Tooltip
+              disableFocusListener
+              disableTouchListener
+              arrow
+              title={props.errors.state?.message}
+              sx={{
+                position: "absolute",
+                top: "0px",
+                left: "-13px",
+              }}
+            >
+              <ErrorIcon color="error" />
+            </Tooltip>
+          )}
+        </Grid>
       );
     };
 

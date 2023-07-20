@@ -1,6 +1,14 @@
-import { UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { IFormInput } from "../SignUp";
-import { TextField } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  ThemeProvider,
+  Tooltip,
+  Typography,
+  createTheme,
+} from "@mui/material";
+import ErrorIcon from "@mui/icons-material/Error";
 
 //for text-only textfields
 //takes in booleans representing if this is required to fill out, if this is multiline or not
@@ -8,8 +16,11 @@ import { TextField } from "@mui/material";
 //takes in label, id, and the form field name of the intended form field
 //can also pass in validator functions
 
+
+
 export default function StandardTextField(props: {
   register: UseFormRegister<IFormInput>;
+  errors: FieldErrors<IFormInput>;
   required?: boolean;
   label: string;
   id: string;
@@ -29,20 +40,40 @@ export default function StandardTextField(props: {
   validators?: { [key: string]: (value: string) => boolean | string };
 }) {
   return (
-    <TextField
-      margin="normal"
-      fullWidth
-      InputLabelProps={{
-        shrink: true,
-      }}
-      label={props.label}
-      id={props.id}
-      multiline={props.multiline ? true : false}
-      maxRows={props.maxRows ? props.maxRows : 1}
-      {...props.register(props.fieldName, {
-        required: props.required ? "This is required." : false,
-        validate: props.validators,
-      })}
-    />
+    <Grid sx={{ position: "relative" }}>
+      <TextField
+        margin="normal"
+        fullWidth
+        InputLabelProps={{
+          shrink: true,
+        }}
+        label={props.label}
+        id={props.id}
+        multiline={props.multiline ? true : false}
+        maxRows={props.maxRows ? props.maxRows : 1}
+        {...props.register(props.fieldName, {
+          required: props.required ? "This is required." : false,
+          validate: props.validators,
+        })}
+
+        // sx={{position:"relative"}}
+      />
+      {props.errors[props.fieldName] && (
+          <Tooltip
+            disableFocusListener
+            disableTouchListener
+            arrow
+            title={props.errors[props.fieldName]?.message}
+
+            sx={{
+              position: "absolute",
+              top: "0px",
+              left: "-13px",
+            }}
+          >
+            <ErrorIcon color="error" />
+          </Tooltip>
+      )}
+    </Grid>
   );
 }

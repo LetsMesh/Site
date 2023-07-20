@@ -106,7 +106,6 @@ export default function SignUp() {
           continueToNext();
         } else {
           console.log(errors);
-          alert("wrong");
         }
         break;
       case 2:
@@ -120,7 +119,6 @@ export default function SignUp() {
           continueToNext();
         } else {
           console.log(errors);
-          alert("wrong");
         }
         break;
       default:
@@ -137,9 +135,19 @@ export default function SignUp() {
 
   //The steps of the form, need to pass in the react hook form methods
   const stepComponents = [
-    <StepOne register={register} setValue={setValue} getValues={getValues} />,
+    <StepOne
+      register={register}
+      setValue={setValue}
+      getValues={getValues}
+      errors={errors}
+    />,
     <StepTwo getValues={getValues} />,
-    <StepThree register={register} setValue={setValue} getValues={getValues} />,
+    <StepThree
+      register={register}
+      setValue={setValue}
+      getValues={getValues}
+      errors={errors}
+    />,
   ];
 
   //TODO: need to get File object containing default profile picture to initialize picture form value
