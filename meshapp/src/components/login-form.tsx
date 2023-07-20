@@ -7,12 +7,21 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
-const LoginInput = () => {
+
+interface ComponentProps {
+  updateShowForgotPasswordState: () => void;
+}
+
+const LoginInput = (props: ComponentProps) => {
   const [formData, setFormData] = useState({ user: null, pass: null });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     console.log(formData);
   };
+  // show forgot password component if user clicks forgot password button
+  const forgotPasswordClicked = () => {
+    props.updateShowForgotPasswordState()
+  }
 
   return (
     <Grid
@@ -55,6 +64,7 @@ const LoginInput = () => {
       <Grid item xs sx={{ textAlign: "center", alignItems: "center" }}>
         <Stack spacing={2}>
           <Link
+            onClick={() => props.updateShowForgotPasswordState()}
             href="#"
             sx={{
               textDecoration: "underline",

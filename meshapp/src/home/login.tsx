@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Divider,
@@ -10,6 +10,7 @@ import {
 import { ThemeProvider, createTheme } from "@mui/material";
 import LoginInput from "../components/login-form";
 import { deepmerge } from "@mui/utils";
+import ForgotPassword from "../components/password-forms/initiate-reset-form";
 
 const buttonTheme = createTheme({
   components: {
@@ -52,6 +53,18 @@ const SignUp = () => {
 };
 
 const Login = () => {
+
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+  const updateShowForgotPasswordState = () => {
+    if (showForgotPassword == false) {
+      setShowForgotPassword(true)
+    }
+    if (showForgotPassword == true) {
+      setShowForgotPassword(false)
+    }
+    
+  }
   return (
     <ThemeProvider
       theme={(theme: Theme) => {
@@ -81,7 +94,7 @@ const Login = () => {
             <Divider orientation="vertical" />
           </Grid>
           <Grid item xs>
-            <LoginInput />
+          {showForgotPassword ? <ForgotPassword /> : <LoginInput updateShowForgotPasswordState={updateShowForgotPasswordState} />}
           </Grid>
         </Grid>
       </Grid>

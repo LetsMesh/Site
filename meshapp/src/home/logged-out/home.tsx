@@ -1,5 +1,5 @@
 import { Grid, Theme, ThemeProvider, createTheme } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 import loggedOutNav from "../../components/home-logged-out/loggedOutNavBar";
 import welcomeMessage from "../../components/home-logged-out/loggedOutWelcome";
@@ -7,10 +7,23 @@ import advertSection from "../../components/home-logged-out/advertSection";
 import reviewsSection from "../../components/home-logged-out/reviewSection";
 import LoginInput from "../../components/login-form";
 import { deepmerge } from "@mui/utils";
+import { Login } from "@mui/icons-material";
+import ForgotPassword from "../../components/password-forms/initiate-reset-form";
 
 export default function LoggedOutPage() {
   const pageTheme = PageTheme();
+  
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
+  const updateShowForgotPasswordState = () => {
+    if (showForgotPassword == false) {
+      setShowForgotPassword(true)
+    }
+    if (showForgotPassword == true) {
+      setShowForgotPassword(false)
+    }
+  }
+    
   return (
     <ThemeProvider
       theme={(theme: Theme) => {
@@ -59,7 +72,7 @@ export default function LoggedOutPage() {
               filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
             }}
           >
-            {LoginInput()}
+            {showForgotPassword ? <ForgotPassword /> : <LoginInput updateShowForgotPasswordState={updateShowForgotPasswordState} />}
           </Grid>
         </Grid>
 
