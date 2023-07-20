@@ -89,10 +89,10 @@ const CountriesAndStates: { [key: string]: Array<string> } = {
   ],
   "Absolutely Goddamn": ["Nowhere"],
 };
+const menuStyle = { MenuProps: { style: { maxHeight: 200 } } };
+
 export default function StepOne() {
-  const props = useFormContext<IFormInput>();
   //setting height of dropdown menu
-  const menuStyle = { MenuProps: { style: { maxHeight: 200 } } };
 
   return (
     <Grid
@@ -205,327 +205,325 @@ export default function StepOne() {
       <Divider sx={{ borderColor: "signUpDivider.main", opacity: 0.5 }} />
     </Grid>
   );
+}
+//---------------------------------------INPUTS-----------------------------------------------------------
 
-  //---------------------------------------INPUTS-----------------------------------------------------------
+//first name text field
+function FirstName() {
+  return (
+    <StandardTextField
+      label="First Name *"
+      id="first-name"
+      fieldName="firstName"
+      required={true}
+    />
+  );
+}
 
-  //first name text field
-  function FirstName() {
+//last name text field
+
+function LastName() {
+  return (
+    <StandardTextField
+      label="Last Name *"
+      id="last-name"
+      required={true}
+      fieldName="lastName"
+    />
+  );
+}
+
+//nickname text field
+
+function Nickname() {
+  return (
+    <StandardTextField label="Nickname" id="nickname" fieldName="nickName" />
+  );
+}
+
+//phone number text field
+
+function PhoneNumber() {
+  return (
+    <StandardTextField
+      label="Phone Number"
+      id="phone-number"
+      fieldName="phoneNumber"
+      validators={{
+        pattern: (value) => {
+          let phoneNumRegex =
+            /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+          return phoneNumRegex.test(value) || "Invalid phone number format";
+        },
+      }}
+    />
+  );
+}
+
+//email address text field
+function EmailAddress() {
+  return (
+    <StandardTextField
+      label="Email *"
+      id="email-address"
+      fieldName="email"
+      validators={{
+        pattern: (value) => {
+          let emailRegex =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return emailRegex.test(value) || "Invalid email address format";
+        },
+      }}
+    />
+  );
+}
+
+//password text field
+function Password() {
+  //for toggling password text visibility
+  const [passVisible, setPassVisible] = useState(false);
+  const togglePass = () => setPassVisible(!passVisible);
+
+  return (
+    <PasswordTextField
+      fieldName="password"
+      id="password"
+      label="Password *"
+      validators={{
+        minLength: (value) => {
+          return value.length > 8 || "Password length needs to be at least 8.";
+        },
+      }}
+      passVisible={passVisible}
+      togglePass={togglePass}
+    />
+  );
+}
+
+//confirm text field
+function ConfirmPassword() {
+  const props = useFormContext<IFormInput>();
+  //for toggling password text visibility
+  const [confirmPassVisible, setConfirmPassVisible] = useState(false);
+  const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
+  return (
+    <PasswordTextField
+      fieldName="confirmPassword"
+      id="confirm-password"
+      label="Confirm Password *"
+      validators={{
+        matchesPassword: (value) => {
+          return (
+            value === props.getValues("password") || "Does not match password."
+          );
+        },
+      }}
+      passVisible={confirmPassVisible}
+      togglePass={toggleConfirmPass}
+    />
+  );
+}
+
+//Terms and Conditions checkbox
+function TermsAndConditions() {
+  const props = useFormContext<IFormInput>();
+
+  //keep track of whether checkbox is checked for if we go back after submitting
+  const [termsChecked, setTermsChecked] = useState(
+    props.getValues("acceptedTermsConditions") || false
+  );
+
+  useEffect(() => {
+    props.setValue("acceptedTermsConditions", termsChecked);
+  });
+  return (
+    <FormControlLabel
+      control={
+        <Checkbox
+          id="accepted-terms-and-conditions"
+          {...props.register("acceptedTermsConditions", {
+            required: "This is required",
+          })}
+          value={termsChecked}
+          checked={termsChecked}
+          onChange={(event, checked) => {
+            setTermsChecked(checked);
+          }}
+        />
+      }
+      label="* I Accept the Terms & Conditions"
+    />
+  );
+}
+// email update checkbox
+function EmailUpdates() {
+  const props = useFormContext<IFormInput>();
+
+  //keep track of whether checkbox is checked for if we go back after submitting
+  const [emailUpdateChecked, setEmailUpdateChecked] = useState(
+    props.getValues("emailUpdates") || false
+  );
+
+  useEffect(() => {
+    props.setValue("emailUpdates", emailUpdateChecked);
+  });
+  return (
+    <FormControlLabel
+      control={
+        <Checkbox
+          id="email-updates"
+          {...props.register("emailUpdates")}
+          value={emailUpdateChecked}
+          checked={emailUpdateChecked}
+          onChange={(event, checked) => {
+            setEmailUpdateChecked(checked);
+          }}
+        />
+      }
+      label="* Yes! Sign me up for annoying emails"
+    />
+  );
+}
+//countries/states select
+function CountriesAndStatesSelect() {
+  const props = useFormContext<IFormInput>();
+
+  //for setting countries/states options
+  const [stateOptions, setStateOptions] = useState(
+    CountriesAndStates[props.getValues("country")] || [""]
+  );
+  const [selectedCountry, setSelectedCountry] = useState(
+    props.getValues("country") || ""
+  );
+  const [selectedState, setSelectedState] = useState(
+    props.getValues("state") || ""
+  );
+
+  //update form values when selected country/state changes
+  useEffect(() => {
+    props.setValue("country", selectedCountry);
+    props.setValue("state", selectedState);
+  }, [selectedCountry, selectedState]);
+
+  //country select
+  const CountriesSelect = () => {
     return (
-      <StandardTextField
-        label="First Name *"
-        id="first-name"
-        fieldName="firstName"
-        required={true}
-      />
-    );
-  }
-
-  //last name text field
-
-  function LastName() {
-    return (
-      <StandardTextField
-        label="Last Name *"
-        id="last-name"
-        required={true}
-        fieldName="lastName"
-      />
-    );
-  }
-
-  //nickname text field
-
-  function Nickname() {
-    return (
-      <StandardTextField label="Nickname" id="nickname" fieldName="nickName" />
-    );
-  }
-
-  //phone number text field
-
-  function PhoneNumber() {
-    return (
-      <StandardTextField
-        label="Phone Number"
-        id="phone-number"
-        fieldName="phoneNumber"
-        validators={{
-          pattern: (value) => {
-            let phoneNumRegex =
-              /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
-            return phoneNumRegex.test(value) || "Invalid phone number format";
-          },
-        }}
-      />
-    );
-  }
-
-  //email address text field
-  function EmailAddress() {
-    return (
-      <StandardTextField
-        label="Email *"
-        id="email-address"
-        fieldName="email"
-        validators={{
-          pattern: (value) => {
-            let emailRegex =
-              /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return emailRegex.test(value) || "Invalid email address format";
-          },
-        }}
-      />
-    );
-  }
-
-  //password text field
-  function Password() {
-    //for toggling password text visibility
-    const [passVisible, setPassVisible] = useState(false);
-    const togglePass = () => setPassVisible(!passVisible);
-
-    return (
-      <PasswordTextField
-        fieldName="password"
-        id="password"
-        label="Password *"
-        validators={{
-          minLength: (value) => {
+      <Grid item sx={{ position: "relative" }}>
+        <TextField
+          margin="normal"
+          fullWidth
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...props.register("country", { required: "This is required" })}
+          id="country"
+          label="Country"
+          variant="outlined"
+          select
+          value={selectedCountry}
+          SelectProps={menuStyle}
+          onChange={(event) => {
+            //new country
+            let newCountry = event.target.value;
+            //set new country
+            setSelectedCountry(newCountry);
+            //undo previous state selection
+            setSelectedState("");
+            //set new state options
+            let newStates = CountriesAndStates[newCountry];
+            setStateOptions(newStates);
+          }}
+        >
+          {Object.keys(CountriesAndStates).map((country, index) => {
             return (
-              value.length > 8 || "Password length needs to be at least 8."
+              <MenuItem key={index} value={country}>
+                {country}
+              </MenuItem>
             );
-          },
-        }}
-        passVisible={passVisible}
-        togglePass={togglePass}
-      />
-    );
-  }
-
-  //confirm text field
-  function ConfirmPassword() {
-    //for toggling password text visibility
-    const [confirmPassVisible, setConfirmPassVisible] = useState(false);
-    const toggleConfirmPass = () => setConfirmPassVisible(!confirmPassVisible);
-    return (
-      <PasswordTextField
-        fieldName="confirmPassword"
-        id="confirm-password"
-        label="Confirm Password *"
-        validators={{
-          matchesPassword: (value) => {
-            return (
-              value === props.getValues("password") ||
-              "Does not match password."
-            );
-          },
-        }}
-        passVisible={confirmPassVisible}
-        togglePass={toggleConfirmPass}
-      />
-    );
-  }
-
-  //Terms and Conditions checkbox
-  function TermsAndConditions() {
-    //keep track of whether checkbox is checked for if we go back after submitting
-    const [termsChecked, setTermsChecked] = useState(
-      props.getValues("acceptedTermsConditions") || false
-    );
-
-    useEffect(() => {
-      props.setValue("acceptedTermsConditions", termsChecked);
-    });
-    return (
-      <FormControlLabel
-        control={
-          <Checkbox
-            id="accepted-terms-and-conditions"
-            {...props.register("acceptedTermsConditions", {
-              required: "This is required",
-            })}
-            value={termsChecked}
-            checked={termsChecked}
-            onChange={(event, checked) => {
-              setTermsChecked(checked);
-            }}
-          />
-        }
-        label="* I Accept the Terms & Conditions"
-      />
-    );
-  }
-  // email update checkbox
-  function EmailUpdates() {
-    //keep track of whether checkbox is checked for if we go back after submitting
-    const [emailUpdateChecked, setEmailUpdateChecked] = useState(
-      props.getValues("emailUpdates") || false
-    );
-
-    useEffect(() => {
-      props.setValue("emailUpdates", emailUpdateChecked);
-    });
-    return (
-      <FormControlLabel
-        control={
-          <Checkbox
-            id="email-updates"
-            {...props.register("emailUpdates")}
-            value={emailUpdateChecked}
-            checked={emailUpdateChecked}
-            onChange={(event, checked) => {
-              setEmailUpdateChecked(checked);
-            }}
-          />
-        }
-        label="* Yes! Sign me up for annoying emails"
-      />
-    );
-  }
-  //countries/states select
-  function CountriesAndStatesSelect() {
-    //for setting countries/states options
-    const [stateOptions, setStateOptions] = useState(
-      CountriesAndStates[props.getValues("country")] || [""]
-    );
-    const [selectedCountry, setSelectedCountry] = useState(
-      props.getValues("country") || ""
-    );
-    const [selectedState, setSelectedState] = useState(
-      props.getValues("state") || ""
-    );
-
-    //update form values when selected country/state changes
-    useEffect(() => {
-      props.setValue("country", selectedCountry);
-      props.setValue("state", selectedState);
-    }, [selectedCountry, selectedState]);
-
-    //country select
-    const CountriesSelect = () => {
-      return (
-        <Grid item sx={{ position: "relative" }}>
-          <TextField
-            margin="normal"
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            {...props.register("country", { required: "This is required" })}
-            id="country"
-            label="Country"
-            variant="outlined"
-            select
-            value={selectedCountry}
-            SelectProps={menuStyle}
-            onChange={(event) => {
-              //new country
-              let newCountry = event.target.value;
-              //set new country
-              setSelectedCountry(newCountry);
-              //undo previous state selection
-              setSelectedState("");
-              //set new state options
-              let newStates = CountriesAndStates[newCountry];
-              setStateOptions(newStates);
+          })}
+        </TextField>
+        {props.formState.errors.country && (
+          <Tooltip
+            disableFocusListener
+            disableTouchListener
+            arrow
+            title={props.formState.errors.country?.message}
+            sx={{
+              position: "absolute",
+              top: "0px",
+              left: "-13px",
             }}
           >
-            {Object.keys(CountriesAndStates).map((country, index) => {
+            <ErrorIcon color="error" />
+          </Tooltip>
+        )}
+      </Grid>
+    );
+  };
+
+  //State select
+  const StatesSelect = () => {
+    return (
+      <Grid item sx={{ position: "relative" }}>
+        <TextField
+          margin="normal"
+          fullWidth
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...props.register("state", { required: "This is required" })}
+          id="state"
+          label="State"
+          variant="outlined"
+          select
+          value={selectedState}
+          SelectProps={menuStyle}
+          onChange={(event) => {
+            //get new state and set it as current selected option
+            let newState = event.target.value;
+            setSelectedState(newState);
+          }}
+        >
+          {stateOptions.length > 0 &&
+            stateOptions[0].length > 0 &&
+            stateOptions.map((state, index) => {
               return (
-                <MenuItem key={index} value={country}>
-                  {country}
+                <MenuItem key={index} value={state}>
+                  {state}
                 </MenuItem>
               );
             })}
-          </TextField>
-          {props.formState.errors.country && (
-            <Tooltip
-              disableFocusListener
-              disableTouchListener
-              arrow
-              title={props.formState.errors.country?.message}
-              sx={{
-                position: "absolute",
-                top: "0px",
-                left: "-13px",
-              }}
-            >
-              <ErrorIcon color="error" />
-            </Tooltip>
-          )}
-        </Grid>
-      );
-    };
-
-    //State select
-    const StatesSelect = () => {
-      return (
-        <Grid item sx={{ position: "relative" }}>
-          <TextField
-            margin="normal"
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            {...props.register("state", { required: "This is required" })}
-            id="state"
-            label="State"
-            variant="outlined"
-            select
-            value={selectedState}
-            SelectProps={menuStyle}
-            onChange={(event) => {
-              //get new state and set it as current selected option
-              let newState = event.target.value;
-              setSelectedState(newState);
+        </TextField>
+        {props.formState.errors.state && (
+          <Tooltip
+            disableFocusListener
+            disableTouchListener
+            arrow
+            title={props.formState.errors.state?.message}
+            sx={{
+              position: "absolute",
+              top: "0px",
+              left: "-13px",
             }}
           >
-            {stateOptions.length > 0 &&
-              stateOptions[0].length > 0 &&
-              stateOptions.map((state, index) => {
-                return (
-                  <MenuItem key={index} value={state}>
-                    {state}
-                  </MenuItem>
-                );
-              })}
-          </TextField>
-          {props.formState.errors.state && (
-            <Tooltip
-              disableFocusListener
-              disableTouchListener
-              arrow
-              title={props.formState.errors.state?.message}
-              sx={{
-                position: "absolute",
-                top: "0px",
-                left: "-13px",
-              }}
-            >
-              <ErrorIcon color="error" />
-            </Tooltip>
-          )}
-        </Grid>
-      );
-    };
-
-    return (
-      <Grid
-        container
-        justifyContent="center"
-        columnSpacing={4}
-        style={rowStyle}
-      >
-        {/*Country*/}
-        <Grid item xs={12} sm={6}>
-          <CountriesSelect />
-        </Grid>
-
-        {/*State*/}
-        <Grid item xs={12} sm={6}>
-          <StatesSelect />
-        </Grid>
+            <ErrorIcon color="error" />
+          </Tooltip>
+        )}
       </Grid>
     );
-  }
+  };
+
+  return (
+    <Grid container justifyContent="center" columnSpacing={4} style={rowStyle}>
+      {/*Country*/}
+      <Grid item xs={12} sm={6}>
+        <CountriesSelect />
+      </Grid>
+
+      {/*State*/}
+      <Grid item xs={12} sm={6}>
+        <StatesSelect />
+      </Grid>
+    </Grid>
+  );
 }

@@ -19,7 +19,6 @@ import StandardTextField from "./inputs/StandardTextField";
 const interests = ["MLP", "Software"];
 
 export default function StepThree() {
-  const props = useFormContext<IFormInput>();
   return (
     <Grid container bgcolor={"cardBackground.main"}>
       <Grid
@@ -109,225 +108,228 @@ export default function StepThree() {
       </Grid>
     </Grid>
   );
+}
+//---------------------------------------INPUTS-----------------------------------------------------------
+//name text field
 
-  //---------------------------------------INPUTS-----------------------------------------------------------
-  //name text field
+function Name() {
+  return (
+    <StandardTextField
+      id="name"
+      label="Name"
+      fieldName="name"
+      required={true}
+    />
+  );
+}
 
-  function Name() {
-    return (
-      <StandardTextField
-        id="name"
-        label="Name"
-        fieldName="name"
-        required={true}
-      />
-    );
-  }
+//Location text field
+function Location() {
+  return (
+    <StandardTextField
+      id="location"
+      label="Location"
+      fieldName="location"
+      required={true}
+    />
+  );
+}
 
-  //Location text field
-  function Location() {
-    return (
-      <StandardTextField
-        id="location"
-        label="Location"
-        fieldName="location"
-        required={true}
-      />
-    );
-  }
+//Title text field
+function Title() {
+  return (
+    <StandardTextField
+      id="title"
+      label="Title"
+      fieldName="title"
+      required={true}
+    />
+  );
+}
 
-  //Title text field
-  function Title() {
-    return (
-      <StandardTextField
-        id="title"
-        label="Title"
-        fieldName="title"
-        required={true}
-      />
-    );
-  }
+//Interest Tag AutoComplete
+function Interests() {
+  const props = useFormContext<IFormInput>();
 
-  //Interest Tag AutoComplete
-  function Interests() {
-    //keep track of interests chosen if we were to go back to the previous step and then come back
-    const [chosenInterests, setChosenInterests] = useState(
-      props.getValues("interests") || []
-    );
+  //keep track of interests chosen if we were to go back to the previous step and then come back
+  const [chosenInterests, setChosenInterests] = useState(
+    props.getValues("interests") || []
+  );
 
-    return (
-      <Grid item sx={{ position: "relative" }}>
-        <Autocomplete
-          multiple
-          id="tags-standard"
-          options={interests}
-          defaultValue={chosenInterests}
-          {...props.register("interests")}
-          getOptionLabel={(option) => option}
-          filterSelectedOptions
-          renderInput={(params) => (
-            <TextField {...params} variant="standard" label="Interests" />
-          )}
-          onChange={(event, data) => {
-            props.setValue("interests", data);
-            setChosenInterests(data);
-          }}
-        />
-        {props.formState.errors.interests && (
-          <Tooltip
-            disableFocusListener
-            disableTouchListener
-            arrow
-            title={props.formState.errors.interests?.message}
-            sx={{
-              position: "absolute",
-              top: "0px",
-              left: "-13px",
-            }}
-          >
-            <ErrorIcon color="error" />
-          </Tooltip>
+  return (
+    <Grid item sx={{ position: "relative" }}>
+      <Autocomplete
+        multiple
+        id="tags-standard"
+        options={interests}
+        defaultValue={chosenInterests}
+        {...props.register("interests")}
+        getOptionLabel={(option) => option}
+        filterSelectedOptions
+        renderInput={(params) => (
+          <TextField {...params} variant="standard" label="Interests" />
         )}
-      </Grid>
-    );
-  }
-
-  //Label text field
-  function Label() {
-    return (
-      <StandardTextField
-        id="label"
-        label="Label"
-        fieldName="label"
-        required={true}
-        multiline={true}
-        maxRows={10}
-        defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
+        onChange={(event, data) => {
+          props.setValue("interests", data);
+          setChosenInterests(data);
+        }}
       />
-    );
-  }
-  //Profile Picture and Upload Button
-  function ProfilePictureAndUploadButton() {
-    //start image with default profile picture OR the chosen image if we have already gotten it
-    const [image, setImage] = useState(
-      props.getValues("picture")
-        ? URL.createObjectURL(props.getValues("picture"))
-        : "DefaultProfile.png"
-    );
-    const [showError, setShowError] = useState(false);
+      {props.formState.errors.interests && (
+        <Tooltip
+          disableFocusListener
+          disableTouchListener
+          arrow
+          title={props.formState.errors.interests?.message}
+          sx={{
+            position: "absolute",
+            top: "0px",
+            left: "-13px",
+          }}
+        >
+          <ErrorIcon color="error" />
+        </Tooltip>
+      )}
+    </Grid>
+  );
+}
 
-    //trigger file input
-    const handleEditPicture = (event: React.MouseEvent) => {
-      event.stopPropagation();
-      const fileInput = document.getElementById("fileInput");
-      fileInput?.click();
-    };
+//Label text field
+function Label() {
+  return (
+    <StandardTextField
+      id="label"
+      label="Label"
+      fieldName="label"
+      required={true}
+      multiline={true}
+      maxRows={10}
+      defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
+    />
+  );
+}
+//Profile Picture and Upload Button
+function ProfilePictureAndUploadButton() {
+  const props = useFormContext<IFormInput>();
 
-    //handle file change, if valid image then set image as the input and form value,, otherwise display the error
-    const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      if (file && file.type.startsWith("image/")) {
-        const url = URL.createObjectURL(file);
-        console.log(file);
-        console.log(url);
-        setImage(url);
-        setShowError(false);
-        props.setValue("picture", file);
-      } else {
-        setShowError(true);
-      }
-    };
+  //start image with default profile picture OR the chosen image if we have already gotten it
+  const [image, setImage] = useState(
+    props.getValues("picture")
+      ? URL.createObjectURL(props.getValues("picture"))
+      : "DefaultProfile.png"
+  );
+  const [showError, setShowError] = useState(false);
 
-    //styling for error
-    const tooltipErrorTheme = createTheme({
-      components: {
-        MuiTooltip: {
-          styleOverrides: {
-            tooltip: {
-              backgroundColor: "#f44336",
-              color: "#ffffff",
-            },
-            arrow: {
-              color: "#f44336",
-            },
+  //trigger file input
+  const handleEditPicture = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    const fileInput = document.getElementById("fileInput");
+    fileInput?.click();
+  };
+
+  //handle file change, if valid image then set image as the input and form value,, otherwise display the error
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      const url = URL.createObjectURL(file);
+      console.log(file);
+      console.log(url);
+      setImage(url);
+      setShowError(false);
+      props.setValue("picture", file);
+    } else {
+      setShowError(true);
+    }
+  };
+
+  //styling for error
+  const tooltipErrorTheme = createTheme({
+    components: {
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            backgroundColor: "#f44336",
+            color: "#ffffff",
+          },
+          arrow: {
+            color: "#f44336",
           },
         },
       },
-    });
+    },
+  });
 
-    //upload picture button
-    const UploadButton = () => (
-      <Grid item>
-        <Button
-          variant="contained"
-          endIcon={<CollectionsIcon />}
-          sx={{ padding: "10px" }}
-          onClick={handleEditPicture}
-        >
-          <input
-            type="file"
-            id="fileInput"
-            style={{ display: "none" }}
-            accept="image/*"
-            onChange={onFileChange}
-          />
-          <Typography>UPLOAD PICTURE</Typography>
-
-          {/* show error tooltip if there is an error */}
-          {showError ? (
-            <ThemeProvider theme={tooltipErrorTheme}>
-              <Tooltip
-                disableFocusListener
-                disableTouchListener
-                arrow
-                title={"Invalid file! Please upload an image."}
-                placement="top"
-                sx={{
-                  position: "absolute",
-                  top: "-13px",
-                  left: "-13px",
-                }}
-              >
-                <ErrorIcon color="error" />
-              </Tooltip>
-            </ThemeProvider>
-          ) : null}
-        </Button>
-      </Grid>
-    );
-
-    //profile picture
-    const ProfilePicture = () => (
-      <Grid item>
-        <Avatar
-          alt="Profile Picture"
-          src={image}
-          sx={{
-            width: 300,
-            height: 300,
-            bgcolor: "#D9D9D9",
-            "@media(max-width:1000px)": {
-              width: 250,
-              height: 250,
-            },
-            "@media(max-width:900px)": {
-              width: 200,
-              height: 200,
-            },
-            "@media(max-width:700px)": {
-              width: 175,
-              height: 175,
-            },
-          }}
+  //upload picture button
+  const UploadButton = () => (
+    <Grid item>
+      <Button
+        variant="contained"
+        endIcon={<CollectionsIcon />}
+        sx={{ padding: "10px" }}
+        onClick={handleEditPicture}
+      >
+        <input
+          type="file"
+          id="fileInput"
+          style={{ display: "none" }}
+          accept="image/*"
+          onChange={onFileChange}
         />
-      </Grid>
-    );
+        <Typography>UPLOAD PICTURE</Typography>
 
-    return (
-      <Grid container direction="column" alignItems="center" rowSpacing={2}>
-        <ProfilePicture />
-        <UploadButton />
-      </Grid>
-    );
-  }
+        {/* show error tooltip if there is an error */}
+        {showError ? (
+          <ThemeProvider theme={tooltipErrorTheme}>
+            <Tooltip
+              disableFocusListener
+              disableTouchListener
+              arrow
+              title={"Invalid file! Please upload an image."}
+              placement="top"
+              sx={{
+                position: "absolute",
+                top: "-13px",
+                left: "-13px",
+              }}
+            >
+              <ErrorIcon color="error" />
+            </Tooltip>
+          </ThemeProvider>
+        ) : null}
+      </Button>
+    </Grid>
+  );
+
+  //profile picture
+  const ProfilePicture = () => (
+    <Grid item>
+      <Avatar
+        alt="Profile Picture"
+        src={image}
+        sx={{
+          width: 300,
+          height: 300,
+          bgcolor: "#D9D9D9",
+          "@media(max-width:1000px)": {
+            width: 250,
+            height: 250,
+          },
+          "@media(max-width:900px)": {
+            width: 200,
+            height: 200,
+          },
+          "@media(max-width:700px)": {
+            width: 175,
+            height: 175,
+          },
+        }}
+      />
+    </Grid>
+  );
+
+  return (
+    <Grid container direction="column" alignItems="center" rowSpacing={2}>
+      <ProfilePicture />
+      <UploadButton />
+    </Grid>
+  );
 }
