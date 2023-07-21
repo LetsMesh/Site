@@ -1,6 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
+from ..accounts.models import Account
+from ..profiles.models import Profile
 
 from mesh.profiles.models import Profile
 
