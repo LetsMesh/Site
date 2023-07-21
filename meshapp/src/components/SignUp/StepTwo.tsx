@@ -34,6 +34,7 @@ const modalStyle = {
   textAlign: "center",
 };
 
+//TODO (#262): rework send verification buttons to actually send verification emails to the input email, and for the success email verification modal to appear upon actual verification
 export default function StepTwo() {
   const props = useFormContext<IFormInput>();
 
@@ -84,8 +85,6 @@ export default function StepTwo() {
     );
   }
   //returns modal for pending verifcation
-  //currently the "send verification link" serves to just close the pending bubble and open the success bubble
-  //will need to rework button to actually send verification and open the success bubble upon actual verification
   function PendingVerification() {
     return (
       <Modal open={pendingOpen} onClose={handlePendingClose}>
