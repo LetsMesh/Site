@@ -3,9 +3,9 @@ import { Grid, Divider, Typography, FormGroup } from "@mui/material";
 
 import { IFormInput } from "./SignUp";
 import { useState } from "react";
-import StandardTextField from "./inputs/StandardTextField";
-import PasswordTextField from "./inputs/PasswordTextField";
-import CheckBoxInput from "./inputs/CheckBox";
+import CustomStandardTextField from "./inputs/CustomStandardTextField";
+import CustomPasswordTextField from "./inputs/CustomPasswordTextField";
+import CustomCheckbox from "./inputs/CustomCheckBox";
 import CustomSelect from "./inputs/CustomSelect";
 const informationSectionStyle = {
   paddingTop: 15,
@@ -17,6 +17,7 @@ const rowStyle = {
   paddingBottom: 15,
 };
 
+//dummy data for location selects
 const CountriesAndStates: { [key: string]: Array<string> } = {
   "United States": [
     "Alabama",
@@ -200,7 +201,7 @@ export default function StepOne() {
 //first name text field
 function FirstName() {
   return (
-    <StandardTextField
+    <CustomStandardTextField
       label="First Name *"
       id="first-name"
       fieldName="firstName"
@@ -213,7 +214,7 @@ function FirstName() {
 
 function LastName() {
   return (
-    <StandardTextField
+    <CustomStandardTextField
       label="Last Name *"
       id="last-name"
       required={true}
@@ -226,7 +227,11 @@ function LastName() {
 
 function Nickname() {
   return (
-    <StandardTextField label="Nickname" id="nickname" fieldName="nickName" />
+    <CustomStandardTextField
+      label="Nickname"
+      id="nickname"
+      fieldName="nickName"
+    />
   );
 }
 
@@ -234,7 +239,7 @@ function Nickname() {
 
 function PhoneNumber() {
   return (
-    <StandardTextField
+    <CustomStandardTextField
       label="Phone Number"
       id="phone-number"
       fieldName="phoneNumber"
@@ -252,7 +257,7 @@ function PhoneNumber() {
 //email address text field
 function EmailAddress() {
   return (
-    <StandardTextField
+    <CustomStandardTextField
       label="Email *"
       id="email-address"
       fieldName="email"
@@ -270,7 +275,7 @@ function EmailAddress() {
 //password text field
 function Password() {
   return (
-    <PasswordTextField
+    <CustomPasswordTextField
       fieldName="password"
       id="password"
       label="Password *"
@@ -287,7 +292,7 @@ function Password() {
 function ConfirmPassword() {
   const props = useFormContext<IFormInput>();
   return (
-    <PasswordTextField
+    <CustomPasswordTextField
       fieldName="confirmPassword"
       id="confirm-password"
       label="Confirm Password *"
@@ -305,7 +310,7 @@ function ConfirmPassword() {
 //Terms and Conditions checkbox
 function TermsAndConditions() {
   return (
-    <CheckBoxInput
+    <CustomCheckbox
       required={true}
       label={"* I Accept the Terms & Conditions"}
       id="accepted-terms-and-conditions"
@@ -316,7 +321,7 @@ function TermsAndConditions() {
 // email update checkbox
 function EmailUpdates() {
   return (
-    <CheckBoxInput
+    <CustomCheckbox
       label={"* Yes! Sign me up for annoying emails"}
       id="email-updates"
       fieldName="emailUpdates"

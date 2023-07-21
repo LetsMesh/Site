@@ -1,18 +1,10 @@
-import {
-  Grid,
-  Typography,
-  Avatar,
-  Button,
-  ThemeProvider,
-  Tooltip,
-  createTheme,
-} from "@mui/material";
+import { Grid, Typography, Avatar, Button, Tooltip } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import { useFormContext } from "react-hook-form";
 import { IFormInput } from "./SignUp";
 import React, { useState } from "react";
-import CustomSelect from "./inputs/StandardTextField";
+import CustomSelect from "./inputs/CustomStandardTextField";
 import CustomAutoComplete from "./inputs/CustomAutoComplete";
 
 const interests = ["MLP", "Software"];
@@ -201,23 +193,6 @@ function ProfilePictureAndUploadButton() {
     }
   };
 
-  //styling for error
-  const tooltipErrorTheme = createTheme({
-    components: {
-      MuiTooltip: {
-        styleOverrides: {
-          tooltip: {
-            backgroundColor: "#f44336",
-            color: "#ffffff",
-          },
-          arrow: {
-            color: "#f44336",
-          },
-        },
-      },
-    },
-  });
-
   //upload picture button
   const UploadButton = () => (
     <Grid item>
@@ -238,22 +213,20 @@ function ProfilePictureAndUploadButton() {
 
         {/* show error tooltip if there is an error */}
         {showError ? (
-          <ThemeProvider theme={tooltipErrorTheme}>
-            <Tooltip
-              disableFocusListener
-              disableTouchListener
-              arrow
-              title={"Invalid file! Please upload an image."}
-              placement="top"
-              sx={{
-                position: "absolute",
-                top: "-13px",
-                left: "-13px",
-              }}
-            >
-              <ErrorIcon color="error" />
-            </Tooltip>
-          </ThemeProvider>
+          <Tooltip
+            disableFocusListener
+            disableTouchListener
+            arrow
+            title={"Invalid file! Please upload an image."}
+            placement="top"
+            sx={{
+              position: "absolute",
+              top: "-13px",
+              left: "-13px",
+            }}
+          >
+            <ErrorIcon color="error" />
+          </Tooltip>
         ) : null}
       </Button>
     </Grid>

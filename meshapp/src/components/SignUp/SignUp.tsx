@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Typography } from "@mui/material";
+import { Theme, ThemeProvider, Typography, createTheme } from "@mui/material";
 const steps = ["Create Account", "Verify Email", "Go to Profile"];
 
 //interface for the form field names and types
@@ -33,6 +33,24 @@ export interface IFormInput {
   interests: Array<string>;
   picture: File;
 }
+
+//styling for error
+const tooltipErrorTheme = createTheme({
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: "#f44336",
+          color: "#ffffff",
+        },
+        arrow: {
+          color: "#f44336",
+        },
+      },
+    },
+  },
+});
+
 let render = 0;
 export default function SignUp() {
   const formMethods = useForm<IFormInput>({
@@ -76,7 +94,8 @@ export default function SignUp() {
 
     let isValid = false;
 
-    //trigger validation for each step unless it is 2nd step (where there aren't any inputs)
+    // trigger validation for each step unless it is 2nd step (where there aren't any inputs)
+    //if we're on the last step, then trigger submit
     if (activeStep === 0) {
       isValid = await formMethods.trigger([
         "firstName",
@@ -98,6 +117,7 @@ export default function SignUp() {
         "name",
         "interests",
       ]);
+      formMethods.handleSubmit(onSubmit);
     }
 
     if (isValid || activeStep === 1) {
@@ -118,71 +138,83 @@ export default function SignUp() {
   //TODO: need to get File object containing default profile picture to initialize picture form value
 
   return (
-    <FormProvider {...formMethods}>
-      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        {/*Load step */}
-        {stepComponents[activeStep]}
-        {/* 
+    <ThemeProvider
+      theme={(theme: Theme) => {
+        return createTheme(theme, {
+          components: {
+            ...theme.components,
+            MuiTooltip: tooltipErrorTheme.components?.MuiTooltip,
+          },
+        });
+      }}
+    >
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          {/*Load step */}
+          {stepComponents[activeStep]}
+          {/* 
         Stepper showing what step we are on and all of the steps, along with the buttons for traversing through steps
         When going below 600px, the stepper will stack on top of the buttons.
         */}
-        <Grid
-          container
-          justifyContent="space-evenly"
-          alignItems="flex-end"
-          sx={{ padding: "20px 0", backgroundColor: "cardBackground.main" }}
-        >
-          <Grid container justifyContent="center" xs={5} sm={3}>
-            {/*disables when we're on the first step*/}
-            <Button
-              disabled={activeStep === 0}
-              variant="contained"
-              onClick={handlePrevious}
-              startIcon={<ChevronLeftIcon />}
-            >
-              <Typography>Previous</Typography>
-            </Button>
-          </Grid>
           <Grid
-            item
-            xs={12}
-            sm={6}
-            sx={{
-              "@media(max-width:600px)": {
-                order: -1,
-                marginBottom: "10px",
-              },
-            }}
+            container
+            justifyContent="space-evenly"
+            alignItems="flex-end"
+            sx={{ padding: "20px 0", backgroundColor: "cardBackground.main" }}
           >
-            <Stepper activeStep={activeStep}>
-              {steps.map((label, index) => {
-                const stepProps: { completed?: boolean } = {};
-                return (
-                  <Step key={label} {...stepProps}>
-                    <StepLabel sx={{ textAlign: "center" }}>{label}</StepLabel>
-                  </Step>
-                );
-              })}
-            </Stepper>
-          </Grid>
-
-          <Grid container justifyContent="center" xs={5} sm={3}>
-            <Button
-              variant="contained"
-              type={activeStep === 2 ? "submit" : "button"}
-              onClick={handleContinue}
-              endIcon={<ArrowForwardIcon />}
+            <Grid container justifyContent="center" xs={5} sm={3}>
+              {/*disables when we're on the first step*/}
+              <Button
+                disabled={activeStep === 0}
+                variant="contained"
+                onClick={handlePrevious}
+                startIcon={<ChevronLeftIcon />}
+              >
+                <Typography>Previous</Typography>
+              </Button>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              sx={{
+                "@media(max-width:600px)": {
+                  order: -1,
+                  marginBottom: "10px",
+                },
+              }}
             >
-              {/*changes to Go to profile when we're on the last step*/}
-              {activeStep < steps.length - 1 ? (
-                <Typography>Continue</Typography>
-              ) : (
-                <Typography>Go to Profile</Typography>
-              )}
-            </Button>
+              <Stepper activeStep={activeStep}>
+                {steps.map((label, index) => {
+                  const stepProps: { completed?: boolean } = {};
+                  return (
+                    <Step key={label} {...stepProps}>
+                      <StepLabel sx={{ textAlign: "center" }}>
+                        {label}
+                      </StepLabel>
+                    </Step>
+                  );
+                })}
+              </Stepper>
+            </Grid>
+
+            <Grid container justifyContent="center" xs={5} sm={3}>
+              <Button
+                variant="contained"
+                onClick={handleContinue}
+                endIcon={<ArrowForwardIcon />}
+              >
+                {/*changes to Go to profile when we're on the last step*/}
+                {activeStep < steps.length - 1 ? (
+                  <Typography>Continue</Typography>
+                ) : (
+                  <Typography>Go to Profile</Typography>
+                )}
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </ThemeProvider>
   );
 }

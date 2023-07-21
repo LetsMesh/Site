@@ -18,7 +18,7 @@ import { useState } from "react";
 //takes in label, id, and the form field name of the intended password text field
 //can also pass in validator functions
 
-export default function PasswordTextField(props: {
+export default function CustomPasswordTextField(props: {
   label: string;
   id: string;
   fieldName: "password" | "confirmPassword";

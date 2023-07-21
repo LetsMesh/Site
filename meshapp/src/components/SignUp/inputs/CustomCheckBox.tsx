@@ -3,7 +3,9 @@ import { IFormInput } from "../SignUp";
 import { Checkbox, FormControlLabel, Grid, Tooltip } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function CheckBoxInput(args: {
+//takes in boolean for whether it is required or not,
+//string for label, id, and field name
+export default function CustomCheckbox(args: {
   required?: boolean;
   label: string;
   id: string;

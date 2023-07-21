@@ -9,7 +9,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 //takes in label, id, and the form field name of the intended form field
 //can also pass in validator functions
 
-export default function StandardTextField(props: {
+export default function CustomStandardTextField(props: {
   required?: boolean;
   label: string;
   id: string;
