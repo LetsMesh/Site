@@ -1,4 +1,10 @@
-import { Autocomplete, Grid, TextField, Tooltip } from "@mui/material";
+import {
+  Autocomplete,
+  Grid,
+  InputAdornment,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { IFormInput } from "../SignUp";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -18,7 +24,11 @@ export default function CustomAutoComplete(args: {
   fieldName: "interests";
   validators?: { [key: string]: (value: Array<string>) => boolean | string };
 }) {
-  const { control, formState } = useFormContext<IFormInput>();
+  const {
+    control,
+    formState: { errors },
+    trigger,
+  } = useFormContext<IFormInput>();
 
   return (
     <Grid sx={{ position: "relative" }}>
@@ -48,30 +58,38 @@ export default function CustomAutoComplete(args: {
                 {...params}
                 variant="standard"
                 label={args.label}
-                sx={{}}
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (
+                    <>
+                      <InputAdornment position="start">
+                        {errors[args.fieldName] && (
+                          <Tooltip
+                            disableFocusListener
+                            disableTouchListener
+                            arrow
+                            title={errors[args.fieldName]?.message}
+                          >
+                            <ErrorIcon color="error" />
+                          </Tooltip>
+                        )}
+                      </InputAdornment>
+                      {params.InputProps.startAdornment}
+                    </>
+                  ),
+                }}
               />
             )}
-            onChange={(_, data) => field.onChange(data)}
+            onChange={(_, data) => {
+              field.onChange(data);
+              //if there's error, trigger validation
+              if (errors[args.fieldName]) {
+                trigger(args.fieldName);
+              }
+            }}
           />
         )}
       />
-
-      {formState.errors[args.fieldName] && (
-        <Tooltip
-          disableFocusListener
-          disableTouchListener
-          arrow
-          title={formState.errors[args.fieldName]?.message}
-          sx={{
-            position: "absolute",
-            top: "0",
-            bottom: "0",
-            left: "-30px",
-          }}
-        >
-          <ErrorIcon color="error" />
-        </Tooltip>
-      )}
     </Grid>
   );
 }

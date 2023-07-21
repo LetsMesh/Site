@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { IFormInput } from "../SignUp";
 import {
+  Box,
   FormControl,
   Grid,
   InputLabel,
@@ -14,7 +15,7 @@ const menuStyle = { style: { maxHeight: 200 } };
 
 //takes in a field name, boolean for whether its required or not, label, id, list of options to display, a callback, and validator rules
 export default function CustomSelect(args: {
-  fieldName: "country" | "state";
+  fieldName: "country" | "state" | "userType";
   required?: boolean;
   label?: string;
   id?: string;
@@ -26,9 +27,9 @@ export default function CustomSelect(args: {
   const errors = formState.errors;
 
   return (
-    <Grid sx={{ position: "relative" }}>
-      <FormControl fullWidth>
-        <InputLabel>{args.label}</InputLabel>
+    <Grid sx={{ position: "relative", alignItems: "center" }}>
+      <FormControl fullWidth margin="normal">
+        <InputLabel shrink={true}>{args.label}</InputLabel>
         <Controller
           name={args.fieldName}
           control={control}
@@ -38,11 +39,18 @@ export default function CustomSelect(args: {
           }}
           render={({ field: { onChange, value } }) => (
             <Select
+              displayEmpty
+              notched={true}
               value={value}
               onChange={(event) => {
                 onChange(event);
+                //if there's a callback then call it
                 if (args.callback !== undefined) {
                   args.callback();
+                }
+                //if there is error then trigger validation
+                if (errors[args.fieldName]) {
+                  trigger(args.fieldName);
                 }
               }}
               onBlur={() => [trigger(args.fieldName)]}
@@ -51,6 +59,21 @@ export default function CustomSelect(args: {
               label={args.label}
               id={args.id}
               MenuProps={menuStyle}
+              renderValue={(value) => (
+                <Box sx={{ display: "flex" }}>
+                  {errors[args.fieldName] ? (
+                    <Tooltip
+                      disableFocusListener
+                      disableTouchListener
+                      arrow
+                      title={errors[args.fieldName]?.message}
+                    >
+                      <ErrorIcon color="error" />
+                    </Tooltip>
+                  ) : null}
+                  {value}
+                </Box>
+              )}
             >
               {args.options?.map((option, index) => {
                 return (
@@ -63,22 +86,6 @@ export default function CustomSelect(args: {
           )}
         />
       </FormControl>
-
-      {errors[args.fieldName] && (
-        <Tooltip
-          disableFocusListener
-          disableTouchListener
-          arrow
-          title={errors[args.fieldName]?.message}
-          sx={{
-            position: "absolute",
-            top: "-13px",
-            left: "-13px",
-          }}
-        >
-          <ErrorIcon color="error" />
-        </Tooltip>
-      )}
     </Grid>
   );
 }

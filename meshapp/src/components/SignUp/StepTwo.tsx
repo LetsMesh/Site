@@ -245,7 +245,7 @@ export default function StepTwo() {
                 </Typography>
               </Grid>
               <Grid
-                item
+                container
                 sx={{ mt: 5 }}
                 direction="column"
                 alignItems={"center"}

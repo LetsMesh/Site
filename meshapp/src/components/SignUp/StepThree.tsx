@@ -4,8 +4,9 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import { useFormContext } from "react-hook-form";
 import { IFormInput } from "./SignUp";
 import React, { useState } from "react";
-import CustomSelect from "./inputs/CustomStandardTextField";
+import CustomStandardTextField from "./inputs/CustomStandardTextField";
 import CustomAutoComplete from "./inputs/CustomAutoComplete";
+import CustomSelect from "./inputs/CustomSelect";
 
 const interests = ["MLP", "Software"];
 
@@ -61,14 +62,14 @@ export default function StepThree() {
               ".MuiChip-root .MuiChip-deleteIcon": {
                 color: "#00000042",
               },
-              ".MuiChip-root .MuiChip-deleteIcon:hover , .MuiAutocomplete-clearIndicator , .MuiAutocomplete-popupIndicator":
+              ".MuiChip-root .MuiChip-deleteIcon:hover , .MuiAutocomplete-clearIndicator , .MuiAutocomplete-popupIndicator , .MuiSelect-icon":
                 {
                   color: "#0000008F",
                 },
             }}
           >
             {/*inner form container*/}
-            <Grid container xs={10} rowSpacing={1}>
+            <Grid container xs={10} rowSpacing={1} alignContent={"center"}>
               {/* name input*/}
               <Grid container xs={12}>
                 <Name />
@@ -84,6 +85,15 @@ export default function StepThree() {
                 </Grid>
               </Grid>
 
+              {/*Pronouns and User Type*/}
+              <Grid container justifyContent={"space-between"}>
+                <Grid item xs={12} sm={5.5}>
+                  <Pronouns />
+                </Grid>
+                <Grid item xs={12} sm={5.5}>
+                  <UserType />
+                </Grid>
+              </Grid>
               {/*interests input*/}
               <Grid item xs={12}>
                 <Interests />
@@ -105,14 +115,19 @@ export default function StepThree() {
 
 function Name() {
   return (
-    <CustomSelect id="name" label="Name" fieldName="name" required={true} />
+    <CustomStandardTextField
+      id="name"
+      label="Name"
+      fieldName="name"
+      required={true}
+    />
   );
 }
 
 //Location text field
 function Location() {
   return (
-    <CustomSelect
+    <CustomStandardTextField
       id="location"
       label="Location"
       fieldName="location"
@@ -124,10 +139,48 @@ function Location() {
 //Title text field
 function Title() {
   return (
-    <CustomSelect id="title" label="Title" fieldName="title" required={true} />
+    <CustomStandardTextField
+      id="title"
+      label="Title"
+      fieldName="title"
+      required={true}
+    />
   );
 }
 
+//pronouns text field
+
+function Pronouns() {
+  return (
+    <CustomStandardTextField
+      id="pronouns"
+      label="Pronouns"
+      fieldName="pronouns"
+    />
+  );
+}
+
+//user type select
+function UserType() {
+  const userTypes = ["Mentee", "Mentor", "Educator"];
+
+  return (
+    <CustomSelect
+      id="user-type"
+      label="User Type"
+      fieldName="userType"
+      required={true}
+      options={userTypes}
+      validators={{
+        isValidType: (type) => {
+          let isValid =
+            type === "Mentee" || type === "Mentor" || type === "Educator";
+          return isValid || "This is not a valid user type.";
+        },
+      }}
+    />
+  );
+}
 //Interest Tag AutoComplete
 function Interests() {
   return (
@@ -148,14 +201,13 @@ function Interests() {
 //Label text field
 function Label() {
   return (
-    <CustomSelect
+    <CustomStandardTextField
       id="label"
       label="Label"
       fieldName="label"
       required={true}
       multiline={true}
       maxRows={10}
-      defaultValue="This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you."
     />
   );
 }

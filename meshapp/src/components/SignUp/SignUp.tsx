@@ -30,6 +30,8 @@ export interface IFormInput {
   location: string;
   title: string;
   label: string;
+  pronouns: string;
+  userType: string;
   interests: Array<string>;
   picture: File;
 }
@@ -51,7 +53,6 @@ const tooltipErrorTheme = createTheme({
   },
 });
 
-let render = 0;
 export default function SignUp() {
   const formMethods = useForm<IFormInput>({
     defaultValues: {
@@ -68,7 +69,10 @@ export default function SignUp() {
       emailUpdates: false,
       name: "",
       title: "",
-      label: "",
+      label:
+        "This here could be your bio if you had one. Set one up as soon as you can to tell everyone about yourself. Bios help others learn about you.",
+      pronouns: "",
+      userType: "",
       interests: [],
     },
     mode: "onBlur",
@@ -76,9 +80,7 @@ export default function SignUp() {
 
   //contains which step we're on
   const [activeStep, setActiveStep] = useState(0);
-  //keep track of renders
-  render++;
-  console.log("render", render);
+
   //goes to previous step
   const handlePrevious = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -89,7 +91,7 @@ export default function SignUp() {
     //function for continuing to next step
     const continueToNext = () =>
       setActiveStep((prevActiveStep) =>
-        prevActiveStep < steps.length - 1 ? prevActiveStep + 1 : prevActiveStep
+        prevActiveStep < steps.length ? prevActiveStep + 1 : prevActiveStep
       );
 
     let isValid = false;
@@ -114,15 +116,18 @@ export default function SignUp() {
       isValid = await formMethods.trigger([
         "label",
         "title",
+        "location",
         "name",
         "interests",
+        "userType",
       ]);
-      formMethods.handleSubmit(onSubmit);
     }
 
     if (isValid || activeStep === 1) {
       console.log(formMethods.getValues());
       continueToNext();
+    } else {
+      console.log(formMethods.formState.errors);
     }
   };
 

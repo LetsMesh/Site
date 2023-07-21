@@ -11,7 +11,7 @@ export default function CustomCheckbox(args: {
   id: string;
   fieldName: "acceptedTermsConditions" | "emailUpdates";
 }) {
-  const { control, formState } = useFormContext<IFormInput>();
+  const { control, formState, trigger } = useFormContext<IFormInput>();
   const errors = formState.errors;
 
   return (
@@ -27,6 +27,10 @@ export default function CustomCheckbox(args: {
                 checked={props.value}
                 onChange={(e) => {
                   props.onChange(e.target.checked);
+                  //trigger validation if there's error
+                  if (errors[args.fieldName]) {
+                    trigger(args.fieldName);
+                  }
                 }}
               />
             )}

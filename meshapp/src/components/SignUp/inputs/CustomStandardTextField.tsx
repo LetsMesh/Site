@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { IFormInput } from "../SignUp";
-import { Grid, TextField, Tooltip } from "@mui/material";
+import { InputAdornment, TextField, Tooltip } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
 //for text-only textfields
@@ -9,13 +9,12 @@ import ErrorIcon from "@mui/icons-material/Error";
 //takes in label, id, and the form field name of the intended form field
 //can also pass in validator functions
 
-export default function CustomStandardTextField(props: {
+export default function CustomStandardTextField(args: {
   required?: boolean;
   label: string;
   id: string;
   multiline?: boolean;
   maxRows?: number;
-  defaultValue?: string;
   fieldName:
     | "label"
     | "title"
@@ -25,52 +24,52 @@ export default function CustomStandardTextField(props: {
     | "firstName"
     | "lastName"
     | "nickName"
-    | "phoneNumber";
+    | "phoneNumber"
+    | "pronouns";
   validators?: { [key: string]: (value: string) => boolean | string };
 }) {
   const { formState, control } = useFormContext<IFormInput>();
   const errors = formState.errors;
 
   return (
-    <Grid sx={{ position: "relative" }}>
-      <Controller
-        name={props.fieldName}
-        control={control}
-        rules={{
-          required: props.required ? "This is required." : false,
-          validate: props.validators,
-        }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="normal"
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            label={props.label}
-            id={props.id}
-            multiline={props.multiline ? true : false}
-            maxRows={props.maxRows ? props.maxRows : 1}
-          />
-        )}
-      />
-
-      {errors[props.fieldName] && (
-        <Tooltip
-          disableFocusListener
-          disableTouchListener
-          arrow
-          title={errors[props.fieldName]?.message}
-          sx={{
-            position: "absolute",
-            top: "0px",
-            left: "-12px",
+    <Controller
+      name={args.fieldName}
+      control={control}
+      rules={{
+        required: args.required ? "This is required." : false,
+        validate: args.validators,
+      }}
+      render={({ field }) => (
+        <TextField
+          {...field}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{
+            shrink: true,
           }}
-        >
-          <ErrorIcon color="error" />
-        </Tooltip>
+          variant="standard"
+          label={args.label}
+          id={args.id}
+          multiline={args.multiline ? true : false}
+          maxRows={args.maxRows ? args.maxRows : 1}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                {errors[args.fieldName] && (
+                  <Tooltip
+                    disableFocusListener
+                    disableTouchListener
+                    arrow
+                    title={errors[args.fieldName]?.message}
+                  >
+                    <ErrorIcon color="error" />
+                  </Tooltip>
+                )}
+              </InputAdornment>
+            ),
+          }}
+        />
       )}
-    </Grid>
+    />
   );
 }

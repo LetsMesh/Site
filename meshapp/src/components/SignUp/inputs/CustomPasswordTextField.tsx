@@ -48,6 +48,20 @@ export default function CustomPasswordTextField(props: {
             }}
             variant="outlined"
             InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  {errors[props.fieldName] ? (
+                    <Tooltip
+                      disableFocusListener
+                      disableTouchListener
+                      arrow
+                      title={errors[props.fieldName]?.message}
+                    >
+                      <ErrorIcon color="error" />
+                    </Tooltip>
+                  ) : null}
+                </InputAdornment>
+              ),
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -65,22 +79,6 @@ export default function CustomPasswordTextField(props: {
           />
         )}
       />
-
-      {errors[props.fieldName] ? (
-        <Tooltip
-          disableFocusListener
-          disableTouchListener
-          arrow
-          title={errors[props.fieldName]?.message}
-          sx={{
-            position: "absolute",
-            top: "0px",
-            left: "-12px",
-          }}
-        >
-          <ErrorIcon color="error" />
-        </Tooltip>
-      ) : null}
     </Grid>
   );
 }
