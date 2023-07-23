@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
+import { ChangeEvent } from "react";
 
 const menuStyle = { style: { maxHeight: 200 } };
 
@@ -43,7 +44,7 @@ export default function CustomSelect(args: {
               notched={true}
               value={value}
               onChange={(event) => {
-                onChange(event);
+                onChange(event as ChangeEvent<Element>);
                 //if there's a callback then call it
                 if (args.callback !== undefined) {
                   args.callback();
