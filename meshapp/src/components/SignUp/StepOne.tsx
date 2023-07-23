@@ -82,8 +82,6 @@ const CountriesAndStates: { [key: string]: Array<string> } = {
 };
 
 export default function StepOne() {
-  //setting height of dropdown menu
-
   return (
     <Grid
       container
@@ -92,10 +90,6 @@ export default function StepOne() {
       sx={{
         ".MuiOutlinedInput-notchedOutline,.MuiInput-root:before": {
           borderColor: "input.standard.enabledBorder",
-        },
-        ".MuiPaper-root.MuiMenu-paper": {
-          maxHeight: "100px",
-          backgroundColor: "blue",
         },
       }}
     >

@@ -38,7 +38,7 @@ const modalStyle = {
 export default function StepTwo() {
   const props = useFormContext<IFormInput>();
 
-  //this holds the email from the firststep to be used for verification
+  //this holds the email from the first step to be used for verification
   const emailAddress = props.getValues("email");
 
   //for opening/closing pending verification bubble
@@ -47,12 +47,11 @@ export default function StepTwo() {
   const handlePendingClose = () => setPendingOpen(false);
 
   //for opening/closing successful verification bubble
-
   const [successOpen, setSuccessOpen] = useState(false);
   const handleSuccessOpen = () => setSuccessOpen(true);
   const handleSuccessClose = () => setSuccessOpen(false);
 
-  //returns modal for success verifcation
+  //returns modal for success verification
   function SuccessVerification() {
     return (
       <Modal open={successOpen} onClose={handleSuccessClose}>

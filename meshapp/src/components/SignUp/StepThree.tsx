@@ -44,9 +44,7 @@ export default function StepThree() {
             sx={{
               backgroundColor: "#D9D9D9",
 
-              //on the figma the form box is basically the same as it would be in light mode
-              //if the main theme file is eventually adapted to return a function returning the theme based on the desired mode,
-              //we can reduce some bloat here by removing this css and wrapping the form box with the Light Mode theme using the function
+              //form box should be in light mode across both modes, can reduce css bloat here eventually by wrapping the form box in light mode theme
               ".MuiOutlinedInput-notchedOutline , .MuiInput-root:before": {
                 borderColor: "black",
               },
