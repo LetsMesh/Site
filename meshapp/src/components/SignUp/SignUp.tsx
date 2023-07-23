@@ -78,6 +78,13 @@ export default function SignUp() {
     mode: "onBlur",
   });
 
+  //for logging data and errors in console
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log("is submitting");
+    console.log(data);
+    console.log(formMethods.formState.errors);
+  };
+
   //contains which step we're on
   const [activeStep, setActiveStep] = useState(0);
 
@@ -124,17 +131,16 @@ export default function SignUp() {
     }
 
     if (isValid || activeStep === 1) {
+      console.log("is evaluating");
       console.log(formMethods.getValues());
       continueToNext();
     } else {
       console.log(formMethods.formState.errors);
     }
-  };
 
-  //for logging data and errors in console
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
-    console.log(formMethods.formState.errors);
+    if (isValid && activeStep === 2) {
+      formMethods.handleSubmit(onSubmit)();
+    }
   };
 
   //The steps of the form, need to pass in the react hook form methods
