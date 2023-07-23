@@ -11,7 +11,16 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Theme, ThemeProvider, Typography, createTheme } from "@mui/material";
-const steps = ["Create Account", "Verify Email", "Go to Profile"];
+
+//step labels
+const stepLabels = ["Create Account", "Verify Email", "Go to Profile"];
+
+//enum tying steps to step index
+enum Steps {
+  CREATE_ACCOUNT = 0,
+  VERIFY_EMAIL = 1,
+  GO_TO_PROFILE = 2,
+}
 
 //interface for the form field names and types
 export interface IFormInput {
@@ -85,7 +94,7 @@ export default function SignUp() {
     console.log(formMethods.formState.errors);
   };
 
-  //contains which step we're on
+  //contains which form step we're on
   const [activeStep, setActiveStep] = useState(0);
 
   //goes to previous step
@@ -98,14 +107,15 @@ export default function SignUp() {
     //function for continuing to next step
     const continueToNext = () =>
       setActiveStep((prevActiveStep) =>
-        prevActiveStep < steps.length ? prevActiveStep + 1 : prevActiveStep
+        prevActiveStep < stepLabels.length ? prevActiveStep + 1 : prevActiveStep
       );
 
+    //stores whether the current step's inputs are valid
     let isValid = false;
 
     // trigger validation for each step unless it is 2nd step (where there aren't any inputs)
     //if we're on the last step, then trigger submit
-    if (activeStep === 0) {
+    if (activeStep === Steps.CREATE_ACCOUNT) {
       isValid = await formMethods.trigger([
         "firstName",
         "lastName",
@@ -119,7 +129,7 @@ export default function SignUp() {
         "acceptedTermsConditions",
         "emailUpdates",
       ]);
-    } else if (activeStep === 2) {
+    } else if (activeStep === Steps.GO_TO_PROFILE) {
       isValid = await formMethods.trigger([
         "label",
         "title",
@@ -196,10 +206,9 @@ export default function SignUp() {
               }}
             >
               <Stepper activeStep={activeStep}>
-                {steps.map((label, index) => {
-                  const stepProps: { completed?: boolean } = {};
+                {stepLabels.map((label, index) => {
                   return (
-                    <Step key={label} {...stepProps}>
+                    <Step key={label}>
                       <StepLabel sx={{ textAlign: "center" }}>
                         {label}
                       </StepLabel>
@@ -216,7 +225,7 @@ export default function SignUp() {
                 endIcon={<ArrowForwardIcon />}
               >
                 {/*changes to Go to profile when we're on the last step*/}
-                {activeStep < steps.length - 1 ? (
+                {activeStep < stepLabels.length - 1 ? (
                   <Typography>Continue</Typography>
                 ) : (
                   <Typography>Go to Profile</Typography>
