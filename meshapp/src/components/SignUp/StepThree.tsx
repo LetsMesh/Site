@@ -217,7 +217,7 @@ function ProfilePictureAndUploadButton() {
   const [image, setImage] = useState(
     props.getValues("picture")
       ? URL.createObjectURL(props.getValues("picture"))
-      : "DefaultProfile.png"
+      : "meshpfp.png"
   );
   const [showError, setShowError] = useState(false);
 
@@ -228,7 +228,7 @@ function ProfilePictureAndUploadButton() {
     fileInput?.click();
   };
 
-  //handle file change, if valid image then set image as the input and form value,, otherwise display the error
+  //handle file change, if valid image then set image as the input and form value, otherwise display the error
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
