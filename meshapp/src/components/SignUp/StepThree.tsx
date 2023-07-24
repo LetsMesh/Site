@@ -8,6 +8,7 @@ import CustomStandardTextField from "./inputs/CustomStandardTextField";
 import CustomAutoComplete from "./inputs/CustomAutoComplete";
 import CustomSelect from "./inputs/CustomSelect";
 
+//dummy data for interests autocomplete
 const interests = ["MLP", "Software"];
 
 export default function StepThree() {
@@ -109,8 +110,11 @@ export default function StepThree() {
   );
 }
 //---------------------------------------INPUTS-----------------------------------------------------------
-//name text field
 
+//error messages
+const INVALID_USER_TYPE = "This is not a valid user type.";
+
+//name text field
 function Name() {
   return (
     <CustomStandardTextField
@@ -158,10 +162,10 @@ function Pronouns() {
   );
 }
 
+//valid user types
+const userTypes = ["Mentee", "Mentor", "Educator"];
 //user type select
 function UserType() {
-  const userTypes = ["Mentee", "Mentor", "Educator"];
-
   return (
     <CustomSelect
       id="user-type"
@@ -171,9 +175,8 @@ function UserType() {
       options={userTypes}
       validators={{
         isValidType: (type) => {
-          let isValid =
-            type === "Mentee" || type === "Mentor" || type === "Educator";
-          return isValid || "This is not a valid user type.";
+          let isValid = userTypes.includes(type);
+          return isValid || INVALID_USER_TYPE;
         },
       }}
     />

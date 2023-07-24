@@ -10,7 +10,7 @@ import { IFormInput } from "../SignUp";
 import ErrorIcon from "@mui/icons-material/Error";
 
 //takes in boolean stating whether its required or not,
-//strings for lable and id,
+//strings for label and id,
 //an optional default value
 //the array of options
 //a field name
@@ -68,7 +68,16 @@ export default function CustomAutoComplete(args: {
                             disableFocusListener
                             disableTouchListener
                             arrow
-                            title={errors[args.fieldName]?.message}
+                            title={
+                              <span
+                                style={{
+                                  whiteSpace: "pre-line",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {errors[args.fieldName]?.message}
+                              </span>
+                            }
                           >
                             <ErrorIcon color="error" />
                           </Tooltip>

@@ -60,7 +60,13 @@ export default function CustomStandardTextField(args: {
                     disableFocusListener
                     disableTouchListener
                     arrow
-                    title={errors[args.fieldName]?.message}
+                    title={
+                      <span
+                        style={{ whiteSpace: "pre-line", textAlign: "center" }}
+                      >
+                        {errors[args.fieldName]?.message}
+                      </span>
+                    }
                   >
                     <ErrorIcon color="error" />
                   </Tooltip>

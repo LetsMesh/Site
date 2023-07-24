@@ -192,6 +192,20 @@ export default function StepOne() {
 }
 //---------------------------------------INPUTS-----------------------------------------------------------
 
+//error messages
+const INVALID_PHONE_NUMBER_FORMAT =
+  "Invalid phone number format. \n Examples of valid phone numbers:\n123-456-7890\n(123) 456-7890\n123 456 7890\n123.456.7890\n+91 (123) 456-7890";
+const INVALID_EMAIL_FORMAT =
+  "Invalid email address format.\n Examples of valid email addresses:\nbob123@gmail.com\nhello@bing.email.com";
+const PASSWORD_LENGTH_TOO_SMALL = "Password length needs to be at least 8.";
+const PASSWORDS_DONT_MATCH = "Does not match password.";
+const WRONG_STATE = "This state does not belong to this country.";
+
+//error regexes
+const PHONE_NUMBER_REGEX = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+const EMAIL_ADDRESS_REGEX =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 //first name text field
 function FirstName() {
   return (
@@ -239,9 +253,7 @@ function PhoneNumber() {
       fieldName="phoneNumber"
       validators={{
         pattern: (value) => {
-          let phoneNumRegex =
-            /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
-          return phoneNumRegex.test(value) || "Invalid phone number format";
+          return PHONE_NUMBER_REGEX.test(value) || INVALID_PHONE_NUMBER_FORMAT;
         },
       }}
     />
@@ -257,9 +269,7 @@ function EmailAddress() {
       fieldName="email"
       validators={{
         pattern: (value) => {
-          let emailRegex =
-            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return emailRegex.test(value) || "Invalid email address format";
+          return EMAIL_ADDRESS_REGEX.test(value) || INVALID_EMAIL_FORMAT;
         },
       }}
     />
@@ -275,7 +285,7 @@ function Password() {
       label="Password *"
       validators={{
         minLength: (value) => {
-          return value.length > 8 || "Password length needs to be at least 8.";
+          return value.length >= 8 || PASSWORD_LENGTH_TOO_SMALL;
         },
       }}
     />
@@ -292,9 +302,7 @@ function ConfirmPassword() {
       label="Confirm Password *"
       validators={{
         matchesPassword: (value) => {
-          return (
-            value === props.getValues("password") || "Does not match password."
-          );
+          return value === props.getValues("password") || PASSWORDS_DONT_MATCH;
         },
       }}
     />
@@ -363,7 +371,7 @@ function CountriesAndStatesSelect() {
               return (
                 CountriesAndStates[props.getValues("country")].includes(
                   value
-                ) || "This state does not belong to this country."
+                ) || WRONG_STATE
               );
             },
           }}

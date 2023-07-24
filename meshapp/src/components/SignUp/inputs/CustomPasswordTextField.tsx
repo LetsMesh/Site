@@ -18,7 +18,7 @@ import { useState } from "react";
 //takes in label, id, and the form field name of the intended password text field
 //can also pass in validator functions
 
-export default function CustomPasswordTextField(props: {
+export default function CustomPasswordTextField(args: {
   label: string;
   id: string;
   fieldName: "password" | "confirmPassword";
@@ -32,11 +32,11 @@ export default function CustomPasswordTextField(props: {
   return (
     <Grid sx={{ position: "relative" }}>
       <Controller
-        name={props.fieldName}
+        name={args.fieldName}
         control={control}
         rules={{
           required: "This is required.",
-          validate: props.validators,
+          validate: args.validators,
         }}
         render={({ field, formState }) => (
           <TextField
@@ -50,12 +50,21 @@ export default function CustomPasswordTextField(props: {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  {errors[props.fieldName] ? (
+                  {errors[args.fieldName] ? (
                     <Tooltip
                       disableFocusListener
                       disableTouchListener
                       arrow
-                      title={errors[props.fieldName]?.message}
+                      title={
+                        <span
+                          style={{
+                            whiteSpace: "pre-line",
+                            textAlign: "center",
+                          }}
+                        >
+                          {errors[args.fieldName]?.message}
+                        </span>
+                      }
                     >
                       <ErrorIcon color="error" />
                     </Tooltip>
@@ -74,8 +83,8 @@ export default function CustomPasswordTextField(props: {
               ),
             }}
             type={passVisible ? "text" : "password"}
-            label={props.label}
-            id={props.id}
+            label={args.label}
+            id={args.id}
           />
         )}
       />

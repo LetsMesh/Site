@@ -45,7 +45,11 @@ export default function CustomCheckbox(args: {
           disableFocusListener
           disableTouchListener
           arrow
-          title={errors[args.fieldName]?.message}
+          title={
+            <span style={{ whiteSpace: "pre-line", textAlign: "center" }}>
+              {errors[args.fieldName]?.message}
+            </span>
+          }
           sx={{
             position: "absolute",
             top: "0px",
