@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'mesh.conversation',
     'mesh.notifications',
     'mesh.tags',
-    'mesh.occupations'
-    
+    'mesh.occupations',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 # TODO: https://github.com/LetsMesh/Site/issues/202
