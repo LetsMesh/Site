@@ -16,6 +16,7 @@ import {
   exampleProfile,
   exampleProfile2,
 } from "./profile/tests/profile-examples";
+import SignUp from "./components/SignUp/SignUp";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
@@ -27,7 +28,8 @@ root.render(
       <Login />
       <Footer />
       <ProfilePage {...exampleProfile} />
-      <LoggedInHome />
+      <LoggedInHome />    
+      <SignUp />
     </ThemeProvider>
   </React.StrictMode>
 );

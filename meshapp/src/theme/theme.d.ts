@@ -12,6 +12,7 @@ declare module "@mui/material/styles" {
     sendMessageBorder?: PalleteColor;
     footerLogoColor?: PalleteColor;
     mailIconColor?: PaletteColor;
+    signUpDivider?: PaletteColor;
   }
 
   interface PaletteOptions {
@@ -24,6 +25,8 @@ declare module "@mui/material/styles" {
     sendMessageBorder?: PalleteColorOptions;
     footerLogoColor?: PalleteColorOptions;
     mailIconColor?: PaletteColorOptions;
+    signUpDivider?: PaletteColorOptions;
+
     text: {
       main?: string;
     };
