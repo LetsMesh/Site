@@ -60,6 +60,9 @@ function getPalette(mode: PaletteMode) {
           mailIconColor: {
             main: "#74D194",
           },
+          signUpDivider: {
+            main: "#000000",
+          },
         }
       : //dark mode
         {
@@ -104,6 +107,9 @@ function getPalette(mode: PaletteMode) {
           mailIconColor: {
             main: "#247C67",
           },
+          signUpDivider: {
+            main: "#F1E8DF",
+          },
         }),
     //universal
     avatar: {
@@ -131,7 +137,7 @@ function getPalette(mode: PaletteMode) {
     sendMessageBorder: {
       main: "#000000CC",
     },
-    divider: "#0000001F"
+    divider: "#0000001F",
   };
 }
 
@@ -216,6 +222,15 @@ function getComponents(mode: PaletteMode) {
           "&.MuiAlert-standardError": {
             backgroundColor: "#FDEDED",
             color: "#5F2120",
+          },
+        },
+      },
+    },
+    MuiStepConnector: {
+      styleOverrides: {
+        root: {
+          ".MuiStepConnector-line": {
+            borderColor: "#BDBDBD",
           },
         },
       },

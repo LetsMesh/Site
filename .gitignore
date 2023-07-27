@@ -1,7 +1,7 @@
 #vscode settings 
 .vscode
 # Project Protection: 
-*.env
+.env
 
 # Django
 *.pyc
