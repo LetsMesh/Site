@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
 from mesh.accountSettings.models import Settings
@@ -14,17 +15,17 @@ def display_theme(request):
             response.update({"message": "Missing account ID."})
             return JsonResponse(response)
         else:
-            if Settings.objects.filter(accountID=int(data.get("accountID"))).exists():
-                settings = Settings.objects.filter(accountID=int(data.get("accountID")))
+            try:
+                settings = Settings.objects.get(accountID=int(data.get("accountID")))
                 response.update({
                     "data": {
                         "get": {
-                            "displayTheme": settings.get().displayTheme
+                            "displayTheme": settings.displayTheme
                         }
                     }
                 })
                 return JsonResponse(response)
-            else:
+            except ObjectDoesNotExist:
                 response.update({"status": "error"})
                 response.update({"message": "An account does not exist with this account ID."})
                 return JsonResponse(response)
