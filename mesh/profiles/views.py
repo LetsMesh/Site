@@ -5,7 +5,6 @@ from django.http import JsonResponse
 from mesh.profiles.models import Profile
 
 
-@csrf_exempt
 def bio_view(request):
     if request.method == "POST":
         data = request.POST

@@ -43,10 +43,10 @@ class AccountsView(View):
         REQUIRED_FIELDS = ['email', 'encryptedPass', 'phoneNum', 'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee']
         data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
         account = Account.objects.create(
-            email = data['email'], 
-            encryptedPass = data['encryptedPass'], 
-            phoneNum = data['phoneNum'], 
-            displayTheme = data['displayTheme'], 
+            email = data['email'],
+            encryptedPass = data['encryptedPass'],
+            phoneNum = data['phoneNum'],
+            displayTheme = data['displayTheme'],
             enabled2Factor = data['enabled2Factor'],
             isMentor = data['isMentor'],
             isMentee = data['isMentee']
@@ -107,11 +107,11 @@ class AccountsDetailView(View):
 
 def encrypt(password ):
     salt = bcrypt.gensalt(12)
-    
+
     pepper = os.getenv("PEPPER")
-    
+
     password = f"{password}{pepper}".encode('utf-8')
-    
+
     return salt,bcrypt.hashpw(password,salt)
 
 def decrypt(password, salt):
@@ -120,7 +120,6 @@ def decrypt(password, salt):
     return bcrypt.hashpw(password,salt)
 
 
-@csrf_exempt
 def create_account(request):
     if request.method == "POST":
         #post endpoint is creation
@@ -166,28 +165,27 @@ def create_account(request):
             },
             status = 405
         )
-    
-@csrf_exempt
+
 def check_password(request):
     if request.method == "POST":
         body = request.POST
         email = body.get("email",False)
         phoneNumber = body.get("phoneNumber",False)
         password = body.get("password",False)
-        
+
         user_created = Account.objects.filter(email = email,phoneNum = phoneNumber).values()
         if not bool(user_created):
             return JsonResponse(
                 {
-                    "error":"Account not found",  
+                    "error":"Account not found",
                 },
                 status = 404
             )
         else:
-            
+
             hash = user_created[0]["encryptedPass"]
             salt = user_created[0]["salt"]
-            
+
             if hash == decrypt(password, salt):
 
                 return JsonResponse(
@@ -211,5 +209,5 @@ def check_password(request):
             },
             status = 405
         )
-    
+
 
