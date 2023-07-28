@@ -30,7 +30,8 @@ const ForgotPassword = () => {
     
       console.log("email: " + formData.email)
     }
-    
+
+    // TODO: https://github.com/LetsMesh/Site/issues/268 
     return (
       <Grid spacing={2} container item direction="column" xs>
         <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
@@ -46,8 +47,8 @@ const ForgotPassword = () => {
             <Button variant="contained" sx={{ borderRadius: 25, width: '15em' }} onClick={onClickSend}>
               Send Link to Email
             </Button>
-          <Grid item xs sx={{ padding:'16px' }}>
-            <Link sx={{ color:'text.main'}}>
+          <Grid item xs sx={{ paddingTop:'16px' }}>
+            <Link sx={{ color:'text.main', fontWeight:'bold'}}>
               Return to Login
             </Link>
           </Grid>
