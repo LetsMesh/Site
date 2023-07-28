@@ -16,13 +16,8 @@ export default function LoggedOutPage() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const updateShowForgotPasswordState = () => {
-    if (showForgotPassword == false) {
-      setShowForgotPassword(true)
-    }
-    if (showForgotPassword == true) {
-      setShowForgotPassword(false)
-    }
-  }
+    setShowForgotPassword(prevState => !prevState)
+  };
     
   return (
     <ThemeProvider
