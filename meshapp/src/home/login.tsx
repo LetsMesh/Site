@@ -58,7 +58,7 @@ const Login = () => {
 
   const updateShowForgotPasswordState = () => {
     setShowForgotPassword(prevState => !prevState)
-  }
+  };
   
   return (
     <ThemeProvider
@@ -80,8 +80,7 @@ const Login = () => {
             bgcolor: "cardBackground.main",
             color: "text.main",
             borderRadius: 5,
-          }}
-        >
+          }}>
           <Grid item xs>
             <SignUp />
           </Grid>
@@ -89,11 +88,12 @@ const Login = () => {
             <Divider orientation="vertical" />
           </Grid>
           <Grid item xs>
-          {showForgotPassword ? <ForgotPassword /> : <LoginInput updateShowForgotPasswordState={updateShowForgotPasswordState} />}
+          {showForgotPassword ? <ForgotPassword updateShowForgotPasswordState={updateShowForgotPasswordState} /> : <LoginInput updateShowForgotPasswordState={updateShowForgotPasswordState} />}
           </Grid>
         </Grid>
       </Grid>
     </ThemeProvider>
   );
 };
+
 export default Login;

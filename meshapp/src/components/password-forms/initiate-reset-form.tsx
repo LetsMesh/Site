@@ -3,9 +3,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { axiosInstance } from "../../config/axiosConfig";
 
-const ForgotPassword = () => {
+interface ComponentProps {
+  updateShowForgotPasswordState: () => void;
+}
 
-    const forgotPasswordEndpoint: string = '/user/reset'
+const ForgotPassword = (props: ComponentProps) => {
+
+    const forgotPasswordEndpoint: string = '/user/reset';
   
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [serverError, setServerError] = useState('');
@@ -18,20 +22,20 @@ const ForgotPassword = () => {
       setFormData({
         ...formData,
         [e.target.name]: e.target.value,
-      }
-  
-      )
-    }
+      })
+    };
   
     const onClickSend = () => {
       const res = axiosInstance.post(forgotPasswordEndpoint, {
         email: formData.email
       })
-    
       console.log("email: " + formData.email)
+    };
+
+    const onClickReturn = () => {
+      props.updateShowForgotPasswordState()
     }
 
-    // TODO: https://github.com/LetsMesh/Site/issues/268 
     return (
       <Grid spacing={2} container item direction="column" xs>
         <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
@@ -48,7 +52,7 @@ const ForgotPassword = () => {
               Send Link to Email
             </Button>
           <Grid item xs sx={{ paddingTop:'16px' }}>
-            <Link sx={{ color:'text.main', fontWeight:'bold'}}>
+            <Link sx={{ color:'text.main', fontWeight:'bold'}} onClick={onClickReturn}>
               Return to Login
             </Link>
           </Grid>
@@ -58,4 +62,4 @@ const ForgotPassword = () => {
     );
   };
 
-  export default ForgotPassword
+  export default ForgotPassword;

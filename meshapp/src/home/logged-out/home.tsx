@@ -72,7 +72,7 @@ export default function LoggedOutPage() {
               filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
             }}
           >
-            {showForgotPassword ? <ForgotPassword /> : <LoginInput updateShowForgotPasswordState={updateShowForgotPasswordState} />}
+            {showForgotPassword ? <ForgotPassword updateShowForgotPasswordState={updateShowForgotPasswordState} /> : <LoginInput updateShowForgotPasswordState={updateShowForgotPasswordState} />}
           </Grid>
         </Grid>
 
