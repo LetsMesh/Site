@@ -1,4 +1,4 @@
-import { Grid, Typography, TextField, Button, Link } from "@mui/material";
+import { Grid, Typography, TextField, Button, Link, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { axiosInstance } from "../../config/axiosConfig";
@@ -37,27 +37,37 @@ const ForgotPassword = (props: ComponentProps) => {
     }
 
     return (
-      <Grid spacing={2} container item direction="column" xs>
-        <Grid item container direction="column" spacing={5} sx={{ textAlign: 'center', alignItems: 'center' }}>
-          <Grid item xs>
-            <Typography variant="h2" fontWeight={'bold'} sx={{ color: 'text.main', marginLeft: 'auto' }}>
+      <Grid
+      container
+      direction="column"
+      alignItems="center"
+      sx={{
+        margin: "auto",
+        bgcolor: "cardBackground.main",
+        color: "text.main",
+        borderRadius: 5,
+      }}
+    >
+      <Grid container spacing={3} p={2} width={'100%'}>
+          <Grid xs sx={{ textAlign:'center' }} item>
+            <Typography variant="h2" fontWeight={'bold'} sx={{ marginLeft: 'auto', textAlign:'center' }}>
               Forgot Password
             </Typography>
           </Grid>
-          <Grid item xs sx={{ width: '70%' }}>
-            <TextField type="text" label="Email" {...register("email", { required: true })} onChange={handleChange}/>
-          </Grid>
-          <Grid item xs>
-            <Button variant="contained" sx={{ borderRadius: 25, width: '15em' }} onClick={onClickSend}>
-              Send Link to Email
-            </Button>
-          <Grid item xs sx={{ paddingTop:'16px' }}>
-            <Link sx={{ color:'text.main', fontWeight:'bold'}} onClick={onClickReturn}>
-              Return to Login
-            </Link>
-          </Grid>
-          </Grid>
+          <Grid xs sx={{ textAlign:'center', paddingBottom:'16px' }} item>
+            <Stack spacing={3} sx={{alignItems:'center'}}>
+              <TextField sx={{ width:'90%'}} type="text" label="Email" {...register("email", { required: true })} onChange={handleChange}/>
+              <Button variant="contained" sx={{ borderRadius: 25, width: '15em' }} onClick={onClickSend}>
+                Send Link to Email
+              </Button>
+              <Link sx={{ color:'text.main', fontWeight:'bold' }} onClick={onClickReturn}>
+                Return to Login
+              </Link>
+            </Stack>
+          <Grid>
         </Grid>
+      </Grid>
+      </Grid>
       </Grid>
     );
   };
