@@ -22,10 +22,6 @@ const LoginScreen = (props: ComponentProps) => {
     console.log(formData);
   };
 
-  const forgotPasswordClicked = () => {
-    props.updateShowForgotPasswordState()
-  }
-
   return (
     <Grid
       item
