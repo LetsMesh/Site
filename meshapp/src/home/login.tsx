@@ -8,9 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
-import LoginInput from "../components/login-form";
 import { deepmerge } from "@mui/utils";
-import ForgotPassword from "../components/password-forms/initiate-reset-form";
+import LoginWindow from "../components/login-form";
 
 const buttonTheme = createTheme({
   components: {
@@ -54,12 +53,6 @@ const SignUp = () => {
 
 const Login = () => {
 
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-
-  const updateShowForgotPasswordState = () => {
-    setShowForgotPassword(prevState => !prevState)
-  };
-  
   return (
     <ThemeProvider
       theme={(theme: Theme) => {
@@ -88,7 +81,7 @@ const Login = () => {
             <Divider orientation="vertical" />
           </Grid>
           <Grid item xs>
-          {showForgotPassword ? <ForgotPassword updateShowForgotPasswordState={updateShowForgotPasswordState} /> : <LoginInput updateShowForgotPasswordState={updateShowForgotPasswordState} />}
+            <LoginWindow/>
           </Grid>
         </Grid>
       </Grid>
