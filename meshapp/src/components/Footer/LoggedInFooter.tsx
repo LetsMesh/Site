@@ -2,7 +2,7 @@ import { AppBar, Grid, IconButton, Toolbar } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import React from "react";
 
-export default function () {
+export default function LoggedInFooter() {
   return (
     <AppBar
       position="static"

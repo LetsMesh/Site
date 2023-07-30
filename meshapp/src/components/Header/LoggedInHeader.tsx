@@ -1,8 +1,8 @@
 import React from "react";
 import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
-import SideMenu from "./SideMenu";
+import SideMenu from "../SideMenu";
 
-const Header = () => {
+export default function LoggedInHeader() {
   return (
     <AppBar
       position="sticky"
@@ -31,6 +31,4 @@ const Header = () => {
       </Toolbar>
     </AppBar>
   );
-};
-
-export default Header;
+}
