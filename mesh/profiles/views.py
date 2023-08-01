@@ -21,26 +21,81 @@ def bio_view(request):
 
 def profile_picture(request):
     if request.method == "GET":
-        data = request.GET
         response = {
             "status": "success"
         }
-        if data.get("accountID") is None:
-            response.update({"status": "error"})
-            response.update({"message": "Missing account ID."})
-            return JsonResponse(response)
-        else:
-            try:
-                profile = Profile.objects.get(accountID=int(data.get("accountID")))
-                response.update({
-                    "data": {
-                        "get": {
-                            "profilePicture": profile.image.url
-                        }
+        profile = get_profile(request.GET, response)
+        if profile is not None:
+            response.update({
+                "data": {
+                    "get": {
+                        "profilePicture": profile.image.url
                     }
-                })
-                return JsonResponse(response)
-            except ObjectDoesNotExist:
-                response.update({"status": "error"})
-                response.update({"message": "An account does not exist with this account ID."})
-                return JsonResponse(response)
+                }
+            })
+        return JsonResponse(response)
+
+
+def user_name(request):
+    if request.method == "GET":
+        response = {
+            "status": "success"
+        }
+        profile = get_profile(request.GET, response)
+        if profile is not None:
+            response.update({
+                "data": {
+                    "get": {
+                        "userName": profile.userName
+                    }
+                }
+            })
+        return JsonResponse(response)
+
+
+def preferred_name(request):
+    if request.method == "GET":
+        response = {
+            "status": "success"
+        }
+        profile = get_profile(request.GET, response)
+        if profile is not None:
+            response.update({
+                "data": {
+                    "get": {
+                        "preferredName": profile.preferredName
+                    }
+                }
+            })
+        return JsonResponse(response)
+
+
+def preferred_pronouns(request):
+    if request.method == "GET":
+        response = {
+            "status": "success"
+        }
+        profile = get_profile(request.GET, response)
+        if profile is not None:
+            response.update({
+                "data": {
+                    "get": {
+                        "preferredPronouns": profile.preferredPronouns
+                    }
+                }
+            })
+        return JsonResponse(response)
+
+
+def get_profile(data, response):
+    if data.get("accountID") is None:
+        response.update({"status": "error"})
+        response.update({"message": "Missing account ID."})
+        return None
+    else:
+        try:
+            return Profile.objects.get(accountID=int(data.get("accountID")))
+        except ObjectDoesNotExist:
+            response.update({"status": "error"})
+            response.update({"message": "An account does not exist with this account ID."})
+            return None
