@@ -26,8 +26,7 @@ class ProfilesTest(TestCase):
             preferredName="Profile Test",
             preferredPronouns="Patrick",
             biography="",
-            image=SimpleUploadedFile(name="profile_test_image.png",
-                                     content=open("media/image/test_image.png", "rb").read())
+            profilePicture=SimpleUploadedFile(name="profile_test_image.png", content=open("media/image/test_image.png", "rb").read())
         )
 
     def tearDown(self):

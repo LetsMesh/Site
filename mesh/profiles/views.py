@@ -1,5 +1,4 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 from mesh.profiles.models import Profile
@@ -21,81 +20,44 @@ def bio_view(request):
 
 def profile_picture(request):
     if request.method == "GET":
-        response = {
-            "status": "success"
-        }
-        profile = get_profile(request.GET, response)
-        if profile is not None:
-            response.update({
-                "data": {
-                    "get": {
-                        "profilePicture": profile.image.url
-                    }
-                }
-            })
-        return JsonResponse(response)
+        return get_data(request, "profilePicture", lambda profile: profile.profilePicture.url)
 
 
 def user_name(request):
     if request.method == "GET":
-        response = {
-            "status": "success"
-        }
-        profile = get_profile(request.GET, response)
-        if profile is not None:
-            response.update({
-                "data": {
-                    "get": {
-                        "userName": profile.userName
-                    }
-                }
-            })
-        return JsonResponse(response)
+        return get_data(request, "userName", lambda profile: profile.userName)
 
 
 def preferred_name(request):
     if request.method == "GET":
-        response = {
-            "status": "success"
-        }
-        profile = get_profile(request.GET, response)
-        if profile is not None:
-            response.update({
-                "data": {
-                    "get": {
-                        "preferredName": profile.preferredName
-                    }
-                }
-            })
-        return JsonResponse(response)
+        return get_data(request, "preferredName", lambda profile: profile.preferredName)
 
 
 def preferred_pronouns(request):
     if request.method == "GET":
-        response = {
-            "status": "success"
-        }
-        profile = get_profile(request.GET, response)
-        if profile is not None:
+        return get_data(request, "preferredPronouns", lambda profile: profile.preferredPronouns)
+
+
+def get_data(request, name, mapper):
+    response = {}
+    if request.GET.get("accountID") is None:
+        response.update({"status": "error"})
+        response.update({"message": "Missing account ID."})
+    else:
+        try:
+            profile = Profile.objects.get(accountID=int(request.GET.get("accountID")))
+            response.update({"status": "success"})
             response.update({
                 "data": {
                     "get": {
-                        "preferredPronouns": profile.preferredPronouns
+                        name: mapper(profile)
                     }
                 }
             })
-        return JsonResponse(response)
-
-
-def get_profile(data, response):
-    if data.get("accountID") is None:
-        response.update({"status": "error"})
-        response.update({"message": "Missing account ID."})
-        return None
-    else:
-        try:
-            return Profile.objects.get(accountID=int(data.get("accountID")))
         except ObjectDoesNotExist:
             response.update({"status": "error"})
             response.update({"message": "An account does not exist with this account ID."})
-            return None
+        except AttributeError:
+            response.update({"status": "error"})
+            response.update({"message": "Attribute does not exist."})
+    return JsonResponse(response)
