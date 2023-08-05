@@ -11,7 +11,8 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Theme, ThemeProvider, Typography, createTheme } from "@mui/material";
-
+import { paths } from "../../Routing/RoutePaths";
+import { useNavigate } from "react-router-dom";
 //step labels
 const stepLabels = ["Create Account", "Verify Email", "Go to Profile"];
 
@@ -63,6 +64,7 @@ const tooltipErrorTheme = createTheme({
 });
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const formMethods = useForm<IFormInput>({
     defaultValues: {
       firstName: "",
@@ -150,6 +152,7 @@ export default function SignUp() {
 
     if (isValid && activeStep === 2) {
       formMethods.handleSubmit(onSubmit)();
+      navigate(paths.profile_page);
     }
   };
 

@@ -1,8 +1,8 @@
 import { Grid, Typography, Button, Stack, Alert } from "@mui/material";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import group_image from "../../assets/media/group_image.png";
-import React from "react";
-
+import { paths } from "../../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
 export default function homePage() {
   /*-----------------Group image container------------*/
 
@@ -98,6 +98,8 @@ export default function homePage() {
             height: "3em",
             borderRadius: 4,
           }}
+          component={RouterLink}
+          to={paths.profile_swipe}
         >
           <Typography
             fontWeight="600"
