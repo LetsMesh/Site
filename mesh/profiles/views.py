@@ -64,7 +64,7 @@ def profile_picture(request):
         if "accountID" not in text_data:
             
             response["Message"] = "Account ID not found."
-            return JsonResponse(response, status=401)
+            return JsonResponse(response, status=400)
         
         accountID = text_data["accountID"]
         
@@ -75,7 +75,7 @@ def profile_picture(request):
         except ObjectDoesNotExist:
             
             response["Message"] = "Invalid request. Account does not exist."
-            return JsonResponse(response, status=401)
+            return JsonResponse(response, status=400)
 
         # If user doesn't upload profile picture, then their profile picture will remain null.
         if "profilePicture" not in file_data:
@@ -90,6 +90,20 @@ def profile_picture(request):
         
         profile_picture = file_data["profilePicture"]
              
+        # Check if file is an image
+        if profile_picture is not None:
+            profile_picture_name = profile_picture.name
+            
+            extension_location = profile_picture_name.index(".") + 1
+            
+            file_extension = profile_picture_name[extension_location:].lower()
+
+            accepted_image_formats = ["png", "jpeg", "jpg"]
+            
+            if file_extension not in accepted_image_formats:
+                response["Message"] = "Uploaded file type is not an image."
+                return JsonResponse(response, status=400)
+        
         # Save profile
         profile.image = profile_picture
         profile.save()
