@@ -42,14 +42,13 @@ def profile_picture(request):
                 response.update({"status": "error"})
                 response.update({"message": "An account does not exist with this account ID."})
                 return JsonResponse(response)
-
-"""
-    Handles HTTP POST request
-    for profile pictures, allowing users to upload,
-    replace, and delete their profile pictures.
-"""
-def picture_view(request):
-    
+            
+        
+    """
+        Handles HTTP POST request
+        for profile pictures, allowing users to upload,
+        replace, and delete their profile pictures.
+    """
     if request.method == "POST":
         
         response = {
