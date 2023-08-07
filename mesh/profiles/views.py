@@ -63,7 +63,7 @@ def profile_picture(request):
         # Ensure an accountID and profilePicture are included in POST
         if "accountID" not in text_data:
             
-            response["Message"] = "Account ID not found."
+            response["Message"] = "Account ID not found in POST request."
             return JsonResponse(response, status=400)
         
         accountID = text_data["accountID"]
@@ -74,7 +74,7 @@ def profile_picture(request):
         
         except ObjectDoesNotExist:
             
-            response["Message"] = "Invalid request. Account does not exist."
+            response["Message"] = "Invalid request. Account ID does not exist."
             return JsonResponse(response, status=400)
 
         # If user doesn't upload profile picture, then their profile picture will remain null.
