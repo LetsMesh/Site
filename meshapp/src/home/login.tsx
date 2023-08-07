@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Divider,
@@ -8,8 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
-import LoginInput from "../components/login-form";
 import { deepmerge } from "@mui/utils";
+import LoginWindow from "../components/login-form";
 
 const buttonTheme = createTheme({
   components: {
@@ -52,6 +52,7 @@ const SignUp = () => {
 };
 
 const Login = () => {
+
   return (
     <ThemeProvider
       theme={(theme: Theme) => {
@@ -72,8 +73,7 @@ const Login = () => {
             bgcolor: "cardBackground.main",
             color: "text.main",
             borderRadius: 5,
-          }}
-        >
+          }}>
           <Grid item xs>
             <SignUp />
           </Grid>
@@ -81,11 +81,12 @@ const Login = () => {
             <Divider orientation="vertical" />
           </Grid>
           <Grid item xs>
-            <LoginInput />
+            <LoginWindow/>
           </Grid>
         </Grid>
       </Grid>
     </ThemeProvider>
   );
 };
+
 export default Login;
