@@ -217,6 +217,7 @@ const ProfileRole = (props: { isMentor: boolean; isMentee: boolean }) => {
       label={currentRole}
       sx={{
         color: "#26383A",
+        backgroundColor: "#d9d9d9",
         fontWeight: "bold",
         fontSize: "22px",
         fontFamily: "cocogoose",
