@@ -52,13 +52,20 @@ def picture_view(request):
     
     if request.method == "POST":
         
+        response = {
+            "Status": "Error",
+            "Message": "Could not update profile picture."
+        }
+        
         # Grab POST request data
         text_data = request.POST
         file_data = request.FILES
 
         # Ensure an accountID and profilePicture are included in POST
         if "accountID" not in text_data:
-            return JsonResponse({"Error": "Invalid request. Missing accountID field."}, status=401)
+            
+            response["Message"] = "Account ID not found."
+            return JsonResponse(response, status=401)
         
         accountID = text_data["accountID"]
         
@@ -67,7 +74,9 @@ def picture_view(request):
             profile = Profile.objects.get(accountID = accountID)
         
         except ObjectDoesNotExist:
-            return JsonResponse({"Error": "Invalid request. Account does not exist."}, status=401)
+            
+            response["Message"] = "Invalid request. Account does not exist."
+            return JsonResponse(response, status=401)
 
         # If user doesn't upload profile picture, then their profile picture will remain null.
         if "profilePicture" not in file_data:
@@ -75,7 +84,10 @@ def picture_view(request):
             profile.image = None
             profile.save()
 
-            return JsonResponse({"Response": "Profile picture not specified, using default null value."}, status=200)
+            response["Status"] = "Success"
+            response["Message"] = "Profile picture not specified, using default null value."
+            
+            return JsonResponse(response, status=200)
         
         profile_picture = file_data["profilePicture"]
              
@@ -83,4 +95,7 @@ def picture_view(request):
         profile.image = profile_picture
         profile.save()
         
-        return JsonResponse({"Response": "Successfully uploaded profile picture."}, status=200)
+        response["Status"] = "Success"
+        response["Message"] = "Successfully uploaded profile picture."
+        
+        return JsonResponse(response, status=200)
