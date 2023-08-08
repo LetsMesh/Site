@@ -11,6 +11,7 @@ import { ThemeProvider } from "@emotion/react";
 import ProfilePage from "./profile/profile-page";
 import ForgotPassword from "./components/password-forms/forgot-password-form"
 import LoggedInHome from "./home/logged-in/LoggedInHome";
+import Settings from "./Settings/settings-page"
 
 import {
   exampleProfile,
@@ -30,6 +31,7 @@ root.render(
       <ProfilePage {...exampleProfile} />
       <LoggedInHome />    
       <SignUp />
+      <Settings />
     </ThemeProvider>
   </React.StrictMode>
 );
