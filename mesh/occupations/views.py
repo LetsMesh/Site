@@ -21,8 +21,8 @@ def occupation(request):
         required_fields = [
             ("accountID", "accountID not found in POST request data."),
             ("occupationName", "occupationName not found in POST request data."),
-            ("occupationTag", "occupationTag not found in POST request data."),
-            ("occupationDescriptor", "occupationDescriptor not found in POST request data."),
+            ("occupationOrganization", "occupationOrganization not found in POST request data."),
+            ("occupationDescription", "occupationDescription not found in POST request data."),
         ]
 
         for field_name, error_message in required_fields:
@@ -32,61 +32,70 @@ def occupation(request):
         
         account_id = data["accountID"]
         
-        # Ensure account with supplied accountID exists
+        # Ensure account and profile exist
         try:
             account = Account.objects.get(accountID=account_id)
-
-        except ObjectDoesNotExist:
-            response["message"] = "Account with that ID could not be found."
-            return JsonResponse(response, status=400)
-        
-        # Ensure profile with supplied accountID exists
-        try:
             profile = Profile.objects.get(accountID=account)
         
         except ObjectDoesNotExist:
-            response["message"] = "Profile with that ID could not be found."
+            response["message"] = "Account or profile with that ID could not be found."
             return JsonResponse(response, status=400)
         
-        # If all required details are included begin to create/update Occupation
-        # and OccupationBridge
         occupation_name = data["occupationName"]
-        occupation_tag = data["occupationTag"]
-        occupation_descriptor = data["occupationDescriptor"]
+        occupation_organization = data["occupationOrganization"]
+        occupation_description = data["occupationDescription"]
         
-        # Check if profile already has linked Occupation
-        # if so, just update Occupation
         try:
-            occupation_bridge = OccupationBridge.objects.get(accountID=profile)
-            occupation = occupation_bridge.occupationID
+            # Check if occupation exists beforehand
+            occupation = Occupation.objects.get(occupationName=occupation_name, 
+                                                occupationOrganization=occupation_organization)
             
-            occupation.occupationName = occupation_name
-            occupation.occupationTag = occupation_tag
-            occupation.occupationDescriptor = occupation_descriptor
-            occupation.save()
+            print("1")
+            
+            try:
+                # Check if bridge already made for user
+                occupation_bridge = OccupationBridge.objects.get(accountID=profile)
+                response["message"] = "User Occupation successfully updated."
+                print("2")
 
-            response["message"] = "Occupation successfully updated."
+            except ObjectDoesNotExist:
+                # Create bridge if it wasn't made before
+                occupation_bridge = OccupationBridge(accountID=profile, occupationID=occupation, 
+                                                     occupationDescription=occupation_description)
+                response["message"] = "User Occupation successfully created and linked."
+                print("3")
 
-            # Update OccupationBridge
+            occupation_bridge.accountID = profile
             occupation_bridge.occupationID = occupation
+            occupation_bridge.occupationDescription = occupation_description
             occupation_bridge.save()
 
-        # If Occupation does not already exist, create it 
         except ObjectDoesNotExist:
+            # Create occupation if it does not exist
             occupation = Occupation(occupationName=occupation_name, 
-                                    occupationTag=occupation_tag, 
-                                    occupationDescriptor=occupation_descriptor)
+                                    occupationOrganization=occupation_organization)
             occupation.save()
+            print("4")
 
-            # Create OccupationBridge and connect to profile
-            occupation_bridge = OccupationBridge(accountID=profile, occupationID=occupation)
+            try:
+                # Check if bridge already made for user
+                occupation_bridge = OccupationBridge.objects.get(accountID=profile)
+                response["message"] = "User Occupation successfully created and linked."
+                print("5")
+
+            except ObjectDoesNotExist:
+                # Create bridge if it wasn't made before
+                occupation_bridge = OccupationBridge(accountID=profile, occupationID=occupation, 
+                                                     occupationDescription=occupation_description)
+                response["message"] = "User Occupation successfully created and linked."
+                print("6")
+
+            occupation_bridge.accountID = profile
+            occupation_bridge.occupationID = occupation
+            occupation_bridge.occupationDescription = occupation_description
             occupation_bridge.save()
 
-            response["message"] = "Occupation successfully created and linked to account."
-
-        
         response["status"] = "Success"
-
         return JsonResponse(response, status=200)
         
 def check_required_field(data, field_name, response, field_error_message):

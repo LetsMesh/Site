@@ -15,5 +15,5 @@ class Occupation(models.Model):
 
 class OccupationBridge(models.Model):
     accountID = models.OneToOneField(Profile, primary_key=True, on_delete=models.CASCADE)
-    occupationID = models.OneToOneField(Occupation, on_delete=models.CASCADE)
+    occupationID = models.ForeignKey(Occupation, on_delete=models.CASCADE)
     occupationDescription = models.TextField()
