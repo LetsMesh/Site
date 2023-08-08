@@ -23,10 +23,19 @@ const LoginScreen = (props: ComponentProps) => {
   };
 
   const onSubmit = () => {
-    const res = axiosInstance.post('http://localhost:8000/accounts/auth/jwt/create', {
-      email: formData.username
+    axiosInstance.post('http://localhost:8000/accounts/auth/jwt/create', {
+      username: formData.username,
+      password: formData.password,
     })
-    console.log("email: " + formData.username)
+    .then(response => {
+    // Handle successful response data here
+    console.log('Response data:', response.data);
+    })
+    .catch(error => {
+    // Handle errors here
+    console.error('Error:', error);
+  });
+
   };
 
   return (
