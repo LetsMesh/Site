@@ -50,13 +50,10 @@ def occupation(request):
             occupation = Occupation.objects.get(occupationName=occupation_name, 
                                                 occupationOrganization=occupation_organization)
             
-            print("1")
-            
             try:
                 # Check if bridge already made for user
                 occupation_bridge = OccupationBridge.objects.get(accountID=profile)
                 response["message"] = "User Occupation successfully updated."
-                print("2")
 
             except ObjectDoesNotExist:
                 # Create bridge if it wasn't made before
@@ -75,20 +72,17 @@ def occupation(request):
             occupation = Occupation(occupationName=occupation_name, 
                                     occupationOrganization=occupation_organization)
             occupation.save()
-            print("4")
 
             try:
                 # Check if bridge already made for user
                 occupation_bridge = OccupationBridge.objects.get(accountID=profile)
                 response["message"] = "User Occupation successfully created and linked."
-                print("5")
 
             except ObjectDoesNotExist:
                 # Create bridge if it wasn't made before
                 occupation_bridge = OccupationBridge(accountID=profile, occupationID=occupation, 
                                                      occupationDescription=occupation_description)
                 response["message"] = "User Occupation successfully created and linked."
-                print("6")
 
             occupation_bridge.accountID = profile
             occupation_bridge.occupationID = occupation
