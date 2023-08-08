@@ -5,6 +5,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, Client
 
 from mesh.accounts.models import Account
+from mesh.exceptions.MissingRequiredFields import MissingRequiredFields
+from mesh.exceptions.ProfileDoesNotExist import ProfileDoesNotExist
 from mesh.profiles.models import Profile
 
 
@@ -26,7 +28,8 @@ class ProfilesTest(TestCase):
             preferredName="Profile Test",
             preferredPronouns="Patrick",
             biography="",
-            profilePicture=SimpleUploadedFile(name="profile_test_image.png", content=open("media/image/test_image.png", "rb").read())
+            profilePicture=SimpleUploadedFile(name="profile_test_image.png",
+                                              content=open("media/image/test_image.png", "rb").read())
         )
 
     def tearDown(self):
@@ -41,16 +44,12 @@ class ProfilesTest(TestCase):
         self.assertEquals(json_response.get("data"), {"get": {"profilePicture": "/media/image/profile_test_image.png"}})
 
     def test_missing_account_profile_picture(self):
-        response = self.client.get("/profiles/profilePicture")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "Missing account ID.")
+        with self.assertRaises(MissingRequiredFields):
+            self.client.get("/profiles/profilePicture")
 
     def test_no_account_profile_picture(self):
-        response = self.client.get("/profiles/profilePicture", {"accountID": 9999})
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+        with self.assertRaises(ProfileDoesNotExist):
+            self.client.get("/profiles/profilePicture", {"accountID": 9999})
 
     def test_user_name(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
@@ -59,16 +58,12 @@ class ProfilesTest(TestCase):
         self.assertEquals(json_response.get("data"), {"get": {"userName": "profileTest"}})
 
     def test_missing_account_user_name(self):
-        response = self.client.get("/profiles/userName")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "Missing account ID.")
+        with self.assertRaises(MissingRequiredFields):
+            self.client.get("/profiles/userName")
 
     def test_no_account_user_name(self):
-        response = self.client.get("/profiles/userName", {"accountID": 9999})
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+        with self.assertRaises(ProfileDoesNotExist):
+            self.client.get("/profiles/userName", {"accountID": 9999})
 
     def test_preferred_name(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
@@ -77,16 +72,12 @@ class ProfilesTest(TestCase):
         self.assertEquals(json_response.get("data"), {"get": {"preferredName": "Profile Test"}})
 
     def test_missing_account_preferred_name(self):
-        response = self.client.get("/profiles/preferredName")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "Missing account ID.")
+        with self.assertRaises(MissingRequiredFields):
+            self.client.get("/profiles/preferredName")
 
     def test_no_account_preferred_name(self):
-        response = self.client.get("/profiles/preferredName", {"accountID": 9999})
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+        with self.assertRaises(ProfileDoesNotExist):
+            self.client.get("/profiles/preferredName", {"accountID": 9999})
 
     def test_preferred_pronouns(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
@@ -95,13 +86,9 @@ class ProfilesTest(TestCase):
         self.assertEquals(json_response.get("data"), {"get": {"preferredPronouns": "Patrick"}})
 
     def test_missing_account_preferred_pronouns(self):
-        response = self.client.get("/profiles/preferredPronouns")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "Missing account ID.")
+        with self.assertRaises(MissingRequiredFields):
+            self.client.get("/profiles/preferredPronouns")
 
     def test_no_account_preferred_pronouns(self):
-        response = self.client.get("/profiles/preferredPronouns", {"accountID": 9999})
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+        with self.assertRaises(ProfileDoesNotExist):
+            self.client.get("/profiles/preferredPronouns", {"accountID": 9999})

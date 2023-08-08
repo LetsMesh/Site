@@ -2,6 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
 from mesh.profiles.models import Profile
+from ..exceptions.ProfileDoesNotExist import ProfileDoesNotExist
+from ..utils.validate_data import validate_required_fields
 
 
 def bio_view(request):
@@ -39,25 +41,16 @@ def preferred_pronouns(request):
 
 
 def get_data(request, name, mapper):
-    response = {}
-    if request.GET.get("accountID") is None:
-        response.update({"status": "error"})
-        response.update({"message": "Missing account ID."})
-    else:
-        try:
-            profile = Profile.objects.get(accountID=int(request.GET.get("accountID")))
-            response.update({"status": "success"})
-            response.update({
-                "data": {
-                    "get": {
-                        name: mapper(profile)
-                    }
+    try:
+        data = validate_required_fields(request.GET, ["accountID"])
+        profile = Profile.objects.get(accountID=int(data["accountID"]))
+        return JsonResponse({
+            "status": "success",
+            "data": {
+                "get": {
+                    name: mapper(profile)
                 }
-            })
-        except ObjectDoesNotExist:
-            response.update({"status": "error"})
-            response.update({"message": "An account does not exist with this account ID."})
-        except AttributeError:
-            response.update({"status": "error"})
-            response.update({"message": "Attribute does not exist."})
-    return JsonResponse(response)
+            }
+        })
+    except ObjectDoesNotExist:
+        raise ProfileDoesNotExist()
