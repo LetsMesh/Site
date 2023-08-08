@@ -54,26 +54,46 @@ def occupation(request):
             response["Message"] = "Profile with that ID could not be found."
             return JsonResponse(response, status=400)
         
-        # If all required details are included, create Occupation Bridge and create Occupation
-        # Create Occupation first
+        # If all required details are included begin to create/update Occupation
+        # and OccupationBridge
+        
         occupation_name = data["occupationName"]
         occupation_tag = data["occupationTag"]
         occupation_descriptor = data["occupationDescriptor"]
         
-        occupation = Occupation(occupationName=occupation_name, 
-                                occupationTag=occupation_tag, 
-                                occupationDescriptor=occupation_descriptor)
-        
-        occupation.save()
+        # Check if profile already has linked Occupation
+        # if so, just update Occupation
+        try:
+            occupation_bridge = OccupationBridge.objects.get(accountID=profile)
+            occupation = occupation_bridge.occupationID
+            
+            occupation.occupationName = occupation_name
+            occupation.occupationTag = occupation_tag
+            occupation.occupationDescriptor = occupation_descriptor
+            occupation.save()
 
-        # Then create Occupation Bridge and 
-        # connect the Occupation and Account to the Occupation Bridge
+            response["Message"] = "Occupation successfully updated."
 
-        occupation_bridge = OccupationBridge(accountID=profile, occupationID=occupation)
-        occupation_bridge.save()
+            # Update OccupationBridge
+            occupation_bridge.occupationID = occupation
+            occupation_bridge.save()
+
+        # If Occupation does not already exist, create it 
+        except ObjectDoesNotExist:
+            occupation = Occupation(occupationName=occupation_name, 
+                                    occupationTag=occupation_tag, 
+                                    occupationDescriptor=occupation_descriptor)
+            occupation.save()
+
+            # Create OccupationBridge and connect to profile
+            occupation_bridge = OccupationBridge(accountID=profile, occupationID=occupation)
+            occupation_bridge.save()
+
+            response["Message"] = "Occupation successfully created and linked to account."
+
         
         response["Status"] = "Success"
-        response["Message"] = "Occupation successfully created and linked to account."
-        
+
+
         return JsonResponse(response, status=200)
         
