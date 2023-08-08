@@ -16,10 +16,17 @@ interface ComponentProps {
 
 const LoginScreen = (props: ComponentProps) => {
 
-  const [formData, setFormData] = useState({ user: null, pass: null });
+  const [formData, setFormData] = useState({ username: null, password: null });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     console.log(formData);
+  };
+
+  const onSubmit = () => {
+    const res = axiosInstance.post('http://localhost:8000/accounts/auth/jwt/create', {
+      email: formData.username
+    })
+    console.log("email: " + formData.username)
   };
 
   return (
@@ -42,13 +49,13 @@ const LoginScreen = (props: ComponentProps) => {
       <Grid item xs sx={{ width: "70%" }}>
         <Stack spacing={2}>
           <TextField
-            id="user"
+            id="username"
             type="text"
             onChange={handleChange}
             label="Email"
           />
           <TextField
-            id="pass"
+            id="password"
             type="password"
             onChange={handleChange}
             label="Password"
@@ -56,7 +63,7 @@ const LoginScreen = (props: ComponentProps) => {
         </Stack>
       </Grid>
       <Grid item xs sx={{ textAlign: "center", width: "100%" }}>
-        <Button variant="contained" sx={{ width: "70%" }}>
+        <Button variant="contained" sx={{ width: "70%" }} onClick={onSubmit}>
           Login
         </Button>
       </Grid>
