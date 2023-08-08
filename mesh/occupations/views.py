@@ -8,7 +8,6 @@ from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
 
 
-
 def occupation(request):
     if request.method == "POST":
         data = request.POST
@@ -18,25 +17,20 @@ def occupation(request):
             "Message": "Unable to POST occupation data."
         }
         
-        # Ensure accountID is in POST request
-        if "accountID" not in data:
-            response["Message"] = "AccountID not found in POST request data."
-            return JsonResponse(response, status=400)
+        # Check for required fields
+        required_fields = [
+            ("accountID", "accountID not found in POST request data."),
+            ("occupationName", "occupationName not found in POST request data."),
+            ("occupationTag", "occupationTag not found in POST request data."),
+            ("occupationDescriptor", "occupationDescriptor not found in POST request data."),
+        ]
+
+        for field_name, error_message in required_fields:
+            check_result = check_required_field(data, field_name, response, error_message)
+            if check_result is not None:
+                return check_result
         
         account_id = data["accountID"]
-
-        # Ensure all required occupation details are in POST request
-        if "occupationName" not in data:
-            response["Message"] = "occupationName not found in POST request data."
-            return JsonResponse(response, status=400)
-        
-        if "occupationTag" not in data:
-            response["Message"] = "occupationTag not found in POST request data."
-            return JsonResponse(response, status=400)
-        
-        if "occupationDescriptor" not in data:
-            response["Message"] = "occupationDescriptor not found in POST request data."
-            return JsonResponse(response, status=400)
         
         # Ensure account with supplied accountID exists
         try:
@@ -56,7 +50,6 @@ def occupation(request):
         
         # If all required details are included begin to create/update Occupation
         # and OccupationBridge
-        
         occupation_name = data["occupationName"]
         occupation_tag = data["occupationTag"]
         occupation_descriptor = data["occupationDescriptor"]
@@ -94,6 +87,10 @@ def occupation(request):
         
         response["Status"] = "Success"
 
-
         return JsonResponse(response, status=200)
         
+def check_required_field(data, field_name, response, field_error_message):
+    if field_name not in data:
+        response["Message"] = field_error_message
+        return JsonResponse(response, status=400)
+    return None
