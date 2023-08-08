@@ -13,8 +13,8 @@ def occupation(request):
         data = request.POST
 
         response = {
-            "Status": "Error",
-            "Message": "Unable to POST occupation data."
+            "status": "Error",
+            "message": "Unable to POST occupation data."
         }
         
         # Check for required fields
@@ -37,7 +37,7 @@ def occupation(request):
             account = Account.objects.get(accountID=account_id)
 
         except ObjectDoesNotExist:
-            response["Message"] = "Account with that ID could not be found."
+            response["message"] = "Account with that ID could not be found."
             return JsonResponse(response, status=400)
         
         # Ensure profile with supplied accountID exists
@@ -45,7 +45,7 @@ def occupation(request):
             profile = Profile.objects.get(accountID=account)
         
         except ObjectDoesNotExist:
-            response["Message"] = "Profile with that ID could not be found."
+            response["message"] = "Profile with that ID could not be found."
             return JsonResponse(response, status=400)
         
         # If all required details are included begin to create/update Occupation
@@ -65,7 +65,7 @@ def occupation(request):
             occupation.occupationDescriptor = occupation_descriptor
             occupation.save()
 
-            response["Message"] = "Occupation successfully updated."
+            response["message"] = "Occupation successfully updated."
 
             # Update OccupationBridge
             occupation_bridge.occupationID = occupation
@@ -82,15 +82,15 @@ def occupation(request):
             occupation_bridge = OccupationBridge(accountID=profile, occupationID=occupation)
             occupation_bridge.save()
 
-            response["Message"] = "Occupation successfully created and linked to account."
+            response["message"] = "Occupation successfully created and linked to account."
 
         
-        response["Status"] = "Success"
+        response["status"] = "Success"
 
         return JsonResponse(response, status=200)
         
 def check_required_field(data, field_name, response, field_error_message):
     if field_name not in data:
-        response["Message"] = field_error_message
+        response["message"] = field_error_message
         return JsonResponse(response, status=400)
     return None
