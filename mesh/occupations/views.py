@@ -142,7 +142,7 @@ class OccupationsDetailView(View):
             return JsonResponse(occupation_data, status=200)
         
         except OccupationBridge.DoesNotExist:
-            return JsonResponse({"message": "OccupationBridge not found"}, status=404)
+            return JsonResponse({"error": "OccupationBridge for this account not found."}, status=404)
     
     def patch(self, request, account_id, *args, **kwargs):
         """
@@ -163,8 +163,8 @@ class OccupationsDetailView(View):
         try:
             occupation_bridge = OccupationBridge.objects.get(accountID=account_id)
         
-        except Occupation.DoesNotExist:
-            return JsonResponse({"error": "OccupationBridge does not exist."}, status=404)
+        except OccupationBridge.DoesNotExist:
+            return JsonResponse({"error": "OccupationBridge for this account not found."}, status=404)
         
         data = json.loads(request.body)
 
