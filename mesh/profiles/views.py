@@ -51,14 +51,14 @@ def get_data(request, name, mapper):
                     name: mapper(profile)
                 }
             }
-        })
+        }, status=200)
     except ObjectDoesNotExist:
         return JsonResponse({
             "status": "error",
             "message": "An account does not exist with this account ID."
-        })
+        }, status=400)
     except MissingRequiredFields:
         return JsonResponse({
             "status": "error",
             "message": "Missing one or more required fields."
-        })
+        }, status=400)
