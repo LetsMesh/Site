@@ -1,5 +1,6 @@
 import { Grid, Link, Typography } from "@mui/material";
-
+import { paths } from "../../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
 export default function LoggedOutHeader() {
   return (
     <Grid
@@ -22,7 +23,7 @@ export default function LoggedOutHeader() {
         spacing={5}
       >
         <Grid item>
-          <Link href="#">
+          <Link component={RouterLink} to={paths.logged_out_home}>
             <Typography
               variant="h4"
               color={"#F2E8DE"}

@@ -6,7 +6,6 @@ import LoggedInHome from "../home/logged-in/LoggedInHome";
 import ProfilePage from "../profile/profile-page";
 import {
   exampleProfile,
-  exampleProfile2,
 } from "../profile/tests/profile-examples";
 import Slider from "../ProfileCardCarousel/Swiper";
 import { Routes, Route, Link } from "react-router-dom";
