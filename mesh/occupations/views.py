@@ -10,6 +10,7 @@ from mesh.profiles.models import Profile
 # Utilities Imports
 from mesh.utils.validate_data import validate_json_and_required_fields
 from mesh.exceptions.MissingRequiredFields import MissingRequiredFields
+from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 
 # Library Imports
 import json
@@ -86,6 +87,9 @@ class OccupationsView(View):
             occupation_bridge.occupationDescription = occupation_description
             occupation_bridge.save()
 
+        except InvalidJsonFormat:
+            return JsonResponse({"error": "Invalid JSON format."}, status=400)
+        
         except MissingRequiredFields:
             return JsonResponse({"error": "Missing required JSON fields."}, status=400)
 
@@ -162,11 +166,13 @@ class OccupationsDetailView(View):
         """
         try:
             occupation_bridge = OccupationBridge.objects.get(accountID=account_id)
+            data = json.loads(request.body)
         
         except OccupationBridge.DoesNotExist:
             return JsonResponse({"error": "OccupationBridge for this account not found."}, status=404)
         
-        data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "JSON could not be decoded."}, status=400)
 
         occupation_bridge.occupationDescription = data.get("occupationDescription", 
                                                            occupation_bridge.occupationDescription)
