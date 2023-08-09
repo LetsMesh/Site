@@ -8,7 +8,8 @@ from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
 
 # Utilities Imports
-from ..utils.validate_data import validate_json_and_required_fields
+from mesh.utils.validate_data import validate_json_and_required_fields
+from mesh.exceptions.MissingRequiredFields import MissingRequiredFields
 
 # Library Imports
 import json
@@ -56,27 +57,19 @@ class OccupationsView(View):
         REQUIRED_FIELDS = ["accountID", "occupationName", 
                            "occupationOrganization", "occupationDescription"]
 
-        # Try to parse JSON input data
+        # Try to parse JSON input data, ensure account and profile exist
         try:
             data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
 
+            # Parse data if it's valid
             account_id = data["accountID"]
             occupation_name = data["occupationName"]
             occupation_organization = data["occupationOrganization"]
             occupation_description = data["occupationDescription"]
 
-        except (json.JSONDecodeError, KeyError):
-            return JsonResponse({"error": "Invalid JSON or missing fields."}, status=400)
-        
-        # Ensure account and profile exist
-        try:
             account = Account.objects.get(accountID=account_id)
             profile = Profile.objects.get(accountID=account)
-        
-        except (Account.DoesNotExist, Profile.DoesNotExist):
-            return JsonResponse({"error": "Account or Profile not found."}, status=404)
-        
-        try:
+
             # Check if OccupationBridge already exists
             occupation_bridge = OccupationBridge.objects.get(
                 accountID = profile
@@ -88,10 +81,17 @@ class OccupationsView(View):
                 occupationOrganization = occupation_organization
             )[0]
 
+            # Update OccupationBridge
             occupation_bridge.occupationID = occupation
             occupation_bridge.occupationDescription = occupation_description
             occupation_bridge.save()
 
+        except MissingRequiredFields:
+            return JsonResponse({"error": "Missing required JSON fields."}, status=400)
+
+        except (Account.DoesNotExist, Profile.DoesNotExist):
+            return JsonResponse({"error": "Account or Profile not found."}, status=404)       
+        
         except OccupationBridge.DoesNotExist:
             
             # Get or create new Occupation
@@ -100,13 +100,14 @@ class OccupationsView(View):
                 occupationOrganization = occupation_organization
             )
 
+            # By this point, we need to create a new OccupationBridge and connect
+            # the OccupationBridge to the specified Account/Profile
             occupation_bridge = OccupationBridge.objects.create(
                 accountID = profile,
                 occupationID = occupation,
                 occupationDescription = occupation_description
             )
-            
-
+        
         return JsonResponse({"occupationID": occupation.occupationID}, status=201)
     
 
