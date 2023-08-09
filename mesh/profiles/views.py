@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
 from mesh.profiles.models import Profile
-from ..exceptions.ProfileDoesNotExist import ProfileDoesNotExist
+from ..exceptions.MissingRequiredFields import MissingRequiredFields
 from ..utils.validate_data import validate_required_fields
 
 
@@ -53,4 +53,12 @@ def get_data(request, name, mapper):
             }
         })
     except ObjectDoesNotExist:
-        raise ProfileDoesNotExist()
+        return JsonResponse({
+            "status": "error",
+            "message": "An account does not exist with this account ID."
+        })
+    except MissingRequiredFields:
+        return JsonResponse({
+            "status": "error",
+            "message": "Missing one or more required fields."
+        })
