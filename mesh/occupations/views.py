@@ -95,7 +95,7 @@ class OccupationsView(View):
         except OccupationBridge.DoesNotExist:
             
             # Get or create new Occupation
-            occupation = Occupation.objects.get_or_create(
+            occupation, _ = Occupation.objects.get_or_create(
                 occupationName = occupation_name,
                 occupationOrganization = occupation_organization
             )
