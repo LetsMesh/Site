@@ -7,8 +7,8 @@ urlpatterns = [
     # POST /occupations/
     path("", occupation_views.OccupationsView.as_view(), name="occupation"),
 
-    # GET /occupations/:occupation_id
-    # PATCH /occupations/:occupation_id
+    # GET /occupations/:account_id
+    # PATCH /occupations/:account_id
     path("<int:account_id>/", occupation_views.OccupationsDetailView.as_view(), 
     name="get_or_update_occupation")
 ]
