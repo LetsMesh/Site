@@ -1,7 +1,6 @@
 # Django Imports
 from django.http import JsonResponse, HttpResponse
 from django.views import View
-from django.core import serializers
 
 # Model Imports
 from .models import Occupation, OccupationBridge
@@ -29,8 +28,18 @@ class OccupationsView(View):
             Returns a JSON response containing all Occupations.
         """
         occupations = Occupation.objects.all()
-        occupations_list = serializers.serialize("json", occupations)
-        return JsonResponse(occupations_list, status=200)
+        
+        # Create a list of dictionaries containing occupation details
+        occupations_list = [
+            {
+                "occupationID": occupation.occupationID,
+                "occupationName": occupation.occupationName,
+                "occupationOrganization": occupation.occupationOrganization
+            }
+            for occupation in occupations
+        ]
+        
+        return JsonResponse(occupations_list, status=200, safe=False)
     
     def post(self, request, *args, **kwargs):
         """
