@@ -1,6 +1,7 @@
 # Django Imports
 from django.http import JsonResponse, HttpResponse
 from django.views import View
+from django.core import serializers
 
 # Model Imports
 from .models import Occupation, OccupationBridge
@@ -32,16 +33,9 @@ class OccupationsView(View):
         occupations = Occupation.objects.all()
         
         # Create a list of dictionaries containing occupation details
-        occupations_list = [
-            {
-                "occupationID": occupation.occupationID,
-                "occupationName": occupation.occupationName,
-                "occupationOrganization": occupation.occupationOrganization
-            }
-            for occupation in occupations
-        ]
+        occupations_list = serializers.serialize("json", occupations)
         
-        return JsonResponse(occupations_list, status=200, safe=False)
+        return JsonResponse(occupations_list, status = 200, safe = False)
     
     def post(self, request, *args, **kwargs):
         """
@@ -88,13 +82,13 @@ class OccupationsView(View):
             occupation_bridge.save()
 
         except InvalidJsonFormat:
-            return JsonResponse({"error": "Invalid JSON format."}, status=400)
+            return JsonResponse({"error": "Invalid JSON format."}, status = 400)
         
         except MissingRequiredFields:
-            return JsonResponse({"error": "Missing required JSON fields."}, status=400)
+            return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
 
         except (Account.DoesNotExist, Profile.DoesNotExist):
-            return JsonResponse({"error": "Account or Profile not found."}, status=404)       
+            return JsonResponse({"error": "Account or Profile not found."}, status = 404)       
         
         except OccupationBridge.DoesNotExist:
             
@@ -112,7 +106,7 @@ class OccupationsView(View):
                 occupationDescription = occupation_description
             )
         
-        return JsonResponse({"occupationID": occupation.occupationID}, status=201)
+        return JsonResponse({"occupationID": occupation.occupationID}, status = 201)
     
 
 class OccupationsDetailView(View):
@@ -134,16 +128,8 @@ class OccupationsDetailView(View):
         
         try:
             occupation_bridge = OccupationBridge.objects.get(accountID_id=account_id)
-            
-            occupation = occupation_bridge.occupationID
-            occupation_data = {
-                "occupationID": occupation.occupationID,
-                "occupationName": occupation.occupationName,
-                "occupationOrganization": occupation.occupationOrganization,
-                "occupationDescription": occupation_bridge.occupationDescription,
-            }
-            
-            return JsonResponse(occupation_data, status=200)
+            occupation_data = serializers.serialize("json", [occupation_bridge])
+            return JsonResponse(occupation_data, status = 200, safe = False)
         
         except OccupationBridge.DoesNotExist:
             return JsonResponse({"error": "OccupationBridge for this account not found."}, status=404)
@@ -169,12 +155,12 @@ class OccupationsDetailView(View):
             data = json.loads(request.body)
         
         except OccupationBridge.DoesNotExist:
-            return JsonResponse({"error": "OccupationBridge for this account not found."}, status=404)
+            return JsonResponse({"error": "OccupationBridge for this account not found."}, status = 404)
         
         except json.JSONDecodeError:
-            return JsonResponse({"error": "JSON could not be decoded."}, status=400)
+            return JsonResponse({"error": "JSON could not be decoded."}, status = 400)
 
         occupation_bridge.occupationDescription = data.get("occupationDescription", 
                                                            occupation_bridge.occupationDescription)
         occupation_bridge.save()
-        return HttpResponse(status=204)
+        return HttpResponse(status = 204)
