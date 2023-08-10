@@ -26,7 +26,6 @@ root.render(
       <ForgotPassword/>
       <Slider />
       <Login />
-      <Footer />
       <ProfilePage {...exampleProfile} />
       <LoggedInHome />    
       <SignUp />
