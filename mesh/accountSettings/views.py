@@ -37,7 +37,7 @@ class SettingsView(View):
         """
         settings = Settings.objects.all()
         accounts_settings = serializers.serialize('json', settings)
-        return JsonResponse(accounts_settings, safe=False)
+        return JsonResponse(accounts_settings, safe=False, status=200)
 
 class SettingsDetailView(View):
     def get(self, request, account_id, *args, **kwargs):
@@ -47,7 +47,7 @@ class SettingsDetailView(View):
         try: 
             settings = Settings.objects.get(accountID= account_id)
             settings_detail = serializers.serialize('json', [settings])
-            return JsonResponse(settings_detail, safe = False)
+            return JsonResponse(settings_detail, safe = False, status=200)
         
         except Settings.DoesNotExist:
-            return JsonResponse({'error': 'Settings for this account does not exist'}, status=404)
+            return JsonResponse({'error': 'Settings for this account do not exist'}, status=404)
