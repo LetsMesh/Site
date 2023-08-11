@@ -3,12 +3,12 @@ Command to test tags:
 python manage.py test mesh.tests.tags_tests --noinput
 '''
 
-import json
-from django.test import TestCase, Client
-from ..tags.models import Tag
-from ..accounts.models import Account
-from ..tags.models import TagBridge
 
+from django.test import TestCase, Client, RequestFactory
+from ..tags.models import Tag, TagBridge
+from ..accounts.models import Account
+from ..tags.views import TagsView
+import json
 
 class TagsTestCase(TestCase):
     def setUp(self):
@@ -85,4 +85,62 @@ class TagsTestCase(TestCase):
 
         self.assertEqual(raw_response.status_code, 200)
         self.assertEqual(response_data.get("tags"), [])
+
+    '''
+    @ Post call testing 
+    
+    '''
+    def test_add_tag(self):
+        client = Client()
+        # Create a sample account to use in the test
+        sample_account = Account.objects.create(
+            email='test@gmail.com',
+            encryptedPass=bytes('password', 'utf-8'),
+            salt=bytes('salt', 'utf-8'),
+            phoneNum='1234567890',
+            displayTheme='D',
+            enabled2Factor=False,
+            isMentor=False,
+            isMentee=True
+        )
+        # Set the user attribute on the TagsTestCase class
+        self.user = User.objects.create_user(
+            username='johndoe',
+            email='johndoe@gmail.com',
+            password='password'
+        )
+
+         # Login the user
+        if not self.user.has_perm('mesh.can_add_tags'):
+            raise Exception('User does not have permission to add tags')
+        
+        # Login the user
+        if not self.user.has_perm('mesh.can_add_tags'):
+            raise Exception('User does not have permission to add tags')
+
+        # Prepare the data for the POST request
+        tag_data = {
+            "tagName": "newTag",
+            "isDefault": None,  # Corrected boolean value
+            "accountID": sample_account.accountID,
+        }
+
+        # Send a POST request using the client
+        response = client.post('/tags/', json.dumps(tag_data), content_type='application/octet-stream')
+
+
+        # Check the response status code
+        self.assertEqual(response.status_code, 201)
+
+        # Check the response content
+        response_data = response.content
+        self.assertEqual(response_data, b'')
+
+        # Verify that the tag was created
+        new_tag = Tag.objects.get(tagName="newTag")
+        self.assertIsNotNone(new_tag)
+
+        # Verify that the TagBridge was created, connecting the new tag to the sample account
+        tag_bridge = TagBridge.objects.get(tagID=new_tag, accountID=sample_account)
+        self.assertIsNotNone(tag_bridge)
 
