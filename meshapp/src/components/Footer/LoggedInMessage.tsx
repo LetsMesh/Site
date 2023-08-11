@@ -5,8 +5,8 @@ import React from "react";
 export default function LoggedInFooter() {
   return (
     <AppBar
-      position="static"
-      sx={{ backgroundColor: "secondary.main" }}
+      position="sticky"
+      sx={{ backgroundColor: "secondary.main", bottom: 0 }}
       elevation={0}
     >
       <Toolbar>

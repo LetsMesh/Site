@@ -1,31 +1,28 @@
 import { Routes, Route } from "react-router-dom";
 import { paths } from "./RoutePaths";
-import LoggedInFooter from "../components/Footer/LoggedInFooter";
-import LoggedOutFooter from "../components/Footer/LoggedOutFooter";
+import LoggedInMessage from "../components/Footer/LoggedInMessage";
+import Footer from "../components/Footer/Footer";
 
-//Paths to render in either the logged in header or logged out footer
+//Paths for logged in page
+//should display message icon at bottom of page if logged in, otherwise not
+//and then the footer with links
 const LOGGED_IN_PATHS = [
   paths.logged_in_home,
   paths.profile_page,
   paths.profile_swipe,
 ];
-const LOGGED_OUT_PATHS = [
-  paths.logged_out_home,
-  paths.login_page,
-  paths.forgot_password,
-  paths.sign_up,
-];
 
-//contains routes for the footer
-export default function FooterRoutes() {
+//contains routes that if you are logged in, will show messages at bottom of screen with Footer
+//otherwise, just footer is displayed
+export default function MessageAndFooterRoutes() {
   return (
-    <Routes>
-      {LOGGED_IN_PATHS.map((path) => (
-        <Route path={path} element={<LoggedInFooter />} />
-      ))}
-      {LOGGED_OUT_PATHS.map((path) => (
-        <Route path={path} element={<LoggedOutFooter />} />
-      ))}
-    </Routes>
+    <>
+      <Footer />
+      <Routes>
+        {LOGGED_IN_PATHS.map((path) => (
+          <Route path={path} element={<LoggedInMessage />} />
+        ))}
+      </Routes>
+    </>
   );
 }
