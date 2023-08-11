@@ -16,24 +16,26 @@ interface ComponentProps {
 
 const LoginScreen = (props: ComponentProps) => {
 
+  const loginScreenEndpoint: string = 'accounts/auth/jwt/create';
+
   const [formData, setFormData] = useState({ username: null, password: null });
+  const [errorMessage, setErrorMessage] = useState('');
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    console.log(formData);
   };
 
   const onSubmit = () => {
-    axiosInstance.post('http://localhost:8000/accounts/auth/jwt/create', {
+    axiosInstance.post(loginScreenEndpoint, {
       username: formData.username,
       password: formData.password,
     })
     .then(response => {
     // Handle successful response data here
-    console.log('Response data:', response.data);
     })
     .catch(error => {
     // Handle errors here
-    console.error('Error:', error);
+    const errorMsg = error.response.data.detail;
+    setErrorMessage(errorMsg)
   });
 
   };
@@ -69,6 +71,10 @@ const LoginScreen = (props: ComponentProps) => {
             onChange={handleChange}
             label="Password"
           />
+          {errorMessage && 
+          <Typography color='error' className="error-message" style={{ fontSize: '20px' }}>
+            {errorMessage}
+          </Typography>}
         </Stack>
       </Grid>
       <Grid item xs sx={{ textAlign: "center", width: "100%" }}>
@@ -127,8 +133,8 @@ const LoginScreen = (props: ComponentProps) => {
 }
 
 const ForgotPasswordScreen = (props: ComponentProps) => {
-
-  const forgotPasswordEndpoint: string = '/user/reset';
+  
+  const forgotPasswordEndpoint: string = 'http://localhost:8000/accounts/auth/users/reset_password/';
   
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [serverError, setServerError] = useState('');
@@ -148,7 +154,6 @@ const ForgotPasswordScreen = (props: ComponentProps) => {
     const res = axiosInstance.post(forgotPasswordEndpoint, {
       email: formData.email
     })
-    console.log("email: " + formData.email)
   };
 
   const onClickReturn = () => {
