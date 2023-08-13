@@ -1,0 +1,11 @@
+{
+  "name": "letsmesh",
+  "version": "1.0.0",
+  "scripts": {
+    "init:backend": "python manage.py makemigrations && python manage.py migrate",
+    "init:frontend": "cd meshapp && npm install",
+    "init": "npm run init:frontend && npm run init:backend",
+    "build": "cd meshapp && npm run build",
+    "start": "python manage.py runserver"
+  }
+}
