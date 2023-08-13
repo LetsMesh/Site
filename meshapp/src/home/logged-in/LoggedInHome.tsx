@@ -1,14 +1,11 @@
 import React from "react";
-import Header from "../../components/Header";
 import homePage from "../../components/home-logged-in/homePage";
-import messageFooter from "../../components/home-logged-in/messageFooter";
 import { Theme, ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
 
 export default function LoggedInHome() {
   return (
     <>
-      <Header />
       <ThemeProvider
         theme={(theme: Theme) => {
           return createTheme(deepmerge(homeTheme(), theme));
@@ -16,7 +13,6 @@ export default function LoggedInHome() {
       >
         {homePage()}
       </ThemeProvider>
-      {messageFooter()}
     </>
   );
 }
