@@ -1,6 +1,6 @@
 # Django Imports
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.core import serializers
 
@@ -92,8 +92,6 @@ class ProfilePicturesView(View):
             
             profile = Profile.objects.get(accountID=account_id)
             
-            print(profile.profilePicture)
-            
             # Check if user already has a profilePicture
             if profile.profilePicture is not None:
                 return JsonResponse({"error": "Profile already has a profilePicture. " +
@@ -113,8 +111,6 @@ class ProfilePicturesView(View):
             # Save photo URL with user
             profile.profilePicture = image_link
             profile.save()
-
-
             
             return JsonResponse({"profileID": profile.accountID.accountID}, status=201)
 
@@ -131,6 +127,42 @@ class ProfilePicturesView(View):
         return JsonResponse({"message": "patch"}, status=404)
 
     def delete(self, request, *args, **kwargs):
+        """
+            Handles DELETE requests.
+
+            Grabs an existing Profile and deletes its profilePicture.
+
+            The required field is "accountID".
+        """
+        
+        REQUIRED_FIELDS = ["accountID"]
+        
+        try:
+            data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
+
+            account_id = data["accountID"]
+            
+            profile = Profile.objects.get(accountID=account_id)
+
+            # Ensure their profilePicture does not exist already.
+            if profile.profilePicture is None:
+                return JsonResponse({"error": "Profile's profilePicture not found, nothing to delete."},
+                                    status = 404)
+            
+            profile.profilePicture = None
+            profile.save()
+
+            return HttpResponse(status=204)
+
+        except InvalidJsonFormat:
+            return JsonResponse({"error": "Invalid JSON format."}, status = 400)
+
+        except MissingRequiredFields:
+            return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
+
+        except Profile.DoesNotExist:
+            return JsonResponse({"error": "Profile not found."}, status = 404)
+
         return JsonResponse({"message": "delete"}, status=404)
 
 
