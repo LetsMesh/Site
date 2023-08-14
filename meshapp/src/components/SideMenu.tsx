@@ -21,11 +21,15 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 
-type ListItemTypes = { text: String; Icon: React.ElementType };
+import { paths } from "../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
+type ListItemTypes = { text: String; Icon: React.ElementType; path: String };
 
 // TODO: (#258) Add routes to each menu item when routing is implemented
-const ListItemComponent = ({ text, Icon }: ListItemTypes) => (
-  <ListItem>
+const ListItemComponent = ({ text, Icon, path }: ListItemTypes) => (
+  <ListItem
+    component={({ innerRef, ...props }) => <RouterLink {...props} to={path} />}
+  >
     <ListItemButton
       sx={{ borderBottom: "1px solid", borderColor: "text.secondary" }}
     >
@@ -46,14 +50,30 @@ export default function SideMenu() {
   const MenuList = () => (
     <>
       <List sx={{ color: "text.secondary" }}>
-        <ListItemComponent text="Home" Icon={HomeIcon} />
-        <ListItemComponent text="Profile" Icon={ProfileIcon} />
-        <ListItemComponent text="Messaging" Icon={MessagingIcon} />
-        <ListItemComponent text="Swiping" Icon={SwipingIcon} />
+        <ListItemComponent
+          text="Home"
+          Icon={HomeIcon}
+          path={paths.logged_in_home}
+        />
+        <ListItemComponent
+          text="Profile"
+          Icon={ProfileIcon}
+          path={paths.profile_page}
+        />
+        <ListItemComponent text="Messaging" Icon={MessagingIcon} path={"/"} />
+        <ListItemComponent
+          text="Swiping"
+          Icon={SwipingIcon}
+          path={paths.profile_swipe}
+        />
       </List>
       <List sx={{ marginTop: "auto" }}>
-        <ListItemComponent text="Settings" Icon={SettingsIcon} />
-        <ListItemComponent text="Logout" Icon={LogoutIcon} />
+        <ListItemComponent text="Settings" Icon={SettingsIcon} path={"/"} />
+        <ListItemComponent
+          text="Logout"
+          Icon={LogoutIcon}
+          path={paths.logged_out_home}
+        />
       </List>
     </>
   );

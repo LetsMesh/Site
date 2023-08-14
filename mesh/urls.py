@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 from django.views.generic import TemplateView
 
 # API URLs: 
@@ -34,11 +34,13 @@ Example Test:
     - Go to http://127.0.0.1:8000/example/helloworld/
     This gives you a "Hello World."
 
+
+Be sure to keep the index.html template path at the end of urlpatterns
+otherwise the other urls will not work.
 '''
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html')),
     path('admin/', admin.site.urls),
     path('example/', include(example_urls)),
     path('profiles/', include(profile_urls)),
@@ -47,4 +49,5 @@ urlpatterns = [
     path('settings/', include(accountsettings_urls)),
     path('confirmation/', include(confirmation_urls)),
     path('occupations/', include(occupations_urls)),
+    re_path(r'.*', TemplateView.as_view(template_name='index.html')),
 ]
