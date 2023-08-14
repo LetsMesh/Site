@@ -49,8 +49,3 @@ urlpatterns = [
     path('settings/', include(accountsettings_urls)),
     path('confirmation/', include(confirmation_urls)),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-else:
-    urlpatterns += staticfiles_urlpatterns()
