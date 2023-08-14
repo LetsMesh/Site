@@ -1,5 +1,4 @@
 from django.db import models
-
 from mesh.profiles.models import Profile
 
 
@@ -14,6 +13,8 @@ class Occupation(models.Model):
 
 
 class OccupationBridge(models.Model):
-    accountID = models.OneToOneField(Profile, primary_key=True, on_delete=models.CASCADE)
+    accountID = models.ForeignKey(Profile, on_delete=models.CASCADE)
     occupationID = models.ForeignKey(Occupation, on_delete=models.CASCADE)
+    startDate = models.DateField(null=True, blank=True)
+    endDate = models.DateField(null=True, blank=True)
     occupationDescription = models.TextField()
