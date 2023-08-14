@@ -6,9 +6,9 @@ urlpatterns = [
     # GET /occupations/
     # POST /occupations/
     # PATCH /occupations/
-    path("", occupation_views.OccupationsView.as_view(), name="occupation"),
+    path("", occupation_views.OccupationsView.as_view(), name="occupations"),
 
     # GET /occupations/:account_id
     path("<int:account_id>/", occupation_views.OccupationsDetailView.as_view(), 
-    name="get_or_update_occupation")
+    name="user_occupations")
 ]

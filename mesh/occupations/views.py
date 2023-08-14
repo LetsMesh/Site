@@ -242,9 +242,22 @@ class OccupationsDetailView(View):
         
         try:
             occupation_bridges = OccupationBridge.objects.filter(accountID_id=account_id)
+            occupations_and_bridges = { }
             
-            occupation_data = serializers.serialize("json", occupation_bridges)
-            return JsonResponse(occupation_data, status = 200, safe = False)
+            for occupation_bridge in occupation_bridges:
+                occupation_data = {
+                    "occupationID": occupation_bridge.occupationID.occupationID,
+                    "occupationName": occupation_bridge.occupationID.occupationName,
+                    "occupationOrganization": occupation_bridge.occupationID.occupationOrganization,
+                    "occupationStartDate": str(occupation_bridge.occupationStartDate),
+                    "occupationEndDate": str(occupation_bridge.occupationEndDate),
+                    "occupationDescription": occupation_bridge.occupationDescription
+                }
+                occupations_and_bridges[occupation_bridge.occupationID.occupationID] = occupation_data
+
+            # occupations_and_bridges = json.dumps(occupations_and_bridges)
+            
+            return JsonResponse(occupations_and_bridges, status=200, safe = False)
         
         except OccupationBridge.DoesNotExist:
             return JsonResponse({"error": "OccupationBridge not found."}, status=404)
