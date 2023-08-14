@@ -41,16 +41,30 @@ class OccupationsView(View):
         """
             Handle POST requests.
 
-            Creates a new occupation OR updates an existing OccupationBridge. 
+            Creates a new Occupation, also creates a new OccupationBridge or 
+            updates an existing OccupationBridge. 
+            
             The required fields are 
-            "accountID", "occupationName" and "occupationOrganization".
+            "accountID", "occupationID", "occupationName", "occupationOrganization", "occupationDescription",
+            "occupationStartDate", and "occupationEndDate".
+
+            OccupationDescription, occupationStartDate, and occupationEndDate can all be null,
+            but must be present in the request JSON.
 
             If all fields are present and valid, it returns a JSON response with
             the newly created Occupation's ID and a HTTP status code 201,
-            indicating the Occupation has been successfully created.
+            indicating the Occupation or OccupationBridge has been successfully created or updated.
+
+            Note: The supplied Occupation should not exist, as in the user would be entering in
+            their own Occupation at this point. If the Occupation DOES exist, they should use the PATCH
+            endpoint at /occupations/ with a supplied occupationID, along with optional occupationDescription,
+            occupationStartDate, and occupationEndDate fields.
+
+            Note: Dates should be in "YYYY-MM-DD" format.
         """
         REQUIRED_FIELDS = ["accountID", "occupationName", 
-                           "occupationOrganization", "occupationDescription"]
+                           "occupationOrganization", "occupationDescription", 
+                           "occupationStartDate", "occupationEndDate"]
 
         # Try to parse JSON input data, ensure account and profile exist
         try:
@@ -58,28 +72,25 @@ class OccupationsView(View):
 
             # Parse data if it's valid
             account_id = data["accountID"]
-            occupation_name = data["occupationName"]
-            occupation_organization = data["occupationOrganization"]
-            occupation_description = data["occupationDescription"]
 
             account = Account.objects.get(accountID=account_id)
             profile = Profile.objects.get(accountID=account)
 
-            # Check if OccupationBridge already exists
-            occupation_bridge = OccupationBridge.objects.get(
-                accountID = profile
-            )
+            occupation_name = data["occupationName"]
+            occupation_organization = data["occupationOrganization"]
+            occupation_description = data["occupationDescription"]
+            occupation_start_date = data["occupationStartDate"]
+            occupation_end_date = data["occupationEndDate"]
+            
+            occupation = Occupation.objects.create(occupationName=occupation_name, 
+                                      occupationOrganization=occupation_organization)
+            
+            OccupationBridge.objects.create(accountID=profile, occupationID=occupation,
+                                            occupationDescription=occupation_description,
+                                            occupationStartDate=occupation_start_date,
+                                            occupationEndDate=occupation_end_date)      
 
-            # Update existing OccupationBridge with new or existing Occupation
-            occupation = Occupation.objects.get_or_create(
-                occupationName = occupation_name,
-                occupationOrganization = occupation_organization
-            )[0]
-
-            # Update OccupationBridge
-            occupation_bridge.occupationID = occupation
-            occupation_bridge.occupationDescription = occupation_description
-            occupation_bridge.save()
+            return JsonResponse({"occupationID": occupation.occupationID}, status = 201)
 
         except InvalidJsonFormat:
             return JsonResponse({"error": "Invalid JSON format."}, status = 400)
@@ -89,25 +100,6 @@ class OccupationsView(View):
 
         except (Account.DoesNotExist, Profile.DoesNotExist):
             return JsonResponse({"error": "Account or Profile not found."}, status = 404)       
-        
-        except OccupationBridge.DoesNotExist:
-            
-            # Get or create new Occupation
-            occupation, _ = Occupation.objects.get_or_create(
-                occupationName = occupation_name,
-                occupationOrganization = occupation_organization
-            )
-
-            # By this point, we need to create a new OccupationBridge and connect
-            # the OccupationBridge to the specified Account/Profile
-            occupation_bridge = OccupationBridge.objects.create(
-                accountID = profile,
-                occupationID = occupation,
-                occupationDescription = occupation_description
-            )
-        
-        return JsonResponse({"occupationID": occupation.occupationID}, status = 201)
-    
 
 class OccupationsDetailView(View):
     """
@@ -118,21 +110,25 @@ class OccupationsDetailView(View):
 
     def get(self, request, account_id, *args, **kwargs):
         """
-            Handle GET requests for a single Account's Occupation.
+            Handle GET requests for a single Account's Occupation(s).
 
-            Returns a JSON response containing the requested Occupation.
+            Returns a JSON response containing the requested Occupation(s).
 
             If the Occupation does not exist, it returns a 404 status code
             and an error message.
         """
         
         try:
-            occupation_bridge = OccupationBridge.objects.get(accountID_id=account_id)
-            occupation_data = serializers.serialize("json", [occupation_bridge])
+            occupation_bridges = OccupationBridge.objects.filter(accountID_id=account_id)
+            
+            occupation_data = serializers.serialize("json", occupation_bridges)
             return JsonResponse(occupation_data, status = 200, safe = False)
         
         except OccupationBridge.DoesNotExist:
-            return JsonResponse({"error": "OccupationBridge for this account not found."}, status=404)
+            return JsonResponse({"error": "OccupationBridge not found."}, status=404)
+        
+        except Occupation.DoesNotExist:
+            return JsonResponse({"error": "Occupation not found."}, status=404)
     
     def patch(self, request, account_id, *args, **kwargs):
         """
