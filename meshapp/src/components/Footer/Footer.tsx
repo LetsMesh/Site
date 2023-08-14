@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Grid,
   Link,
@@ -8,6 +7,8 @@ import {
   Typography,
   createTheme,
 } from "@mui/material";
+import { paths } from "../../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
 
 const Footer = () => {
   let textTheme = createTheme({
@@ -109,10 +110,16 @@ const Footer = () => {
              * */}
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
-              <Link href="">home</Link>
+              <Link component={RouterLink} to={paths.logged_out_home}>
+                home
+              </Link>
               <Link href="">about</Link>
-              <Link href="">sign up</Link>
-              <Link href="">login</Link>
+              <Link component={RouterLink} to={paths.sign_up}>
+                sign up
+              </Link>
+              <Link component={RouterLink} to={paths.login_page}>
+                login
+              </Link>
             </Stack>
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">Contact Us</Typography>

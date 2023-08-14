@@ -1,6 +1,6 @@
-import React from "react";
 import { Typography, Grid, Link, Button } from "@mui/material";
-
+import { paths } from "../../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
 //the nav bar for the logged out home page
 export default function loggedOutNav() {
   return (
@@ -35,6 +35,8 @@ export default function loggedOutNav() {
               variant="h4"
               color={"#F2E8DE"}
               sx={{ textDecoration: "underline" }}
+              component={RouterLink}
+              to={paths.logged_out_home}
             >
               home
             </Typography>
@@ -63,6 +65,8 @@ export default function loggedOutNav() {
                 backgroundColor: "#0e977b",
               },
             }}
+            component={RouterLink}
+            to={paths.sign_up}
           >
             <Typography variant="button">Sign In</Typography>
           </Button>

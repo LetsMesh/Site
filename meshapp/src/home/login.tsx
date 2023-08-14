@@ -10,7 +10,8 @@ import {
 import { ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
 import LoginWindow from "../components/login-form";
-
+import { paths } from "../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
 const buttonTheme = createTheme({
   components: {
     MuiButton: {
@@ -40,7 +41,12 @@ const SignUp = () => {
         </Typography>
       </Grid>
       <Grid item xs>
-        <Button variant="contained" sx={{ width: "15em" }}>
+        <Button
+          variant="contained"
+          sx={{ width: "15em" }}
+          component={RouterLink}
+          to={paths.sign_up}
+        >
           {"Sign Up >"}
         </Button>
       </Grid>
@@ -52,7 +58,6 @@ const SignUp = () => {
 };
 
 const Login = () => {
-
   return (
     <ThemeProvider
       theme={(theme: Theme) => {
@@ -73,7 +78,8 @@ const Login = () => {
             bgcolor: "cardBackground.main",
             color: "text.main",
             borderRadius: 5,
-          }}>
+          }}
+        >
           <Grid item xs>
             <SignUp />
           </Grid>
@@ -81,7 +87,7 @@ const Login = () => {
             <Divider orientation="vertical" />
           </Grid>
           <Grid item xs>
-            <LoginWindow/>
+            <LoginWindow />
           </Grid>
         </Grid>
       </Grid>

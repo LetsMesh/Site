@@ -1,34 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import Login from "./home/login";
-import Footer from "./components/Footer";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
-import LoggedOutPage from "./home/logged-out/home";
-import Slider from "./ProfileCardCarousel/Swiper";
 import MainTheme from "./theme/MainTheme";
 import { ThemeProvider } from "@emotion/react";
-import ProfilePage from "./profile/profile-page";
-import ForgotPassword from "./components/password-forms/forgot-password-form"
-import LoggedInHome from "./home/logged-in/LoggedInHome";
-
-import {
-  exampleProfile,
-  exampleProfile2,
-} from "./profile/tests/profile-examples";
-import SignUp from "./components/SignUp/SignUp";
+import AppRoutes from "./Routing/AppRoutes";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={MainTheme}>
       <TwoFactorAuthReminders />
-      <LoggedOutPage />
-      <ForgotPassword/>
-      <Slider />
-      <Login />
-      <ProfilePage {...exampleProfile} />
-      <LoggedInHome />    
-      <SignUp />
+      <AppRoutes />
     </ThemeProvider>
   </React.StrictMode>
 );
