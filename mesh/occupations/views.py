@@ -19,9 +19,10 @@ import json
 
 class OccupationsView(View):
     """
-        Handles HTTP requests related to the collection of Occupation,
-        supporting GET to retrieve the list of all Occupations and
-        POST to create a new Occupation.
+        Handles HTTP requests related to the collection of Occupation, supporting 
+        GET to retrieve the list of all Occupations,
+        POST to create a new Occupation and OccupationBridge, and
+        PATCH to connect an existing Occupation to a new OccupationBridge.
     """
     
     def get(self, request, *args, **kwargs):
@@ -41,26 +42,46 @@ class OccupationsView(View):
         """
             Handle POST requests.
 
-            Creates a new Occupation, also creates a new OccupationBridge or 
-            updates an existing OccupationBridge. 
+            Creates a new Occupation and connects it to a new OccupationBridge.
             
             The required fields are 
             "accountID", "occupationID", "occupationName", "occupationOrganization", "occupationDescription",
             "occupationStartDate", and "occupationEndDate".
 
-            OccupationDescription, occupationStartDate, and occupationEndDate can all be null,
+            OccupationDescription, occupationStartDate, and occupationEndDate can all be empty,
             but must be present in the request JSON.
 
             If all fields are present and valid, it returns a JSON response with
             the newly created Occupation's ID and a HTTP status code 201,
-            indicating the Occupation or OccupationBridge has been successfully created or updated.
+            indicating the Occupation and OccupationBridge have been successfully created.
 
             Note: The supplied Occupation should not exist, as in the user would be entering in
-            their own Occupation at this point. If the Occupation DOES exist, they should use the PATCH
-            endpoint at /occupations/ with a supplied occupationID, along with optional occupationDescription,
+            their own Occupation at this point. If the Occupation DOES exist, the PATCH endpoint at 
+            /occupations/ with a supplied occupationID, along with optional occupationDescription,
             occupationStartDate, and occupationEndDate fields.
 
             Note: Dates should be in "YYYY-MM-DD" format.
+
+            Example Request JSON:
+            {
+                "accountID": "1",
+                "occupationName": "Software Engineer",
+                "occupationOrganization": "ServiceNow",
+                "occupationDescription": "services",
+                "occupationStartDate" : "2021-05-21",
+                "occupationEndDate": "2022-05-31"
+            }
+
+            or with empty values:
+
+            {
+                "accountID": "1",
+                "occupationName": "Software Engineer",
+                "occupationOrganization": "ServiceNow",
+                "occupationDescription": "",
+                "occupationStartDate" : "",
+                "occupationEndDate": ""
+            }
         """
         REQUIRED_FIELDS = ["accountID", "occupationName", 
                            "occupationOrganization", "occupationDescription", 
@@ -109,7 +130,99 @@ class OccupationsView(View):
             return JsonResponse({"error": "Account or Profile not found."}, status = 404)       
 
     def patch(self, request, *args, **kwargs):
-        pass
+        """
+            Handles PATCH requests for existing Occupations.
+
+            Uses an existing Occupation in a new OccupationBridge.
+            
+            The required fields are 
+            "accountID", "occupationID", "occupationDescription",
+            "occupationStartDate", and "occupationEndDate".
+
+            OccupationDescription, occupationStartDate, and occupationEndDate can all be empty,
+            but must be present in the request JSON. 
+
+            If all fields are present and valid, it returns a HTTP status code 204 No Content, 
+            indicating the OccupationBridge has been successfully created/updated.
+
+            Note: The supplied Occupation should exist, as in the user would be choosing an Occupation from
+            a drop-down list. If the Occupation DOES NOT exist, the POST endpoint at 
+            /occupations/ should be used with a supplied occupationName and occupationOrganization, 
+            along with optional occupationDescription, occupationStartDate, and occupationEndDate fields.
+
+            Note: Dates should be in "YYYY-MM-DD" format.
+
+            Example Request JSON:
+            {
+                "accountID": "1",
+                "occupationID": "3",
+                "occupationDescription": "services",
+                "occupationStartDate" : "2021-05-21",
+                "occupationEndDate": "2022-05-31"
+            }
+
+            or with empty values:
+
+            {
+                "accountID": "1",
+                "occupationID": "3",
+                "occupationDescription": "",
+                "occupationStartDate" : "",
+                "occupationEndDate": ""
+            }
+        """
+
+        REQUIRED_FIELDS = ["accountID", "occupationID", "occupationDescription",
+                           "occupationStartDate", "occupationEndDate"]
+        
+        try:
+            data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
+
+            # Parse data if it's valid
+            account_id = data["accountID"]
+
+            account = Account.objects.get(accountID=account_id)
+            profile = Profile.objects.get(accountID=account)
+
+            occupation_id = data["occupationID"]
+            occupation_description = data["occupationDescription"]
+            occupation_start_date = data["occupationStartDate"]
+            occupation_end_date = data["occupationEndDate"]
+
+            # Get existing Occupation and create a new OccupationBridge
+            occupation = Occupation.objects.get(occupationID=occupation_id)
+            
+            # Use null date values if some dates are missing
+            if occupation_start_date == "" and occupation_end_date == "":
+                OccupationBridge.objects.create(accountID=profile, occupationID=occupation,
+                                            occupationDescription=occupation_description)
+            
+            elif occupation_end_date == "":
+                OccupationBridge.objects.create(accountID=profile, occupationID=occupation,
+                                            occupationDescription=occupation_description,
+                                            occupationStartDate=occupation_start_date)
+            
+            else:
+                OccupationBridge.objects.create(accountID=profile, occupationID=occupation,
+                                            occupationDescription=occupation_description,
+                                            occupationStartDate=occupation_start_date,
+                                            occupationEndDate=occupation_end_date) 
+
+            return HttpResponse(status=204)
+        
+        except InvalidJsonFormat:
+            return JsonResponse({"error": "Invalid JSON format."}, status = 400)
+        
+        except MissingRequiredFields:
+            return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
+        
+        except (Account.DoesNotExist, Profile.DoesNotExist):
+            return JsonResponse({"error": "Account or Profile not found."}, status = 404)
+        
+        except Occupation.DoesNotExist:
+            return JsonResponse({"error": "Occupation not found."}, status = 404)
+
+        
 class OccupationsDetailView(View):
     """
         Handles HTTP requests related to a singular Occupation,
@@ -138,34 +251,3 @@ class OccupationsDetailView(View):
         
         except Occupation.DoesNotExist:
             return JsonResponse({"error": "Occupation not found."}, status=404)
-    
-    def patch(self, request, account_id, *args, **kwargs):
-        """
-            Handle PATCH requests for a single Occupation.
-
-            Updates the specified fields (currently, only the description) 
-            of the OccupationBridge of the given accountID. 
-
-            If the OccupationBridge does not exist, it returns a 404 status code and
-            and error message.
-
-            If a field is not provided in the request body, the current value for that field
-            will remain unchanged.
-
-            Returns a 204 HTTP status to indicate that the request has
-            succeeded butt does not include an entity-body in the response. 
-        """
-        try:
-            occupation_bridge = OccupationBridge.objects.get(accountID=account_id)
-            data = json.loads(request.body)
-        
-        except OccupationBridge.DoesNotExist:
-            return JsonResponse({"error": "OccupationBridge for this account not found."}, status = 404)
-        
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "JSON could not be decoded."}, status = 400)
-
-        occupation_bridge.occupationDescription = data.get("occupationDescription", 
-                                                           occupation_bridge.occupationDescription)
-        occupation_bridge.save()
-        return HttpResponse(status = 204)
