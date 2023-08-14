@@ -234,10 +234,9 @@ class OccupationsDetailView(View):
         """
             Handle GET requests for a single Account's Occupation(s).
 
-            Returns a JSON response containing the requested Occupation(s).
+            Returns a JSON response containing the requested Occupation(s) and all relevant data.
 
-            If the Occupation does not exist, it returns a 404 status code
-            and an error message.
+            If no Occupation or OccupationBridges exist, a 404 error is returned.
         """
         
         try:
