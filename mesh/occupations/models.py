@@ -15,6 +15,6 @@ class Occupation(models.Model):
 class OccupationBridge(models.Model):
     accountID = models.ForeignKey(Profile, on_delete=models.CASCADE)
     occupationID = models.ForeignKey(Occupation, on_delete=models.CASCADE)
-    startDate = models.DateField(null=True, blank=True)
-    endDate = models.DateField(null=True, blank=True)
-    occupationDescription = models.TextField()
+    occupationStartDate = models.DateField(null=True, blank=True)
+    occupationEndDate = models.DateField(null=True, blank=True)
+    occupationDescription = models.TextField(null=True, blank=True)
