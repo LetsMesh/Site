@@ -1,5 +1,6 @@
 # Django Imports
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.datastructures import MultiValueDictKeyError
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.core import serializers
@@ -15,6 +16,7 @@ from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 # Library Imports 
 import pyimgur
 import os
+import json
 from base64 import b64encode
 
 
@@ -80,8 +82,6 @@ class ProfilePicturesView(View):
             a PATCH request should be made instead. If a user wishes to delete their picture,
             a DELETE request should be made instead.
         """
-
-        REQUIRED_FIELDS = ["accountID", "profilePicture"]
         
         try:
             data = request.POST
@@ -103,21 +103,24 @@ class ProfilePicturesView(View):
             image_file = b64encode(request.FILES["profilePicture"].read())
 
             # send POST request to imgur API to upload photo
-            response = imgur_client._send_request('https://api.imgur.com/3/image', 
+            imgur_response = imgur_client._send_request('https://api.imgur.com/3/image', 
                                    method='POST', params={'image': image_file})
 
-            image_link = response["link"]
+            image_link = imgur_response["link"]
 
             # Save photo URL with user
             profile.profilePicture = image_link
             profile.save()
+
+            request_response = json.dumps({"profileID": profile.accountID.accountID ,
+                                 "profilePicture": image_link})
             
-            return JsonResponse({"profileID": profile.accountID.accountID}, status=201)
+            return JsonResponse(request_response, status = 201, safe = False)
 
         except InvalidJsonFormat:
             return JsonResponse({"error": "Invalid JSON format."}, status = 400)
 
-        except MissingRequiredFields:
+        except MultiValueDictKeyError:
             return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
 
         except Profile.DoesNotExist:
