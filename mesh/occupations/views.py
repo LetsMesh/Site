@@ -82,6 +82,13 @@ class OccupationsView(View):
             occupation_start_date = data["occupationStartDate"]
             occupation_end_date = data["occupationEndDate"]
             
+            # Ensure Occupation does not exist yet
+            if Occupation.objects.filter(occupationName=occupation_name, 
+                                      occupationOrganization=occupation_organization):
+                return JsonResponse({"error": "Occupation already exists, " +
+                                     "use PATCH endpoint along with occupationID instead."}, 
+                                    status = 409)
+            
             occupation = Occupation.objects.create(occupationName=occupation_name, 
                                       occupationOrganization=occupation_organization)
             
@@ -101,6 +108,8 @@ class OccupationsView(View):
         except (Account.DoesNotExist, Profile.DoesNotExist):
             return JsonResponse({"error": "Account or Profile not found."}, status = 404)       
 
+    def patch(self, request, *args, **kwargs):
+        pass
 class OccupationsDetailView(View):
     """
         Handles HTTP requests related to a singular Occupation,
