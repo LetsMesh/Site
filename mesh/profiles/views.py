@@ -3,7 +3,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from django.http import HttpResponse, JsonResponse
 from django.views import View
-from django.core import serializers
 from django.http.multipartparser import MultiPartParser
 
 # Model Imports
@@ -19,6 +18,7 @@ import pyimgur
 import os
 import json
 from base64 import b64encode
+from requests.exceptions import HTTPError
 
 
 def bio_view(request):
@@ -118,21 +118,19 @@ class ProfilePicturesView(View):
             
             return JsonResponse(request_response, status = 201, safe = False)
 
-        except InvalidJsonFormat:
-            return JsonResponse({"error": "Invalid JSON format."}, status = 400)
-
         except MultiValueDictKeyError:
             return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
 
         except Profile.DoesNotExist:
             return JsonResponse({"error": "Profile not found."}, status = 404)
+        
+        except HTTPError:
+            return JsonResponse({"error": "Uploaded file is not an image."}, status = 400)
 
     def patch(self, request, *args, **kwargs):
 
         try:
             data = MultiPartParser(request.META, request, request.upload_handlers).parse()
-        
-            print(data)
             
             account_id = data[0]["accountID"]
 
@@ -164,8 +162,14 @@ class ProfilePicturesView(View):
             
             return JsonResponse(request_response, status = 201, safe = False)
         
+        except MultiValueDictKeyError:
+            return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
+        
         except Profile.DoesNotExist:
             return JsonResponse({"error": "Profile not found."}, status = 404)
+        
+        except HTTPError:
+            return JsonResponse({"error": "Uploaded file is not an image."}, status = 400)
 
 
     def delete(self, request, *args, **kwargs):
