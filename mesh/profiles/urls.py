@@ -5,5 +5,7 @@ from django.http import HttpRequest
 urlpatterns = [
     
     path('biography', profile_views.bio_view),
-    path("profilePicture", profile_views.profile_picture, name="profile_picture")
+    path("profilePicture", profile_views.profile_picture, name="profile_picture"),
+
+    path("profile-picture", profile_views.ProfilePicturesView.as_view(), name="profile-picture")
 ]
