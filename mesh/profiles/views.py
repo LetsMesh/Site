@@ -4,6 +4,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.core import serializers
+from django.http.multipartparser import MultiPartParser
 
 # Model Imports
 from mesh.profiles.models import Profile
@@ -85,8 +86,6 @@ class ProfilePicturesView(View):
         
         try:
             data = request.POST
-            
-            imgur_client = initialize_imgur_client()
 
             account_id = data["accountID"]
             
@@ -98,6 +97,8 @@ class ProfilePicturesView(View):
                                      "Use PATCH to update the profilePicture or " + 
                                      "DELETE to delete the profilePicture."}, 
                                     status = 409)
+            
+            imgur_client = initialize_imgur_client()
             
             # Grab raw photo from request files and encode it to upload to imgur
             image_file = b64encode(request.FILES["profilePicture"].read())
@@ -127,7 +128,45 @@ class ProfilePicturesView(View):
             return JsonResponse({"error": "Profile not found."}, status = 404)
 
     def patch(self, request, *args, **kwargs):
-        return JsonResponse({"message": "patch"}, status=404)
+
+        try:
+            data = MultiPartParser(request.META, request, request.upload_handlers).parse()
+        
+            print(data)
+            
+            account_id = data[0]["accountID"]
+
+            profile = Profile.objects.get(accountID=account_id)
+
+            if profile.profilePicture is None:
+                return JsonResponse({"error": "Profile does not have an existing profilePicture." +
+                                     "Use a POST request to upload a profilePicture."}, status = 409)
+            
+            uploaded_profile_picture = data[1]["profilePicture"]
+
+            imgur_client = initialize_imgur_client()
+            
+            # Grab raw photo from request files and encode it to upload to imgur
+            image_file = b64encode(uploaded_profile_picture.read())
+
+            # send POST request to imgur API to upload photo
+            imgur_response = imgur_client._send_request('https://api.imgur.com/3/image', 
+                                   method='POST', params={'image': image_file})
+
+            image_link = imgur_response["link"]
+
+            # Save photo URL with user
+            profile.profilePicture = image_link
+            profile.save()
+
+            request_response = json.dumps({"profileID": profile.accountID.accountID ,
+                                 "profilePicture": image_link})
+            
+            return JsonResponse(request_response, status = 201, safe = False)
+        
+        except Profile.DoesNotExist:
+            return JsonResponse({"error": "Profile not found."}, status = 404)
+
 
     def delete(self, request, *args, **kwargs):
         """
@@ -165,8 +204,6 @@ class ProfilePicturesView(View):
 
         except Profile.DoesNotExist:
             return JsonResponse({"error": "Profile not found."}, status = 404)
-
-        return JsonResponse({"message": "delete"}, status=404)
 
 
 def initialize_imgur_client():
