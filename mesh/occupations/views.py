@@ -255,7 +255,7 @@ class OccupationsDetailView(View):
                 }
                 occupations_and_bridges[occupation_bridge.occupationID.occupationID] = occupation_data
 
-            # occupations_and_bridges = json.dumps(occupations_and_bridges)
+            occupations_and_bridges = json.dumps(occupations_and_bridges)
             
             return JsonResponse(occupations_and_bridges, status=200, safe = False)
         
