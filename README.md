@@ -77,14 +77,14 @@ Check npm version with `npm -v` -> This should show 9.6.7 in the console
 8. Return to the root directory and start the backend server / run the application -> `python manage.py runserver`
 MYSQL SETUP (windows, if you have a mac, consider switching to a windows)
 1. Download Mysql over here https://dev.mysql.com/downloads/installer/ ( i downloaded the fatter file)
-2. Do the setup and do the full download(spam next until you see the password portion) 
+2. Do the setup and do the full download (spam next until you see the password portion) 
 3. Make sure you are not using the legacy version, select the 8.x version
     a. Make sure you remember your passwords and username(username is by default root)
 4. Spam next until you finish and then you’re done
 Make sure you write the username and password in your.env file. With that being said,that’s it for your mysql setup, next thing we do is django.
 
 1. Open a terminal and make sure mysql is installed by typing in `mysql --v`
-    a. If the command doesn’t work it may be because mysql isn’t added to your path. The default location for mysql should be: 
+    a. If the command doesn’t work it may be because mysql isn’t added to your path. The default location for mysql server should be: 
         C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe
             i. Possible solution: https://stackoverflow.com/questions/5920136/mysql-is-not-recognised-as-an-internal-or-external-command-operable-program-or-b
 2. Once you have mysql downloaded, create a new database inside your mysql.
@@ -93,9 +93,9 @@ Make sure you write the username and password in your.env file. With that being 
     b. You should be prompted into they mysql shell, and then create a database by using `CREATE DATABASE mesh;`
     c. Confirm your database is created with `SHOW DATABASES;`
 3. Open you pip environment is opened (with `pipenv shell`)
-4. Type in python `manage.py makemigrations` 
+4. Type in `python manage.py makemigrations` 
     a. You will most likely be given warnings. Warnings are fine errors aren’t. Google your errors.
-5. Type in python `manage.py migrate`
+5. Type in `python manage.py migrate`
     a. Similar to the previous step warnings are fine, errors aren’t.
 6. Make sure your frontend is also set up (with npm run build) and then you are good to go. Run `python manage.py runserver` and you should be good to go.
 
