@@ -18,14 +18,14 @@ class ProfilesTest(TestCase):
             displayTheme="0",
             enabled2Factor=False,
             isMentor=False,
-            isMentee=True
+            isMentee=True,
         )
         test_profile = Profile.objects.create(
             accountID=test_account,
             userName="profileTest",
             preferredName="Profile Test",
             preferredPronouns="",
-            biography="",
+            biography="Biography Test",
             image=SimpleUploadedFile(name="profile_test_image.png",
                                      content=open("media/image/test_image.png", "rb").read())
         )
@@ -33,6 +33,9 @@ class ProfilesTest(TestCase):
     def tearDown(self):
         os.remove("media/image/profile_test_image.png")
 
+    """ 
+    Profile Picture Testing 
+    """
     def test_profile_picture(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
         response = self.client.get("/profiles/profilePicture", {"accountID": test_user.accountID})
@@ -50,3 +53,17 @@ class ProfilesTest(TestCase):
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+
+    """ 
+    Biography Testing 
+    """
+    def test_biography(self):
+        """
+        Test Case for seeing if biography can be retrieved from speicified account
+
+        A GET request is sent to the '/profiles/biography/{account_id}/' endpoint.
+        The test passes if the response status code is 200.
+        """
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        response = self.client.get(f'/profiles/biography/{test_user.accountID}/')
+        self.assertEqual(response.status_code, 200)
