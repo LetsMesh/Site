@@ -127,6 +127,9 @@ class ProfilePicturesView(View):
         except HTTPError:
             return JsonResponse({"error": "Uploaded file is not an image."}, status = 400)
 
+        except ValueError:
+            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
+
     def patch(self, request, *args, **kwargs):
 
         try:
@@ -170,6 +173,10 @@ class ProfilePicturesView(View):
         
         except HTTPError:
             return JsonResponse({"error": "Uploaded file is not an image."}, status = 400)
+        
+        except ValueError:
+            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
+
 
 
     def delete(self, request, *args, **kwargs):
@@ -208,6 +215,9 @@ class ProfilePicturesView(View):
 
         except Profile.DoesNotExist:
             return JsonResponse({"error": "Profile not found."}, status = 404)
+        
+        except ValueError:
+            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
 
 
 def initialize_imgur_client():
