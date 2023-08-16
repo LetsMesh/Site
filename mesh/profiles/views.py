@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
+from django.views import View
 
 from mesh.profiles.models import Profile
 from ..exceptions.MissingRequiredFields import MissingRequiredFields
@@ -20,23 +21,23 @@ def bio_view(request):
         return JsonResponse({'error': request.method + ' Method not allowed'}, status=405)
 
 
-def profile_picture(request):
-    if request.method == "GET":
+class ProfilePicturesView(View):
+    def get(self, request, *args, **kwargs):
         return get_data(request, "profilePicture", lambda profile: profile.profilePicture.url)
 
 
-def user_name(request):
-    if request.method == "GET":
+class UserNamesView(View):
+    def get(self, request, *args, **kwargs):
         return get_data(request, "userName", lambda profile: profile.userName)
 
 
-def preferred_name(request):
-    if request.method == "GET":
+class PreferredNamesView(View):
+    def get(self, request, *args, **kwargs):
         return get_data(request, "preferredName", lambda profile: profile.preferredName)
 
 
-def preferred_pronouns(request):
-    if request.method == "GET":
+class PreferredPronounsView(View):
+    def get(self, request, *args, **kwargs):
         return get_data(request, "preferredPronouns", lambda profile: profile.preferredPronouns)
 
 
