@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
-from django.core import serializers
 from mesh.accounts.models import Account
 
 from mesh.profiles.models import Profile
@@ -20,17 +19,13 @@ class BiographyView(View):
         Returns a JSON response containing biography of specified profile through id.
         """
         try:     
-            if(account_id is None):
-                return JsonResponse({'error': 'Invalid input. Missing account ID'}, status=401)
-            
             profile = Profile.objects.get(accountID=account_id)
-            profileBiography = profile.biography
-            return JsonResponse({'message': profileBiography}, safe=False, status=200)
+            profile_biography = profile.biography
+            return JsonResponse({'message': profile_biography}, safe=False, status=200)
         except Account.DoesNotExist:
             return JsonResponse({'error': 'Invalid request. Account does not exist'}, status=404)
         except Profile.DoesNotExist:
-            return JsonResponse({'error': 'Invalid request. Profile does not exist'}, status=402)
-        
+            return JsonResponse({'error': 'Invalid request. Profile does not exist'}, status=404)
 
     def post(self, request, *args, **kwargs):
         if request.method == "POST":
