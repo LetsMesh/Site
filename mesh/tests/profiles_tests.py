@@ -39,72 +39,72 @@ class ProfilesTest(TestCase):
 
     def test_profile_picture(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get("/profiles/profilePicture", {"accountID": test_user.accountID})
+        response = self.client.get("/profiles/profile-picture", {"accountID": test_user.accountID})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("data"), {"get": {"profilePicture": "/media/image/profile_test_image.png"}})
 
     def test_missing_account_profile_picture(self):
-        response = self.client.get("/profiles/profilePicture")
+        response = self.client.get("/profiles/profile-picture")
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "Missing one or more required fields.")
 
     def test_no_account_profile_picture(self):
-        response = self.client.get("/profiles/profilePicture", {"accountID": 9999})
+        response = self.client.get("/profiles/profile-picture", {"accountID": 9999})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
 
     def test_user_name(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get("/profiles/userName", {"accountID": test_user.accountID})
+        response = self.client.get("/profiles/user-name", {"accountID": test_user.accountID})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("data"), {"get": {"userName": "profileTest"}})
 
     def test_missing_account_user_name(self):
-        response = self.client.get("/profiles/userName")
+        response = self.client.get("/profiles/user-name")
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "Missing one or more required fields.")
 
     def test_no_account_user_name(self):
-        response = self.client.get("/profiles/userName", {"accountID": 9999})
+        response = self.client.get("/profiles/user-name", {"accountID": 9999})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
 
     def test_preferred_name(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get("/profiles/preferredName", {"accountID": test_user.accountID})
+        response = self.client.get("/profiles/preferred-name", {"accountID": test_user.accountID})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("data"), {"get": {"preferredName": "Profile Test"}})
 
     def test_missing_account_preferred_name(self):
-        response = self.client.get("/profiles/preferredName")
+        response = self.client.get("/profiles/preferred-name")
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "Missing one or more required fields.")
 
     def test_no_account_preferred_name(self):
-        response = self.client.get("/profiles/preferredName", {"accountID": 9999})
+        response = self.client.get("/profiles/preferred-name", {"accountID": 9999})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
 
     def test_preferred_pronouns(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get("/profiles/preferredPronouns", {"accountID": test_user.accountID})
+        response = self.client.get("/profiles/preferred-pronouns", {"accountID": test_user.accountID})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("data"), {"get": {"preferredPronouns": "Patrick"}})
 
     def test_missing_account_preferred_pronouns(self):
-        response = self.client.get("/profiles/preferredPronouns")
+        response = self.client.get("/profiles/preferred-pronouns")
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "Missing one or more required fields.")
 
     def test_no_account_preferred_pronouns(self):
-        response = self.client.get("/profiles/preferredPronouns", {"accountID": 9999})
+        response = self.client.get("/profiles/preferred-pronouns", {"accountID": 9999})
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
