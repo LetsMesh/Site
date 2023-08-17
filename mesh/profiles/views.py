@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
-from mesh.accounts.models import Account
 
+from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
 
 from django.views import View
@@ -41,28 +41,39 @@ class BiographyView(View):
             return JsonResponse({'error': request.method + ' Method not allowed'}, status=405)
 
 
-def profile_picture(request):
-    if request.method == "GET":
-        data = request.GET
-        response = {
-            "status": "success"
-        }
-        if data.get("accountID") is None:
-            response.update({"status": "error"})
-            response.update({"message": "Missing account ID."})
-            return JsonResponse(response)
-        else:
-            try:
-                profile = Profile.objects.get(accountID=int(data.get("accountID")))
-                response.update({
-                    "data": {
-                        "get": {
-                            "profilePicture": profile.image.url
-                        }
-                    }
-                })
-                return JsonResponse(response)
-            except ObjectDoesNotExist:
-                response.update({"status": "error"})
-                response.update({"message": "An account does not exist with this account ID."})
-                return JsonResponse(response)
+class ProfilePicturesView(View):
+    def get(self, request, account_id, *args, **kwargs):
+        return get_data(account_id, "profilePicture", lambda profile: profile.profilePicture.url)
+
+
+class UserNamesView(View):
+    def get(self, request, account_id, *args, **kwargs):
+        return get_data(account_id, "userName", lambda profile: profile.userName)
+
+
+class PreferredNamesView(View):
+    def get(self, request, account_id, *args, **kwargs):
+        return get_data(account_id, "preferredName", lambda profile: profile.preferredName)
+
+
+class PreferredPronounsView(View):
+    def get(self, request, account_id, *args, **kwargs):
+        return get_data(account_id, "preferredPronouns", lambda profile: profile.preferredPronouns)
+
+
+def get_data(account_id, name, mapper):
+    try:
+        profile = Profile.objects.get(accountID=int(account_id))
+        return JsonResponse({
+            "status": "success",
+            "data": {
+                "get": {
+                    name: mapper(profile)
+                }
+            }
+        }, status=200)
+    except ObjectDoesNotExist:
+        return JsonResponse({
+            "status": "error",
+            "message": "An account does not exist with this account ID."
+        }, status=404)

@@ -18,7 +18,7 @@ class SettingsTest(TestCase):
             isMentor=False,
             isMentee=True
         )
-        Settings.objects.create(
+        self.test_settings = Settings.objects.create(
             accountID=test_account,
             isVerified=False,
             verificationToken=None,
@@ -27,6 +27,14 @@ class SettingsTest(TestCase):
             is2FAEnabled=False
         )
 
+    def test_get_all_accounts_settings(self):
+        response = self.client.get("/settings/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_specific_account_settings(self):
+        response = self.client.get(f"/settings/{self.test_settings.accountID}/")
+        self.assertEqual(response.status_code, 200)
+        
     def test_display_theme(self):
         test_user = Account.objects.get(email="settingstest@gmail.com")
         response = self.client.get("/settings/displayTheme", {"accountID": test_user.accountID})

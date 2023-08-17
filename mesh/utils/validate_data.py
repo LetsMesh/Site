@@ -2,6 +2,7 @@ import json
 from ..exceptions.InvalidJsonFormat import InvalidJsonFormat
 from ..exceptions.MissingRequiredFields import MissingRequiredFields
 
+
 def validate_json_and_required_fields(request_body, required_fields):
     """
     This function is specifically designed to validate a request body as JSON and
@@ -34,7 +35,7 @@ def validate_json_and_required_fields(request_body, required_fields):
         data = json.loads(request_body)
     except json.JSONDecodeError:
         raise InvalidJsonFormat()
-        
+
     if not all(field in data for field in required_fields):
         raise MissingRequiredFields()
 
