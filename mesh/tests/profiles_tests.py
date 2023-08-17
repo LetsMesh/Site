@@ -24,29 +24,61 @@ class ProfilesTest(TestCase):
             accountID=test_account,
             userName="profileTest",
             preferredName="Profile Test",
-            preferredPronouns="",
+            preferredPronouns="Patrick",
             biography="",
-            image=SimpleUploadedFile(name="profile_test_image.png",
-                                     content=open("media/image/test_image.png", "rb").read())
+            profilePicture=SimpleUploadedFile(name="profile_test_image.png",
+                                              content=open("media/image/test_image.png", "rb").read())
         )
 
     def tearDown(self):
-        os.remove("media/image/profile_test_image.png")
+        image_path = "media/image/profile_test_image.png"
+        if os.path.exists(image_path):
+            os.remove(image_path)
 
     def test_profile_picture(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get("/profiles/profilePicture", {"accountID": test_user.accountID})
+        response = self.client.get(f"/profiles/profile-picture/{test_user.accountID}")
         json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("data"), {'get': {'profilePicture': '/media/image/profile_test_image.png'}})
-
-    def test_missing_account_profile_picture(self):
-        response = self.client.get("/profiles/profilePicture")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "Missing account ID.")
+        self.assertEquals(json_response.get("data"), {"get": {"profilePicture": "/media/image/profile_test_image.png"}})
 
     def test_no_account_profile_picture(self):
-        response = self.client.get("/profiles/profilePicture", {"accountID": 9999})
+        response = self.client.get("/profiles/profile-picture/9999")
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEquals(json_response.get("status"), "error")
+        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+
+    def test_user_name(self):
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        response = self.client.get(f"/profiles/user-name/{test_user.accountID}")
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEquals(json_response.get("data"), {"get": {"userName": "profileTest"}})
+
+    def test_no_account_user_name(self):
+        response = self.client.get("/profiles/user-name/9999")
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEquals(json_response.get("status"), "error")
+        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+
+    def test_preferred_name(self):
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        response = self.client.get(f"/profiles/preferred-name/{test_user.accountID}")
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEquals(json_response.get("data"), {"get": {"preferredName": "Profile Test"}})
+
+    def test_no_account_preferred_name(self):
+        response = self.client.get("/profiles/preferred-name/9999")
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEquals(json_response.get("status"), "error")
+        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+
+    def test_preferred_pronouns(self):
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        response = self.client.get(f"/profiles/preferred-pronouns/{test_user.accountID}")
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEquals(json_response.get("data"), {"get": {"preferredPronouns": "Patrick"}})
+
+    def test_no_account_preferred_pronouns(self):
+        response = self.client.get("/profiles/preferred-pronouns/9999")
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
