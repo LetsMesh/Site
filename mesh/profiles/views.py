@@ -3,8 +3,6 @@ from django.http import JsonResponse
 from django.views import View
 
 from mesh.profiles.models import Profile
-from ..exceptions.MissingRequiredFields import MissingRequiredFields
-from ..utils.validate_data import validate_required_fields
 
 
 def bio_view(request):
@@ -22,29 +20,28 @@ def bio_view(request):
 
 
 class ProfilePicturesView(View):
-    def get(self, request, *args, **kwargs):
-        return get_data(request, "profilePicture", lambda profile: profile.profilePicture.url)
+    def get(self, request, account_id, *args, **kwargs):
+        return get_data(account_id, "profilePicture", lambda profile: profile.profilePicture.url)
 
 
 class UserNamesView(View):
-    def get(self, request, *args, **kwargs):
-        return get_data(request, "userName", lambda profile: profile.userName)
+    def get(self, request, account_id, *args, **kwargs):
+        return get_data(account_id, "userName", lambda profile: profile.userName)
 
 
 class PreferredNamesView(View):
-    def get(self, request, *args, **kwargs):
-        return get_data(request, "preferredName", lambda profile: profile.preferredName)
+    def get(self, request, account_id, *args, **kwargs):
+        return get_data(account_id, "preferredName", lambda profile: profile.preferredName)
 
 
 class PreferredPronounsView(View):
-    def get(self, request, *args, **kwargs):
-        return get_data(request, "preferredPronouns", lambda profile: profile.preferredPronouns)
+    def get(self, request, account_id, *args, **kwargs):
+        return get_data(account_id, "preferredPronouns", lambda profile: profile.preferredPronouns)
 
 
-def get_data(request, name, mapper):
+def get_data(account_id, name, mapper):
     try:
-        data = validate_required_fields(request.GET, ["accountID"])
-        profile = Profile.objects.get(accountID=int(data["accountID"]))
+        profile = Profile.objects.get(accountID=int(account_id))
         return JsonResponse({
             "status": "success",
             "data": {
@@ -58,8 +55,3 @@ def get_data(request, name, mapper):
             "status": "error",
             "message": "An account does not exist with this account ID."
         }, status=404)
-    except MissingRequiredFields:
-        return JsonResponse({
-            "status": "error",
-            "message": "Missing one or more required fields."
-        }, status=400)
