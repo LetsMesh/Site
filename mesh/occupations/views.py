@@ -125,6 +125,9 @@ class OccupationsView(View):
         
         except MissingRequiredFields:
             return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
+        
+        except ValueError:
+            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
 
         except (Account.DoesNotExist, Profile.DoesNotExist):
             return JsonResponse({"error": "Account or Profile not found."}, status = 404)       
@@ -216,6 +219,9 @@ class OccupationsView(View):
         except MissingRequiredFields:
             return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
         
+        except ValueError:
+            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
+        
         except (Account.DoesNotExist, Profile.DoesNotExist):
             return JsonResponse({"error": "Account or Profile not found."}, status = 404)
         
@@ -263,3 +269,6 @@ class OccupationsDetailView(View):
         
         except Occupation.DoesNotExist:
             return JsonResponse({"error": "Occupation not found."}, status=404)
+        
+        except ValueError:
+            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
