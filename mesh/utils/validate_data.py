@@ -36,10 +36,6 @@ def validate_json_and_required_fields(request_body, required_fields):
     except json.JSONDecodeError:
         raise InvalidJsonFormat()
 
-    return validate_required_fields(data, required_fields)
-
-
-def validate_required_fields(data, required_fields):
     if not all(field in data for field in required_fields):
         raise MissingRequiredFields()
 
