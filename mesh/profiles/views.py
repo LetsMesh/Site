@@ -14,12 +14,13 @@ from mesh.exceptions.MissingRequiredFields import MissingRequiredFields
 from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 
 # Library Imports 
-from b2sdk.v1 import B2Api, InMemoryAccountInfo, UploadSourceBytes
 import os
 import uuid
+from urllib.parse import urlparse
 import json
 from base64 import b64encode
 from requests.exceptions import HTTPError
+from b2sdk.v1 import B2Api, InMemoryAccountInfo, UploadSourceBytes
 
 
 def bio_view(request):
@@ -99,7 +100,7 @@ class ProfilePicturesView(View):
                                      "DELETE to delete the profilePicture."}, 
                                     status = 409)
             
-            backblaze_api, backblaze_bucket = initialize_backblakze_client()
+            backblaze_api, backblaze_bucket = initialize_backblaze_client()
             
             # Grab photo from request files
             image_file = request.FILES["profilePicture"].read()
@@ -206,8 +207,19 @@ class ProfilePicturesView(View):
                 return JsonResponse({"error": "Profile's profilePicture not found, nothing to delete."},
                                     status = 404)
             
-            profile.profilePicture = None
-            profile.save()
+            # parse url, get file name
+            profile_picture_url = urlparse(profile.profilePicture)
+            file_name = os.path.basename(profile_picture_url.path)
+            
+            # find file info to grab file id
+            backblaze_api, backblaze_bucket = initialize_backblaze_client()
+            file_version_info = backblaze_bucket.get_file_info_by_name(file_name)
+            file_id = file_version_info.as_dict()["fileId"]
+
+            backblaze_bucket.delete_file_version(file_id, file_name)
+
+            # profile.profilePicture = None
+            # profile.save()
 
             return HttpResponse(status=204)
 
@@ -224,7 +236,7 @@ class ProfilePicturesView(View):
             return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
 
 
-def initialize_backblakze_client():
+def initialize_backblaze_client():
     BACKBLAZE_APPLICATION_KEY_ID = os.environ.get("BACKBLAZE_MASTER_KEY")
     BACKBLAZE_APPLICATION_KEY = os.environ.get("BACKBLAZE_APPLICATION_KEY")
     BACKBLAZE_BUCKET_NAME = os.environ.get("BACKBLAZE_BUCKET_NAME")
