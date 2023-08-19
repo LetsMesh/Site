@@ -16,9 +16,8 @@ from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 # Library Imports 
 import os
 import uuid
-from urllib.parse import urlparse
 import json
-from base64 import b64encode
+from urllib.parse import urlparse
 from requests.exceptions import HTTPError
 from b2sdk.v1 import B2Api, InMemoryAccountInfo, UploadSourceBytes
 
@@ -109,6 +108,7 @@ class ProfilePicturesView(View):
             # rename photo to random string + accountID
             new_file_name = generate_unique_filename(account_id, original_file_name)
             
+            # upload image to backblaze
             upload_source = UploadSourceBytes(image_file)
             upload_result = backblaze_bucket.upload(upload_source,  file_name=new_file_name)
 
@@ -170,6 +170,7 @@ class ProfilePicturesView(View):
             # rename photo to random string + accountID
             new_file_name = generate_unique_filename(account_id, original_file_name)
             
+            # upload image to backblaze
             upload_source = UploadSourceBytes(image_file)
             upload_result = backblaze_bucket.upload(upload_source,  file_name=new_file_name)
 
@@ -230,8 +231,10 @@ class ProfilePicturesView(View):
             file_version_info = backblaze_bucket.get_file_info_by_name(file_name)
             file_id = file_version_info.as_dict()["fileId"]
 
+            # delete file
             backblaze_bucket.delete_file_version(file_id, file_name)
 
+            # update profile
             profile.profilePicture = None
             profile.save()
 
@@ -262,12 +265,15 @@ def initialize_backblaze_client():
 
     return backblaze_api, bucket
 
+# create unique, random file name containing accountID + random string
 def generate_unique_filename(account_id, original_filename):
     extension = original_filename.split(".")[-1]
     unique_id = uuid.uuid4().hex
     new_filename = f"{account_id}_{unique_id}.{extension}"
     return new_filename
 
+
+# for generating image urls for each file, to be saved with the profile
 def generate_image_url(file_name):
     BACKBLAZE_URL = "https://f005.backblazeb2.com/file/LetsMesh/"
     file_url = BACKBLAZE_URL + file_name
