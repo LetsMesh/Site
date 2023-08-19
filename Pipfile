@@ -7,7 +7,7 @@ name = "pypi"
 django = "*"
 mysqlclient = "*"
 bcrypt = "*"
-pyimgur = "*"
+b2sdk.v1 = "*"
 
 [dev-packages]
 

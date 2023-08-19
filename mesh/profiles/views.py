@@ -14,8 +14,9 @@ from mesh.exceptions.MissingRequiredFields import MissingRequiredFields
 from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 
 # Library Imports 
-import pyimgur
+from b2sdk.v1 import B2Api, InMemoryAccountInfo, UploadSourceBytes
 import os
+import uuid
 import json
 from base64 import b64encode
 from requests.exceptions import HTTPError
@@ -98,16 +99,19 @@ class ProfilePicturesView(View):
                                      "DELETE to delete the profilePicture."}, 
                                     status = 409)
             
-            imgur_client = initialize_imgur_client()
+            backblaze_api, backblaze_bucket = initialize_backblakze_client()
             
-            # Grab raw photo from request files and encode it to upload to imgur
-            image_file = b64encode(request.FILES["profilePicture"].read())
+            # Grab photo from request files
+            image_file = request.FILES["profilePicture"].read()
+            original_file_name = request.FILES["profilePicture"].name
+            
+            # rename photo to random string + accountID
+            new_file_name = generate_unique_filename(account_id, original_file_name)
+            
+            upload_source = UploadSourceBytes(image_file)
+            upload_result = backblaze_bucket.upload(upload_source,  file_name=new_file_name)
 
-            # send POST request to imgur API to upload photo
-            imgur_response = imgur_client._send_request('https://api.imgur.com/3/image', 
-                                   method='POST', params={'image': image_file})
-
-            image_link = imgur_response["link"]
+            image_link = generate_image_url(new_file_name)
 
             # Save photo URL with user
             profile.profilePicture = image_link
@@ -220,9 +224,26 @@ class ProfilePicturesView(View):
             return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
 
 
-def initialize_imgur_client():
-    IMGUR_CLIENT_ID = os.environ.get("IMGUR_CLIENT_ID")
+def initialize_backblakze_client():
+    BACKBLAZE_APPLICATION_KEY_ID = os.environ.get("BACKBLAZE_MASTER_KEY")
+    BACKBLAZE_APPLICATION_KEY = os.environ.get("BACKBLAZE_APPLICATION_KEY")
+    BACKBLAZE_BUCKET_NAME = os.environ.get("BACKBLAZE_BUCKET_NAME")
 
-    imgur_client = pyimgur.Imgur(IMGUR_CLIENT_ID)
+    account_info = InMemoryAccountInfo()
+    backblaze_api = B2Api(account_info)
+    backblaze_api.authorize_account("production", BACKBLAZE_APPLICATION_KEY_ID, BACKBLAZE_APPLICATION_KEY)
+    bucket = backblaze_api.get_bucket_by_name(BACKBLAZE_BUCKET_NAME)
 
-    return imgur_client
+    return backblaze_api, bucket
+
+def generate_unique_filename(account_id, original_filename):
+    extension = original_filename.split(".")[-1]
+    unique_id = uuid.uuid4().hex
+    new_filename = f"{account_id}_{unique_id}.{extension}"
+    return new_filename
+
+def generate_image_url(file_name):
+
+    BACKBLAZE_URL = "https://f005.backblazeb2.com/file/LetsMesh/"
+    file_url = BACKBLAZE_URL + file_name
+    return file_url
