@@ -183,7 +183,7 @@ class ProfilePicturesView(View):
             request_response = json.dumps({"profileID": profile.accountID.accountID ,
                                  "profilePicture": image_link})
             
-            return JsonResponse(request_response, status = 201, safe = False)
+            return JsonResponse(request_response, status = 200, safe = False)
         
         except MultiValueDictKeyError:
             return JsonResponse({"error": "Missing required JSON fields."}, status = 400)
