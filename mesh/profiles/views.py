@@ -147,20 +147,34 @@ class ProfilePicturesView(View):
             if profile.profilePicture is None:
                 return JsonResponse({"error": "Profile does not have an existing profilePicture." +
                                      "Use a POST request to upload a profilePicture."}, status = 409)
+
+            # need to delete old profile picture first,
+            # then upload new profile picture
+
+            # parse url, get file name
+            profile_picture_url = urlparse(profile.profilePicture)
+            file_name = os.path.basename(profile_picture_url.path)
             
-            uploaded_profile_picture = data[1]["profilePicture"]
+            # find file info to grab file id
+            backblaze_api, backblaze_bucket = initialize_backblaze_client()
+            file_version_info = backblaze_bucket.get_file_info_by_name(file_name)
+            file_id = file_version_info.as_dict()["fileId"]
 
-            imgur_client = initialize_imgur_client()
+            # delete old profile picture
+            backblaze_bucket.delete_file_version(file_id, file_name)
             
-            # Grab raw photo from request files and encode it to upload to imgur
-            image_file = b64encode(uploaded_profile_picture.read())
+            # Grab photo from request files
+            image_file = data[1]["profilePicture"].read()
+            original_file_name = data[1]["profilePicture"].name
+            
+            # rename photo to random string + accountID
+            new_file_name = generate_unique_filename(account_id, original_file_name)
+            
+            upload_source = UploadSourceBytes(image_file)
+            upload_result = backblaze_bucket.upload(upload_source,  file_name=new_file_name)
 
-            # send POST request to imgur API to upload photo
-            imgur_response = imgur_client._send_request('https://api.imgur.com/3/image', 
-                                   method='POST', params={'image': image_file})
-
-            image_link = imgur_response["link"]
-
+            image_link = generate_image_url(new_file_name)
+            
             # Save photo URL with user
             profile.profilePicture = image_link
             profile.save()
@@ -218,8 +232,8 @@ class ProfilePicturesView(View):
 
             backblaze_bucket.delete_file_version(file_id, file_name)
 
-            # profile.profilePicture = None
-            # profile.save()
+            profile.profilePicture = None
+            profile.save()
 
             return HttpResponse(status=204)
 
@@ -255,7 +269,6 @@ def generate_unique_filename(account_id, original_filename):
     return new_filename
 
 def generate_image_url(file_name):
-
     BACKBLAZE_URL = "https://f005.backblazeb2.com/file/LetsMesh/"
     file_url = BACKBLAZE_URL + file_name
     return file_url
