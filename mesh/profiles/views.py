@@ -17,6 +17,7 @@ from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 import os
 import uuid
 import json
+import imghdr
 from urllib.parse import urlparse
 from requests.exceptions import HTTPError
 from b2sdk.v1 import B2Api, InMemoryAccountInfo, UploadSourceBytes
@@ -102,7 +103,13 @@ class ProfilePicturesView(View):
             backblaze_api, backblaze_bucket = initialize_backblaze_client()
             
             # Grab photo from request files
-            image_file = request.FILES["profilePicture"].read()
+            image_file = request.FILES["profilePicture"]
+
+            if check_if_file_is_not_image(image_file):
+                return JsonResponse({"error": "Uplodaed file is not an image."}, status = 400)
+
+            image_file = image_file.read()
+            
             original_file_name = request.FILES["profilePicture"].name
             
             # rename photo to random string + accountID
@@ -151,6 +158,14 @@ class ProfilePicturesView(View):
             # need to delete old profile picture first,
             # then upload new profile picture
 
+            # Grab photo from request files
+            image_file = data[1]["profilePicture"]
+            
+            if check_if_file_is_not_image(image_file):
+                return JsonResponse({"error": "Uplodaed file is not an image."}, status = 400)
+            
+            image_file = image_file.read()
+            
             # parse url, get file name
             profile_picture_url = urlparse(profile.profilePicture)
             file_name = os.path.basename(profile_picture_url.path)
@@ -163,11 +178,8 @@ class ProfilePicturesView(View):
             # delete old profile picture
             backblaze_bucket.delete_file_version(file_id, file_name)
             
-            # Grab photo from request files
-            image_file = data[1]["profilePicture"].read()
-            original_file_name = data[1]["profilePicture"].name
-            
             # rename photo to random string + accountID
+            original_file_name = data[1]["profilePicture"].name
             new_file_name = generate_unique_filename(account_id, original_file_name)
             
             # upload image to backblaze
@@ -278,3 +290,14 @@ def generate_image_url(file_name):
     BACKBLAZE_URL = "https://f005.backblazeb2.com/file/LetsMesh/"
     file_url = BACKBLAZE_URL + file_name
     return file_url
+
+# ensure uploaded file is an image
+def check_if_file_is_not_image(file):
+    
+    ACCEPTED_FILE_TYPES = ["jpeg", "jpg", "png"]
+    file_type = imghdr.what(file)
+
+    if file_type not in ACCEPTED_FILE_TYPES:
+        return True
+    
+    return False
