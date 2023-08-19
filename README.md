@@ -83,7 +83,7 @@ MYSQL SETUP (windows, if you have a mac, consider switching to a windows)
 4. Spam next until you finish and then you’re done
 Make sure you write the username and password in your.env file. With that being said,that’s it for your mysql setup, next thing we do is django.
 
-1. Open a terminal and make sure mysql is installed by typing in `mysql --v`
+1. Open a terminal and make sure mysql is installed by typing in `mysql -V`
     a. If the command doesn’t work it may be because mysql isn’t added to your path. The default location for mysql server should be: 
         C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe
             i. Possible solution: https://stackoverflow.com/questions/5920136/mysql-is-not-recognised-as-an-internal-or-external-command-operable-program-or-b
@@ -92,8 +92,8 @@ Make sure you write the username and password in your.env file. With that being 
         i. Do note that root is the default username so use whatever username you used
     b. You should be prompted into they mysql shell, and then create a database by using `CREATE DATABASE mesh;`
     c. Confirm your database is created with `SHOW DATABASES;`
-3. Open you pip environment is opened (with `pipenv shell`)
-4. Type in `python manage.py makemigrations` 
+3. make sure your pip environment is opened (with `pipenv shell`)
+4. Type in `python manage.py makemigrations`
     a. You will most likely be given warnings. Warnings are fine errors aren’t. Google your errors.
 5. Type in `python manage.py migrate`
     a. Similar to the previous step warnings are fine, errors aren’t.
