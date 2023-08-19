@@ -11,11 +11,10 @@ urlpatterns = [
     # GET    /api/biography/:account_id
     # POST   /api/biography/:account_id
     path('biography/<int:account_id>/', profile_views.BiographyView.as_view(), name='biography'),
-    
+
     # GET /profiles/profile-picture/:account_id
     path("profile-picture/<int:account_id>", profile_views.ProfilePictureDetailsView.as_view(), name="profile-picture-details"),
-    
-    # GET /profiles/profile-picture/:account_id
+
     path("user-name/<int:account_id>", profile_views.UserNamesView.as_view(), name="user-name"),
     
     # GET /profiles/profile-picture/:account_id
