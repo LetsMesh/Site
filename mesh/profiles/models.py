@@ -9,5 +9,6 @@ class Profile(models.Model):
     biography = models.TextField()
     profilePicture = models.URLField(max_length = 200, null = True, blank = True)
 
+
     def __str__(self):
         return str(self.accountID)
