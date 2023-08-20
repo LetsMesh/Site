@@ -18,14 +18,14 @@ class ProfilesTest(TestCase):
             displayTheme="0",
             enabled2Factor=False,
             isMentor=False,
-            isMentee=True
+            isMentee=True,
         )
         self.test_profile = Profile.objects.create(
             accountID=test_account,
             userName="profileTest",
             preferredName="Profile Test",
             preferredPronouns="Patrick",
-            biography="",
+            biography="Biography Test",
             profilePicture=SimpleUploadedFile(name="profile_test_image.png",
                                               content=open("media/image/test_image.png", "rb").read())
         )
@@ -35,6 +35,9 @@ class ProfilesTest(TestCase):
         if os.path.exists(image_path):
             os.remove(image_path)
 
+    """ 
+    Profile Picture Testing 
+    """
     def test_profile_picture(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
         response = self.client.get(f"/profiles/profile-picture/{test_user.accountID}")
@@ -46,7 +49,10 @@ class ProfilesTest(TestCase):
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
-
+  
+    """ 
+    Profile username, preferred name, and pronoun Testing 
+    """
     def test_user_name(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
         response = self.client.get(f"/profiles/user-name/{test_user.accountID}")
@@ -97,3 +103,44 @@ class ProfilesTest(TestCase):
         preferred_pronouns_data = {"preferredPronouns": "brown/black"}
         response = self.client.post(f'/profiles/preferred-pronouns/{self.test_profile.accountID}', preferred_pronouns_data)
         self.assertEquals(response.status_code, 200)
+    """ 
+    Biography Testing 
+    """
+    def test_biography(self):
+        """
+        Test Case for seeing if biography can be retrieved from speicified account
+
+        A GET request is sent to the '/profiles/biography/{account_id}/' endpoint.
+        The test passes if the response status code is 200.
+        """
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        response = self.client.get(f'/profiles/biography/{test_user.accountID}/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_user_name (self):
+        user_name_data = {"userName": "kwame brown"}
+        response = self.client.post(f'/profiles/user-name/{self.test_profile.accountID}', user_name_data)
+        self.assertEquals(response.status_code, 200)
+
+    def test_post_preferred_name (self):
+        preferred_name_data = {"preferredName": "brown"}
+        response = self.client.post(f'/profiles/preferred-name/{self.test_profile.accountID}', preferred_name_data)
+        self.assertEquals(response.status_code, 200)
+
+    def test_post__preferred_pronouns (self):
+        preferred_pronouns_data = {"preferredPronouns": "brown/black"}
+        response = self.client.post(f'/profiles/preferred-pronouns/{self.test_profile.accountID}', preferred_pronouns_data)
+        self.assertEquals(response.status_code, 200)
+    """ 
+    Biography Testing 
+    """
+    def test_biography(self):
+        """
+        Test Case for seeing if biography can be retrieved from speicified account
+
+        A GET request is sent to the '/profiles/biography/{account_id}/' endpoint.
+        The test passes if the response status code is 200.
+        """
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        response = self.client.get(f'/profiles/biography/{test_user.accountID}/')
+        self.assertEqual(response.status_code, 200)

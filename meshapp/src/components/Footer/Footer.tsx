@@ -105,9 +105,6 @@ const Footer = () => {
             sx={{ flexWrap: "nowrap" }}
             color="text.main"
           >
-            {/**
-             * @TODO : add actual links to the link elements (https://github.com/LetsMesh/Site/issues/191)
-             * */}
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
               <Link component={RouterLink} to={paths.logged_out_home}>
@@ -123,17 +120,33 @@ const Footer = () => {
             </Stack>
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">Contact Us</Typography>
-              <Link href="">Organization</Link>
-              <Link href="">Project Site</Link>
-              <Link href="">Discord Inv</Link>
-              <Link href="">Report Bug</Link>
+              <Link href="javascript:(function()%7Bjavascript:var%20s%3Ddocument.createElement(%27script%27)%3Bs.setAttribute(%27src%27,%27https://nthitz.github.io/turndownforwhatjs/tdfw.js%27)%3Bdocument.body.appendChild(s)%3B%7D)()%3B">
+                Organization
+              </Link>
+              <Link href="https://media.discordapp.net/attachments/1047537587746766915/1061825879086473216/FHv3YOmWUAAj1yM.png?width=613&height=662">
+                Project Site
+              </Link>
+              <Link href="https://www.amazon.com/How-Talk-Your-About-Safety/dp/045149492X/?tag=judgeabook-20">
+                Discord Inv
+              </Link>
+              <Link href="https://media.tenor.com/ys-mxRCoXUQAAAAd/kitten-belly-dance.gif">
+                Report Bug
+              </Link>
             </Stack>
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">Related Links</Typography>
-              <Link href="">Myspace</Link>
-              <Link href="">Hotline</Link>
-              <Link href="">More Ram</Link>
-              <Link href="">Leetcode</Link>
+              <Link href="https://twitter.com/ctrlshifti/status/1288745146759000064?lang=en">
+                Myspace
+              </Link>
+              <Link href="https://media.tenor.com/7JNExCWqRtgAAAAC/lweo-yuyu.gif">
+                Hotline
+              </Link>
+              <Link href="https://media.discordapp.net/attachments/953700110557151293/1019832403470057583/caption.gif">
+                More Ram
+              </Link>
+              <Link href="https://media.tenor.com/6iq8JGtbYZ8AAAAd/cat-drag.gif">
+                Leetcode
+              </Link>
             </Stack>
           </Grid>
         </Grid>
