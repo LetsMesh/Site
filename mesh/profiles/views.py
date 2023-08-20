@@ -1,9 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.datastructures import MultiValueDictKeyError
 from django.http import JsonResponse
 from django.views import View
 
 from mesh.profiles.models import Profile
-
+from mesh.accounts.models import Account
 
 def bio_view(request):
     if request.method == "POST":
@@ -18,28 +19,35 @@ def bio_view(request):
     else:
         return JsonResponse({'error': request.method + ' Method not allowed'}, status=405)
 
-
 class ProfilePicturesView(View):
     def get(self, request, account_id, *args, **kwargs):
         return get_data(account_id, "profilePicture", lambda profile: profile.profilePicture.url)
 
-
 class UserNamesView(View):
     def get(self, request, account_id, *args, **kwargs):
         return get_data(account_id, "userName", lambda profile: profile.userName)
-
+    
+    def post(self, request, account_id, *args, **kwargs):
+        return post_data(account_id, "userName", request)
 
 class PreferredNamesView(View):
     def get(self, request, account_id, *args, **kwargs):
         return get_data(account_id, "preferredName", lambda profile: profile.preferredName)
 
+    def post(self, request, account_id, *args, **kwargs):
+        return post_data(account_id, "preferredName", request)
 
 class PreferredPronounsView(View):
     def get(self, request, account_id, *args, **kwargs):
         return get_data(account_id, "preferredPronouns", lambda profile: profile.preferredPronouns)
 
+    def post(self, request, account_id, *args, **kwargs):
+        return post_data(account_id, "preferredPronouns", request)
 
 def get_data(account_id, name, mapper):
+    """
+    Handles GET requests when the client fetches for names/nicknames/pronouns
+    """
     try:
         profile = Profile.objects.get(accountID=int(account_id))
         return JsonResponse({
@@ -55,3 +63,31 @@ def get_data(account_id, name, mapper):
             "status": "error",
             "message": "An account does not exist with this account ID."
         }, status=404)
+
+def post_data(account_id, name, request):
+    """
+    Handles POST requests when the client sends names/nicknames/prounouns to the back end
+    """
+    try: 
+        account = Account.objects.get(accountID = account_id)
+        profile = Profile.objects.get(accountID = account_id)
+        data = request.POST[name]   
+
+        if (name == "userName"):
+            profile.userName = data 
+        elif (name == "preferredName"):
+            profile.preferredName = data
+        elif (name == "preferredPronouns"):
+            profile.preferredPronouns = data
+    
+        profile.save()
+        return JsonResponse({'message': f'{name} saved successfully'}, safe=False, status = 200)
+        
+    except Account.DoesNotExist:
+        return JsonResponse({'error': 'Account does not exist'}, status = 404)
+    
+    except Profile.DoesNotExist:
+        return JsonResponse({'error': 'Profile does not exist for this account'}, status = 404)
+    
+    except MultiValueDictKeyError:
+        return JsonResponse({'error': f'Missing {name} field.'}, status = 400)

@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('preferredName', models.CharField(max_length=255, null=True)),
                 ('preferredPronouns', models.CharField(max_length=40)),
                 ('biography', models.TextField()),
-                ('image', models.ImageField(upload_to='image')),
+                ('profilePicture', models.ImageField(upload_to='image')),
             ],
         ),
     ]
