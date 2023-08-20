@@ -76,7 +76,7 @@ Check npm version with `npm -v` -> This should show 9.6.7 in the console
 7. Build the frontend -> in the same directory as step 7 run `npm run build`
 8. Return to the root directory and start the backend server / run the application -> `python manage.py runserver`
 MYSQL SETUP (windows, if you have a mac, consider switching to a windows)
-1. Download Mysql over here https://dev.mysql.com/downloads/installer/ ( i downloaded the fatter file)
+1. Download Mysql over here https://dev.mysql.com/downloads/installer/ ( i downloaded the file that was 331.3 M)
 2. Do the setup and do the full download (spam next until you see the password portion) 
 3. Make sure you are not using the legacy version, select the 8.x version
     a. Make sure you remember your passwords and username(username is by default root)
