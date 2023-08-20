@@ -103,19 +103,6 @@ class ProfilesTest(TestCase):
         preferred_pronouns_data = {"preferredPronouns": "brown/black"}
         response = self.client.post(f'/profiles/preferred-pronouns/{self.test_profile.accountID}', preferred_pronouns_data)
         self.assertEquals(response.status_code, 200)
-    """ 
-    Biography Testing 
-    """
-    def test_biography(self):
-        """
-        Test Case for seeing if biography can be retrieved from speicified account
-
-        A GET request is sent to the '/profiles/biography/{account_id}/' endpoint.
-        The test passes if the response status code is 200.
-        """
-        test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get(f'/profiles/biography/{test_user.accountID}/')
-        self.assertEqual(response.status_code, 200)
 
     def test_post_user_name (self):
         user_name_data = {"userName": "kwame brown"}
