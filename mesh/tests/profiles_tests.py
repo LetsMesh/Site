@@ -104,20 +104,6 @@ class ProfilesTest(TestCase):
         response = self.client.post(f'/profiles/preferred-pronouns/{self.test_profile.accountID}', preferred_pronouns_data)
         self.assertEquals(response.status_code, 200)
 
-    def test_post_user_name (self):
-        user_name_data = {"userName": "kwame brown"}
-        response = self.client.post(f'/profiles/user-name/{self.test_profile.accountID}', user_name_data)
-        self.assertEquals(response.status_code, 200)
-
-    def test_post_preferred_name (self):
-        preferred_name_data = {"preferredName": "brown"}
-        response = self.client.post(f'/profiles/preferred-name/{self.test_profile.accountID}', preferred_name_data)
-        self.assertEquals(response.status_code, 200)
-
-    def test_post__preferred_pronouns (self):
-        preferred_pronouns_data = {"preferredPronouns": "brown/black"}
-        response = self.client.post(f'/profiles/preferred-pronouns/{self.test_profile.accountID}', preferred_pronouns_data)
-        self.assertEquals(response.status_code, 200)
     """ 
     Biography Testing 
     """
