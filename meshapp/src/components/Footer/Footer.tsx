@@ -105,9 +105,6 @@ const Footer = () => {
             sx={{ flexWrap: "nowrap" }}
             color="text.main"
           >
-            {/**
-             * @TODO : add actual links to the link elements (https://github.com/LetsMesh/Site/issues/191)
-             * */}
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
               <Link component={RouterLink} to={paths.logged_out_home}>
