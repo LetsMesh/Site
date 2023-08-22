@@ -3,15 +3,17 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
 import AppRoutes from "./Routing/AppRoutes";
-import MainThemeProvider from "./theme/MainThemeProvider";
+import { ThemeContextProvider } from "./theme/ThemeContextProvider";
+import { MainThemeProvider } from "./theme/MainThemeProvider";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
-
 root.render(
   <React.StrictMode>
-    <MainThemeProvider>
-      <TwoFactorAuthReminders />
-      <AppRoutes />
-    </MainThemeProvider>
+    <ThemeContextProvider>
+      <MainThemeProvider>
+        <TwoFactorAuthReminders />
+        <AppRoutes />
+      </MainThemeProvider>
+    </ThemeContextProvider>
   </React.StrictMode>
 );
 

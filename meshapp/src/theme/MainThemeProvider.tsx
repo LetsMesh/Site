@@ -1,22 +1,9 @@
+import { FC, PropsWithChildren } from "react";
+import { useThemeContext } from "./ThemeContextProvider";
 import { ThemeProvider } from "@emotion/react";
-import getMainTheme from "./MainTheme";
-import { PaletteMode } from "@mui/material";
 
-/*
-This component returns a theme provider for light/dark mode
-*/
-export default function MainThemeProvider(props: {
-  children: React.ReactNode;
-}) {
-  //get mode from local storage
-  let storedMode = localStorage.getItem("themeMode");
-
-  //validate stored mode, if it exists and is a valid mode use it, otherwise use light mode
-  let mode: PaletteMode =
-    storedMode && (storedMode === "light" || storedMode === "dark")
-      ? storedMode
-      : "light";
-  let theme = getMainTheme(mode);
-
-  return <ThemeProvider children={props.children} theme={theme} />;
-}
+//This returns a ThemeProvider for the main theme that uses the current theme from the provided context
+export const MainThemeProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { theme } = useThemeContext();
+  return <ThemeProvider children={children} theme={theme} />;
+};
