@@ -82,3 +82,9 @@ class ProfilesTest(TestCase):
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+
+    def test_biography_update(self):
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        response = self.client.post(f"/profiles/biography",{'accountID': test_user.accountID, 'biography': "Testing..."}, content_type='application/json')
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEquals(json_response, {"biography": "Testing..."})

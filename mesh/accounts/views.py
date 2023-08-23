@@ -52,6 +52,7 @@ class AccountsView(View):
             isMentee = data['isMentee']
         )
         return JsonResponse({'account_id': account.id}, status=201)
+        return JsonResponse({'account_id': account.accountID}, status=201)
 
 
 class AccountsDetailView(View):
@@ -66,7 +67,7 @@ class AccountsDetailView(View):
         If the Account does not exist, it returns a 404 status code and an error message.
         """
         try:
-            account = Account.objects.get(id=account_id)
+            account = Account.objects.get(accountID=account_id)
             account_detail = serializers.serialize('json', [account])
             return JsonResponse(account_detail, safe=False)
         except Account.DoesNotExist:
@@ -90,7 +91,7 @@ class AccountsDetailView(View):
         but does not include an entity-body in the response.
         """
         try:
-            account = Account.objects.get(id=account_id)
+            account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
             return JsonResponse({'error': 'Account does not exist'}, status=404)
 

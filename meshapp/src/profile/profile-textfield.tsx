@@ -15,12 +15,14 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {string} props.placeholder - The placeholder text
  * @param {string} props.text - The initial text content
  * @param {number} props.charLimit - The max number of characters allowed
+ * @param {function} props.handleSave - Callback to save data
  */
 const ProfileTextField = (props: {
   label: string;
   placeholder: string;
   text: string;
   charLimit: number;
+  handleSave: any;
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
@@ -37,6 +39,7 @@ const ProfileTextField = (props: {
 
   const handleSaveClick = () => {
     setEditMode(false);
+    props.handleSave(text);
   };
 
   return (

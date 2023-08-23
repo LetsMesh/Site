@@ -2,19 +2,25 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views import View
 
+import json
+
 from mesh.profiles.models import Profile
+
 
 
 def bio_view(request):
     if request.method == "POST":
-        data = request.POST
+        data = json.loads(request.body)
+        
         if 'accountID' not in data:
             return JsonResponse({'error': 'Invalid request. Missing accountID field.'}, status=401)
         if 'biography' not in data:
             return JsonResponse({'error': 'Invalid request. Missing biography field.'}, status=400)
         else:
-            print(data.get('accountID') + " " + data.get('biography'))  # TODO: Save to database
-            return JsonResponse({'message': 'biography saved successfully'}, status=200)
+            user = Profile.objects.get(accountID=data["accountID"])
+            user.biography = data["biography"]
+            user.save()
+            return JsonResponse({'biography': user.biography}, status=200)
     else:
         return JsonResponse({'error': request.method + ' Method not allowed'}, status=405)
 
