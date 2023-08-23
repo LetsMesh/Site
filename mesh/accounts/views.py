@@ -51,7 +51,6 @@ class AccountsView(View):
             isMentor = data['isMentor'],
             isMentee = data['isMentee']
         )
-        return JsonResponse({'account_id': account.id}, status=201)
         return JsonResponse({'account_id': account.accountID}, status=201)
 
 
