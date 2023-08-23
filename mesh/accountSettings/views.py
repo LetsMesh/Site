@@ -1,10 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views import View
 from django.core import serializers
 
 from mesh.accountSettings.models import Settings
+from mesh.accounts.models import Account
 
+import json
 
 def display_theme(request):
     if request.method == "GET":
@@ -48,15 +50,30 @@ class TwoFactAuthView(View):
             settings_2FactAuth = Settings.objects.get(accountID=account_id).is2FAEnabled
             settings_detail = serializers.serialize('json', [settings_2FactAuth])
             return JsonResponse(settings_detail, safe=False)
-        except ObjectDoesNotExist:
+        except Account.DoesNotExist:
             return JsonResponse({'error': 'An account does not exist with this account ID.'}, status=404)
+        except Settings.DoesNotExist:
+            return JsonResponse({'error': 'Settings does not exist with this account ID.'}, status=404)
 
     
-    def patch():
+    def patch(self, request, account_id, *args, **kwargs):
         """ 
-        Handles Patch request
+        Handles Patch request.
         
-        t
+        Updates the 2FactAuth account setting information to either true or false.
+
+        Returns 204 HTTP response upon success.
+        Returns 404 if Account or Settings is not found
         """
+        try:
+            settings = Settings.objects.get(accountID=account_id)
+            data = json.loads(request.body)
+            settings.is2FAEnabled = data.get('is2FAEnabled', settings.is2FAEnabled)
+            settings.save()
+            return HttpResponse(status=204)
+        except Account.DoesNotExist:
+            return JsonResponse({'error': 'An account does not exist with this account ID.'}, status=404)
+        except Settings.DoesNotExist:
+            return JsonResponse({'error': 'Settings does not exist with this account ID.'}, status=404)
         
 
