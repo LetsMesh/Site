@@ -6,6 +6,7 @@ urlpatterns = [
     # GET /profiles/profile-picture
     # POST /profiles/profile-picture
     # PATCH /profiles/profile-picture
+    # DELETE /profiles/profile-picture
     path("profile-picture", profile_views.ProfilePicturesView.as_view(), name="profile-picture"),
     
     # GET    /profiles/biography/:account_id
