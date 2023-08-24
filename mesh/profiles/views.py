@@ -45,10 +45,10 @@ class BiographyView(View):
         if 'biography' not in data:
             return JsonResponse({'error': 'Invalid request. Missing biography field.'}, status=400)
         else:
-            user = Profile.objects.get(accountID=data["accountID"])
+            user = Profile.objects.get(accountID=account_id)
             user.biography = data["biography"]
             user.save()
-            return JsonResponse({'biography': user.biography}, status=200)
+            return JsonResponse({'message': "Biography saved successfully."}, status=200)
 
 class ProfilePicturesView(View):
     def get(self, request, account_id, *args, **kwargs):
