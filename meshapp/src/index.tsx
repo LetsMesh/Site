@@ -2,16 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
-import MainTheme from "./theme/MainTheme";
-import { ThemeProvider } from "@emotion/react";
 import AppRoutes from "./Routing/AppRoutes";
+import { ThemeContextProvider } from "./theme/ThemeContextProvider";
+import { MainThemeProvider } from "./theme/MainThemeProvider";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={MainTheme}>
-      <TwoFactorAuthReminders />
-      <AppRoutes />
-    </ThemeProvider>
+    <ThemeContextProvider>
+      <MainThemeProvider>
+        <TwoFactorAuthReminders />
+        <AppRoutes />
+      </MainThemeProvider>
+    </ThemeContextProvider>
   </React.StrictMode>
 );
 

@@ -4,12 +4,11 @@ import Login from "../home/login";
 import ForgotPassword from "../components/password-forms/forgot-password-form";
 import LoggedInHome from "../home/logged-in/LoggedInHome";
 import ProfilePage from "../profile/profile-page";
-import {
-  exampleProfile,
-} from "../profile/tests/profile-examples";
+import { exampleProfile } from "../profile/tests/profile-examples";
 import Slider from "../ProfileCardCarousel/Swiper";
 import { Routes, Route, Link } from "react-router-dom";
 import { paths } from "./RoutePaths";
+import ThemeToggleSwitch from "../theme/ThemeToggle";
 
 //contains routes for the main page
 export default function MainPageRoutes() {
@@ -27,6 +26,21 @@ export default function MainPageRoutes() {
         element={<ProfilePage {...exampleProfile} />}
       />
       <Route path={paths.profile_swipe} element={<Slider />} />
+      {/*Temporary page to hold theme toggle switch*/}
+      <Route
+        path={paths.settings}
+        element={
+          <div
+            style={{
+              display: "flex",
+              marginTop: "100px",
+              justifyContent: "center",
+            }}
+          >
+            <ThemeToggleSwitch />
+          </div>
+        }
+      />
       {/*default route*/}
       <Route path="*" element={<Nav />} />
     </Routes>
@@ -52,6 +66,7 @@ function Nav() {
       <Link to={paths.logged_in_home}>Logged In Home</Link>
       <Link to={paths.profile_page}>Profile Page</Link>
       <Link to={paths.profile_swipe}>Profile Swipe</Link>
+      <Link to={paths.settings}>Settings</Link>
     </div>
   );
 }
