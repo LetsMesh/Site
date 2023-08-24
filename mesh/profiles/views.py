@@ -91,7 +91,6 @@ def post_data(account_id, name, request):
     Handles POST requests when the client sends names/nicknames/prounouns to the back end
     """
     try: 
-        account = Account.objects.get(accountID = account_id)
         profile = Profile.objects.get(accountID = account_id)
         data = request.POST[name]   
 
@@ -104,12 +103,9 @@ def post_data(account_id, name, request):
     
         profile.save()
         return JsonResponse({'message': f'{name} saved successfully'}, safe=False, status = 200)
-        
-    except Account.DoesNotExist:
-        return JsonResponse({'error': 'Account does not exist'}, status = 404)
     
     except Profile.DoesNotExist:
-        return JsonResponse({'error': 'Profile does not exist for this account'}, status = 404)
+        return JsonResponse({'error': 'Account does not exist'}, status = 404)
     
     except MultiValueDictKeyError:
         return JsonResponse({'error': f'Missing {name} field.'}, status = 400)

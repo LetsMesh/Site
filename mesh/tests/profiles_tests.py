@@ -99,7 +99,7 @@ class ProfilesTest(TestCase):
         response = self.client.post(f'/profiles/preferred-name/{self.test_profile.accountID}', preferred_name_data)
         self.assertEquals(response.status_code, 200)
 
-    def test_post__preferred_pronouns (self):
+    def test_post_preferred_pronouns (self):
         preferred_pronouns_data = {"preferredPronouns": "brown/black"}
         response = self.client.post(f'/profiles/preferred-pronouns/{self.test_profile.accountID}', preferred_pronouns_data)
         self.assertEquals(response.status_code, 200)
