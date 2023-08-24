@@ -184,7 +184,7 @@ const ProfileOccupation = (props: {
 const ProfileBiography = (props: { biography: string, accountID: number}) => {
 
   function saveBiography(text: string) {
-    const res = axiosInstance.post('/profiles/biography', {
+    const res = axiosInstance.post('/profiles/biography/' + props.accountID, {
       'biography': text,
       'accountID': props.accountID
     })
