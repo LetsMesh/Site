@@ -107,9 +107,9 @@ class ProfilesTest(TestCase):
         """
         Test Case for seeing if biography can be updated from specified account
         
-        A POST request is sent to the '/profiles/biography/{account_id}/' endpoint.
+        A POST request is sent to the '/profiles/biography' endpoint.
         The test passes if the response status code is 200.
         """
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.post(f"/profiles/biography/{test_user.accountID}/",{'accountID': test_user.accountID, 'biography': "Testing..."}, content_type='application/json')
+        response = self.client.post(f"/profiles/biography",{'accountID': test_user.accountID, 'biography': "Testing..."}, content_type='application/json')
         self.assertEquals(response.status_code, 200)
