@@ -5,7 +5,10 @@ from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.http.multipartparser import MultiPartParser
 
+import json
+
 # Model Imports
+
 from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
 
@@ -46,32 +49,27 @@ class BiographyView(View):
                 {"error": "Invalid request. Account does not exist"}, status=404
             )
         except Profile.DoesNotExist:
-            return JsonResponse(
-                {"error": "Invalid request. Profile does not exist"}, status=404
-            )
+            return JsonResponse({'error': 'Invalid request. Profile does not exist'}, status=404)
+        
+    def post(self, request, account_id, *args, **kwargs):
+      """
+      Handle POST requests.
 
-    def post(self, request, *args, **kwargs):
-        if request.method == "POST":
-            data = request.POST
-            if "accountID" not in data:
-                return JsonResponse(
-                    {"error": "Invalid request. Missing accountID field."}, status=401
-                )
-            if "biography" not in data:
-                return JsonResponse(
-                    {"error": "Invalid request. Missing biography field."}, status=400
-                )
-            else:
-                print(
-                    data.get("accountID") + " " + data.get("biography")
-                )  # TODO: Save to database
-                return JsonResponse(
-                    {"message": "biography saved successfully"}, status=200
-                )
-        else:
-            return JsonResponse(
-                {"error": request.method + " Method not allowed"}, status=405
-            )
+      Updates the biography of the listed profile.
+
+      Returns a JSON response containing the saved biography of the specified profile through id.
+      """
+      data = json.loads(request.body)
+
+      if 'accountID' not in data:
+          return JsonResponse({'error': 'Invalid request. Missing accountID field.'}, status=401)
+      if 'biography' not in data:
+          return JsonResponse({'error': 'Invalid request. Missing biography field.'}, status=400)
+      else:
+          user = Profile.objects.get(accountID=account_id)
+          user.biography = data["biography"]
+          user.save()
+          return JsonResponse({'message': "Biography saved successfully."}, status=200)
 
 
 class ProfilePicturesView(View):

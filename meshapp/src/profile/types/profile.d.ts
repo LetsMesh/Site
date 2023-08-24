@@ -9,6 +9,7 @@ export type Profile = {
   isMentor: boolean;
   isMentee: boolean;
   biography: string;
+  accountID: number;
 };
 
 // TODO: Include Experience, Education, and Interests props as they get implemented
