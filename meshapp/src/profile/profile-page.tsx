@@ -12,6 +12,8 @@ import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
+import ProfileAccordion from "./profile-accordion";
+
 
 const theme = createTheme({
   palette: {
@@ -192,6 +194,7 @@ const ProfileBiography = (props: { biography: string }) => {
   );
 };
 
+
 /**
  * Displays the user's role(s) (mentor, mentee, or both).
  *
@@ -261,7 +264,7 @@ const ProfileEducation = (props: any) => {
         >
           Education
         </Typography>
-        <TestComponent />
+        <ProfileAccordion text1={"B.S. in Animal Happiness"} text2={"example"} descText={"descText"} descPlaceholder={"desc place holder"} charLimit={100}/>
       </Box>
     </ThemeProvider>
   );
@@ -295,6 +298,7 @@ const TestComponent = (props: any) => {
       placeholder={"Test"}
       text={"Test"}
       charLimit={200}
+      variant="standard"
     />
   );
 };

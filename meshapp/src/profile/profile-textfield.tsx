@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Box } from "@mui/material";
+import { TextField, Box, TextFieldVariants } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -21,6 +21,7 @@ const ProfileTextField = (props: {
   placeholder: string;
   text: string;
   charLimit: number;
+  variant?:TextFieldVariants;
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
@@ -44,6 +45,7 @@ const ProfileTextField = (props: {
       label={props.label}
       placeholder={props.placeholder}
       InputLabelProps={{ shrink: true }}
+      variant={props.variant ? props.variant : "outlined"}
       InputProps={{
         endAdornment: editMode ? (
           <Box paddingLeft={2}>
