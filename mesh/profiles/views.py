@@ -2,7 +2,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from django.http import JsonResponse
 
-from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
 from mesh.accounts.models import Account
 from django.views import View
@@ -102,7 +101,7 @@ def post_data(account_id, name, request):
             profile.preferredPronouns = data
     
         profile.save()
-        return JsonResponse({'message': f'{name} saved successfully'}, safe=False, status = 200)
+        return JsonResponse({'message': f'{name} saved successfully'}, status = 200)
     
     except Profile.DoesNotExist:
         return JsonResponse({'error': 'Account does not exist'}, status = 404)
