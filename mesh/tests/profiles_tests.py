@@ -20,7 +20,7 @@ class ProfilesTest(TestCase):
             isMentor=False,
             isMentee=True,
         )
-        test_profile = Profile.objects.create(
+        self.test_profile = Profile.objects.create(
             accountID=test_account,
             userName="profileTest",
             preferredName="Profile Test",
@@ -88,6 +88,21 @@ class ProfilesTest(TestCase):
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("status"), "error")
         self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
+
+    def test_post_user_name (self):
+        user_name_data = {"userName": "kwame brown"}
+        response = self.client.post(f'/profiles/user-name/{self.test_profile.accountID}', user_name_data)
+        self.assertEquals(response.status_code, 200)
+
+    def test_post_preferred_name (self):
+        preferred_name_data = {"preferredName": "brown"}
+        response = self.client.post(f'/profiles/preferred-name/{self.test_profile.accountID}', preferred_name_data)
+        self.assertEquals(response.status_code, 200)
+
+    def test_post_preferred_pronouns (self):
+        preferred_pronouns_data = {"preferredPronouns": "brown/black"}
+        response = self.client.post(f'/profiles/preferred-pronouns/{self.test_profile.accountID}', preferred_pronouns_data)
+        self.assertEquals(response.status_code, 200)
 
     """ 
     Biography Testing 

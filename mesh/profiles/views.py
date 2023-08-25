@@ -5,10 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.http.multipartparser import MultiPartParser
 
-import json
-
 # Model Imports
-
 from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
 
@@ -70,7 +67,6 @@ class BiographyView(View):
           user.biography = data["biography"]
           user.save()
           return JsonResponse({'message': "Biography saved successfully."}, status=200)
-
 
 class ProfilePicturesView(View):
     """
@@ -306,7 +302,9 @@ class ProfilePictureDetailsView(View):
 class UserNamesView(View):
     def get(self, request, account_id, *args, **kwargs):
         return get_data(account_id, "userName", lambda profile: profile.userName)
-
+    
+    def post(self, request, account_id, *args, **kwargs):
+        return post_data(account_id, "userName", request)
 
 class PreferredNamesView(View):
     def get(self, request, account_id, *args, **kwargs):
@@ -314,6 +312,8 @@ class PreferredNamesView(View):
             account_id, "preferredName", lambda profile: profile.preferredName
         )
 
+    def post(self, request, account_id, *args, **kwargs):
+        return post_data(account_id, "preferredName", request)
 
 class PreferredPronounsView(View):
     def get(self, request, account_id, *args, **kwargs):
@@ -321,8 +321,13 @@ class PreferredPronounsView(View):
             account_id, "preferredPronouns", lambda profile: profile.preferredPronouns
         )
 
+    def post(self, request, account_id, *args, **kwargs):
+        return post_data(account_id, "preferredPronouns", request)
 
 def get_data(account_id, name, mapper):
+    """
+    Handles GET requests when the client fetches for names/nicknames/pronouns
+    """
     try:
         profile = Profile.objects.get(accountID=int(account_id))
         return JsonResponse(
@@ -337,6 +342,29 @@ def get_data(account_id, name, mapper):
             status=404,
         )
 
+def post_data(account_id, name, request):
+    """
+    Handles POST requests when the client sends names/nicknames/prounouns to the back end
+    """
+    try: 
+        profile = Profile.objects.get(accountID = account_id)
+        data = request.POST[name]   
+
+        if (name == "userName"):
+            profile.userName = data 
+        elif (name == "preferredName"):
+            profile.preferredName = data
+        elif (name == "preferredPronouns"):
+            profile.preferredPronouns = data
+    
+        profile.save()
+        return JsonResponse({'message': f'{name} saved successfully'}, status = 200)
+    
+    except Profile.DoesNotExist:
+        return JsonResponse({'error': 'Account does not exist'}, status = 404)
+    
+    except MultiValueDictKeyError:
+        return JsonResponse({'error': f'Missing {name} field.'}, status = 400)
 
 def initialize_backblaze_client():
     BACKBLAZE_APPLICATION_KEY_ID = os.environ.get("BACKBLAZE_MASTER_KEY")
