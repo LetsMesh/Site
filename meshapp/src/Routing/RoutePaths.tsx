@@ -9,4 +9,5 @@ export const paths = {
   logged_in_home: "/logged_in_home",
   logged_out_home: "/logged_out_home",
   sign_up: "/sign_up",
+  settings: "/settings",
 };

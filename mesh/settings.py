@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'mesh.notifications',
     'mesh.tags',
     'mesh.occupations'
-    
 ]
 
 # TODO: https://github.com/LetsMesh/Site/issues/202
