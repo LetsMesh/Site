@@ -8,12 +8,14 @@ class Education(models.Model):
     educationID = models.AutoField(primary_key=True)
     degreeName = models.CharField(max_length=255)
     collegeName = models.CharField(max_length=255)
-    optionalDescription = models.TextField()
 
     def __str__(self):
         return str(self.educationID)
 
 
 class EducationBridge(models.Model):
-    accountID = models.OneToOneField(Profile, primary_key=True, on_delete=models.CASCADE)
-    educationID = models.OneToOneField(Education, on_delete=models.CASCADE)
+    accountID = models.ForeignKey(Profile, primary_key=True, on_delete=models.CASCADE)
+    educationID = models.ForeignKey(Education, on_delete=models.CASCADE)
+    educationStartDate = models.DateField(null=True, blank=True)
+    educationEndDate = models.DateField(null=True, blank=True)
+    educationDescription = models.TextField(null=True, blank=True)
