@@ -7,6 +7,8 @@ name = "pypi"
 django = "*"
 mysqlclient = "*"
 bcrypt = "*"
+djangorestframework = "*"
+djoser = "*"
 b2sdk.v1 = "*"
 
 [dev-packages]
