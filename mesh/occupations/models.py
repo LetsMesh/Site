@@ -1,5 +1,4 @@
 from django.db import models
-
 from mesh.profiles.models import Profile
 
 
@@ -7,13 +6,15 @@ from mesh.profiles.models import Profile
 class Occupation(models.Model):
     occupationID = models.AutoField(primary_key=True)
     occupationName = models.CharField(max_length=255)
-    occupationTag = models.CharField(max_length=255)
-    occupationDescriptor = models.TextField()
+    occupationOrganization = models.CharField(max_length=255)
 
     def __str__(self):
         return str(self.occupationID)
 
 
 class OccupationBridge(models.Model):
-    accountID = models.OneToOneField(Profile, primary_key=True, on_delete=models.CASCADE)
-    occupationID = models.OneToOneField(Occupation, on_delete=models.CASCADE)
+    accountID = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    occupationID = models.ForeignKey(Occupation, on_delete=models.CASCADE)
+    occupationStartDate = models.DateField(null=True, blank=True)
+    occupationEndDate = models.DateField(null=True, blank=True)
+    occupationDescription = models.TextField(null=True, blank=True)

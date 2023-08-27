@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b9afc645ad28a0343ab70528e808b5884e239cecf5a2d2e26e703b115ce98f92"
+            "sha256": "52026f1aa6b99c1ba45fb34b4f1d0e02ebaca2aafa5f5acbe8285a676b6aaea5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -23,6 +23,14 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==3.7.2"
+        },
+        "b2sdk": {
+            "hashes": [
+                "sha256:d883771ce948d6be280bd816f9e862a3ae4f35b13ef12bf1547298e9b85878df",
+                "sha256:e6c0d4a08296ec1c698311f7fe51906059975b808a3731ecabf44ed3f4656943"
+            ],
+            "index": "pypi",
+            "version": "==1.23.0"
         },
         "bcrypt": {
             "hashes": [
@@ -245,6 +253,13 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==0.7.1"
+        "colorama": {
+            "hashes": [
+                "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
+                "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+            ],
+            "markers": "platform_system == 'Windows'",
+            "version": "==0.4.6"
         },
         "django": {
             "hashes": [
@@ -283,7 +298,7 @@
                 "sha256:7b24718cdc51b4294b0abcf6bf0ead11aa3ca83652e351dfb04b7b8b15afa3b0"
             ],
             "index": "pypi",
-            "version": "==2.2.0"
+            "version": "==4.2.4"
         },
         "idna": {
             "hashes": [
@@ -292,6 +307,13 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==3.4"
+        },
+        "logfury": {
+            "hashes": [
+                "sha256:130a5daceab9ad534924252ddf70482aa2c96662b3a3825a7d30981d03b76a26",
+                "sha256:b4f04be1701a1df644afc3384d6167d64c899f8036b7eefc3b6c570c6a9b290b"
+            ],
+            "version": "==1.0.1"
         },
         "mysqlclient": {
             "hashes": [
@@ -383,13 +405,29 @@
             "markers": "python_version >= '3.5'",
             "version": "==0.4.4"
         },
+        "tqdm": {
+            "hashes": [
+                "sha256:d302b3c5b53d47bce91fea46679d9c3c6508cf6332229aa1e7d8653723793386",
+                "sha256:d88e651f9db8d8551a62556d3cff9e3034274ca5d66e93197cf2490e2dcb69c7"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==4.66.1"
+        },
         "typing-extensions": {
             "hashes": [
                 "sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36",
                 "sha256:b75ddc264f0ba5615db7ba217daeb99701ad295353c45f9e95963337ceeeffb2"
             ],
-            "markers": "python_version < '3.11'",
+            "markers": "python_version < '3.12'",
             "version": "==4.7.1"
+        },
+        "urllib3": {
+            "hashes": [
+                "sha256:8d22f86aae8ef5e410d4f539fde9ce6b2113a001bb4d189e0aed70642d602b11",
+                "sha256:de7df1803967d2c2a98e4b11bb7d6bd9210474c46e8a0401514e3a42a75ebde4"
+            ],
+            "markers": "sys_platform == 'win32'",
+            "version": "==2023.3"
         },
         "urllib3": {
             "hashes": [

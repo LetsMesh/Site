@@ -9,7 +9,7 @@ body {
 
 .profile-page-container {
   position: relative;
-  margin: 80px auto;
+  margin: 80px 175px;
   border-radius: 35px 35px 0px 0px;
   background-color: #ffffff;
   min-width: 1400px;
@@ -78,6 +78,7 @@ body {
   min-height: 80px;
   border-radius: 10px;
   background-color: #1db272;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .profile-page-picture-edit-container::after {
