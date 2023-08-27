@@ -31,7 +31,7 @@ root.render(
       <ProfilePage {...exampleProfile} />
       <LoggedInHome />    
       <SignUp />
-      <Settings />
+      <Settings /> 
     </ThemeProvider>
   </React.StrictMode>
 );

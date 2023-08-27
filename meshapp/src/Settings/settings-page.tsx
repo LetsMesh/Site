@@ -1,52 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { 
-    Divider, 
-    FormGroup, 
-    FormControlLabel, 
-    Switch, 
-    Typography } 
-    from "@mui/material";
+import React, { useState, useEffect } from 'react';
+import { Switch, FormControlLabel, Container, Typography } from '@mui/material';
 
-import { AccountSettings } from "./types/account-settings";
+//import { AccountSettings } from "./types/account-settings";
+import { axiosInstance } from "../config/axiosConfig";
 
-/** 
- * React component that renders the settings page
- * Displays settings that are set by the user for their account
- * 
- * @param props - Properties of component
- * @param {number} props.accountID - user accoutn ID
- * @param {boolean} props.isVerified - flag to check if user is verified
- * @param {string} props.verificationToken - token for verification
- * @param {boolean} props.hasContentFilterEnabled - flag to check if content is filtered
- * @param {number} props.displayTheme - display theme
- * @param {boolean} props.is2FAEnabled - flag to check if user is registered for 2FactAuth
- */ 
-export default function Settings(props: AccountSettings) {
-    return (
-        <Divider>
-            <Typography variant="h2" textAlign={"left"}>
-                Settings
-            </Typography>
-            <Divider>
-                <TwoFactorAuth is2FAEnabled={props.is2FAEnabled}/>
-            </Divider>
-        </Divider>
-    )
-};
+const SettingSwitch = (label: any, value: any, onChange: any) => {
+  return (
+    <FormControlLabel
+      control={<Switch checked={value} onChange={onChange} />}
+      label={label}
+    />
+  );
+}
 
-/**
- * Display user's 2FactAuth setting 
- * 
- * @param props - Properties of component
- * @param {boolean} props.is2FAEnabled - flag to check if user is registered for 2FactAuth
- */
-const TwoFactorAuth = (props: { is2FAEnabled: boolean }) => { 
-    const {is2FAEnabled} = props
-    return (
-        <Divider>
-            <FormGroup>
-                    <FormControlLabel control={is2FAEnabled ? <Switch defaultChecked/> : <Switch />} label="2 Factor Authentication: " /> 
-            </FormGroup>
-        </Divider>
-    )
+export default function SettingsPage() {
+  const [settings, setSettings] = useState({
+    isVerified: false,
+    is2FAEnabled: false
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleToggleChange = (settingName: any) => (event: any) => {
+    setSettings({ ...settings, [settingName]: event.target.checked });
+  };
+
+  useEffect(() => {
+    // Make a GET request to the backend API to retrieve account settings
+    axiosInstance.get('/accountSettings/twoFactAuth')
+      .then((response) => {
+        setSettings(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching account settings:', error);
+        setLoading(false);
+      });
+  }, []); // Empty dependency array to run the effect once when the component mounts
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        Account Settings
+      </Typography>
+      <SettingSwitch
+        label="Enable Two Factor Authentication"
+        value={settings.is2FAEnabled}
+        onChange={handleToggleChange('is2FAEnabled')}
+      /> 
+    </Container>
+  );
 }
