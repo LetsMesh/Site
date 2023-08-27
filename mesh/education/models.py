@@ -14,7 +14,7 @@ class Education(models.Model):
 
 
 class EducationBridge(models.Model):
-    accountID = models.ForeignKey(Profile, primary_key=True, on_delete=models.CASCADE)
+    accountID = models.ForeignKey(Profile, on_delete=models.CASCADE)
     educationID = models.ForeignKey(Education, on_delete=models.CASCADE)
     educationStartDate = models.DateField(null=True, blank=True)
     educationEndDate = models.DateField(null=True, blank=True)
