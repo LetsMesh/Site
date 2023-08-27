@@ -4,7 +4,7 @@ import { Switch, FormControlLabel, Container, Typography } from '@mui/material';
 //import { AccountSettings } from "./types/account-settings";
 import { axiosInstance } from "../config/axiosConfig";
 
-const SettingSwitch = (label: any, value: any, onChange: any) => {
+function SettingSwitch(label: any, value: any, onChange: any) {
   return (
     <FormControlLabel
       control={<Switch checked={value} onChange={onChange} />}
@@ -15,10 +15,10 @@ const SettingSwitch = (label: any, value: any, onChange: any) => {
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
-    isVerified: false,
+    //isVerified: false,
     is2FAEnabled: false
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleToggleChange = (settingName: any) => (event: any) => {
     setSettings({ ...settings, [settingName]: event.target.checked });
@@ -33,7 +33,7 @@ export default function SettingsPage() {
       })
       .catch((error) => {
         console.error('Error fetching account settings:', error);
-        setLoading(false);
+        setLoading(true);
       });
   }, []); // Empty dependency array to run the effect once when the component mounts
 
