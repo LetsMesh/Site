@@ -10,6 +10,7 @@ export const exampleProfile: Profile = {
   occupationBusiness: "Self-Employed",
   biography:
     "Self proclaimed narcissist and professional animal petter. A vampire with many years behind me, I have been petting animals for a bagillion years.",
+  accountID: 0,
 };
 
 export const exampleProfile2: Profile = {
@@ -22,4 +23,5 @@ export const exampleProfile2: Profile = {
   occupationBusiness: "Walmart",
   biography:
     "Trained in the art of the blade since being in the womb, became a swordmaster at the age of 3 months, and slayed approximately 4 rats throughout my perilous adventures. Also known as Michael Jackson.",
+  accountID: 1,
 };

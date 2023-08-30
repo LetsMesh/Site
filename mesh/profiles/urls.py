@@ -1,4 +1,5 @@
-from django.urls import path, include
+from django.urls import path
+
 from . import views as profile_views
 
 urlpatterns = [
@@ -18,6 +19,8 @@ urlpatterns = [
 
     # GET /profiles/user-name/:account_id
     # POST /profiles/user-name/:account_id
+    path("biography/<int:account_id>", profile_views.BiographyView.as_view()),
+    path("profile-picture/<int:account_id>", profile_views.ProfilePicturesView.as_view(), name="profile-picture"),
     path("user-name/<int:account_id>", profile_views.UserNamesView.as_view(), name="user-name"),
     
     # GET /profiles/preferred-name/:account_id
