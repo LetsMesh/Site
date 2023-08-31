@@ -17,7 +17,11 @@ export default function ProfileAccordion(props: {
   const toggleExpand = () => setExpanded(!expanded);
 
   return (
-    <Accordion expanded={expanded} onChange={toggleExpand}>
+    <Accordion expanded={expanded} onChange={toggleExpand} sx={{
+      "&.MuiAccordion-root":{
+        margin: 0
+      }
+    }}>
       <AccordionSummary expandIcon={<ExpandMoreFilled />}>
         <Typography sx={{ width: "33%", flexShrink: 0 }}>
           {props.text1}
