@@ -34,7 +34,7 @@ def display_theme(request):
                 response.update({"message": "An account does not exist with this account ID."})
                 return JsonResponse(response)
 
-class TwoFactAuthView(View):
+class showSettings(View):
     """ 
     Handles HTTP requests related to Two Factor Authentication account settings.
     Support Get request to retrieve setting and patch to change setting.
@@ -47,8 +47,8 @@ class TwoFactAuthView(View):
         Returns a 404 error with error message if account does not exist.
         """
         try:
-            settings_2FactAuth = Settings.objects.get(accountID=account_id).is2FAEnabled
-            settings_detail = serializers.serialize('json', [settings_2FactAuth])
+            settings = Settings.objects.get(accountID=account_id)
+            settings_detail = serializers.serialize('json', [settings])
             return JsonResponse(settings_detail, safe=False)
         except Account.DoesNotExist:
             return JsonResponse({'error': 'An account does not exist with this account ID.'}, status=404)
@@ -68,7 +68,12 @@ class TwoFactAuthView(View):
         try:
             settings = Settings.objects.get(accountID=account_id)
             data = json.loads(request.body)
-            settings.is2FAEnabled = data.get('is2FAEnabled', settings.is2FAEnabled)
+            settings.accountID = data.get('accountID', settings)
+            settings.isVerified = data.get('isVerified', settings)
+            settings.verificationToken = data.get('verificationToken', settings)
+            settings.hasContentFilterEnabled = data.get('hasContentFilterEnabled', settings)
+            settings.displayTheme = data.get('displayTheme', settings)
+            settings.is2FAEnabled = data.get('is2FAEnabled', settings)
             settings.save()
             return HttpResponse(status=204)
         except Account.DoesNotExist:

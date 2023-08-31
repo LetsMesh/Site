@@ -4,29 +4,35 @@ import { Switch, FormControlLabel, Container, Typography } from '@mui/material';
 //import { AccountSettings } from "./types/account-settings";
 import { axiosInstance } from "../config/axiosConfig";
 
-function SettingSwitch(label: any, value: any, onChange: any) {
+interface SettingsProps {
+  value: any,
+  label: string,
+  onChange: (event: any) => void,
+}
+
+const SettingSwitch = (props: SettingsProps) => {
   return (
     <FormControlLabel
-      control={<Switch checked={value} onChange={onChange} />}
-      label={label}
+      control={<Switch checked={props.value} onChange={props.onChange} />}
+      label={props.label}
     />
   );
 }
 
-export default function SettingsPage() {
+const SettingsPage = () => {
   const [settings, setSettings] = useState({
     //isVerified: false,
     is2FAEnabled: false
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleToggleChange = (settingName: any) => (event: any) => {
     setSettings({ ...settings, [settingName]: event.target.checked });
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     // Make a GET request to the backend API to retrieve account settings
-    axiosInstance.get('/accountSettings/twoFactAuth')
+    axiosInstance.get('/accountSettings/settings')
       .then((response) => {
         setSettings(response.data);
         setLoading(false);
@@ -35,7 +41,7 @@ export default function SettingsPage() {
         console.error('Error fetching account settings:', error);
         setLoading(true);
       });
-  }, []); // Empty dependency array to run the effect once when the component mounts
+  }, []); // Empty dependency array to run the effect once when the component mounts */
 
   if (loading) {
     return <div>Loading...</div>;
@@ -54,3 +60,5 @@ export default function SettingsPage() {
     </Container>
   );
 }
+
+export default SettingsPage;
