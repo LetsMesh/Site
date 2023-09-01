@@ -68,12 +68,12 @@ class showSettings(View):
         try:
             settings = Settings.objects.get(accountID=account_id)
             data = json.loads(request.body)
-            settings.accountID = data.get('accountID', settings)
-            settings.isVerified = data.get('isVerified', settings)
-            settings.verificationToken = data.get('verificationToken', settings)
-            settings.hasContentFilterEnabled = data.get('hasContentFilterEnabled', settings)
-            settings.displayTheme = data.get('displayTheme', settings)
-            settings.is2FAEnabled = data.get('is2FAEnabled', settings)
+            settings.accountID = data.get('accountID')
+            settings.isVerified = data.get('isVerified')
+            settings.verificationToken = data.get('verificationToken')
+            settings.hasContentFilterEnabled = data.get('hasContentFilterEnabled')
+            settings.displayTheme = data.get('displayTheme')
+            settings.is2FAEnabled = data.get('is2FAEnabled')
             settings.save()
             return HttpResponse(status=204)
         except Account.DoesNotExist:
