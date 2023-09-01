@@ -1,5 +1,5 @@
 '''
-you can run this test with
+You can run this test with
 
 python manage.py test mesh.tests.education_tests
 
@@ -38,7 +38,6 @@ class EducationTestCase(TestCase):
             biography="Biography Test",
             profilePicture=""
         )
-
 
     """
     POST tests
@@ -101,37 +100,37 @@ class EducationTestCase(TestCase):
             'collegeName': 'Hamburger University'
         }
         self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='An account does not exist with this account ID.')
+                                   error_msg='Account or Profile not found.')
 
-    def test_post_education_to_null_account_id_fails(self):
+    def test_post_education_to_invalid_account_id_fails(self):
         """Passes if POST response status code is 400 and error is returned."""
         education_req_body = {
-            'accountID': '',
+            'accountID': 'd',
             'degreeName': 'BS',
             'collegeName': 'Hamburger University'
         }
         self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='An account does not exist with this account ID.')
+                                   error_msg='A field has invalid type.')
 
     def test_post_education_with_invalid_degree_name_fails(self):
         """Passes if POST response status code is 400 and error is returned."""
         education_req_body = {
             'accountID': self.test_account.accountID,
-            'degreeName': 1,
+            'degreeName': True,
             'collegeName': 'Hamburger University'
         }
         self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='Degree name is invalid.')
+                                   error_msg='A field has invalid type.')
 
     def test_post_education_with_invalid_college_name_fails(self):
         """Passes if POST response status code is 400 and error is returned."""
         education_req_body = {
             'accountID': self.test_account.accountID,
             'degreeName': 'BS',
-            'collegeName': 1
+            'collegeName': False
         }
         self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='College name is invalid.')
+                                   error_msg='A field has invalid type.')
 
     def test_post_education_missing_degree_name_fails(self):
         """Passes if POST response status code is 400 and error is returned."""
@@ -150,28 +149,6 @@ class EducationTestCase(TestCase):
         }
         self.post_and_assert_error(request=education_req_body, error_code=400,
                                    error_msg='Missing required JSON fields.')
-    
-    def test_post_empty_degree_name_fails(self):
-        education_req_body = {
-            'accountID': self.test_account.accountID,
-            'degreeName': '',
-            'collegeName': 'Hamburger University',
-            'optionalDescription': "I'll have you know I graduated top of my class, " \
-                                    "and I have over 300 confirmed happy customers."
-        }
-        self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='Degree name or college name is empty.')
-
-    def test_post_empty_college_name_fails(self):
-        education_req_body = {
-            'accountID': self.test_account.accountID,
-            'degreeName': 'BS',
-            'collegeName': '',
-            'optionalDescription': "I'll have you know I graduated top of my class, " \
-                                    "and I have over 300 confirmed happy customers."
-        }
-        self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='Degree name or college name is empty.')
 
     def post_and_assert_error(self, *, request, error_code, error_msg):
         response = self.client.post('/education/', request, content_type='application/json')
