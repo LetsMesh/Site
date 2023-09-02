@@ -56,17 +56,7 @@ class BiographyView(View):
 
       Returns a JSON response containing the saved biography of the specified profile through id.
       """
-      data = json.loads(request.body)
-
-      if 'accountID' not in data:
-          return JsonResponse({'error': 'Invalid request. Missing accountID field.'}, status=401)
-      if 'biography' not in data:
-          return JsonResponse({'error': 'Invalid request. Missing biography field.'}, status=400)
-      else:
-          user = Profile.objects.get(accountID=account_id)
-          user.biography = data["biography"]
-          user.save()
-          return JsonResponse({'message': "Biography saved successfully."}, status=200)
+      return post_data(account_id, "biography", request)
 
 class ProfilePicturesView(View):
     """
@@ -348,7 +338,7 @@ def post_data(account_id, name, request):
     """
     try: 
         profile = Profile.objects.get(accountID = account_id)
-        data = request.POST[name]   
+        data = json.loads(request.body)[name]
 
         if (name == "userName"):
             profile.userName = data 
@@ -356,14 +346,16 @@ def post_data(account_id, name, request):
             profile.preferredName = data
         elif (name == "preferredPronouns"):
             profile.preferredPronouns = data
+        elif (name == "biography"):
+            profile.biography = data
     
         profile.save()
-        return JsonResponse({'message': f'{name} saved successfully'}, status = 200)
+        return JsonResponse({f'{name}': data, 'message': f'{name} saved successfully'}, status = 200)
     
     except Profile.DoesNotExist:
         return JsonResponse({'error': 'Account does not exist'}, status = 404)
     
-    except MultiValueDictKeyError:
+    except KeyError:
         return JsonResponse({'error': f'Missing {name} field.'}, status = 400)
 
 def initialize_backblaze_client():
