@@ -40,7 +40,7 @@ class BiographyView(View):
         try:
             profile = Profile.objects.get(accountID=account_id)
             profile_biography = profile.biography
-            return JsonResponse({"message": profile_biography}, safe=False, status=200)
+            return JsonResponse({"biography": profile_biography}, safe=False, status=200)
         except Account.DoesNotExist:
             return JsonResponse(
                 {"error": "Invalid request. Account does not exist"}, status=404
