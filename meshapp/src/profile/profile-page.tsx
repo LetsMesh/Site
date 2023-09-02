@@ -180,7 +180,7 @@ const ProfileOccupation = (props: {
  *
  * @param props - Properties of the component
  * @param {string} props.biography - The initial text content of the bio
- * @param {string} props.accountID - The account ID of the user's profile
+ * @param {number} props.accountID - accountID associated with the profile
  */
 const ProfileBiography = (props: {biography: string, accountID: number}) => {
   const [biography, setBiography] = useState(props.biography);
