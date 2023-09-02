@@ -181,12 +181,17 @@ const ProfileOccupation = (props: {
  * @param props - Properties of the component
  * @param {string} props.biography - The initial text content of the bio
  */
-const ProfileBiography = (props: { biography: string, accountID: number}) => {
-
+const ProfileBiography = (props: {biography: string, accountID: number}) => {
+  
   function saveBiography(text: string) {
-    const res = axiosInstance.post('/profiles/biography/' + props.accountID, {
-      'biography': text,
-      'accountID': props.accountID
+    axiosInstance.post("http://localhost:8000/profiles/biography/" + props.accountID, {
+      "biography": text
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error =>{
+      console.error(error)
     })
   }
 
