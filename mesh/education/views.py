@@ -67,7 +67,7 @@ class EducationView(View):
             return JsonResponse({'error': 'A field has invalid type.'}, status=400)
 
         except (Account.DoesNotExist, Profile.DoesNotExist):
-            return JsonResponse({'error': 'Account or Profile not found.'}, status=400)
+            return JsonResponse({'error': 'Account or Profile not found.'}, status=404)
 
 
 def get_post_fields(data):

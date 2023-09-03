@@ -99,7 +99,7 @@ class EducationTestCase(TestCase):
             'degreeName': 'BS',
             'collegeName': 'Hamburger University'
         }
-        self.post_and_assert_error(request=education_req_body, error_code=400,
+        self.post_and_assert_error(request=education_req_body, error_code=404,
                                    error_msg='Account or Profile not found.')
 
     def test_post_education_to_invalid_account_id_fails(self):
