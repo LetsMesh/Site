@@ -44,7 +44,7 @@ class EducationTestCase(TestCase):
     """
     def test_post_valid_education_to_account_succeeds(self):
         """
-        Makes request to POST endpoint at '/education/'
+        Makes request to POST endpoint at '/educations/'
 
         Passes if:
             - New education row is created and its data is correct
@@ -58,7 +58,7 @@ class EducationTestCase(TestCase):
             'optionalDescription': "I'll have you know I graduated top of my class, " \
                                     "and I have over 300 confirmed happy customers."
         }
-        response = self.client.post('/education/', education_req_body, content_type='application/json')
+        response = self.client.post('/educations/', education_req_body, content_type='application/json')
         education_bridge_dict = EducationBridge.objects.filter(accountID=self.test_account.accountID).values()[0]
 
         # Django automatically adds '_id' because the column name isn't explicitly defined in the model
@@ -82,7 +82,7 @@ class EducationTestCase(TestCase):
             'degreeName': 'BS',
             'collegeName': 'Hamburger University'
         }
-        response = self.client.post('/education/', education_req_body, content_type='application/json')
+        response = self.client.post('/educations/', education_req_body, content_type='application/json')
         education_bridge_row = EducationBridge.objects.filter(accountID=self.test_account.accountID).values()[0]
 
         # Django automatically adds '_id' because the column name isn't explicitly defined in the model
@@ -151,7 +151,7 @@ class EducationTestCase(TestCase):
                                    error_msg='Missing required JSON fields.')
 
     def post_and_assert_error(self, *, request, error_code, error_msg):
-        response = self.client.post('/education/', request, content_type='application/json')
+        response = self.client.post('/educations/', request, content_type='application/json')
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response.status_code, error_code)
         self.assertEqual(json_response.get('error'), error_msg)

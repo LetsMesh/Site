@@ -50,6 +50,6 @@ urlpatterns = [
     path('settings/', include(accountsettings_urls)),
     path('confirmation/', include(confirmation_urls)),
     path('occupations/', include(occupations_urls)),
-    path('education/', include(education_urls)),
+    path('educations/', include(education_urls)),
     re_path(r'.*', TemplateView.as_view(template_name='index.html')),
 ]

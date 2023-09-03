@@ -16,7 +16,7 @@ from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 class EducationView(View):
     def post(self, request, *args, **kwargs):
         """
-        Handle POST requests to /education/ endpoint.
+        Handle POST requests to /educations/ endpoint.
         Creates a new Education and connects it to a new EducationBridge.
 
         Example Request JSON:
