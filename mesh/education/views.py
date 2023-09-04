@@ -39,21 +39,27 @@ class EducationView(View):
                 - A field has invalid type OR
                 - Account or Profile is not found
         """
-        REQUIRED_FIELDS = ['accountID', 'degreeName', 'collegeName']
+        REQUIRED_FIELDS = ['accountID', 'degreeName', 'collegeName',
+                           'educationStartDate', 'educationEndDate', 'educationDescription']
         try:
             data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
 
-            account_id, degree_name, college_name, description = get_post_fields(data)
-
-            if type(degree_name) is not str or type(college_name) is not str:
-                raise ValueError
+            account_id = data['accountID']
+            degree_name = data['degreeName']
+            college_name = data['collegeName']
+            education_start_date = data['educationStartDate']
+            education_end_date = data['educationEndDate']
+            education_description = data['educationDescription']
 
             account = Account.objects.get(accountID=account_id)
             profile = Profile.objects.get(accountID=account)
 
-            education = Education.objects.create(degreeName=degree_name, collegeName=college_name,
-                                                 optionalDescription=description)
-            EducationBridge.objects.create(accountID=profile, educationID=education)
+            education = Education.objects.create(degreeName=degree_name, collegeName=college_name)
+
+            EducationBridge.objects.create(accountID=profile, educationID=education,
+                                            educationStartDate=education_start_date,
+                                            educationEndDate=education_end_date,
+                                            educationDescription=education_description)
 
             return JsonResponse({'educationID': education.educationID}, status=201)
 
@@ -68,16 +74,3 @@ class EducationView(View):
 
         except (Account.DoesNotExist, Profile.DoesNotExist):
             return JsonResponse({'error': 'Account or Profile not found.'}, status=404)
-
-
-def get_post_fields(data):
-    account_id = data['accountID']
-    degree_name = data['degreeName']
-    college_name = data['collegeName']
-
-    if 'optionalDescription' not in data:
-        description = ''
-    else:
-        description = data['optionalDescription']
-
-    return account_id, degree_name, college_name, description

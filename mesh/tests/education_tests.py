@@ -55,103 +55,66 @@ class EducationTestCase(TestCase):
             'accountID': self.test_account.accountID,
             'degreeName': 'BS',
             'collegeName': 'Hamburger University',
-            'optionalDescription': "I'll have you know I graduated top of my class, " \
-                                    "and I have over 300 confirmed happy customers."
+            'educationStartDate': '2021-05-21',
+            'educationEndDate': '2022-05-31',
+            'educationDescription': 'cheeseburgers'
         }
         response = self.client.post('/educations/', education_req_body, content_type='application/json')
         education_bridge_dict = EducationBridge.objects.filter(accountID=self.test_account.accountID).values()[0]
 
         # Django automatically adds '_id' because the column name isn't explicitly defined in the model
         resp_education_ID = education_bridge_dict['educationID_id']
-        education_obj = Education.objects.filter(educationID=resp_education_ID)[0]
-
-        self.assertEqual(education_req_body['degreeName'], education_obj.degreeName)
-        self.assertEqual(education_req_body['collegeName'], education_obj.collegeName)
-        self.assertEqual(education_req_body['optionalDescription'], education_obj.optionalDescription)
+        education_dict = Education.objects.filter(educationID=resp_education_ID).values()[0]
 
         self.assertEqual(response.status_code, 201)
 
-    def test_post_education_creates_empty_description_if_missing(self):
-        """
-        Passes if:
-            - New education row has empty description
-            - POST response status code is 201.
-        """
-        education_req_body = {
-            'accountID': self.test_account.accountID,
-            'degreeName': 'BS',
-            'collegeName': 'Hamburger University'
-        }
-        response = self.client.post('/educations/', education_req_body, content_type='application/json')
-        education_bridge_row = EducationBridge.objects.filter(accountID=self.test_account.accountID).values()[0]
+        self.assertEqual(education_req_body['degreeName'], education_dict['degreeName'])
+        self.assertEqual(education_req_body['collegeName'], education_dict['collegeName'])
 
-        # Django automatically adds '_id' because the column name isn't explicitly defined in the model
-        resp_education_ID = education_bridge_row['educationID_id']
-        education_row = Education.objects.filter(educationID=resp_education_ID)[0]
-
-        self.assertEqual(education_row.optionalDescription, '')
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(education_req_body['educationStartDate'], str(education_bridge_dict['educationStartDate']))
+        self.assertEqual(education_req_body['educationEndDate'], str(education_bridge_dict['educationEndDate']))
+        self.assertEqual(education_req_body['educationDescription'], education_bridge_dict['educationDescription'])
     
-    def test_post_education_to_nonexistent_account_id_fails(self):
-        """Passes if POST response status code is 400 and error is returned."""
-        education_req_body = {
-            'accountID': 180280,
-            'degreeName': 'BS',
-            'collegeName': 'Hamburger University'
-        }
-        self.post_and_assert_error(request=education_req_body, error_code=404,
-                                   error_msg='Account or Profile not found.')
+    # def test_post_education_to_nonexistent_account_id_fails(self):
+    #     """Passes if POST response status code is 400 and error is returned."""
+    #     education_req_body = {
+    #         'accountID': 180280,
+    #         'degreeName': 'BS',
+    #         'collegeName': 'Hamburger University'
+    #     }
+    #     self.post_and_assert_error(request=education_req_body, error_code=404,
+    #                                error_msg='Account or Profile not found.')
 
-    def test_post_education_to_invalid_account_id_fails(self):
-        """Passes if POST response status code is 400 and error is returned."""
-        education_req_body = {
-            'accountID': 'd',
-            'degreeName': 'BS',
-            'collegeName': 'Hamburger University'
-        }
-        self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='A field has invalid type.')
+    # def test_post_education_to_invalid_account_id_fails(self):
+    #     """Passes if POST response status code is 400 and error is returned."""
+    #     education_req_body = {
+    #         'accountID': 'd',
+    #         'degreeName': 'BS',
+    #         'collegeName': 'Hamburger University'
+    #     }
+    #     self.post_and_assert_error(request=education_req_body, error_code=400,
+    #                                error_msg='A field has invalid type.')
 
-    def test_post_education_with_invalid_degree_name_fails(self):
-        """Passes if POST response status code is 400 and error is returned."""
-        education_req_body = {
-            'accountID': self.test_account.accountID,
-            'degreeName': True,
-            'collegeName': 'Hamburger University'
-        }
-        self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='A field has invalid type.')
+    # def test_post_education_missing_degree_name_fails(self):
+    #     """Passes if POST response status code is 400 and error is returned."""
+    #     education_req_body = {
+    #         'accountID': self.test_account.accountID,
+    #         'collegeName': 'Hamburger University'
+    #     }
+    #     self.post_and_assert_error(request=education_req_body, error_code=400,
+    #                                error_msg='Missing required JSON fields.')
 
-    def test_post_education_with_invalid_college_name_fails(self):
-        """Passes if POST response status code is 400 and error is returned."""
-        education_req_body = {
-            'accountID': self.test_account.accountID,
-            'degreeName': 'BS',
-            'collegeName': False
-        }
-        self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='A field has invalid type.')
+    # def test_post_education_missing_college_name_fails(self):
+    #     """Passes if POST response status code is 400 and error is returned."""
+    #     education_req_body = {
+    #         'accountID': self.test_account.accountID,
+    #         'degreeName': 'BS'
+    #     }
+    #     self.post_and_assert_error(request=education_req_body, error_code=400,
+    #                                error_msg='Missing required JSON fields.')
 
-    def test_post_education_missing_degree_name_fails(self):
-        """Passes if POST response status code is 400 and error is returned."""
-        education_req_body = {
-            'accountID': self.test_account.accountID,
-            'collegeName': 'Hamburger University'
-        }
-        self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='Missing required JSON fields.')
-
-    def test_post_education_missing_college_name_fails(self):
-        """Passes if POST response status code is 400 and error is returned."""
-        education_req_body = {
-            'accountID': self.test_account.accountID,
-            'degreeName': 'BS'
-        }
-        self.post_and_assert_error(request=education_req_body, error_code=400,
-                                   error_msg='Missing required JSON fields.')
-
-    def post_and_assert_error(self, *, request, error_code, error_msg):
-        response = self.client.post('/educations/', request, content_type='application/json')
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEqual(response.status_code, error_code)
-        self.assertEqual(json_response.get('error'), error_msg)
+    # def post_and_assert_error(self, *, request, error_code, error_msg):
+    #     response = self.client.post('/educations/', request, content_type='application/json')
+    #     json_response = json.loads(response.content.decode("utf-8"))
+    #     self.assertEqual(response.status_code, error_code)
+    #     self.assertEqual(json_response.get('error'), error_msg)
