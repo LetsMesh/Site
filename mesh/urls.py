@@ -47,7 +47,7 @@ urlpatterns = [
     path('profiles/', include(profile_urls)),
     path('tags/', include(tags_urls)),
     path('accounts/', include(accounts_urls)),
-    path('settings/', include(accountsettings_urls)),
+    path('account-settings/', include(accountsettings_urls)),
     path('confirmation/', include(confirmation_urls)),
     path('occupations/', include(occupations_urls)),
     path('educations/', include(education_urls)),
