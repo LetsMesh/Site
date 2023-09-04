@@ -54,6 +54,11 @@ class EducationView(View):
             account = Account.objects.get(accountID=account_id)
             profile = Profile.objects.get(accountID=account)
 
+            # Ensure Education does not exist yet
+            if Education.objects.filter(degreeName=degree_name, collegeName=college_name):
+                return JsonResponse({'error': 'Education already exists, ' +
+                                     'use PATCH endpoint along with educationID instead.'}, status=409)
+
             education = Education.objects.create(degreeName=degree_name, collegeName=college_name)
 
             EducationBridge.objects.create(accountID=profile, educationID=education,
