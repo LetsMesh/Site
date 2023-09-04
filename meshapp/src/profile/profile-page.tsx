@@ -188,7 +188,7 @@ const ProfileBiography = (props: {biography: string, accountID: number}) => {
   
   //Gets the user's biography and saves it to the display biography.  
   useEffect(() => {
-    axiosInstance.get("http://localhost:8000/profiles/biography/" + props.accountID)
+    axiosInstance.get("profiles/biography/" + props.accountID)
     .then(response => {
       console.log(response)
       setBiography(response.data["biography"])
@@ -210,7 +210,7 @@ const ProfileBiography = (props: {biography: string, accountID: number}) => {
    * @param {string} text - The inputted text that the user wants to save
    */
   function saveBiography(text: string) {
-    axiosInstance.post("http://localhost:8000/profiles/biography/" + props.accountID, {
+    axiosInstance.post("profiles/biography/" + props.accountID, {
       "biography": text
     })
     .then(response => {
