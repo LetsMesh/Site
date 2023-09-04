@@ -39,6 +39,15 @@ class EducationTestCase(TestCase):
             profilePicture=""
         )
 
+        self.full_req_body = {
+            'accountID': self.test_account.accountID,
+            'degreeName': 'BS',
+            'collegeName': 'Hamburger University',
+            'educationStartDate': '2021-05-21',
+            'educationEndDate': '2022-05-31',
+            'educationDescription': 'cheeseburgers'
+        }
+
     """
     POST tests
     """
@@ -51,14 +60,7 @@ class EducationTestCase(TestCase):
             - New education bridge row is created and its data is correct
             - POST response status code is 201.
         """
-        education_req_body = {
-            'accountID': self.test_account.accountID,
-            'degreeName': 'BS',
-            'collegeName': 'Hamburger University',
-            'educationStartDate': '2021-05-21',
-            'educationEndDate': '2022-05-31',
-            'educationDescription': 'cheeseburgers'
-        }
+        education_req_body = self.full_req_body.copy()
         response = self.client.post('/educations/', education_req_body, content_type='application/json')
         education_bridge_dict = EducationBridge.objects.filter(accountID=self.test_account.accountID).values()[0]
 
@@ -75,46 +77,32 @@ class EducationTestCase(TestCase):
         self.assertEqual(education_req_body['educationEndDate'], str(education_bridge_dict['educationEndDate']))
         self.assertEqual(education_req_body['educationDescription'], education_bridge_dict['educationDescription'])
     
-    # def test_post_education_to_nonexistent_account_id_fails(self):
-    #     """Passes if POST response status code is 400 and error is returned."""
-    #     education_req_body = {
-    #         'accountID': 180280,
-    #         'degreeName': 'BS',
-    #         'collegeName': 'Hamburger University'
-    #     }
-    #     self.post_and_assert_error(request=education_req_body, error_code=404,
-    #                                error_msg='Account or Profile not found.')
+    def test_post_education_to_nonexistent_account_id_fails(self):
+        """Passes if POST response status code is 400 and error is returned."""
+        education_req_body = self.full_req_body.copy()
+        education_req_body['accountID'] = 180280
 
-    # def test_post_education_to_invalid_account_id_fails(self):
-    #     """Passes if POST response status code is 400 and error is returned."""
-    #     education_req_body = {
-    #         'accountID': 'd',
-    #         'degreeName': 'BS',
-    #         'collegeName': 'Hamburger University'
-    #     }
-    #     self.post_and_assert_error(request=education_req_body, error_code=400,
-    #                                error_msg='A field has invalid type.')
+        self.post_and_assert_error(request=education_req_body, error_code=404,
+                                   error_msg='Account or Profile not found.')
 
-    # def test_post_education_missing_degree_name_fails(self):
-    #     """Passes if POST response status code is 400 and error is returned."""
-    #     education_req_body = {
-    #         'accountID': self.test_account.accountID,
-    #         'collegeName': 'Hamburger University'
-    #     }
-    #     self.post_and_assert_error(request=education_req_body, error_code=400,
-    #                                error_msg='Missing required JSON fields.')
+    def test_post_education_to_invalid_account_id_fails(self):
+        """Passes if POST response status code is 400 and error is returned."""
+        education_req_body = self.full_req_body.copy()
+        education_req_body['accountID'] = 'd'
 
-    # def test_post_education_missing_college_name_fails(self):
-    #     """Passes if POST response status code is 400 and error is returned."""
-    #     education_req_body = {
-    #         'accountID': self.test_account.accountID,
-    #         'degreeName': 'BS'
-    #     }
-    #     self.post_and_assert_error(request=education_req_body, error_code=400,
-    #                                error_msg='Missing required JSON fields.')
+        self.post_and_assert_error(request=education_req_body, error_code=400,
+                                   error_msg='A field has invalid type.')
 
-    # def post_and_assert_error(self, *, request, error_code, error_msg):
-    #     response = self.client.post('/educations/', request, content_type='application/json')
-    #     json_response = json.loads(response.content.decode("utf-8"))
-    #     self.assertEqual(response.status_code, error_code)
-    #     self.assertEqual(json_response.get('error'), error_msg)
+    def test_post_education_missing_any_field_fails(self):
+        """Passes if POST response status code is 400 and error is returned for each missing field."""
+        for key in self.full_req_body:
+            education_req_body = self.full_req_body.copy()
+            del education_req_body[key]
+            self.post_and_assert_error(request=education_req_body, error_code=400,
+                                   error_msg='Missing required JSON fields.')
+
+    def post_and_assert_error(self, *, request, error_code, error_msg):
+        response = self.client.post('/educations/', request, content_type='application/json')
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(response.status_code, error_code)
+        self.assertEqual(json_response.get('error'), error_msg)
