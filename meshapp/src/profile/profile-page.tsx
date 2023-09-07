@@ -13,7 +13,12 @@ import ProfilePicture from "./profile-picture";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
 
+
 import { axiosInstance } from "../config/axiosConfig";
+
+// New Imports
+import ProfileName from "./profile-name";
+
 
 const theme = createTheme({
   palette: {
@@ -51,7 +56,8 @@ const ProfilePage = (props: Profile) => {
   return (
     <Box className="profile-page-container">
       <Box className="profile-page-header">
-        <ProfileHeader name={props.name} pronouns={props.pronouns} />
+        {/* <ProfileHeader name={props.name} pronouns={props.pronouns} /> */}
+        <ProfileName label={props.name} placeholder={"Test"}text={props.name} charLimit={200} /> 
       </Box>
       <Grid container sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
         <Grid
