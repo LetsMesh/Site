@@ -18,9 +18,9 @@ class AccountTest(TestCase):
         """
         self.client = Client()
         self.test_account = Account.objects.create(
-            email = 'test@example.com',
-            encryptedPass = 'testpass',
-            phoneNum = '1234567890',
+            email = 'test@example.com'.encode("utf-8"),
+            encryptedPass = 'testpass'.encode("utf-8"),
+            phoneNum = '1234567890'.encode("utf-8"),
             displayTheme = 'L',
             enabled2Factor = False,
             isMentor = True,
@@ -44,7 +44,7 @@ class AccountTest(TestCase):
         A GET request is sent to the '/api/accounts/{account_id}/' endpoint.
         The test passes if the response status code is 200.
         """
-        response = self.client.get(f'/api/accounts/{self.test_account.id}/')
+        response = self.client.get(f'/api/accounts/{self.test_account.accountID}/')
         self.assertEqual(response.status_code, 200)
 
     def test_post_create_account(self):
@@ -83,7 +83,7 @@ class AccountTest(TestCase):
             'isMentee': True
         }
 
-        response = self.client.patch(f'/api/accounts/{self.test_account.id}/', updated_account_data, content_type='application/json')
+        response = self.client.patch(f'/api/accounts/{self.test_account.accountID}/', updated_account_data, content_type='application/json')
         # check if the update operation went successfully
         self.assertEqual(response.status_code, 204)
 

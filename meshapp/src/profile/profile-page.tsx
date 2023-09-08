@@ -14,6 +14,8 @@ import ProfileInterestsComponent from "./profile-interests";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
 
+import { axiosInstance } from "../config/axiosConfig";
+
 const theme = createTheme({
   palette: {
     mode: "light",
@@ -43,7 +45,9 @@ const theme = createTheme({
  * @param {string} props.image - A URL to user's profile image
  * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
  * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
+ * @param {number} props.accountID - ID of Profile account
  */
+
 const ProfilePage = (props: Profile) => {
   return (
     <Box className="profile-page-container">
@@ -62,7 +66,7 @@ const ProfilePage = (props: Profile) => {
             occupationTitle={props.occupationTitle}
             occupationBusiness={props.occupationBusiness}
           />
-          <ProfileBiography biography={props.biography} />
+          <ProfileBiography biography={props.biography} accountID={props.accountID}/>
         </Grid>
         <Grid
           item
@@ -177,8 +181,17 @@ const ProfileOccupation = (props: {
  *
  * @param props - Properties of the component
  * @param {string} props.biography - The initial text content of the bio
+ * @param {number} props.accountID - accountID associated with the profile
  */
-const ProfileBiography = (props: { biography: string }) => {
+const ProfileBiography = (props: { biography: string, accountID: number}) => {
+
+  function saveBiography(text: string) {
+    const res = axiosInstance.post('/profiles/biography/' + props.accountID, {
+      'biography': text,
+      'accountID': props.accountID
+    })
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Box className="profile-page-biography">
@@ -187,6 +200,7 @@ const ProfileBiography = (props: { biography: string }) => {
           placeholder={"Share your background and experiences"}
           text={props.biography}
           charLimit={300}
+          handleSave={saveBiography}
         />
       </Box>
     </ThemeProvider>
@@ -314,6 +328,7 @@ const TestComponent = (props: any) => {
       placeholder={"Test"}
       text={"Test"}
       charLimit={200}
+      handleSave={() => {return}}
     />
   );
 };

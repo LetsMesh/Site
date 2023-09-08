@@ -10,6 +10,7 @@ from mesh.confirmation import urls as confirmation_urls
 from mesh.accounts import urls as accounts_urls
 from mesh.accountSettings import urls as accountsettings_urls
 from mesh.occupations import urls as occupations_urls
+from mesh.education import urls as education_urls
 
 '''
 # How to Add URL -> Best Practices
@@ -46,8 +47,9 @@ urlpatterns = [
     path('profiles/', include(profile_urls)),
     path('tags/', include(tags_urls)),
     path('accounts/', include(accounts_urls)),
-    path('settings/', include(accountsettings_urls)),
+    path('account-settings/', include(accountsettings_urls)),
     path('confirmation/', include(confirmation_urls)),
     path('occupations/', include(occupations_urls)),
+    path('educations/', include(education_urls)),
     re_path(r'.*', TemplateView.as_view(template_name='index.html')),
 ]
