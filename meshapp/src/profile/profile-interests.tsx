@@ -103,10 +103,11 @@ const ProfileInterestsEdit = (props: {
   onSelectedTagsChange: (tags: string[]) => void;
   currentSelectedTags: string[];
 }) => {
-  const [recommendedTags, setRecommendedTags] = useState<string[]>([
-    ...props.recommendedTags,
-  ]);
+  const recommendedTags = props.recommendedTags;
   const [currentSelectedTags, setCurrentSelectedTags] = useState<string[]>(
+    props.currentSelectedTags
+  );
+  const [selectedTags, setSelectedTags] = useState<string[]>(
     props.currentSelectedTags
   );
   const [searchText, setSearchText] = useState<string | null>("");
@@ -114,11 +115,14 @@ const ProfileInterestsEdit = (props: {
   const [alertMessage, setAlertMessage] = useState("");
 
   const addTag = (tag: string) => {
-    setRecommendedTags((prevTags) => [...prevTags, tag]);
+    if (!currentSelectedTags.includes(tag)) {
+      setCurrentSelectedTags((prevTags) => [...prevTags, tag]);
+      toggleTag(tag);
+    }
   };
 
   const toggleTag = (tag: string) => {
-    setCurrentSelectedTags((prevTags) => {
+    setSelectedTags((prevTags) => {
       if (prevTags.includes(tag)) {
         return prevTags.filter((t) => t !== tag);
       } else {
@@ -126,10 +130,9 @@ const ProfileInterestsEdit = (props: {
       }
     });
   };
-
   const handleSave = () => {
     props.onClose();
-    props.onSelectedTagsChange(currentSelectedTags);
+    props.onSelectedTagsChange(selectedTags);
   };
 
   const handleClose = () => {
@@ -187,7 +190,6 @@ const ProfileInterestsEdit = (props: {
             onClick={() => {
               if (isCustomTag) {
                 addTag(searchText);
-                toggleTag(searchText);
                 setSearchText("");
               } else {
                 searchText === ""
@@ -214,10 +216,21 @@ const ProfileInterestsEdit = (props: {
           <ProfileTag
             key={index}
             label={tag}
-            selected={currentSelectedTags.includes(tag)}
+            selected={selectedTags.includes(tag)}
             onClick={() => toggleTag(tag)}
           />
         ))}
+
+        {currentSelectedTags
+          .filter((tag) => !recommendedTags.includes(tag))
+          .map((tag, index) => (
+            <ProfileTag
+              key={`custom-${index}`}
+              label={tag}
+              selected={selectedTags.includes(tag)}
+              onClick={() => toggleTag(tag)}
+            />
+          ))}
       </DialogContent>
       <Divider />
       <DialogActions>

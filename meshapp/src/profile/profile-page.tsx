@@ -288,7 +288,7 @@ const ProfileInterests = (props: any) => {
   // NOTE: Used to simulate future HTTP requests - remove when API is implemented
   const [testCurrentSelected, setTestCurrentSelected] = React.useState<
     string[]
-  >([]);
+  >(["hello", "world"]);
 
   // Same as above
   const testRecommended: string[] = [
