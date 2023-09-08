@@ -66,7 +66,10 @@ const ProfilePage = (props: Profile) => {
             occupationTitle={props.occupationTitle}
             occupationBusiness={props.occupationBusiness}
           />
-          <ProfileBiography biography={props.biography} accountID={props.accountID}/>
+          <ProfileBiography
+            biography={props.biography}
+            accountID={props.accountID}
+          />
         </Grid>
         <Grid
           item
@@ -183,13 +186,12 @@ const ProfileOccupation = (props: {
  * @param {string} props.biography - The initial text content of the bio
  * @param {number} props.accountID - accountID associated with the profile
  */
-const ProfileBiography = (props: { biography: string, accountID: number}) => {
-
+const ProfileBiography = (props: { biography: string; accountID: number }) => {
   function saveBiography(text: string) {
-    const res = axiosInstance.post('/profiles/biography/' + props.accountID, {
-      'biography': text,
-      'accountID': props.accountID
-    })
+    const res = axiosInstance.post("/profiles/biography/" + props.accountID, {
+      biography: text,
+      accountID: props.accountID,
+    });
   }
 
   return (
@@ -328,7 +330,9 @@ const TestComponent = (props: any) => {
       placeholder={"Test"}
       text={"Test"}
       charLimit={200}
-      handleSave={() => {return}}
+      handleSave={() => {
+        return;
+      }}
     />
   );
 };
