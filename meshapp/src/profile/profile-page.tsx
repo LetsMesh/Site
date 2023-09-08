@@ -10,6 +10,7 @@ import {
 
 import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
+import ProfileInterestsComponent from "./profile-interests";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
 
@@ -267,21 +268,39 @@ const ProfileEducation = (props: any) => {
   );
 };
 
-// TODO: To be fully implemented
 const ProfileInterests = (props: any) => {
+  // NOTE: Used to simulate future HTTP requests - remove when API is implemented
+  const [testCurrentSelected, setTestCurrentSelected] = React.useState<
+    string[]
+  >([]);
+
+  // Same as above
+  const testRecommended: string[] = [
+    "adventure",
+    "cozy",
+    "exploration",
+    "vibrant",
+    "serene",
+    "inspiring",
+  ];
+
   return (
     <ThemeProvider theme={theme}>
-      <Box className="profile-page-column-body">
+      <Box className="profile-page-column-body" sx={{ margin: "20px" }}>
         <Typography
           variant="h1"
           sx={{
-            marginBottom: "20px",
-            fontSize: "22px",
+            marginBottom: "15px",
+            fontSize: "26px",
           }}
         >
           Interests
         </Typography>
-        <TestComponent />
+        <ProfileInterestsComponent
+          currentTags={testCurrentSelected}
+          recommendedTags={testRecommended}
+          setTags={setTestCurrentSelected}
+        />
       </Box>
     </ThemeProvider>
   );
