@@ -126,5 +126,5 @@ class ProfilesTest(TestCase):
         The test passes if the response status code is 200.
         """
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.post(f"/profiles/biography/{test_user.accountID}/",{'accountID': test_user.accountID, 'biography': "Testing..."}, content_type='application/json')
+        response = self.client.post(f"/profiles/biography/{test_user.accountID}/",{'biography': "Testing..."}, content_type='application/json')
         self.assertEquals(response.status_code, 200)
