@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, Grid, Button } from "@mui/material";
-
+import { paths } from "../../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
 export default function welcomeMessage() {
   //contains the welcome message for the header to the left
   return (
@@ -22,6 +23,8 @@ export default function welcomeMessage() {
       </Typography>
       <Button
         variant="contained"
+        component={RouterLink}
+        to={paths.sign_up}
         sx={{
           "&:hover": {
             backgroundColor: "#0e977b",

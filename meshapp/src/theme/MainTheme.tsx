@@ -1,5 +1,4 @@
 import { PaletteMode, createTheme } from "@mui/material";
-import React from "react";
 
 //gets pallete colors and component colors based on mode
 const getDesignTokens = (mode: PaletteMode) => ({
@@ -238,9 +237,9 @@ function getComponents(mode: PaletteMode) {
   };
 }
 
-//change arg to light or dark, depending on which mode you want, to switch to that mode
-const theme = createTheme({
-  ...getDesignTokens("dark"),
-});
-
-export default theme;
+/*
+This function creates and returns theme based on input mode
+*/
+export default function getMainTheme(mode: PaletteMode) {
+  return createTheme(getDesignTokens(mode));
+}

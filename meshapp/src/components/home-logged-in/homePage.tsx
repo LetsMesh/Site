@@ -1,16 +1,16 @@
 import { Grid, Typography, Button, Stack, Alert } from "@mui/material";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import group_image from "../../assets/media/group_image.png";
-import React from "react";
-
+import { paths } from "../../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
 export default function homePage() {
-  {
-    /*-----------------Group image container------------*/
-  }
+  /*-----------------Group image container------------*/
+
   const imgContainer = (
     <Grid container display="flex" justifyContent="center" bgcolor="#CCCCCC">
       <Grid item>
         <img
+          alt="group_image"
           srcSet={`${group_image} 500w`}
           sizes="(min-width: 1450px) 740px, (min-width: 1200px) 590px, (min-width: 900px) 430px, (min-width: 600px) 280px, 220px"
         ></img>
@@ -18,9 +18,8 @@ export default function homePage() {
     </Grid>
   );
 
-  {
-    /*-------------------Alert box------------------------*/
-  }
+  /*-------------------Alert box------------------------*/
+
   const alertBox = (
     <Alert severity="error" icon={<ErrorOutline sx={{ fontSize: "4vh" }} />}>
       <Stack spacing={1} direction="column" flexWrap="wrap">
@@ -38,9 +37,8 @@ export default function homePage() {
     </Alert>
   );
 
-  {
-    /*------------Grid item for the group image and alert box-----------------*/
-  }
+  /*------------Grid item for the group image and alert box-----------------*/
+
   const imgAlertItem = () => {
     return (
       <Grid item xs={8} sm={5}>
@@ -52,9 +50,8 @@ export default function homePage() {
     );
   };
 
-  {
-    /*----------------------Grid item for the top text----------------------*/
-  }
+  /*----------------------Grid item for the top text----------------------*/
+
   const topText = () => {
     return (
       <Grid item>
@@ -72,9 +69,8 @@ export default function homePage() {
     );
   };
 
-  {
-    /*----------------------Grid item for the bottom text----------------------*/
-  }
+  /*----------------------Grid item for the bottom text----------------------*/
+
   const bottomTextItem = () => {
     return (
       <Grid item>
@@ -90,9 +86,8 @@ export default function homePage() {
     );
   };
 
-  {
-    /*----------------------Grid item for the swipe button----------------------*/
-  }
+  /*----------------------Grid item for the swipe button----------------------*/
+
   const swipeButton = () => {
     return (
       <Grid item>
@@ -103,6 +98,8 @@ export default function homePage() {
             height: "3em",
             borderRadius: 4,
           }}
+          component={RouterLink}
+          to={paths.profile_swipe}
         >
           <Typography
             fontWeight="600"

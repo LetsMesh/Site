@@ -1,6 +1,7 @@
 import { Profile } from "../types/profile";
 
 export const exampleProfile: Profile = {
+  accountID: 1,
   name: "Bob Yomom",
   pronouns: "she/her",
   image: "https://picsum.photos/200/300",
@@ -13,6 +14,7 @@ export const exampleProfile: Profile = {
 };
 
 export const exampleProfile2: Profile = {
+  accountID: 2,
   name: "Lysander Maximilian Bartholomew Fitzwilliam III Esquire IV",
   pronouns: "he/he",
   image: "https://picsum.photos/200/300",

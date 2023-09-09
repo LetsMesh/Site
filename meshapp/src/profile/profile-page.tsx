@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   Box,
   Grid,
@@ -12,6 +12,8 @@ import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
+
+import { axiosInstance } from "../config/axiosConfig";
 
 const theme = createTheme({
   palette: {
@@ -42,7 +44,9 @@ const theme = createTheme({
  * @param {string} props.image - A URL to user's profile image
  * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
  * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
+ * @param {number} props.accountID - ID of Profile account
  */
+
 const ProfilePage = (props: Profile) => {
   return (
     <Box className="profile-page-container">
@@ -61,7 +65,7 @@ const ProfilePage = (props: Profile) => {
             occupationTitle={props.occupationTitle}
             occupationBusiness={props.occupationBusiness}
           />
-          <ProfileBiography biography={props.biography} />
+          <ProfileBiography biography={props.biography} accountID={props.accountID}/>
         </Grid>
         <Grid
           item
@@ -176,16 +180,56 @@ const ProfileOccupation = (props: {
  *
  * @param props - Properties of the component
  * @param {string} props.biography - The initial text content of the bio
+ * @param {number} props.accountID - accountID associated with the profile
  */
-const ProfileBiography = (props: { biography: string }) => {
+const ProfileBiography = (props: {biography: string, accountID: number}) => {
+  const [biography, setBiography] = useState(props.biography);
+  const [isLoading, setLoading] = useState(true);
+  
+  //Gets the user's biography and saves it to the display biography.  
+  useEffect(() => {
+    axiosInstance.get("profiles/biography/" + props.accountID)
+    .then(response => {
+      console.log(response)
+      setBiography(response.data["biography"])
+      setLoading(false);
+    })
+    .catch(error => {
+      setLoading(false);
+      console.error(error)
+    })
+  }, [])
+
+  //Returns an initial loading mode before rendering the user's biography
+  if (isLoading)
+    return <div>loading...</div> 
+
+  /** 
+   * Saves the user's biography.
+   * 
+   * @param {string} text - The inputted text that the user wants to save
+   */
+  function saveBiography(text: string) {
+    axiosInstance.post("profiles/biography/" + props.accountID, {
+      "biography": text
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error =>{
+      console.error(error)
+    })
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Box className="profile-page-biography">
         <ProfileTextField
           label={"Biography"}
           placeholder={"Share your background and experiences"}
-          text={props.biography}
+          text={biography}
           charLimit={300}
+          handleSave={saveBiography}
         />
       </Box>
     </ThemeProvider>
@@ -295,6 +339,7 @@ const TestComponent = (props: any) => {
       placeholder={"Test"}
       text={"Test"}
       charLimit={200}
+      handleSave={() => {return}}
     />
   );
 };

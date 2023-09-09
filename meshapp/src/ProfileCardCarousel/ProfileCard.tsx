@@ -26,6 +26,8 @@ import HeartIcon from "@mui/icons-material/Favorite";
 import { motion } from "framer-motion";
 import React from "react";
 
+import { paths } from "../Routing/RoutePaths";
+import { Link as RouterLink } from "react-router-dom";
 function ProfileCard(
   index: number,
   position: number,
@@ -246,6 +248,8 @@ function Actions(position: number, index: number) {
             backgroundColor: "#0e977b",
           },
         }}
+        component={RouterLink}
+        to={paths.profile_page}
       >
         See Full Profile
       </Button>
