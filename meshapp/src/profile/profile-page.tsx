@@ -12,7 +12,6 @@ import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
-import ProfileAccordion from "./profile-accordion";
 import ProfileGroupAccordion from "./profile-group_accordion";
 
 
@@ -266,8 +265,15 @@ const ProfileEducation = (props: any) => {
           Education
         </Typography>
         <ProfileGroupAccordion groupAccordArgs= {
-          [{text1: "B.S. Animal Happiness",text2:"gray words", descPlaceholder: "descPlaceholder", descText: "descText", charLimit: 100},{text1: "B.S. Animal Happiness",text2:"gray words", descPlaceholder: "descPlaceholder", descText: "descText", charLimit: 100},{text1: "B.S. Animal Happiness",text2:"gray words", descPlaceholder: "descPlaceholder", descText: "descText", charLimit: 100}]
-          }/>
+          [{text1: "B.S. Animal Happiness",text2:"gray words",  descText: "descText"},
+          {text1: "B.S. Animal Happiness",text2:"gray words", descText: "descText"},
+          {text1: "B.S. Animal Happiness",text2:"gray words",  descText: "descText"}]
+          }
+          descPlaceholder="descPlaceholder"
+          charLimit={100} 
+
+          
+          />
       </Box>
     </ThemeProvider>
   );
@@ -301,7 +307,6 @@ const TestComponent = (props: any) => {
       placeholder={"Test"}
       text={"Test"}
       charLimit={200}
-      variant="standard"
     />
   );
 };

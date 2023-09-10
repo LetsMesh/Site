@@ -1,34 +1,61 @@
 import React, { useState } from "react";
-import { TextField, Box, TextFieldVariants } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
+import { useGroupAccordContext } from "./profile-group_accordion";
 
 /**
  * A React component that renders a text field with editing capabilities.
- * Includes a character limit and an edit/save mode toggle.
+ * Includes a character limit and an edit/save mode toggle, will use context from
+ * parent to access and set state
  *
- * Used in the Profile page (src/profile/profile-page.tsx).
+ * Used in the Profile Page Accordion .
  *
  * @param props - Properties of the component
  * @param {string} props.label - The label
  * @param {string} props.placeholder - The placeholder text
  * @param {string} props.text - The initial text content
  * @param {number} props.charLimit - The max number of characters allowed
+ * @param {number} props.key - The index of the current Profile Accordion
  */
-const ProfileTextField = (props: {
+const ProfileAccordionTextField = (props: {
   label: string;
   placeholder: string;
   text: string;
   charLimit: number;
+  accordionIndex: number;
 }) => {
-  const [text, setText] = useState(props.text);
+  //grab context
+  const GroupAccordContext = useGroupAccordContext();
+  const groupState = GroupAccordContext.groupState;
+  const setGroupState = GroupAccordContext.setGroupState;
+
+  //text from group state
+  const text = groupState[props.accordionIndex].descText;
+
+  //used to set edit mode
   const [editMode, setEditMode] = useState(false);
 
   // Enforce developer-defined character limit
   const handleTextChange = (event: any) => {
     if (event.target.value.length > props.charLimit) return;
-    setText(event.target.value);
+    setGroupState(
+      groupState.map((profileAccordion, index) => {
+        if (index === props.accordionIndex) {
+          return {
+            text1: profileAccordion.text1,
+            text2: profileAccordion.text2,
+            descText: event.target.value,
+          };
+        }
+        return {
+          text1: profileAccordion.text1,
+          text2: profileAccordion.text2,
+          descText: profileAccordion.descText,
+        };
+      })
+    );
   };
 
   const handleEditClick = () => {
@@ -44,7 +71,6 @@ const ProfileTextField = (props: {
       label={props.label}
       placeholder={props.placeholder}
       InputLabelProps={{ shrink: true }}
-      variant={"standard"}
       InputProps={{
         endAdornment: editMode ? (
           <Box paddingLeft={2}>
@@ -106,4 +132,4 @@ const ProfileTextField = (props: {
   );
 };
 
-export default ProfileTextField;
+export default ProfileAccordionTextField;

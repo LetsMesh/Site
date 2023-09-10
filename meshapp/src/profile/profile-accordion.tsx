@@ -4,7 +4,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreFilled from "@mui/icons-material/ExpandMore";
 import { Typography } from "@mui/material";
-import ProfileTextField from "./profile-textfield";
+import ProfileAccordionTextField from "./profile-accordion-textfield";
 
 export default function ProfileAccordion(props: {
   text1: string;
@@ -12,10 +12,10 @@ export default function ProfileAccordion(props: {
   descPlaceholder: string;
   descText: string;
   charLimit: number;
+  accordionIndex: number;
 }) {
   const [expanded, setExpanded] = React.useState<boolean>(false);
   const toggleExpand = () => setExpanded(!expanded);
-
   return (
     <Accordion expanded={expanded} onChange={toggleExpand} sx={{
       "&.MuiAccordion-root":{
@@ -29,12 +29,12 @@ export default function ProfileAccordion(props: {
         <Typography>{props.text2}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <ProfileTextField
+        <ProfileAccordionTextField
           label={"Description"}
           placeholder={props.descPlaceholder}
           text={props.descText}
-          charLimit={props.charLimit}
-          variant="standard"
+          charLimit={100}
+          accordionIndex={props.accordionIndex}
         />
       </AccordionDetails>
     </Accordion>
