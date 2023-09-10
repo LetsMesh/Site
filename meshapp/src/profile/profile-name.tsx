@@ -33,6 +33,8 @@ const theme = createTheme({
     },
 });
 
+
+
 const ProfileName = (props: {
   label: string;
   placeholder: string;
@@ -41,12 +43,30 @@ const ProfileName = (props: {
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
+  
 
-  // Enforce developer-defined character limit
+  // Enforce developer-defined character limit and empty string
   const handleTextChange = (event: any) => {
     if (event.target.value.length > props.charLimit) return;
+    if (event.target.value.length === 0) return;
+    if (event.target.value.includes(" ")) return;
     setText(event.target.value);
   };
+
+  // Checks if it is a name or pronoun
+  
+  const name = "60px";
+  const pronoun = "30px";
+  let nicknameOrPronouns = "Nickname";
+
+  const nameOrPronounFont = (charLimit: number) => {
+    if(props.charLimit == 15) {
+      return name;
+    } else {
+      nicknameOrPronouns = "Pronouns"
+      return pronoun;
+    }
+  }
 
   const handleEditClick = () => {
     setEditMode(!editMode);
@@ -57,8 +77,6 @@ const ProfileName = (props: {
   };
 
   return (
-
-    // Bug: Recent user changes does not change a user's username
     
     editMode ? (
         <ThemeProvider theme={theme}>
@@ -68,34 +86,35 @@ const ProfileName = (props: {
                     sx={{
                         lineHeight: 1,
                         display: "inline",
-                        fontSize: "60px",
+                        fontSize: nameOrPronounFont(props.charLimit),
                     }}
                 >
-                    <TextField
+                <TextField
                         required
                         id="standard-required"
-                        label="Username"
-                        defaultValue={props.text}
+                        label={nicknameOrPronouns}
+                        defaultValue={text}
                         variant="standard"
                         onChange={handleTextChange}
                     />
-                    <SaveIcon
-                        color="primary"
-                        onClick={handleSaveClick}
-                        sx={{
-                            "&:hover": {
-                            color: "#0A6B57",
-                            },
-                            cursor: "pointer",
-                            transition: "color 0.15s ease-in-out",
-                        }}
-              />
+                <SaveIcon
+                    color="primary"
+                    onClick={handleSaveClick}
+                    sx={{
+                        "&:hover": {
+                        color: "#0A6B57",
+                        },
+                        cursor: "pointer",
+                        transition: "color 0.15s ease-in-out",
+                    }}
+                />
                 </Typography>
             </Box>
         </ThemeProvider>
         
     
     ) : (
+        // View Mode
         <ThemeProvider theme={theme}>
         <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
           <Grid container alignItems="flex-end">
@@ -110,10 +129,10 @@ const ProfileName = (props: {
                 sx={{
                   lineHeight: 1,
                   display: "inline",
-                  fontSize: "60px",
+                  fontSize: nameOrPronounFont(props.charLimit),
                 }}
               >
-                {props.text}
+                {text}
               <EditIcon 
                   onClick={handleEditClick}
                   sx={{
