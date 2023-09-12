@@ -7,7 +7,6 @@ python manage.py test mesh.tests.education_tests
 
 import json
 from django.test import TestCase, Client
-from django.core import serializers
 
 from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
