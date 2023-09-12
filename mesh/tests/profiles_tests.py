@@ -42,7 +42,7 @@ class ProfilesTest(TestCase):
         test_user = Account.objects.get(email="profilestest@gmail.com")
         response = self.client.get(f"/profiles/profile-picture/{test_user.accountID}")
         json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("data"), {"get": {"profilePicture": "/media/image/profile_test_image.png"}})
+        self.assertEquals(json_response.get("data"), {"get": {"profilePicture": "profile_test_image.png"}})
 
     def test_no_account_profile_picture(self):
         response = self.client.get("/profiles/profile-picture/9999")
