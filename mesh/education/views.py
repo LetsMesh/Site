@@ -35,10 +35,12 @@ class EducationView(View):
 
         Example Request JSON:
         {
-            'accountID': '1',
-            'degreeName': 'BS',
-            'collegeName': 'Hamburger University',
-            'optionalDescription': "I'll have you know I graduated top of my class"
+            "accountID": "1",
+            "degreeName": "BS",
+            "collegeName": "Hamburger University",
+            "educationDescription": "Ill have you know I graduated top of my class",
+            "educationStartDate": "2020-05-21",
+            "educationEndDate": "2021-03-22"
         }
 
         The optionalDescription field can be ommitted, in which an empty optionalDescription
@@ -93,3 +95,8 @@ class EducationView(View):
 
         except (Account.DoesNotExist, Profile.DoesNotExist):
             return JsonResponse({'error': 'Account or Profile not found.'}, status=404)
+
+
+class EducationsDetailView(View):
+    def get(self, request, account_id, *args, **kwargs):
+        return JsonResponse({'account_id': account_id}, status=200)

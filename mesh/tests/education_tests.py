@@ -31,7 +31,7 @@ class EducationTestCase(TestCase):
             isMentee=True
         )
 
-        Profile.objects.create(
+        self.test_profile = Profile.objects.create(
             accountID=self.test_account,
             userName="profileTest",
             preferredName="Profile Test",
@@ -150,3 +150,14 @@ class EducationTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(json_response), 2)
+    
+    def test_get_educations_from_one_account_succeeds(self):
+        test_education = Education.objects.create(degreeName="PHD", collegeName="Imperial Academy")
+        EducationBridge.objects.create(accountID=self.test_profile, educationID=test_education,
+                                       educationStartDate="2021-05-21",
+                                       educationEndDate="2022-05-31",
+                                       educationDescription='')
+        
+        response = self.client.get('/educations/1/')
+        json_response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response.status_code, 200)
