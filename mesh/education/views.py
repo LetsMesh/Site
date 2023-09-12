@@ -1,6 +1,7 @@
 # Django Imports
 from django.http import JsonResponse
 from django.views import View
+from django.core import serializers
 
 # Model Imports
 from .models import Education, EducationBridge
@@ -14,6 +15,19 @@ from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 
 
 class EducationView(View):
+    def get(self, request, *args, **kwargs):
+        """
+        Handle GET requests to /educations/ endpoint.
+
+        Returns a JSON response containing all Educations.
+        """
+        educations = Education.objects.all()
+
+        # Create a list of dictionaries containing education details
+        educations_list = serializers.serialize("json", educations)
+
+        return JsonResponse(educations_list, status=200, safe=False)
+
     def post(self, request, *args, **kwargs):
         """
         Handle POST requests to /educations/ endpoint.

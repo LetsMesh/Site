@@ -7,6 +7,7 @@ python manage.py test mesh.tests.education_tests
 
 import json
 from django.test import TestCase, Client
+from django.core import serializers
 
 from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
@@ -136,3 +137,16 @@ class EducationTestCase(TestCase):
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response.status_code, error_code)
         self.assertEqual(json_response.get('error'), error_msg)
+
+    """
+    GET tests
+    """
+    def test_get_all_educations_succeeds(self):
+        Education.objects.create(degreeName="BA", collegeName="WASHU")
+        Education.objects.create(degreeName="PHD", collegeName="Imperial Academy")
+
+        response = self.client.get('/educations/')
+        json_response = json.loads(json.loads(response.content.decode("utf-8")))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(json_response), 2)
