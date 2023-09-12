@@ -158,6 +158,14 @@ class EducationTestCase(TestCase):
                                        educationEndDate="2022-05-31",
                                        educationDescription='')
         
-        response = self.client.get('/educations/1/')
-        json_response = json.loads(response.content.decode('utf-8'))
+        test_education = Education.objects.create(degreeName="BS", collegeName="21")
+        EducationBridge.objects.create(accountID=self.test_profile, educationID=test_education,
+                                       educationStartDate="2021-05-21",
+                                       educationEndDate="2022-05-31",
+                                       educationDescription='')
+
+        response = self.client.get(f'/educations/{self.test_profile.accountID}/')
+        json_response = json.loads(json.loads(response.content.decode('utf-8')))
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(json_response.values()), 2)
+

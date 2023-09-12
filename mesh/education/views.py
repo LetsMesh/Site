@@ -13,6 +13,9 @@ from mesh.utils.validate_data import validate_json_and_required_fields
 from mesh.exceptions.MissingRequiredFields import MissingRequiredFields
 from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 
+# Library Imports
+import json
+
 
 class EducationView(View):
     def get(self, request, *args, **kwargs):
@@ -99,4 +102,30 @@ class EducationView(View):
 
 class EducationsDetailView(View):
     def get(self, request, account_id, *args, **kwargs):
-        return JsonResponse({'account_id': account_id}, status=200)
+        try:
+            education_bridges = EducationBridge.objects.filter(accountID_id=account_id)
+            educations_and_bridges = { }
+            
+            for education_bridge in education_bridges:
+                education_data = {
+                    "educationID": education_bridge.educationID.educationID,
+                    "degreeName": education_bridge.educationID.degreeName,
+                    "collegeName": education_bridge.educationID.collegeName,
+                    "educationStartDate": str(education_bridge.educationStartDate),
+                    "educationEndDate": str(education_bridge.educationEndDate),
+                    "educationDescription": education_bridge.educationDescription
+                }
+                educations_and_bridges[education_bridge.educationID.educationID] = education_data
+
+            educations_and_bridges = json.dumps(educations_and_bridges)
+            
+            return JsonResponse(educations_and_bridges, status=200, safe = False)
+        
+        except EducationBridge.DoesNotExist:
+            return JsonResponse({"error": "EducationBridge not found."}, status=404)
+        
+        except Education.DoesNotExist:
+            return JsonResponse({"error": "Education not found."}, status=404)
+        
+        except ValueError:
+            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
