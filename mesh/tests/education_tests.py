@@ -142,6 +142,7 @@ class EducationTestCase(TestCase):
     GET tests
     """
     def test_get_all_educations_succeeds(self):
+        """Passes if a list of 2 educations and a 200 code is returned"""
         Education.objects.create(degreeName="BA", collegeName="WASHU")
         Education.objects.create(degreeName="PHD", collegeName="Imperial Academy")
 
@@ -152,6 +153,7 @@ class EducationTestCase(TestCase):
         self.assertEqual(len(json_response), 2)
     
     def test_get_educations_from_one_account_succeeds(self):
+        """Passes if a dict of 2 educations and a 200 code is returned"""
         test_education = Education.objects.create(degreeName="PHD", collegeName="Imperial Academy")
         EducationBridge.objects.create(accountID=self.test_profile, educationID=test_education,
                                        educationStartDate="2021-05-21",
@@ -168,4 +170,3 @@ class EducationTestCase(TestCase):
         json_response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(json_response.values()), 2)
-

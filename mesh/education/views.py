@@ -102,6 +102,13 @@ class EducationView(View):
 
 class EducationsDetailView(View):
     def get(self, request, account_id, *args, **kwargs):
+        """
+        Handle GET requests for a single Account's Education(s).
+
+        Returns a JsonResponse containing the Account's Education(s) and all relevant data.
+
+        If no Education or EducationBridges exist, or if the accountID is empty, a 404 error is returned.
+        """
         try:
             education_bridges = EducationBridge.objects.filter(accountID_id=account_id)
             educations_and_bridges = { }
@@ -127,3 +134,4 @@ class EducationsDetailView(View):
         
         except ValueError:
             return JsonResponse({"error": "accountID or profilePicture field is empty."}, status=400)
+    
