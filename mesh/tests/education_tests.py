@@ -146,7 +146,7 @@ class EducationTestCase(TestCase):
         Education.objects.create(degreeName="PHD", collegeName="Imperial Academy")
 
         response = self.client.get('/educations/')
-        json_response = json.loads(json.loads(response.content.decode("utf-8")))
+        json_response = json.loads(response.content.decode("utf-8"))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(json_response), 2)
@@ -165,7 +165,7 @@ class EducationTestCase(TestCase):
                                        educationDescription='')
 
         response = self.client.get(f'/educations/{self.test_profile.accountID}/')
-        json_response = json.loads(json.loads(response.content.decode('utf-8')))
+        json_response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(json_response.values()), 2)
 

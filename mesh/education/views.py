@@ -1,5 +1,5 @@
 # Django Imports
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views import View
 from django.core import serializers
 
@@ -29,7 +29,7 @@ class EducationView(View):
         # Create a list of dictionaries containing education details
         educations_list = serializers.serialize("json", educations)
 
-        return JsonResponse(educations_list, status=200, safe=False)
+        return HttpResponse(educations_list, status=200)
 
     def post(self, request, *args, **kwargs):
         """
@@ -117,10 +117,8 @@ class EducationsDetailView(View):
                 }
                 educations_and_bridges[education_bridge.educationID.educationID] = education_data
 
-            educations_and_bridges = json.dumps(educations_and_bridges)
-            
-            return JsonResponse(educations_and_bridges, status=200, safe = False)
-        
+            return JsonResponse(educations_and_bridges, status=200)
+
         except EducationBridge.DoesNotExist:
             return JsonResponse({"error": "EducationBridge not found."}, status=404)
         
@@ -128,4 +126,4 @@ class EducationsDetailView(View):
             return JsonResponse({"error": "Education not found."}, status=404)
         
         except ValueError:
-            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status = 400)
+            return JsonResponse({"error": "accountID or profilePicture field is empty."}, status=400)
