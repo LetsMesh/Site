@@ -79,7 +79,7 @@ const ProfilePage = (props: Profile) => {
             marginBottom: "-125px", // Adjusts container height to match transform
           }}
         >
-          <ProfilePicture image={props.image} />
+          <ProfilePicture image={props.image} accountID={props.accountID}/>
           <ProfileRole isMentor={props.isMentor} isMentee={props.isMentee} />
         </Grid>
       </Grid>
