@@ -265,10 +265,14 @@ const ProfileEducation = (props: any) => {
           Education
         </Typography>
         <ProfileGroupAccordion groupAccordArgs= {
-          [{text1: "B.S. Animal Happiness",text2:"gray words",  descText: "descText"},
-          {text1: "B.S. Animal Happiness",text2:"gray words", descText: "descText"},
-          {text1: "B.S. Animal Happiness",text2:"gray words",  descText: "descText"}]
+          [{headerOne: "B.S. Animal Happiness",headerTwo:"gray words",  descText: "descText"},
+          {headerOne: "B.S. Animal Happiness",headerTwo:"gray words", descText: "descText"},
+          {headerOne: "B.S. Animal Happiness",headerTwo:"gray words",  descText: "descText"}]
           }
+          headerOnePlaceholder="header1Placeholder"
+          headerTwoPlaceholder="header2Placeholder"
+          headerOneOptions={["car", "dog"]}
+          headerTwoOptions={["cat", "fish"]}
           descPlaceholder="descPlaceholder"
           charLimit={100} 
 

@@ -1,5 +1,4 @@
-import { EditOutlined } from "@mui/icons-material";
-import { Autocomplete, Typography, TextField } from "@mui/material";
+import { Autocomplete, Typography, InputBase } from "@mui/material";
 import { SyntheticEvent } from "react";
 
 function ProfileAccordionComboBox(props: {
@@ -21,12 +20,22 @@ function ProfileAccordionComboBox(props: {
       handleHomeEndKeys
       options={props.options}
       freeSolo
+      fullWidth
       readOnly={props.disabled}
+      disabled={props.disabled}
       renderOption={(props, option) => (
         <Typography {...props}> {option} </Typography>
       )}
-      renderInput={(params) => <TextField {...params} />}
-      placeholder={props.placeholderText}
+      renderInput={(params) => {
+        const { InputLabelProps, InputProps, ...rest } = params;
+
+      return (<InputBase {...params.InputProps} {...rest} placeholder={props.placeholderText}   />)
+    
+      }}
+     
+      sx={{ "& .MuiTextField-root":{
+        borderRadius: 0
+      }}}
     />
   );
 }

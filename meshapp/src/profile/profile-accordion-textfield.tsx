@@ -44,14 +44,14 @@ const ProfileAccordionTextField = (props: {
       groupState.map((profileAccordion, index) => {
         if (index === props.accordionIndex) {
           return {
-            text1: profileAccordion.text1,
-            text2: profileAccordion.text2,
+            headerOne: profileAccordion.headerOne,
+            headerTwo: profileAccordion.headerTwo,
             descText: event.target.value,
           };
         }
         return {
-          text1: profileAccordion.text1,
-          text2: profileAccordion.text2,
+          headerOne: profileAccordion.headerOne,
+          headerTwo: profileAccordion.headerTwo,
           descText: profileAccordion.descText,
         };
       })
@@ -112,6 +112,7 @@ const ProfileAccordionTextField = (props: {
       disabled={!editMode}
       value={text}
       onChange={handleTextChange}
+      variant="standard"
       sx={{
         "& .MuiOutlinedInput-root": {
           "& fieldset": {
@@ -122,10 +123,7 @@ const ProfileAccordionTextField = (props: {
           },
           "&:not(.Mui-disabled):hover fieldset": {
             borderColor: "primary.main",
-          },
-          "& .Mui-disabled": {
-            WebkitTextFillColor: "#000000",
-          },
+          }
         },
       }}
     />

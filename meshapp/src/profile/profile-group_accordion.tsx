@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import ProfileAccordion from "./profile-accordion";
 import { createContext } from "react";
+import { Grid } from "@mui/material";
 
 //type of group accordion state
 type groupAccordionState = Array<{
-  text1: string;
-  text2: string;
+  headerOne: string;
+  headerTwo: string;
   descText: string;
 }>;
 
@@ -19,7 +20,7 @@ type GroupAccordionContextType = {
 
 //default value of context, won't matter what we are putting here since we will be passing in real value later
 const GroupAccordContext = createContext<GroupAccordionContextType>({
-  groupState: [{ text1: "", text2: "", descText: "" }],
+  groupState: [{ headerOne: "", headerTwo: "", descText: "" }],
   setGroupState: (prevGroupState?: groupAccordionState) => undefined,
 });
 
@@ -33,13 +34,17 @@ export default function ProfileGroupAccordion(props: {
   groupAccordArgs: groupAccordionState;
   descPlaceholder: string;
   charLimit: number;
+  headerOnePlaceholder: string;
+  headerTwoPlaceholder: string;
+  headerOneOptions: Array<string>;
+  headerTwoOptions: Array<string>;
 }) {
   //group accordion data state with set state method
   const [GroupAccordState, setGroupAccordState] = useState(
     props.groupAccordArgs.map((accord) => {
       return {
-        text1: accord.text1,
-        text2: accord.text2,
+        headerOne: accord.headerOne,
+        headerTwo: accord.headerTwo,
         descText: accord.descText,
       };
     })
@@ -51,7 +56,6 @@ export default function ProfileGroupAccordion(props: {
     setGroupState: setGroupAccordState,
   };
 
-
   return (
     <GroupAccordContext.Provider
       value={value}
@@ -59,11 +63,15 @@ export default function ProfileGroupAccordion(props: {
         return (
           <ProfileAccordion
             accordionIndex={accordIndex}
-            text1={accordArgs.text1}
-            text2={accordArgs.text2}
+            headerOne={accordArgs.headerOne}
+            headerTwo={accordArgs.headerTwo}
             descPlaceholder={props.descPlaceholder}
             descText={accordArgs.descText}
             charLimit={props.charLimit}
+            headerOnePlaceholder={props.headerOnePlaceholder}
+            headerTwoPlaceholder={props.headerTwoPlaceholder}
+            headerOneOptions={props.headerOneOptions}
+            headerTwoOptions={props.headerTwoOptions}
           />
         );
       })}
