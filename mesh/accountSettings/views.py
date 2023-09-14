@@ -68,7 +68,7 @@ class showSettings(View):
         try:
             settings = Settings.objects.get(accountID=account_id)
             data = json.loads(request.body)
-            settings.accountID = data.get('accountID')
+            settings.accountID = Account.objects.get(accountID=data.get('accountID'))
             settings.isVerified = data.get('isVerified')
             settings.verificationToken = data.get('verificationToken')
             settings.hasContentFilterEnabled = data.get('hasContentFilterEnabled')

@@ -3,6 +3,6 @@ export type AccountSettings = {
     isVerified: boolean;
     verificationToken: string;
     hasContentFilterEnabled: boolean; 
-    displayTheme: number; 
+    displayTheme: char; 
     is2FAEnabled: boolean;
 };

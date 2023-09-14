@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, FormControlLabel, Container, Typography } from '@mui/material';
 
-//import { AccountSettings } from "./types/account-settings";
+import { AccountSettings } from "./types/account-settings"
 import { axiosInstance } from "../config/axiosConfig";
 
 interface SettingsProps {
@@ -19,29 +19,54 @@ const SettingSwitch = (props: SettingsProps) => {
   );
 }
 
-const SettingsPage = () => {
+const SettingsPage = (props: AccountSettings) => {
   const [settings, setSettings] = useState({
-    //isVerified: false,
+    accountID: props.accountID,
+    isVerified: props.isVerified,
+    verificationToken: props.verificationToken,
+    hasContentFilterEnabled: props.hasContentFilterEnabled,
+    displayTheme: props.displayTheme,
     is2FAEnabled: false
   });
   const [loading, setLoading] = useState(false);
 
-  const handleToggleChange = (settingName: any) => (event: any) => {
-    setSettings({ ...settings, [settingName]: event.target.checked });
-  };
-
-  /* useEffect(() => {
-    // Make a GET request to the backend API to retrieve account settings
-    axiosInstance.get('/accountSettings/settings')
+  useEffect(() => {
+    // Make a GET request to update the settings page with user settings
+    axiosInstance.get("settings/settings/" + props.accountID + "/")   // NOTE: settings/settings is old api, use accountSettings when merging
       .then((response) => {
-        setSettings(response.data);
         setLoading(false);
+        let settingsData = JSON.parse(response.data)[0]["fields"]
+        setSettings({...settings, 
+          isVerified: settingsData.isVerified,
+          verificationToken: settingsData.verificationToken,
+          hasContentFilterEnabled: settingsData.hasContentFilterEnabled,
+          displayTheme: settingsData.displayTheme,
+          is2FAEnabled: settingsData.is2FAEnabled});
       })
       .catch((error) => {
-        console.error('Error fetching account settings:', error);
+        console.error('Error patching account settings:', error);
         setLoading(true);
       });
-  }, []); // Empty dependency array to run the effect once when the component mounts */
+  }, []); // Empty dependency array to run the effect once when the component mounts 
+
+  useEffect(() => {
+    // Make a PATCH request to the backend API to update account settings
+    axiosInstance.patch("settings/settings/" + props.accountID + "/", {...settings}) // NOTE: Use accountSettings api name when merging
+      .then((response) => {
+        console.log("Patch Response: " + response)
+        setLoading(false);
+        console.log("After Set: " + settings.is2FAEnabled)
+      })
+      .catch((error) => {
+        console.error('Error patching account settings:', error);
+        setLoading(true);
+      });
+  }, [settings])
+
+  const handleToggleChange = (settingName: any) => (event: any) => {
+    console.log("Before Set: " + settings.is2FAEnabled)
+    setSettings({ ...settings, [settingName]: event.target.checked });
+  };
 
   if (loading) {
     return <div>Loading...</div>;

@@ -9,7 +9,7 @@ from mesh.accounts.models import Account
 class SettingsTest(TestCase):
     def setUp(self):
         self.client = Client()
-        test_account = Account.objects.create(
+        self.test_account = Account.objects.create(
             email="settingstest@gmail.com",
             encryptedPass=bytes("password_test", "utf-8"),
             phoneNum="1234567890",
@@ -19,7 +19,7 @@ class SettingsTest(TestCase):
             isMentee=True
         )
         Settings.objects.create(
-            accountID=test_account,
+            accountID=self.test_account,
             isVerified=False,
             verificationToken=None,
             hasContentFilterEnabled=False,
@@ -52,23 +52,26 @@ class SettingsTest(TestCase):
         """
         Test case to see if settings are retrieved from account settings
 
-        GET request to /accountSettings/settings endpoint.
+        GET request to /settings/settings endpoint.
         Test passes if 200 response status code is returned
         """
         test_user = Account.objects.get(email="settingstest@gmail.com")
-        response = self.client.get(f"/settings/{test_user.accountID}/")
+        response = self.client.get(f"/settings/settings/{test_user.accountID}/")
         self.assertEqual(response.status_code, 200)
 
-    '''def test_update_settings(self):
+    def test_update_settings(self):
         """
         Test case to see if settings are patched or update to account settings
 
-        Patch request to /accountSettings/settings endpoint.
-        Test passes if 200 response status code is returned
+        Patch request to /settings/settings endpoint.
+        Test passes if 204 response status code is returned
         """
-        test_user_settings = Settings.objects.get(email="settingstest@gmail.com")
+        test_user = Account.objects.get(email="settingstest@gmail.com")
+        test_user_settings = Settings.objects.get(accountID=test_user)
 
-        new_account_data = {
+        print(f"Test User: {test_user}")
+
+        updated_account_data = {
             "accountID": test_user,
             "isVerified": False,
             "verificationToken": None,
@@ -77,10 +80,16 @@ class SettingsTest(TestCase):
             "is2FAEnabled": False,
         }
 
-        """ json_response = json.loads(response.content.decode("utf-8")) """
-        self.assertEqual(test_user_settings.accountID, )
-        self.assertEqual(test_user_settings.isVerified, )
-        self.assertEqual(test_user_settings.verificationToken, )
-        self.assertEqual(test_user_settings.hasContentFilterEnabled, )
-        self.assertEqual(test_user_settings.displayTheme, )
-        self.assertEqual(test_user_settings.is2FAEnabled, )'''
+        json_data = json.dumps(updated_account_data, default=str)
+
+        response = self.client.patch(f'/settings/settings/{test_user_settings.accountID}/', json_data, content_type='application/json')
+        self.assertEqual(response.status_code, 204)
+
+        updated_test_user = Account.objects.get(email="settingstest@gmail.com")
+        updated_test_user_settings = Settings.objects.get(accountID=updated_test_user)
+        self.assertEqual(updated_test_user_settings.accountID, updated_account_data['accountID'])
+        self.assertEqual(updated_test_user_settings.isVerified, updated_account_data['isVerified'])
+        self.assertEqual(updated_test_user_settings.verificationToken, updated_account_data['verificationToken'])
+        self.assertEqual(updated_test_user_settings.hasContentFilterEnabled, updated_account_data['hasContentFilterEnabled'])
+        self.assertEqual(updated_test_user_settings.displayTheme, updated_account_data['displayTheme'])
+        self.assertEqual(updated_test_user_settings.is2FAEnabled, updated_account_data['is2FAEnabled'])
