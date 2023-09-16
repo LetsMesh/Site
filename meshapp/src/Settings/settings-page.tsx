@@ -1,8 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, FormControlLabel, Container, Typography } from '@mui/material';
+import { Switch, FormControlLabel, Container, Typography, createTheme, ThemeProvider } from '@mui/material';
 
 import { AccountSettings } from "./types/account-settings"
 import { axiosInstance } from "../config/axiosConfig";
+
+const theme = createTheme({
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#1cba9a",
+    },
+  },
+  typography: {
+    h1: {
+      fontFamily: "cocogoose",
+      fontWeight: "bold",
+      color: "#ffffff",
+    },
+  },
+}); 
 
 interface SettingsProps {
   value: any,
@@ -10,15 +26,36 @@ interface SettingsProps {
   onChange: (event: any) => void,
 }
 
+/**
+ * React component that represents a single setting
+ * Represented through a React Switch
+ * 
+ * @param props - properties of the component
+ */
 const SettingSwitch = (props: SettingsProps) => {
   return (
-    <FormControlLabel
+    <ThemeProvider theme={theme}>
+      <FormControlLabel
       control={<Switch checked={props.value} onChange={props.onChange} />}
-      label={props.label}
-    />
+      label={<span style={{ color: 'white' }}>{props.label}</span>}
+      />
+    </ThemeProvider>
   );
 }
 
+/**
+ * React component to render settings page.
+ * Displays setting options for the account.
+ * 
+ * @param props 
+ * @param {number} props.accountID - ID for account that settings represent
+ * @param {boolean} props.isVerified - flag for is account if verified
+ * @param {string} props.verificationToken - Token for verification
+ * @param {boolean} props.hasContentFilterEnabled - flag for content filtering
+ * @param {char} props.displayTheme - Char for display theme
+ * @param {boolean} props.is2FAEnabled - flag for if account has TwoFactorAuthentication is enabled
+ * 
+ */
 const SettingsPage = (props: AccountSettings) => {
   const [settings, setSettings] = useState({
     accountID: props.accountID,
@@ -47,15 +84,19 @@ const SettingsPage = (props: AccountSettings) => {
         console.error('Error patching account settings:', error);
         setLoading(true);
       });
-  }, []); // Empty dependency array to run the effect once when the component mounts 
+  }, []); 
 
+  /** 
+   *  NOTE: Second useEffect for sending patch request to update account settings each time settings is modified.
+   *        The patch request is made every time the setting switch is changed.
+   *        This may want to be changed in the future to ensure that only one 
+   *        patch request is made for multiple settings.
+   */
   useEffect(() => {
-    // Make a PATCH request to the backend API to update account settings
+    // Make a PATCH request to the backend API to update account settings 
     axiosInstance.patch("settings/settings/" + props.accountID + "/", {...settings}) // NOTE: Use accountSettings api name when merging
-      .then((response) => {
-        console.log("Patch Response: " + response)
+      .then(() => {
         setLoading(false);
-        console.log("After Set: " + settings.is2FAEnabled)
       })
       .catch((error) => {
         console.error('Error patching account settings:', error);
@@ -64,8 +105,7 @@ const SettingsPage = (props: AccountSettings) => {
   }, [settings])
 
   const handleToggleChange = (settingName: any) => (event: any) => {
-    console.log("Before Set: " + settings.is2FAEnabled)
-    setSettings({ ...settings, [settingName]: event.target.checked });
+    setSettings({ ...settings, [settingName]: event.target.checked }); // TODO: Implement Confirm Authentication for 2FactAuth
   };
 
   if (loading) {
@@ -74,7 +114,7 @@ const SettingsPage = (props: AccountSettings) => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" color="white" gutterBottom>
         Account Settings
       </Typography>
       <SettingSwitch
