@@ -137,7 +137,8 @@ const ProfileInterestsEdit = (props: {
 
   const handleClose = () => {
     props.onClose();
-    setCurrentSelectedTags(props.currentSelectedTags);
+    setSelectedTags(props.currentSelectedTags);
+    setSearchText("");
   };
 
   const handleAlertClose = () => {
@@ -225,7 +226,7 @@ const ProfileInterestsEdit = (props: {
           .filter((tag) => !recommendedTags.includes(tag))
           .map((tag, index) => (
             <ProfileTag
-              key={`custom-${index}`}
+              key={`a-${index}`}
               label={tag}
               selected={selectedTags.includes(tag)}
               onClick={() => toggleTag(tag)}
