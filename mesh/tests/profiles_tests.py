@@ -42,7 +42,7 @@ class ProfilesTest(TestCase):
         test_user = Account.objects.get(email="profilestest@gmail.com")
         response = self.client.get(f"/profiles/profile-picture/{test_user.accountID}")
         json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("data"), {"get": {"profilePicture": "/media/image/profile_test_image.png"}})
+        self.assertEquals(json_response.get("data"), {"get": {"profilePicture": "profile_test_image.png"}})
 
     def test_no_account_profile_picture(self):
         response = self.client.get("/profiles/profile-picture/9999")
@@ -126,5 +126,5 @@ class ProfilesTest(TestCase):
         The test passes if the response status code is 200.
         """
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.post(f"/profiles/biography/{test_user.accountID}/",{'accountID': test_user.accountID, 'biography': "Testing..."}, content_type='application/json')
+        response = self.client.post(f"/profiles/biography/{test_user.accountID}/",{'biography': "Testing..."}, content_type='application/json')
         self.assertEquals(response.status_code, 200)

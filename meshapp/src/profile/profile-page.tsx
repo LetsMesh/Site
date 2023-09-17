@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -83,7 +83,7 @@ const ProfilePage = (props: Profile) => {
             marginBottom: "-125px", // Adjusts container height to match transform
           }}
         >
-          <ProfilePicture image={props.image} />
+          <ProfilePicture image={props.image} accountID={props.accountID} />
           <ProfileRole isMentor={props.isMentor} isMentee={props.isMentee} />
         </Grid>
       </Grid>
@@ -187,11 +187,43 @@ const ProfileOccupation = (props: {
  * @param {number} props.accountID - accountID associated with the profile
  */
 const ProfileBiography = (props: { biography: string; accountID: number }) => {
+  const [biography, setBiography] = useState(props.biography);
+  const [isLoading, setLoading] = useState(true);
+
+  //Gets the user's biography and saves it to the display biography.
+  useEffect(() => {
+    axiosInstance
+      .get("profiles/biography/" + props.accountID)
+      .then((response) => {
+        console.log(response);
+        setBiography(response.data["biography"]);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+      });
+  }, []);
+
+  //Returns an initial loading mode before rendering the user's biography
+  if (isLoading) return <div>loading...</div>;
+
+  /**
+   * Saves the user's biography.
+   *
+   * @param {string} text - The inputted text that the user wants to save
+   */
   function saveBiography(text: string) {
-    const res = axiosInstance.post("/profiles/biography/" + props.accountID, {
-      biography: text,
-      accountID: props.accountID,
-    });
+    axiosInstance
+      .post("profiles/biography/" + props.accountID, {
+        biography: text,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
@@ -200,7 +232,7 @@ const ProfileBiography = (props: { biography: string; accountID: number }) => {
         <ProfileTextField
           label={"Biography"}
           placeholder={"Share your background and experiences"}
-          text={props.biography}
+          text={biography}
           charLimit={300}
           handleSave={saveBiography}
         />

@@ -12,7 +12,7 @@ urlpatterns = [
     
     # GET /profiles/biography/:account_id
     # POST /profiles/biography/:account_id
-    path('biography/<int:account_id>/', profile_views.BiographyView.as_view(), name='biography'),
+    path("biography/<int:account_id>", profile_views.BiographyView.as_view(), name='biography'),
 
     # GET /profiles/profile-picture/:account_id
     path("profile-picture/<int:account_id>", profile_views.ProfilePictureDetailsView.as_view(), name="profile-picture-details"),
