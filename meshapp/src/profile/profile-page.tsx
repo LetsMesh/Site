@@ -316,7 +316,10 @@ const ProfileEducation = (props: any) => {
   );
 };
 
-const ProfileInterests = (props: any) => {
+/**
+ * Displays the user's interest tags and supports editing them.
+ */
+const ProfileInterests = () => {
   // NOTE: Used to simulate future HTTP requests - remove when API is implemented
   const [testCurrentSelected, setTestCurrentSelected] = React.useState<
     string[]

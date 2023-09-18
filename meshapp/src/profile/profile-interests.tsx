@@ -37,6 +37,13 @@ const theme = createTheme({
 
 // NOTE: The rendering order of the tags is dependent on the selection order - might be better if forced alphabetical?
 
+/**
+ * Displays the user's interest tags and supports editing them.
+ *
+ * @param {string[]} props.currentTags - User's current tags
+ * @param {string[]} props.recommendedTags - Recommended tags from backend
+ * @param {function} props.setTags - Callback to save edit-mode changes
+ */
 const ProfileInterestsComponent = (props: any) => {
   const [open, setOpen] = useState(false);
 
@@ -71,6 +78,13 @@ const ProfileInterestsComponent = (props: any) => {
   );
 };
 
+/**
+ * Component for a profile interest tag.
+ *
+ * @param {string} props.label - Label of tag
+ * @param {boolean} props.selected - Whether the tag is selected
+ * @param {function} props.onClick - Callback to handle tag clicks
+ */
 const ProfileTag = (props: {
   label: string;
   selected?: boolean;
@@ -95,11 +109,19 @@ const ProfileTag = (props: {
   );
 };
 
+/**
+ * Displays a dialog for editing the user's interest tags.
+ *
+ * @param {boolean} props.open - Whether the dialog is open
+ * @param {function} props.onClose - Callback to close the dialog
+ * @param {string[]} props.recommendedTags - Recommended tags from backend
+ * @param {function} props.onSelectedTagsChange - Callback to save changes
+ * @param {string[]} props.currentSelectedTags - User's current tags
+ */
 const ProfileInterestsEdit = (props: {
   open: boolean;
   onClose: () => void;
   recommendedTags: string[];
-  selectedTags?: string[];
   onSelectedTagsChange: (tags: string[]) => void;
   currentSelectedTags: string[];
 }) => {
