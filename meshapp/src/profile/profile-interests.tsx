@@ -21,6 +21,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 
+import { ProfileInterests } from "./types/profile";
 import "./styling/profile-page.css";
 
 const theme = createTheme({
@@ -44,7 +45,7 @@ const theme = createTheme({
  * @param {string[]} props.recommendedTags - Recommended tags from backend
  * @param {function} props.setTags - Callback to save edit-mode changes
  */
-const ProfileInterestsComponent = (props: any) => {
+const ProfileInterestsComponent = (props: ProfileInterests) => {
   const [open, setOpen] = useState(false);
 
   return (

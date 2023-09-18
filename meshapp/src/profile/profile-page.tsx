@@ -316,6 +316,9 @@ const ProfileEducation = (props: any) => {
   );
 };
 
+// NOTE: For the ProfileInterests, the ProfileInterests type is used in ProfileInterestsComponent
+//       and not here. It should probably also be renamed for clarity. It works though, so whatever.
+
 /**
  * Displays the user's interest tags and supports editing them.
  */
