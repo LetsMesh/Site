@@ -90,6 +90,20 @@ const ProfileTag = (props: {
   selected?: boolean;
   onClick?: () => void;
 }) => {
+  const selectedStyle = {
+    backgroundColor: "#0b7d66",
+    color: "#ffffff",
+    "&:hover": {
+      backgroundColor: "#087a59",
+    },
+  };
+
+  const unselectedStyle = {
+    "&:hover": {
+      filter: "brightness(85%)",
+    },
+  };
+
   return (
     <Chip
       label={props.label}
@@ -98,12 +112,7 @@ const ProfileTag = (props: {
         height: "28px",
         mb: "5px",
         mr: "8px",
-        backgroundColor: props.selected ? "#0b7d66" : undefined,
-        color: props.selected ? "#ffffff" : undefined,
-        "&:hover": {
-          backgroundColor: props.selected ? "#087a59" : undefined,
-          filter: props.selected ? undefined : "brightness(85%)",
-        },
+        ...(props.selected ? selectedStyle : unselectedStyle),
       }}
     />
   );
