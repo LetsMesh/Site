@@ -48,8 +48,8 @@ const ProfileName = (props: {
   // Enforce developer-defined character limit and empty string
   const handleTextChange = (event: any) => {
     if (event.target.value.length > props.charLimit) return;
-    if (event.target.value.length === 0) return;
-    if (event.target.value.includes(" ")) return;
+    if (event.target.value.trim() === "") return;
+    if (!/^[a-zA-Z\s]+$/.test(event.target.value)) return;
     setText(event.target.value);
   };
 
