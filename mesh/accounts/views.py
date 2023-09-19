@@ -20,6 +20,18 @@ class AccountsView(View):
 
     def get(self, request):
         """
+        Handle GET requests.
+
+        Retrieves a list of all accounts in JSON format.
+
+        Returns a JSON response containing all Account.
+        """
+        accounts = Account.objects.all()
+        serialized_data = serialize('json', accounts)
+        return JsonResponse({'accounts': json.loads(serialized_data)}, status=200)
+    
+    def post(self, request):
+        """
         Handle POST requests.
 
         Creates a new account. The required fields are 'email', 'encryptedPass', 'phoneNum', 
@@ -28,18 +40,6 @@ class AccountsView(View):
         a HTTP status code 201, indicating that the account has been successfully created.
         
         Returns a JSON response with the newly created account's ID and a 201 status code.
-        """
-        accounts = Account.objects.all()
-        serialized_data = serialize('json', accounts)
-        return JsonResponse({'accounts': json.loads(serialized_data)}, status=200)
-    
-    def post(self, request):
-        """
-        Handle GET requests.
-
-        Retrieves a list of all accounts in JSON format.
-
-        Returns a JSON response containing all Account.
         """
         try:
             REQUIRED_FIELDS = ['email', 'password', 'phoneNum', 'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee']
@@ -58,9 +58,22 @@ class AccountsView(View):
             )
             new_account.full_clean()
             new_account.save()
-            return JsonResponse({'accountID': new_account.accountID}, status=201)
+            return JsonResponse(
+                {
+                    'status': 'account created',
+                    'accountID': new_account.accountID
+                }, 
+                status=201
+            )
+        
         except (KeyError, json.JSONDecodeError, ValidationError):
-            return JsonResponse({'error': 'Invalid data format'}, status=400)
+            return JsonResponse(
+                {
+                    'status': 'failed to create',
+                    'error': 'Invalid data format',
+                },
+                status=400
+            )
 
 
 class SingleAccountView(View):
@@ -78,7 +91,12 @@ class SingleAccountView(View):
         try:
             account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
-            return JsonResponse({'error': 'Account does not exist'}, status=404)
+            return JsonResponse(
+                {
+                    'status': 'Account does not exist'
+                }, 
+                status=404
+            )
 
         serialized_data = serialize('json', [account])
         return JsonResponse({'account': json.loads(serialized_data)}, status=200)
