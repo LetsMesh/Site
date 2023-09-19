@@ -4,12 +4,13 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views as accounts_views
 from .views import *
+from ..exampleapi import views as exampleapi_views
 
 
 urlpatterns = [
     # GET    /accounts/ 
     # POST   /accounts/
-    path('', accounts_views.AccountsView.as_view(), name='account'),
+    path('', accounts_views.AccountsView.as_view(), name='accounts'),
     # GET    /accounts/:account_id
     # PATCH  /accounts/:account_id
     path('<int:account_id>/', accounts_views.SingleAccountView.as_view(), name='create_account'), 
