@@ -135,8 +135,26 @@ class SingleAccountView(View):
         account.isMentee = data.get('isMentee', account.isMentee)
         account.save()
         return HttpResponse(status=204)
+    
+    def delete(self, request, account_id):
+        """
+        Handle DELETE requests.
 
-def encrypt(password ):
+        Deletes the Account with the given ID.
+        If the Account does not exist, it returns a 404 status code and an error message.
+
+        Returns a 204 HTTP status to indicate that the request has succeeded 
+        but does not include an entity-body in the response.
+        """
+        try:
+            account = Account.objects.get(accountID=account_id)
+        except Account.DoesNotExist:
+            return JsonResponse({'error': 'Account does not exist'}, status=404)
+
+        account.delete()
+        return HttpResponse(status=204)
+
+def encrypt(password):
     salt = bcrypt.gensalt(12)
 
     pepper = os.getenv("PEPPER")

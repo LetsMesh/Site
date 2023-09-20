@@ -2,7 +2,6 @@
 you can run this test with
 
 python manage.py test mesh.tests.accounts_tests
-
 '''
 
 from django.test import TestCase, Client
@@ -99,3 +98,17 @@ class AccountTest(TestCase):
         # check password
         from ..accounts.views import decrypt
         self.assertEqual(updated_account.encryptedPass, decrypt(updated_account_data['password'], updated_account.salt))
+
+    def test_delete_account(self):
+        """
+        Test case for deleting an account.
+
+        A DELETE request is sent to the '/accounts/{account_id}/' endpoint.
+        The test passes if the response status code is 204 and the account is successfully deleted from the database.
+        """
+        response = self.client.delete(f'/accounts/{self.test_account.accountID}/')
+        self.assertEqual(response.status_code, 204)
+
+        # Make sure the account is actually deleted by trying to retrieve it and expecting an Account.DoesNotExist exception
+        with self.assertRaises(Account.DoesNotExist):
+            Account.objects.get(accountID=self.test_account.accountID)
