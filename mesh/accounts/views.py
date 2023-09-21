@@ -22,13 +22,14 @@ class AccountsView(View):
         """
         Handle GET requests.
 
-        Retrieves a list of all accounts in JSON format.
+        Retrieves all Accounts from the database and returns them in a JSON-formatted array.
+        Each element in the array is a JSON object representing an Account, including its model name, primary key, and other fields.
 
-        Returns a JSON response containing all Account.
+        Returns a 200 HTTP status code along with the JSON-formatted array of Accounts.
         """
         accounts = Account.objects.all()
         serialized_data = serialize('json', accounts)
-        return HttpResponse({'accounts': json.loads(serialized_data)}, status=200)
+        return HttpResponse(serialized_data, status=200, content_type='application/json')
     
     def post(self, request):
         """
@@ -59,20 +60,18 @@ class AccountsView(View):
             new_account.full_clean()
             new_account.save()
             return HttpResponse(
-                {
-                    'status': 'account created',
-                    'accountID': new_account.accountID
-                }, 
-                status=201
+                new_account.accountID, 
+                status=201,
+                content_type='application/json'
             )
         
         except (KeyError, json.JSONDecodeError, ValidationError):
-            return HttpResponse(
+            return JsonResponse(
                 {
-                    'status': 'failed to create',
-                    'error': 'Invalid data format',
+                    'error': 'Failed to create. Invalid data format',
                 },
-                status=400
+                status=400,
+                content_type='application/json'
             )
 
 
@@ -85,21 +84,30 @@ class SingleAccountView(View):
         """
         Handle GET requests.
 
-        Returns a JSON response containing the Account with the given ID.
-        If the Account does not exist, it returns a 404 status code and an error message.
+        Returns a JSON response containing the details of a single Account
+        identified by the given account_id. The JSON object contains the model
+        name, primary key, and other fields of the Account.
+
+        Returns a 404 status code and a JSON object containing an error message
+        if the account does not exist.
         """
         try:
             account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
-            return HttpResponse(
-                {
-                    'status': 'Account does not exist'
-                }, 
-                status=404
-            )
+            return JsonResponse({'error': 'Account does not exist'}, status=404)
 
+        # Serialize the account and parse it as JSON
         serialized_data = serialize('json', [account])
-        return HttpResponse({'account': json.loads(serialized_data)}, status=200)
+        parsed_data = json.loads(serialized_data)
+
+        # Extract the first element from the parsed list
+        single_account_data = parsed_data[0] if parsed_data else {}
+
+        return HttpResponse(
+            json.dumps(single_account_data), 
+            status=200,
+            content_type='application/json'
+        )
 
     def patch(self, request, account_id, *args, **kwargs):
         """
@@ -121,7 +129,7 @@ class SingleAccountView(View):
         try:
             account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
-            return HttpResponse({'error': 'Account does not exist'}, status=404)
+            return JsonResponse({'error': 'Account does not exist'}, status=404)
 
         data = json.loads(request.body)
         account.email = data.get('email', account.email)
@@ -149,10 +157,10 @@ class SingleAccountView(View):
         try:
             account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
-            return HttpResponse({'error': 'Account does not exist'}, status=404)
+            return JsonResponse({'message': 'Account does not exist'}, status=404)
 
         account.delete()
-        return HttpResponse(status=204)
+        return JsonResponse({'message': f'successfully deleted Account with account_id: {account_id}'}, status=204)
 
 def encrypt(password):
     salt = bcrypt.gensalt(12)
