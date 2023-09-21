@@ -28,7 +28,7 @@ class AccountsView(View):
         """
         accounts = Account.objects.all()
         serialized_data = serialize('json', accounts)
-        return JsonResponse({'accounts': json.loads(serialized_data)}, status=200)
+        return HttpResponse({'accounts': json.loads(serialized_data)}, status=200)
     
     def post(self, request):
         """
@@ -58,7 +58,7 @@ class AccountsView(View):
             )
             new_account.full_clean()
             new_account.save()
-            return JsonResponse(
+            return HttpResponse(
                 {
                     'status': 'account created',
                     'accountID': new_account.accountID
@@ -67,7 +67,7 @@ class AccountsView(View):
             )
         
         except (KeyError, json.JSONDecodeError, ValidationError):
-            return JsonResponse(
+            return HttpResponse(
                 {
                     'status': 'failed to create',
                     'error': 'Invalid data format',
@@ -91,7 +91,7 @@ class SingleAccountView(View):
         try:
             account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
-            return JsonResponse(
+            return HttpResponse(
                 {
                     'status': 'Account does not exist'
                 }, 
@@ -99,7 +99,7 @@ class SingleAccountView(View):
             )
 
         serialized_data = serialize('json', [account])
-        return JsonResponse({'account': json.loads(serialized_data)}, status=200)
+        return HttpResponse({'account': json.loads(serialized_data)}, status=200)
 
     def patch(self, request, account_id, *args, **kwargs):
         """
@@ -121,7 +121,7 @@ class SingleAccountView(View):
         try:
             account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
-            return JsonResponse({'error': 'Account does not exist'}, status=404)
+            return HttpResponse({'error': 'Account does not exist'}, status=404)
 
         data = json.loads(request.body)
         account.email = data.get('email', account.email)
@@ -149,7 +149,7 @@ class SingleAccountView(View):
         try:
             account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
-            return JsonResponse({'error': 'Account does not exist'}, status=404)
+            return HttpResponse({'error': 'Account does not exist'}, status=404)
 
         account.delete()
         return HttpResponse(status=204)
@@ -194,21 +194,21 @@ def create_account(request):
             )
             user_account.save()
 
-            return JsonResponse(
+            return HttpResponse(
                 {
                     "status":"successfully created"
                 },
                 status = 201
             )
         else:
-            return JsonResponse(
+            return HttpResponse(
                 {
                     "status":"account with same email or phone number exists"
                 },
                 status = 409
             )
     else :
-        return JsonResponse(
+        return HttpResponse(
             {
                 "status":f"{request.method} method not allowed"
             },
@@ -224,7 +224,7 @@ def check_password(request):
 
         user_created = Account.objects.filter(email = email,phoneNum = phoneNumber).values()
         if not bool(user_created):
-            return JsonResponse(
+            return HttpResponse(
                 {
                     "error":"Account not found",
                 },
@@ -237,14 +237,14 @@ def check_password(request):
 
             if hash == decrypt(password, salt):
 
-                return JsonResponse(
+                return HttpResponse(
                     {
                         "message":"Access granted"
                     },
                     status = 200
                 )
             else:
-                return JsonResponse(
+                return HttpResponse(
                     {
                         "message":"Access denied, wrong password"
                     },
@@ -252,7 +252,7 @@ def check_password(request):
                 )
 
     else :
-        return JsonResponse(
+        return HttpResponse(
             {
                 "status":f"{request.method} method not allowed"
             },
