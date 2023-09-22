@@ -43,7 +43,7 @@ class AccountsView(View):
         Returns a JSON response with the newly created account's ID and a 201 status code.
         """
         try:
-            REQUIRED_FIELDS = ['email', 'password', 'phoneNum', 'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee']
+            REQUIRED_FIELDS = ['email', 'password', 'phoneNum', 'isMentor', 'isMentee']
             data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
             # data = json.loads(request.body)
             salt,hash = encrypt(data['password'])
@@ -52,8 +52,6 @@ class AccountsView(View):
                 encryptedPass=hash,
                 salt=salt,
                 phoneNum=data['phoneNum'],
-                displayTheme=data['displayTheme'],
-                enabled2Factor=data['enabled2Factor'],
                 isMentor=data['isMentor'],
                 isMentee=data['isMentee'],
             )
@@ -137,8 +135,6 @@ class SingleAccountView(View):
             salt, hash = encrypt(data.get('password'))
             account.encryptedPass = hash
             account.salt = salt
-        account.displayTheme = data.get('displayTheme', account.displayTheme)
-        account.enabled2Factor = data.get('enabled2Factor', account.enabled2Factor)
         account.isMentor = data.get('isMentor', account.isMentor)
         account.isMentee = data.get('isMentee', account.isMentee)
         account.save()

@@ -20,8 +20,6 @@ class AccountTest(TestCase):
             encryptedPass=b'some_encrypted_pass',
             salt=b'some_salt',
             phoneNum='1234567890',
-            displayTheme='L',
-            enabled2Factor=False,
             isMentor=False,
             isMentee=False
         )
@@ -59,8 +57,6 @@ class AccountTest(TestCase):
             'email': 'new@email.com',
             'password': 'newpassword',
             'phoneNum': '0987654321',
-            'displayTheme': 'D',
-            'enabled2Factor': True,
             'isMentor': True,
             'isMentee': False
         }
@@ -78,8 +74,6 @@ class AccountTest(TestCase):
         updated_account_data = {
             "email": "profilestest@gmail.com",
             "password": "newpassword123",
-            "displayTheme": "0",
-            "enabled2Factor": False,
             "isMentor": False,
             "isMentee": True,
         }
@@ -91,8 +85,6 @@ class AccountTest(TestCase):
         # check if the account is actually updated by comparing the account in the database and the updated_account_data object
         updated_account = Account.objects.get(accountID=self.test_account.accountID)
         self.assertEqual(updated_account.email, updated_account_data['email'])
-        self.assertEqual(updated_account.displayTheme, updated_account_data['displayTheme'])
-        self.assertEqual(updated_account.enabled2Factor, updated_account_data['enabled2Factor'])
         self.assertEqual(updated_account.isMentor, updated_account_data['isMentor'])
         self.assertEqual(updated_account.isMentee, updated_account_data['isMentee'])
         # check password
