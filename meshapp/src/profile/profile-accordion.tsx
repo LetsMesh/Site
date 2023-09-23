@@ -31,6 +31,17 @@ export default function ProfileAccordion(props: {
   const groupState = GroupAccordContext.groupState;
   const setGroupState = GroupAccordContext.setGroupState;
 
+  //test error validation functions
+  const doesntHaveCar = (val: string) =>{
+
+    return (val ==="car") || "doesn't have car";
+  }
+  const doesntHaveB = (val: string) =>{
+
+    return (val.length > 0 && val[val.length-1] === "B") || "doesn't have B end";
+  }
+
+  let errValid = [doesntHaveCar]
   const handleEditClick = () => {
     setEditMode(true);
   };
@@ -51,7 +62,7 @@ export default function ProfileAccordion(props: {
       <AccordionSummary
         expandIcon={<ExpandMoreFilled onClick={toggleExpand} />}
       >
-        <Box sx={{ width: "33%", flexShrink: 0 }}>
+        <Box sx={{ width: "33%", flexShrink: 0 }} >
           <ProfileAccordionComboBox
             value={props.headerOne}
             disabled={!editMode}
@@ -74,7 +85,9 @@ export default function ProfileAccordion(props: {
                   };
                 })
               );
+
             }}
+            errValidations={errValid}
           />
         </Box>
         <ProfileAccordionComboBox
@@ -100,6 +113,8 @@ export default function ProfileAccordion(props: {
               })
             );
           }}
+          errValidations={errValid}
+
         />
         <Grid
           xs={0.5}
@@ -147,6 +162,7 @@ export default function ProfileAccordion(props: {
           text={props.descText}
           charLimit={100}
           accordionIndex={props.accordionIndex}
+          errorValidation={errValid}
         />
       </AccordionDetails>
     </Accordion>

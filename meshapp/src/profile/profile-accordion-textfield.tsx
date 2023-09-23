@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { TextField, Box } from "@mui/material";
+import React, { ChangeEvent, useState } from "react";
+import { TextField, Box, Tooltip } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import { useGroupAccordContext } from "./profile-group_accordion";
+import ErrorIcon from "@mui/icons-material/Error";
 
 /**
  * A React component that renders a text field with editing capabilities.
@@ -25,28 +26,45 @@ const ProfileAccordionTextField = (props: {
   text: string;
   charLimit: number;
   accordionIndex: number;
+  errorValidation: Array<(value: string) => boolean | string>;
 }) => {
   //grab context
   const GroupAccordContext = useGroupAccordContext();
   const groupState = GroupAccordContext.groupState;
   const setGroupState = GroupAccordContext.setGroupState;
 
-  //text from group state
-  const text = groupState[props.accordionIndex].descText;
-
   //used to set edit mode
   const [editMode, setEditMode] = useState(false);
 
-  // Enforce developer-defined character limit
-  const handleTextChange = (event: any) => {
-    if (event.target.value.length > props.charLimit) return;
+  const handleTextChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    let newText = event.target.value;
+    setText(newText);
+    let errResult = props.errorValidation.reduce(
+      (prevResult: boolean | string, curErrVal) => {
+        if (prevResult && typeof prevResult !== "string") {
+          return curErrVal(newText);
+        } else {
+          return prevResult;
+        }
+      },
+      true
+    );
+    if (errResult && typeof errResult !== "string") {
+      hideError();
+    } else {
+      setErrorMessage(errResult as string);
+      showError();
+      return;
+    }
     setGroupState(
       groupState.map((profileAccordion, index) => {
         if (index === props.accordionIndex) {
           return {
             headerOne: profileAccordion.headerOne,
             headerTwo: profileAccordion.headerTwo,
-            descText: event.target.value,
+            descText: newText,
           };
         }
         return {
@@ -66,12 +84,30 @@ const ProfileAccordionTextField = (props: {
     setEditMode(false);
   };
 
+  const [hasError, setHasError] = useState(false);
+  const showError = () => setHasError(true);
+  const hideError = () => setHasError(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [text, setText] = useState(groupState[props.accordionIndex].descText);
   return (
     <TextField
+      value={text}
       label={props.label}
       placeholder={props.placeholder}
       InputLabelProps={{ shrink: true }}
       InputProps={{
+        startAdornment: hasError && (
+          <Tooltip
+            disableFocusListener
+            disableTouchListener
+            arrow
+            title={errorMessage}
+            placement="top"
+          >
+            <ErrorIcon color="error" />
+          </Tooltip>
+        ),
         endAdornment: editMode ? (
           <Box paddingLeft={2}>
             <SaveIcon
@@ -110,7 +146,6 @@ const ProfileAccordionTextField = (props: {
       fullWidth
       multiline
       disabled={!editMode}
-      value={text}
       onChange={handleTextChange}
       variant="standard"
       sx={{
@@ -123,7 +158,7 @@ const ProfileAccordionTextField = (props: {
           },
           "&:not(.Mui-disabled):hover fieldset": {
             borderColor: "primary.main",
-          }
+          },
         },
       }}
     />

@@ -271,8 +271,8 @@ const ProfileEducation = (props: any) => {
           }
           headerOnePlaceholder="header1Placeholder"
           headerTwoPlaceholder="header2Placeholder"
-          headerOneOptions={["car", "dog"]}
-          headerTwoOptions={["cat", "fish"]}
+          headerOneOptions={["car", "dog", "fish"]}
+          headerTwoOptions={["cat", "fish", "fish"]}
           descPlaceholder="descPlaceholder"
           charLimit={100} 
 
