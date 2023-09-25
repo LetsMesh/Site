@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { TextField, Box, ThemeProvider, Theme, Typography, Grid, createTheme } from "@mui/material";
+import {
+  TextField,
+  Box,
+  ThemeProvider,
+  Typography,
+  Grid,
+  createTheme,
+} from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 
+// Error-handling Imports
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 /**
  * A React component that renders a text field with editing capabilities.
@@ -16,58 +26,36 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {string} props.placeholder - The placeholder text
  * @param {string} props.text - The initial text content
  * @param {number} props.charLimit - The max number of characters allowed
+ * @param {string} props.fontSize - The font size
  */
 const theme = createTheme({
-    palette: {
-      mode: "light",
-      primary: {
-        main: "#0b7d66",
-      },
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#0b7d66",
     },
-    typography: {
-      h1: {
-        fontFamily: "cocogoose",
-        fontWeight: "bold",
-        color: "#26383A",
-      },
+  },
+  typography: {
+    h1: {
+      fontFamily: "cocogoose",
+      fontWeight: "bold",
+      color: "#26383A",
     },
+  },
 });
-
-
 
 const ProfileName = (props: {
   label: string;
   placeholder: string;
   text: string;
   charLimit: number;
+  fontSize: string;
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
-  
+  const [snackBar, setSnackbar] = useState(false);
 
-  // Enforce developer-defined character limit and empty string
-  const handleTextChange = (event: any) => {
-    if (event.target.value.length > props.charLimit) return;
-    if (event.target.value.trim() === "") return;
-    if (!/^[a-zA-Z\s]+$/.test(event.target.value)) return;
-    setText(event.target.value);
-  };
-
-  // Checks if it is a name or pronoun
-  
-  const name = "60px";
-  const pronoun = "30px";
-  let nicknameOrPronouns = "Nickname";
-
-  const nameOrPronounFont = (charLimit: number) => {
-    if(props.charLimit == 15) {
-      return name;
-    } else {
-      nicknameOrPronouns = "Pronouns"
-      return pronoun;
-    }
-  }
-
+  // Handler
   const handleEditClick = () => {
     setEditMode(!editMode);
   };
@@ -76,82 +64,104 @@ const ProfileName = (props: {
     setEditMode(false);
   };
 
-  return (
-    
-    editMode ? (
-        <ThemeProvider theme={theme}>
-            <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
-                <Typography
-                    variant="h1"
-                    sx={{
-                        lineHeight: 1,
-                        display: "inline",
-                        fontSize: nameOrPronounFont(props.charLimit),
-                    }}
-                >
-                <TextField
-                        required
-                        id="standard-required"
-                        label={nicknameOrPronouns}
-                        defaultValue={text}
-                        variant="standard"
-                        onChange={handleTextChange}
-                    />
-                <SaveIcon
-                    color="primary"
-                    onClick={handleSaveClick}
-                    sx={{
-                        "&:hover": {
-                        color: "#0A6B57",
-                        },
-                        cursor: "pointer",
-                        transition: "color 0.15s ease-in-out",
-                    }}
-                />
-                </Typography>
-            </Box>
-        </ThemeProvider>
-        
-    
-    ) : (
-        // View Mode
-        <ThemeProvider theme={theme}>
-        <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
-          <Grid container alignItems="flex-end">
-            <Box
+  const handleCloseSnackbar = () => {
+    setSnackbar(false);
+  };
+
+  // Enforce developer-defined character limit and empty string
+  const handleTextChange = (event: any) => {
+    if (!/^[a-zA-Z\s]{1,15}$/.test(event.target.value)) {
+      setSnackbar(true);
+      return;
+    }
+    setText(event.target.value);
+  };
+
+  // Return
+  return editMode ? (
+    <ThemeProvider theme={theme}>
+      <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
+        <Typography
+          variant="h1"
+          sx={{
+            lineHeight: 1,
+            display: "inline",
+            fontSize: props.fontSize,
+          }}
+        >
+          <TextField
+            required
+            id="standard-required"
+            label={props.placeholder}
+            defaultValue={text}
+            variant="standard"
+            onChange={handleTextChange}
+          />
+          <SaveIcon
+            color="primary"
+            onClick={handleSaveClick}
+            sx={{
+              "&:hover": {
+                color: "#0A6B57",
+              },
+              cursor: "pointer",
+              transition: "color 0.15s ease-in-out",
+            }}
+          />
+        </Typography>
+      </Box>
+    </ThemeProvider>
+  ) : (
+    // View Mode
+    <ThemeProvider theme={theme}>
+      <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
+        <Grid container alignItems="flex-end">
+          <Box
+            sx={{
+              maxWidth: "1000px",
+              wordBreak: "break-word",
+            }}
+          >
+            <Typography
+              variant="h1"
               sx={{
-                maxWidth: "1000px",
-                wordBreak: "break-word",
+                lineHeight: 1,
+                display: "inline",
+                fontSize: props.fontSize,
               }}
             >
-              <Typography
-                variant="h1"
+              {text}
+              <EditIcon
+                onClick={handleEditClick}
                 sx={{
-                  lineHeight: 1,
-                  display: "inline",
-                  fontSize: nameOrPronounFont(props.charLimit),
+                  "&:hover": {
+                    color: "#0b7d66",
+                  },
+                  cursor: "pointer",
+                  transition: "color 0.15s ease-in-out",
                 }}
-              >
-                {text}
-              <EditIcon 
-                  onClick={handleEditClick}
-                  sx={{
-                    "&:hover": {
-                      color: "#0b7d66",
-                    },
-                    cursor: "pointer",
-                    transition: "color 0.15s ease-in-out",
-                  }}
               />
-              </Typography>
-            </Box>
-          </Grid>
-        </Box>
-      </ThemeProvider>
-      
-    )
-    
+            </Typography>
+          </Box>
+        </Grid>
+      </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={snackBar}
+        autoHideDuration={4500} 
+        onClose={handleCloseSnackbar}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          severity="error"
+          onClose={handleCloseSnackbar}
+        >
+          Name cannot contain special characters or numbers, be empty, or exceed character limit of 15.
+        </MuiAlert>
+      </Snackbar>
+    </ThemeProvider>
   );
-}
+};
 
 export default ProfileName;

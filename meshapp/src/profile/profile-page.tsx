@@ -58,8 +58,8 @@ const ProfilePage = (props: Profile) => {
       <Box className="profile-page-header">
         
         {/* <ProfileHeader name={props.name} pronouns={props.pronouns} /> Temporary Comment*/}
-        <ProfileName label={props.name} placeholder={"Test"}text={props.name} charLimit={15} /> 
-        <ProfileName label={props.pronouns} placeholder={"Test"}text={props.pronouns} charLimit={8} /> 
+        <ProfileName label={props.name} placeholder={"Nickname"} text={props.name} charLimit={15} fontSize={"60px"}/> 
+        <ProfileName label={props.pronouns} placeholder={"Pronouns"} text={props.pronouns} charLimit={8} fontSize={"30px"} /> 
       </Box>
       <Grid container sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
         <Grid
