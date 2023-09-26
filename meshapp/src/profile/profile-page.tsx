@@ -13,7 +13,12 @@ import ProfilePicture from "./profile-picture";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
 
+
 import { axiosInstance } from "../config/axiosConfig";
+
+// New Imports
+import ProfileHeader from "./profile-header";
+
 
 const theme = createTheme({
   palette: {
@@ -51,7 +56,8 @@ const ProfilePage = (props: Profile) => {
   return (
     <Box className="profile-page-container">
       <Box className="profile-page-header">
-        <ProfileHeader name={props.name} pronouns={props.pronouns} />
+        <ProfileHeader label={props.name} placeholder={"Nickname"} text={props.name} charLimit={15} fontSize={"60px"}/> 
+        <ProfileHeader label={props.pronouns} placeholder={"Pronouns"} text={props.pronouns} charLimit={8} fontSize={"30px"} /> 
       </Box>
       <Grid container sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
         <Grid
@@ -116,42 +122,6 @@ const ProfilePage = (props: Profile) => {
  * @param {string} props.name - Name of user
  * @param {string} props.pronouns - Pronouns used by user
  */
-const ProfileHeader = (props: { name: string; pronouns: string }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
-        <Grid container alignItems="flex-end">
-          <Box
-            sx={{
-              maxWidth: "1000px",
-              wordBreak: "break-word",
-            }}
-          >
-            <Typography
-              variant="h1"
-              sx={{
-                lineHeight: 1,
-                display: "inline",
-                fontSize: "60px",
-              }}
-            >
-              {props.name}
-              <Typography
-                variant="h1"
-                sx={{
-                  display: "inline",
-                  fontSize: "30px",
-                }}
-              >
-                {` (${props.pronouns})`}
-              </Typography>
-            </Typography>
-          </Box>
-        </Grid>
-      </Box>
-    </ThemeProvider>
-  );
-};
 
 /**
  * Displays the user's current occupation.
