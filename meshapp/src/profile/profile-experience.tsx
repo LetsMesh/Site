@@ -44,8 +44,6 @@ const theme = createTheme({
  * Displays the user's experience.
  *
  * @param props - Properties of the component
- * @param {string} props.occupationTitle - Title of user's occupation
- * @param {string} props.occupationBusiness - Name of business/org the user affiliates with
  * @param {string} props.accountID - accountID associated with the profile
  */
 export default function ProfileExperience(props: { accountID: number }) {

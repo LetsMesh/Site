@@ -10,6 +10,8 @@ import {
 
 import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
+import ProfileExperience from "./profile-experience";
+import ProfileOccupation from "./profile-occupation";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
 
@@ -87,7 +89,7 @@ const ProfilePage = (props: Profile) => {
         <Grid container>
           <Grid item xs={9}>
             <Box sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
-              <ProfileExperience />
+              <ProfileExperience accountID = {props.accountID}/>
             </Box>
             <Box>
               <ProfileEducation />
@@ -154,28 +156,6 @@ const ProfileHeader = (props: { name: string; pronouns: string }) => {
 };
 
 /**
- * Displays the user's current occupation.
- *
- * @param props - Properties of the component
- * @param {string} props.occupationTitle - Title of user's occupation
- * @param {string} props.occupationBusiness - Name of business/org the user affiliates with
- */
-const ProfileOccupation = (props: {
-  occupationTitle: string;
-  occupationBusiness: string;
-}) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-occupations">
-        <Typography variant="h1" sx={{ fontSize: "24px" }}>
-          {props.occupationTitle}, {props.occupationBusiness}
-        </Typography>
-      </Box>
-    </ThemeProvider>
-  );
-};
-
-/**
  * Displays the user's biography. It also has a max character limit of 300.
  *
  * @param props - Properties of the component
@@ -225,8 +205,9 @@ const ProfileBiography = (props: {biography: string, accountID: number}) => {
     <ThemeProvider theme={theme}>
       <Box className="profile-page-biography">
         <ProfileTextField
-          label={"Biography"}
-          placeholder={"Share your background and experiences"}
+          variant="outlined"
+          label="Biography"
+          placeholder="Share your background and experiences"
           text={biography}
           charLimit={300}
           handleSave={saveBiography}
@@ -268,26 +249,6 @@ const ProfileRole = (props: { isMentor: boolean; isMentee: boolean }) => {
       }}
       size="medium"
     />
-  );
-};
-
-// TODO: To be fully implemented
-const ProfileExperience = (props: any) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-column-body">
-        <Typography
-          variant="h1"
-          sx={{
-            marginBottom: "20px",
-            fontSize: "22px",
-          }}
-        >
-          Experience
-        </Typography>
-        <TestComponent />
-      </Box>
-    </ThemeProvider>
   );
 };
 
@@ -335,9 +296,10 @@ const ProfileInterests = (props: any) => {
 const TestComponent = (props: any) => {
   return (
     <ProfileTextField
-      label={"Test"}
-      placeholder={"Test"}
-      text={"Test"}
+      variant="outlined"
+      label="Test"
+      placeholder="Test"
+      text="Test"
       charLimit={200}
       handleSave={() => {return}}
     />
