@@ -44,7 +44,7 @@ const theme = createTheme({
   },
 });
 
-const ProfileName = (props: {
+const ProfileHeader = (props: {
   label: string;
   placeholder: string;
   text: string;
@@ -70,7 +70,9 @@ const ProfileName = (props: {
 
   // Enforce developer-defined character limit and empty string
   const handleTextChange = (event: any) => {
-    if (!/^[a-zA-Z\s]{1,15}$/.test(event.target.value)) {
+    // Allows "/" special character use for only Pronouns
+    if ( (props.placeholder === "Nickname" && !/^[a-zA-Z\s]{1,15}$/.test(event.target.value)) || 
+    (props.placeholder === "Pronouns" && !/^[a-zA-Z\s/]{1,8}$/.test(event.target.value))) {
       setSnackbar(true);
       return;
     }
@@ -148,7 +150,7 @@ const ProfileName = (props: {
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         open={snackBar}
-        autoHideDuration={4500} 
+        autoHideDuration={7000} 
         onClose={handleCloseSnackbar}
       >
         <MuiAlert
@@ -157,11 +159,11 @@ const ProfileName = (props: {
           severity="error"
           onClose={handleCloseSnackbar}
         >
-          Name cannot contain special characters or numbers, be empty, or exceed character limit of 15.
+          Nickname/Pronouns cannot contain special characters or numbers, be empty, or exceed character limit of 15 or 8.
         </MuiAlert>
       </Snackbar>
     </ThemeProvider>
   );
 };
 
-export default ProfileName;
+export default ProfileHeader;
