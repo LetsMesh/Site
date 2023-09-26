@@ -86,10 +86,8 @@ export default function ProfileExperience(props: { accountID: number }) {
     setExpandMode([...expandMode, false]);
   };
 
-  //TODO: Remove experience 
-  const handleDeleteClick = () => {
-
-  };
+  //TODO: Remove experience
+  const handleDeleteClick = () => {};
 
   //TODO: Receive and store experience
   function saveOccupation(text: string, index: number) {
@@ -144,6 +142,31 @@ export default function ProfileExperience(props: { accountID: number }) {
   };
 
   /**
+   * Returns the occupation's description
+   *
+   * @param props - Properties of the component
+   * @param {string} props.description - Description of user's occupation
+   * @param {numberg} props.index- Index of user's occupation
+   */
+  const DescriptionAccordionDetail = (props: {
+    description: string;
+    index: number;
+  }) => {
+    return (
+      <AccordionDetails>
+        <ProfileTextField
+          variant="standard"
+          label="Description"
+          placeholder="Ex: Wash dishes at high velocity"
+          text={props.description}
+          charLimit={300}
+          handleSave={(text) => saveDescription(text, props.index)}
+        />
+      </AccordionDetails>
+    );
+  };
+
+  /**
    * Displays the user's experience in edit mode.
    *
    * @param props - Properties of the component
@@ -166,20 +189,16 @@ export default function ProfileExperience(props: { accountID: number }) {
         <Grid item {...(editMode ? { xs: 11.57 } : { xs: 12 })}>
           <Accordion expanded={props.expand}>
             <AccordionSummary
-              expandIcon={
-                <ExpandMoreIcon
-                  onClick={() => handleExpandClick(props.index)}
-                />
-              }
+              expandIcon={ <ExpandMoreIcon onClick={() => handleExpandClick(props.index)}/> }
             >
               <Grid container gap="20px">
                 <Grid xs={5.8}>
                   <ProfileTextField
                     variant="standard"
                     label="Occupation"
-                    placeholder=""
+                    placeholder="Ex: Underwater Ceramics Technician"
                     text={props.title}
-                    charLimit={50}
+                    charLimit={40}
                     handleSave={(text) => saveOccupation(text, props.index)}
                   />
                 </Grid>
@@ -187,24 +206,18 @@ export default function ProfileExperience(props: { accountID: number }) {
                   <ProfileTextField
                     variant="standard"
                     label="Organization"
-                    placeholder=""
+                    placeholder="Ex: Barcelona FC"
                     text={props.organization}
-                    charLimit={50}
+                    charLimit={40}
                     handleSave={(text) => saveOrganization(text, props.index)}
                   />
                 </Grid>
               </Grid>
             </AccordionSummary>
-            <AccordionDetails>
-              <ProfileTextField
-                variant="standard"
-                label="Description"
-                placeholder=""
-                text={props.description}
-                charLimit={50}
-                handleSave={(text) => saveDescription(text, props.index)}
-              />
-            </AccordionDetails>
+            <DescriptionAccordionDetail
+              description={props.description}
+              index={props.index}
+            />
           </Accordion>
         </Grid>
       </Grid>
@@ -225,21 +238,15 @@ export default function ProfileExperience(props: { accountID: number }) {
       <Grid item>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography fontSize="18px" width="30%">
+            <Typography fontSize="18px" width="45%">
               {props.title}
             </Typography>
             <Typography color="gray">{props.organization}</Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <ProfileTextField
-              variant="standard"
-              label="Description"
-              placeholder=""
-              text={props.description}
-              charLimit={50}
-              handleSave={(text) => saveDescription(text, props.index)}
-            />
-          </AccordionDetails>
+          <DescriptionAccordionDetail
+            description={props.description}
+            index={props.index}
+          />
         </Accordion>
       </Grid>
     );
