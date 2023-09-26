@@ -25,13 +25,13 @@ function homeTheme() {
       fontSize: "23px",
     },
     "@media (min-width:600px)": {
-      fontSize: "20px",
+      fontSize: "24px",
     },
     "@media (min-width:900px)": {
       fontSize: "31px",
     },
     "@media (min-width:1200px)": {
-      fontSize: "42px",
+      fontSize: "43px",
     },
     "@media (min-width: 1536px)": {
       fontSize: "55px",
@@ -46,13 +46,13 @@ function homeTheme() {
       fontSize: "20px",
     },
     "@media (min-width:600px)": {
-      fontSize: "13px",
+      fontSize: "17px",
     },
     "@media (min-width:900px)": {
       fontSize: "23px",
     },
     "@media (min-width:1200px)": {
-      fontSize: "25px",
+      fontSize: "29px",
     },
     "@media (min-width: 1536px)": {
       fontSize: "38px",
@@ -70,9 +70,9 @@ function homeTheme() {
       fontSize: "10px",
     },
     "@media (min-width:900px)": {
-      fontSize: "15px",
+      fontSize: "14px",
     },
-    "@media (min-width:1000px)": {
+    "@media (min-width:1200px)": {
       fontSize: "16px",
     },
     "@media (min-width: 1536px)": {
