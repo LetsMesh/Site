@@ -18,6 +18,7 @@ class Account(models.Model):
     enabled2Factor = models.BooleanField(default=False)
     isMentor = models.BooleanField(default=False)
     isMentee = models.BooleanField(default=False)
+    otp_base32 =  models.CharField(max_length = 200, null = True)
 
     def __str__(self) -> str:
         return str(self.accountID)
