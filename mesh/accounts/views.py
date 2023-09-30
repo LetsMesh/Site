@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-from mesh.accounts.services import getLoginUserService, getUserServices
+from mesh.accounts.services import getLoginUserService, getUserServices, postEmailCodeService
 from .models import *
 import bcrypt
 import os
@@ -219,7 +219,9 @@ class Set2FAView(View):
     def post(self, request):
         user = getUserServices(request)
         if user == None:
-            return JsonResponse({"status": "fail", "message": f"No user with the username or password exists" }, status=404)
+            return JsonResponse({"status": "fail", "message": f"No user with the username or password exists"}, status=404)
+        postEmailCodeService(user)
+        return JsonResponse({"status":"successfully sent"}, status = 201)
 
 class LoginView(View):
     def post(self, request, *args, **kwargs):

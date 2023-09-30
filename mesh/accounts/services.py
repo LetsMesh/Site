@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 import pyotp
 import bcrypt
+import json
 import os
 
 def encrypt(password ):
@@ -27,9 +28,9 @@ def getUserServices(request):
     @return: account object if id exist, None otherwise
     """
     try:
-        data = request.data
+        data = json.loads(request.body.decode('utf-8'))     #for debug change back to below
         account_id = data.get('accountID', None)
-        account = Account.objects.get(accountID = account_id)
+        account = Account.objects.get(accountID=account_id)
         return account
     except Account.DoesNotExist:
         return None
@@ -51,7 +52,7 @@ def postEmailCodeService(user):
         "User OTP",
         "the otp: {otp_base32}",
         os.environ.get("EMAIL_NAME"),
-        [user.objects.get(field_name='email')],
+        [user.email],
         fail_silently=False,
     )
 
