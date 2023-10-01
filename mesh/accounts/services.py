@@ -28,7 +28,7 @@ def getUserServices(request):
     @return: account object if id exist, None otherwise
     """
     try:
-        data = json.loads(request.body.decode('utf-8'))     #for debug change back to below
+        data = json.loads(request.body.decode('utf-8')) 
         account_id = data.get('accountID', None)
         account = Account.objects.get(accountID=account_id)
         return account
@@ -38,19 +38,21 @@ def getUserServices(request):
 
 def postEmailCodeService(user):
     """
-    Generate the otp code, save the otp_base32 for the user
+    Generate the otp seed
     Send the code through email
 
     @return
     """
-    otp_base32 = pyotp.random_base32()
-    
-
-    user.otp_base32 = otp_base32
-    user.save()
+    if(user.otp_base32 == ''):
+        #check if the user has otp seed generated if not generate one
+        otp_base32 = pyotp.random_base32()
+        user.otp_base32 = otp_base32
+        user.save()
+    else:
+        otp_base32 = user.otp_base32
     send_mail(
         "User OTP",
-        "the otp: {otp_base32}",
+        "the otp: {}".format(pyotp.TOTP(otp_base32, interval=30).now()),
         os.environ.get("EMAIL_NAME"),
         [user.email],
         fail_silently=False,
