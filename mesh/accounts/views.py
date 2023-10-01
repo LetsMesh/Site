@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-from mesh.accounts.services import getLoginUserService, getUserServices, postEmailCodeService
+from mesh.accounts.services import getLoginUserService, getOTPValidityService, getUserServices, postEmailCodeService
 from .models import *
 import bcrypt
 import os
@@ -214,7 +214,14 @@ def check_password(request):
 
 class Set2FAView(View):
     """
-    Send email to the user for 2FA
+    Send email to the user for 2FA Verification
+
+    Body should be a JSON request with the accountID
+    getUserServices checks if the account id exist and will return the account as an object
+    otherwise, getUserServices would return None
+
+    if user object is None, return JsonResponse of status 404
+    otherwise, postEmailCodeService would attempt to send the email for the otp
     """
     def post(self, request):
         user = getUserServices(request)
@@ -222,6 +229,28 @@ class Set2FAView(View):
             return JsonResponse({"status": "fail", "message": f"No user with the username or password exists"}, status=404)
         postEmailCodeService(user)
         return JsonResponse({"status":"successfully sent"}, status = 201)
+
+class Verify2FAView(View):
+    """
+    Verify if the 6 digit otp is correct
+
+    Body should be a JSON request with the accountID and otp as the field
+
+    the account id will first be verified if it exist, if so check the validity of the otp
+
+    return status 404 if the user does not exist
+    return status 400 if the input otp is not valid
+    return status 201 upon successful verification
+    """
+    def post(self, request):
+        data = json.loads(request.body.decode('utf-8')) 
+        user = getUserServices(request)
+        if user == None:
+            return JsonResponse({"status": "verification fail", "message": f"No user with the username or password exists"}, status=404)
+        valid_otp = getOTPValidityService(user, data.get('otp', None))
+        if not valid_otp:
+            return JsonResponse({"status": "verification fail", "message": f"OTP is invalid"}, status=400)
+        return JsonResponse({"status":"successfully verified"}, status = 201)
 
 class LoginView(View):
     def post(self, request, *args, **kwargs):

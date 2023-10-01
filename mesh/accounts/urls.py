@@ -14,6 +14,7 @@ urlpatterns = [
     # PATCH  /api/accounts/:account_id
     path('<int:account_id>/', accounts_views.AccountsDetailView.as_view(), name='create_account'), 
     path('set-two-factor-auth/', accounts_views.Set2FAView.as_view()),
+    path('verify-two-factor-auth/', accounts_views.Verify2FAView.as_view()),
     path('createAccount',create_account,name = "create"),
     path('checkAccount',check_password, name = "check")
 ]
