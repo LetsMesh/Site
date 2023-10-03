@@ -12,7 +12,7 @@ import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
-import ProfileGroupAccordion from "./profile-group_accordion";
+import {ProfileGroupAccordion} from "./profile-group_accordion";
 
 const theme = createTheme({
   palette: {

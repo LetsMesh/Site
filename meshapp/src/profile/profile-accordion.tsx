@@ -5,7 +5,10 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreFilled from "@mui/icons-material/ExpandMore";
 import ProfileAccordionTextField from "./profile-accordion-textfield";
 import { ProfileAccordionComboBox, option } from "./profile-accordion-combobox";
-import { useGroupAccordContext } from "./profile-group_accordion";
+import {
+  groupAccordionState,
+  setGroupAccordionState,
+} from "./profile-group_accordion";
 import { Box, Grid } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -17,19 +20,21 @@ import SaveIcon from "@mui/icons-material/Save";
  * Used in Profile Group Accordion (src/profile/profile-group_accordion.tsx)
  *
  * @param props - Properties of the component
- * @param {string} headerOne - value for combobox of this accordion's headerOne, passed down from group state array data
- * @param {string} headerTwo - value for combobox of this accordion's headerTwo, passed down from group state array data
- * @param {string} descPlaceholder - placeholder for description textfield
- * @param {string} descText - value for description textfield, passed down from group state array data
- * @param {number} charLimit - character limit for description textfield
- * @param {number} accordionIndex - index of this accordion within the group state array
- * @param {string} headerOnePlaceholder - placeholder for headerOne combobox
- * @param {string} headerTwoPlaceholder - placeholder for headerTwo combobox
- * @param {Array<string>} headerOneOptions - list of options to be provided to headerOne combobox
- * @param {Array<string>} headerTwoOptions - list of options to be provided to headerTwo combobox
- * @param {Array<function>} headerOneErrValidations - an array of functions to evaluate the header one value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
- * @param {Array<function>} headerTwoErrValidations - an array of functions to evaluate the header two value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
- * @param {Array<function>} descErrValidations - an array of functions to evaluate the description text value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {string} props.headerOne - value for combobox of this accordion's headerOne, passed down from group state array data
+ * @param {string} props.headerTwo - value for combobox of this accordion's headerTwo, passed down from group state array data
+ * @param {string} props.descPlaceholder - placeholder for description textfield
+ * @param {string} props.descText - value for description textfield, passed down from group state array data
+ * @param {number} props.charLimit - character limit for description textfield
+ * @param {number} props.accordionIndex - index of this accordion within the group state array
+ * @param {string} props.headerOnePlaceholder - placeholder for headerOne combobox
+ * @param {string} props.headerTwoPlaceholder - placeholder for headerTwo combobox
+ * @param {Array<string>} props.headerOneOptions - list of options to be provided to headerOne combobox
+ * @param {Array<string>} props.headerTwoOptions - list of options to be provided to headerTwo combobox
+ * @param {Array<function>} props.headerOneErrValidations - an array of functions to evaluate the header one value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {Array<function>} props.headerTwoErrValidations - an array of functions to evaluate the header two value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {Array<function>} props.descErrValidations - an array of functions to evaluate the description text value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {groupState} props.groupState - the group accordion state data for all accordions
+ * @param {setGroupState} props.setGroupState - the group accordion state setter method
  */
 export default function ProfileAccordion(props: {
   headerOne: string;
@@ -45,6 +50,8 @@ export default function ProfileAccordion(props: {
   headerOneErrValidations: Array<(value: string) => boolean | string>;
   headerTwoErrValidations: Array<(value: string) => boolean | string>;
   descErrValidations: Array<(value: string) => boolean | string>;
+  groupState: groupAccordionState;
+  setGroupState: setGroupAccordionState;
 }) {
   //controls whether accordion is expanded to show description or not
   const [expanded, setExpanded] = React.useState<boolean>(false);
@@ -59,10 +66,8 @@ export default function ProfileAccordion(props: {
     setEditMode(false);
   };
 
-  //grabs context for state array of profile accordion data and function to set that state array
-  const GroupAccordContext = useGroupAccordContext();
-  const groupState = GroupAccordContext.groupState;
-  const setGroupState = GroupAccordContext.setGroupState;
+  const groupState = props.groupState;
+  const setGroupState = props.setGroupState;
 
   //onChange handler for header one
   const headerOneOnChange = (
@@ -130,6 +135,26 @@ export default function ProfileAccordion(props: {
     );
   };
 
+  //onChange handler for description
+  const descOnChange = (newValue: string) => {
+    setGroupState(
+      groupState.map((profileAccordion, index) => {
+        if (index === props.accordionIndex) {
+          return {
+            headerOne: profileAccordion.headerOne,
+            headerTwo: profileAccordion.headerTwo,
+            descText: newValue,
+          };
+        }
+        return {
+          headerOne: profileAccordion.headerOne,
+          headerTwo: profileAccordion.headerTwo,
+          descText: profileAccordion.descText,
+        };
+      })
+    );
+  };
+
   return (
     <Accordion
       expanded={expanded}
@@ -142,6 +167,7 @@ export default function ProfileAccordion(props: {
       <AccordionSummary
         expandIcon={<ExpandMoreFilled onClick={toggleExpand} />}
       >
+        {/*Header One Combo Box */}
         <Box sx={{ width: "33%", flexShrink: 0 }}>
           <ProfileAccordionComboBox
             value={props.headerOne}
@@ -152,6 +178,7 @@ export default function ProfileAccordion(props: {
             errValidations={props.headerOneErrValidations}
           />
         </Box>
+        {/*Header Two Combo Box */}
         <ProfileAccordionComboBox
           value={props.headerTwo}
           disabled={!editMode}
@@ -203,6 +230,7 @@ export default function ProfileAccordion(props: {
         </Grid>
       </AccordionSummary>
       <AccordionDetails>
+        {/*Description Text Field */}
         <ProfileAccordionTextField
           label={"Description"}
           placeholder={props.descPlaceholder}
@@ -210,6 +238,7 @@ export default function ProfileAccordion(props: {
           charLimit={100}
           accordionIndex={props.accordionIndex}
           errValidations={props.descErrValidations}
+          onChange={descOnChange}
         />
       </AccordionDetails>
     </Accordion>

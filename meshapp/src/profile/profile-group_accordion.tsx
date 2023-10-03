@@ -1,38 +1,17 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import ProfileAccordion from "./profile-accordion";
-import { createContext } from "react";
 import { Box, Button, Grid, IconButton, Modal } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import React from "react";
 
 //type of group accordion state
-type groupAccordionState = Array<{
+export type groupAccordionState = Array<{
   headerOne: string;
   headerTwo: string;
   descText: string;
 }>;
 
 //type of group accordion state setter
-type setGroupAccordionState = (newState: groupAccordionState) => void;
-
-//type of the group accordion context
-type GroupAccordionContextType = {
-  groupState: groupAccordionState;
-  setGroupState: setGroupAccordionState;
-};
-
-//default value of context (real value will be passed in the provider so default doesn't matter)
-const GroupAccordContext = createContext<GroupAccordionContextType>({
-  groupState: [{ headerOne: "", headerTwo: "", descText: "" }],
-  setGroupState: (prevGroupState?: groupAccordionState) => undefined,
-});
-
-//hook to be used in accordion components to access group accordion context
-export const useGroupAccordContext = () => {
-  //return useContext hook to be used
-  return useContext(GroupAccordContext);
-};
-
+export type setGroupAccordionState = (newState: groupAccordionState) => void;
 
 /**
  * A React component that renders a group of profile accordions.
@@ -52,7 +31,7 @@ export const useGroupAccordContext = () => {
  * @param {Array<function>} props.headerTwoErrValidations - an array of functions to evaluate the header two value for each accordion for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Array<function>} props.descErrValidations - an array of functions to evaluate the description text value for each accordion for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  */
-export default function ProfileGroupAccordion(props: {
+export function ProfileGroupAccordion(props: {
   groupAccordArgs: groupAccordionState;
   descPlaceholder: string;
   charLimit: number;
@@ -75,88 +54,83 @@ export default function ProfileGroupAccordion(props: {
     })
   );
 
-  //real context value
-  const value: GroupAccordionContextType = {
-    groupState: GroupAccordState,
-    setGroupState: setGroupAccordState,
-  };
+  //   //state to control whether new accordion modal is open or not
+  //   const [addOpen, setAddOpen] = useState(false);
+  //   const showModal = () => setAddOpen(true);
+  //   const hideModal = () => setAddOpen(false);
+  //  //function for opening modal and adding empty accordion to state group array
+  //  function startAdding(){
+  //   setGroupAccordState([...GroupAccordState, {headerOne:"", headerTwo:"", descText:""}])
+  //   showModal()
+  // }
+  // //function to close modal and erasing the new accordion
+  // function quitAdding(){
+  //   GroupAccordState.pop();
+  //   setGroupAccordState( GroupAccordState )
+  //   hideModal();
+  // }
 
+  // //function for evaluation of new accordion data and adding if it is valid data
+  // function addNewAccordion(){
 
-//   //state to control whether new accordion modal is open or not
-//   const [addOpen, setAddOpen] = useState(false);
-//   const showModal = () => setAddOpen(true);
-//   const hideModal = () => setAddOpen(false);
-//  //function for opening modal and adding empty accordion to state group array
-//  function startAdding(){
-//   setGroupAccordState([...GroupAccordState, {headerOne:"", headerTwo:"", descText:""}])
-//   showModal()
-// }
-// //function to close modal and erasing the new accordion
-// function quitAdding(){
-//   GroupAccordState.pop();
-//   setGroupAccordState( GroupAccordState )
-//   hideModal();
-// }
+  //   //grab the data for the current new accordion
+  //   let newAccordionData = GroupAccordState[GroupAccordState.length-1];
+  //   let headerOneVal = newAccordionData.headerOne;
+  //   let headerTwoVal = newAccordionData.headerTwo;
+  //   let descVal = newAccordionData.descText;
 
+  //   //check if there are any errors
+  //   let hasHeadOneErr = props.headerOneErrValidations.some((currErrVal) =>  typeof currErrVal(headerOneVal)  === "string")
+  //   let hasHeadTwoErr = props.headerTwoErrValidations.some((currErrVal) =>  typeof currErrVal(headerTwoVal)  === "string")
+  //   let hasDescErr = props.descErrValidations.some((currErrVal) =>  typeof currErrVal(descVal)  === "string")
 
-// //function for evaluation of new accordion data and adding if it is valid data
-// function addNewAccordion(){
+  //   //if there are no errors, save the new accordion
+  //   if(!hasHeadOneErr && !hasHeadTwoErr && !hasDescErr){
+  //    hideModal()
+  //    setGroupAccordState([...GroupAccordState])
+  //   } else{
+  //     alert("there's errors")
+  //   }
 
-
-//   //grab the data for the current new accordion
-//   let newAccordionData = GroupAccordState[GroupAccordState.length-1];
-//   let headerOneVal = newAccordionData.headerOne;
-//   let headerTwoVal = newAccordionData.headerTwo;
-//   let descVal = newAccordionData.descText;
-
-//   //check if there are any errors
-//   let hasHeadOneErr = props.headerOneErrValidations.some((currErrVal) =>  typeof currErrVal(headerOneVal)  === "string")
-//   let hasHeadTwoErr = props.headerTwoErrValidations.some((currErrVal) =>  typeof currErrVal(headerTwoVal)  === "string")
-//   let hasDescErr = props.descErrValidations.some((currErrVal) =>  typeof currErrVal(descVal)  === "string")
-
-//   //if there are no errors, save the new accordion
-//   if(!hasHeadOneErr && !hasHeadTwoErr && !hasDescErr){
-//    hideModal()
-//    setGroupAccordState([...GroupAccordState])
-//   } else{
-//     alert("there's errors")
-//   }
-
-// }
+  // }
 
   return (
-    <GroupAccordContext.Provider
-      value={value}
-      children={
-        <Grid xs={12} container flexDirection={"column"} alignItems={"center"}>
-          <Grid container flexDirection={"column"}>
-            {GroupAccordState.map((accordArgs, accordIndex) => {
-              return (
-                <ProfileAccordion
-                  accordionIndex={accordIndex}
-                  headerOne={accordArgs.headerOne}
-                  headerTwo={accordArgs.headerTwo}
-                  descPlaceholder={props.descPlaceholder}
-                  descText={accordArgs.descText}
-                  charLimit={props.charLimit}
-                  headerOnePlaceholder={props.headerOnePlaceholder}
-                  headerTwoPlaceholder={props.headerTwoPlaceholder}
-                  headerOneOptions={props.headerOneOptions}
-                  headerTwoOptions={props.headerTwoOptions}
-                  headerOneErrValidations={props.headerOneErrValidations}
-                  headerTwoErrValidations={props.headerTwoErrValidations}
-                  descErrValidations={props.descErrValidations}
-                />
-              );
-            })}
-          </Grid>
-          {/* <IconButton
-            children={
-              <ControlPointIcon sx={{ fontSize: "30px", marginTop: "10px" }} />
-            }
-            onClick={startAdding}
-          /> */}
-          {/* <NewAccordionModal hideModal={hideModal} showModal={showModal} headerOneErrValidations={props.headerOneErrValidations} headerTwoErrValidations={props.headerTwoErrValidations} descErrValidations={props.descErrValidations} addOpen={addOpen} descPlaceholder={props.descPlaceholder}
+    <Grid
+      xs={12}
+      container
+      flexDirection={"column"}
+      alignItems={"center"}
+      onClick={() => console.log(GroupAccordState)}
+    >
+      <Grid container flexDirection={"column"}>
+        {GroupAccordState.map((accordArgs, accordIndex) => {
+          return (
+            <ProfileAccordion
+              accordionIndex={accordIndex}
+              headerOne={accordArgs.headerOne}
+              headerTwo={accordArgs.headerTwo}
+              descPlaceholder={props.descPlaceholder}
+              descText={accordArgs.descText}
+              charLimit={props.charLimit}
+              headerOnePlaceholder={props.headerOnePlaceholder}
+              headerTwoPlaceholder={props.headerTwoPlaceholder}
+              headerOneOptions={props.headerOneOptions}
+              headerTwoOptions={props.headerTwoOptions}
+              headerOneErrValidations={props.headerOneErrValidations}
+              headerTwoErrValidations={props.headerTwoErrValidations}
+              descErrValidations={props.descErrValidations}
+              groupState={GroupAccordState}
+              setGroupState={setGroupAccordState}
+            />
+          );
+        })}
+      </Grid>
+      <IconButton
+        children={
+          <ControlPointIcon sx={{ fontSize: "30px", marginTop: "10px" }} />
+        }
+      />
+      {/* <NewAccordionModal hideModal={hideModal} showModal={showModal} headerOneErrValidations={props.headerOneErrValidations} headerTwoErrValidations={props.headerTwoErrValidations} descErrValidations={props.descErrValidations} addOpen={addOpen} descPlaceholder={props.descPlaceholder}
           charLimit={props.charLimit}
           headerOnePlaceholder= {props.headerOnePlaceholder}
           headerTwoPlaceholder= {props.headerTwoPlaceholder}
@@ -165,13 +139,9 @@ export default function ProfileGroupAccordion(props: {
           quitAdding ={quitAdding}
           addNewAccordion= {addNewAccordion}
           /> */}
-        </Grid>
-      }
-    />
+    </Grid>
   );
-
 }
-
 
 // function NewAccordionModal(props:{
 //   hideModal : () => void;
@@ -198,13 +168,9 @@ export default function ProfileGroupAccordion(props: {
 //   let headerTwoVal = newAccordionData.headerTwo;
 //   let descVal = newAccordionData.descText;
 
-  
-  
 //     //need to add an empty accordion to state group array for now
 //     //if user clicks off modal without saving, that accordion will be removed
 //     //otherwise it will be saved (provided there are no errors)
-  
-   
 
 // return(
 //  <Modal open={props.addOpen} onClose={props.quitAdding}>
@@ -215,14 +181,13 @@ export default function ProfileGroupAccordion(props: {
 //         <ProfileAccordion accordionIndex={groupState.length-1} headerOne={headerOneVal} headerTwo={headerTwoVal} descPlaceholder={props.descPlaceholder} descText={descVal} charLimit={props.charLimit} headerOnePlaceholder={props.headerOnePlaceholder} headerTwoPlaceholder={props.headerTwoPlaceholder} headerOneOptions={props.headerOneOptions} headerTwoOptions={props.headerTwoOptions}     headerOneErrValidations={props.headerOneErrValidations} headerTwoErrValidations={props.headerTwoErrValidations} descErrValidations={props.descErrValidations}/>
 
 //      </Box>
-       
+
 //      <Button onClick={props.addNewAccordion}>
 //        Save Button
 //      </Button>
 //      </Box>
 //  </Modal>
- 
-// )
 
+// )
 
 // }

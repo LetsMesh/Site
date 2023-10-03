@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 import ErrorIcon from "@mui/icons-material/Error";
-import React from "react";
 
 //for displaying a label for options and a corresponding value to store
 export type option = {
@@ -25,10 +24,10 @@ export type option = {
  * @param props - Properties of the component
  * @param {boolean} props.disabled - represents whether this accordion's inputs are disabled or not
  * @param {Array<string>} props.options - stores the list of options to be provided for the combobox
- * @param {string} placeholderText - placeholder for combobox
- * @param {function} onChange -callback to handle onChange to edit group accordion data for this specific combobox
- * @param {string} value - the current value of this specific combobox for this accordion within the group accordion's state data
- * @param {Array<function>} errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {string} props.placeholderText - placeholder for combobox
+ * @param {function} props.onChange -callback to edit group accordion data for this specific combobox
+ * @param {string} props.value - the current state value of this specific combobox for this accordion within the group accordion's state
+ * @param {Array<function>} props.errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  *
  */
 export function ProfileAccordionComboBox(props: {
@@ -109,7 +108,7 @@ export function ProfileAccordionComboBox(props: {
       showError();
       return;
     }
-
+    //at this point there are no errors
     props.onChange(event, newValue);
   };
 

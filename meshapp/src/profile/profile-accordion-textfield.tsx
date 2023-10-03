@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { TextField, Box, Tooltip } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-import { useGroupAccordContext } from "./profile-group_accordion";
 import ErrorIcon from "@mui/icons-material/Error";
 
 /**
@@ -16,10 +15,11 @@ import ErrorIcon from "@mui/icons-material/Error";
  * @param props - Properties of the component
  * @param {string} props.label - The label
  * @param {string} props.placeholder - The placeholder text
- * @param {string} props.text - The initial text content
+ * @param {string} props.text - The state text value from the group accordion state for the corresponding description
  * @param {number} props.charLimit - The max number of characters allowed
  * @param {number} props.accordionIndex - The index of the current Profile Accordion
- * @param {Array<function>} errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {function} props.onChange - function that takes in a new text value to change the corresponding state entry
+ * @param {Array<function>} props.errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  */
 const ProfileAccordionTextField = (props: {
   label: string;
@@ -27,13 +27,9 @@ const ProfileAccordionTextField = (props: {
   text: string;
   charLimit: number;
   accordionIndex: number;
+  onChange: (newValue: string) => void;
   errValidations: Array<(value: string) => boolean | string>;
 }) => {
-  //grab context
-  const GroupAccordContext = useGroupAccordContext();
-  const groupState = GroupAccordContext.groupState;
-  const setGroupState = GroupAccordContext.setGroupState;
-
   //used to set edit mode
   const [editMode, setEditMode] = useState(false);
 
@@ -59,29 +55,14 @@ const ProfileAccordionTextField = (props: {
     if (errResult && typeof errResult !== "string") {
       hideError();
     }
-    //otherwise display the error
+    //otherwise display the error and stop
     else {
       setErrorMessage(errResult as string);
       showError();
       return;
     }
-    //edit description for corresponding accordion, copy the rest
-    setGroupState(
-      groupState.map((profileAccordion, index) => {
-        if (index === props.accordionIndex) {
-          return {
-            headerOne: profileAccordion.headerOne,
-            headerTwo: profileAccordion.headerTwo,
-            descText: newText,
-          };
-        }
-        return {
-          headerOne: profileAccordion.headerOne,
-          headerTwo: profileAccordion.headerTwo,
-          descText: profileAccordion.descText,
-        };
-      })
-    );
+    //at this point there are no more errors
+    props.onChange(newText);
   };
 
   //for toggling edit mode
@@ -99,7 +80,7 @@ const ProfileAccordionTextField = (props: {
 
   //for storing the error message
   const [errorMessage, setErrorMessage] = useState("");
-  const [text, setText] = useState(groupState[props.accordionIndex].descText);
+  const [text, setText] = useState(props.text);
   return (
     <TextField
       value={text}
