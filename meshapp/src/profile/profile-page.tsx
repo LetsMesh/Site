@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -10,15 +10,14 @@ import {
 
 import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
+import ProfileInterestsComponent from "./profile-interests";
 import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
-
 
 import { axiosInstance } from "../config/axiosConfig";
 
 // New Imports
 import ProfileHeader from "./profile-header";
-
 
 const theme = createTheme({
   palette: {
@@ -56,8 +55,20 @@ const ProfilePage = (props: Profile) => {
   return (
     <Box className="profile-page-container">
       <Box className="profile-page-header">
-        <ProfileHeader label={props.name} placeholder={"Nickname"} text={props.name} charLimit={15} fontSize={"60px"}/> 
-        <ProfileHeader label={props.pronouns} placeholder={"Pronouns"} text={props.pronouns} charLimit={8} fontSize={"30px"} /> 
+        <ProfileHeader
+          label={props.name}
+          placeholder={"Nickname"}
+          text={props.name}
+          charLimit={15}
+          fontSize={"60px"}
+        />
+        <ProfileHeader
+          label={props.pronouns}
+          placeholder={"Pronouns"}
+          text={props.pronouns}
+          charLimit={8}
+          fontSize={"30px"}
+        />
       </Box>
       <Grid container sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
         <Grid
@@ -71,7 +82,10 @@ const ProfilePage = (props: Profile) => {
             occupationTitle={props.occupationTitle}
             occupationBusiness={props.occupationBusiness}
           />
-          <ProfileBiography biography={props.biography} accountID={props.accountID}/>
+          <ProfileBiography
+            biography={props.biography}
+            accountID={props.accountID}
+          />
         </Grid>
         <Grid
           item
@@ -85,7 +99,7 @@ const ProfilePage = (props: Profile) => {
             marginBottom: "-125px", // Adjusts container height to match transform
           }}
         >
-          <ProfilePicture image={props.image} accountID={props.accountID}/>
+          <ProfilePicture image={props.image} accountID={props.accountID} />
           <ProfileRole isMentor={props.isMentor} isMentee={props.isMentee} />
         </Grid>
       </Grid>
@@ -152,43 +166,44 @@ const ProfileOccupation = (props: {
  * @param {string} props.biography - The initial text content of the bio
  * @param {number} props.accountID - accountID associated with the profile
  */
-const ProfileBiography = (props: {biography: string, accountID: number}) => {
+const ProfileBiography = (props: { biography: string; accountID: number }) => {
   const [biography, setBiography] = useState(props.biography);
   const [isLoading, setLoading] = useState(true);
-  
-  //Gets the user's biography and saves it to the display biography.  
+
+  //Gets the user's biography and saves it to the display biography.
   useEffect(() => {
-    axiosInstance.get("profiles/biography/" + props.accountID)
-    .then(response => {
-      console.log(response)
-      setBiography(response.data["biography"])
-      setLoading(false);
-    })
-    .catch(error => {
-      setLoading(false);
-      console.error(error)
-    })
-  }, [])
+    axiosInstance
+      .get("profiles/biography/" + props.accountID)
+      .then((response) => {
+        console.log(response);
+        setBiography(response.data["biography"]);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+      });
+  }, []);
 
   //Returns an initial loading mode before rendering the user's biography
-  if (isLoading)
-    return <div>loading...</div> 
+  if (isLoading) return <div>loading...</div>;
 
-  /** 
+  /**
    * Saves the user's biography.
-   * 
+   *
    * @param {string} text - The inputted text that the user wants to save
    */
   function saveBiography(text: string) {
-    axiosInstance.post("profiles/biography/" + props.accountID, {
-      "biography": text
-    })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error =>{
-      console.error(error)
-    })
+    axiosInstance
+      .post("profiles/biography/" + props.accountID, {
+        biography: text,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
@@ -281,21 +296,45 @@ const ProfileEducation = (props: any) => {
   );
 };
 
-// TODO: To be fully implemented
-const ProfileInterests = (props: any) => {
+// NOTE: For the ProfileInterests, the ProfileInterests type is used in ProfileInterestsComponent
+//       and not here. It should probably also be renamed for clarity. It works though, so whatever.
+
+/**
+ * Displays the user's interest tags and supports editing them.
+ */
+const ProfileInterests = () => {
+  // NOTE: Used to simulate future HTTP requests - remove when API is implemented
+  const [testCurrentSelected, setTestCurrentSelected] = React.useState<
+    string[]
+  >(["hello", "world"]);
+
+  // Same as above
+  const testRecommended: string[] = [
+    "adventure",
+    "cozy",
+    "exploration",
+    "vibrant",
+    "serene",
+    "inspiring",
+  ];
+
   return (
     <ThemeProvider theme={theme}>
-      <Box className="profile-page-column-body">
+      <Box className="profile-page-column-body" sx={{ margin: "20px" }}>
         <Typography
           variant="h1"
           sx={{
-            marginBottom: "20px",
-            fontSize: "22px",
+            marginBottom: "15px",
+            fontSize: "26px",
           }}
         >
           Interests
         </Typography>
-        <TestComponent />
+        <ProfileInterestsComponent
+          currentTags={testCurrentSelected}
+          recommendedTags={testRecommended}
+          setTags={setTestCurrentSelected}
+        />
       </Box>
     </ThemeProvider>
   );
@@ -309,7 +348,9 @@ const TestComponent = (props: any) => {
       placeholder={"Test"}
       text={"Test"}
       charLimit={200}
-      handleSave={() => {return}}
+      handleSave={() => {
+        return;
+      }}
     />
   );
 };

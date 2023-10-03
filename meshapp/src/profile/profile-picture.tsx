@@ -42,8 +42,8 @@ const tooltipErrorTheme = createTheme({
  * @param props - Properties of the component
  * @param {string} props.image - A URL to user's profile image
  * @param {number} props.accountID - accountID associated with the profile
-*/
-const ProfilePicture = (props: { image: string, accountID: number }) => {
+ */
+const ProfilePicture = (props: { image: string; accountID: number }) => {
   const [image, setImage] = useState(props.image);
   const [showError, setShowError] = useState(false);
 
@@ -55,15 +55,16 @@ const ProfilePicture = (props: { image: string, accountID: number }) => {
 
   // Gets the user's profile picture and saves it to the display image
   React.useEffect(() => {
-    axiosInstance.get("profiles/profile-picture/" + props.accountID)
-    .then(response => {
-      console.log(response)
-      setImage(response.data["data"]["get"]["profilePicture"])
-    })
-    .catch(error => {
-      console.error(error)
-    })
-  }, [])
+    axiosInstance
+      .get("profiles/profile-picture/" + props.accountID)
+      .then((response) => {
+        console.log(response);
+        setImage(response.data["data"]["get"]["profilePicture"]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <Box

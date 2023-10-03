@@ -12,5 +12,11 @@ export type Profile = {
   accountID: number;
 };
 
-// TODO: Include Experience, Education, and Interests props as they get implemented
+export type ProfileInterests = {
+  currentTags: string[];
+  recommendedTags: string[];
+  setTags: (tags: string[]) => void;
+};
+
+// TODO: Include Experience and Education props as they get implemented
 //        Maybe separate these into their own types?

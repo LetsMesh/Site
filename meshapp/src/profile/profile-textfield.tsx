@@ -22,7 +22,7 @@ const ProfileTextField = (props: {
   placeholder: string;
   text: string;
   charLimit: number;
-  handleSave: (text: string)=> void;
+  handleSave: (text: string) => void;
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
