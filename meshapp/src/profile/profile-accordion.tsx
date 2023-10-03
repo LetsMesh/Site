@@ -27,6 +27,9 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {string} headerTwoPlaceholder - placeholder for headerTwo combobox
  * @param {Array<string>} headerOneOptions - list of options to be provided to headerOne combobox
  * @param {Array<string>} headerTwoOptions - list of options to be provided to headerTwo combobox
+ * @param {Array<function>} headerOneErrValidations - an array of functions to evaluate the header one value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {Array<function>} headerTwoErrValidations - an array of functions to evaluate the header two value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {Array<function>} descErrValidations - an array of functions to evaluate the description text value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  */
 export default function ProfileAccordion(props: {
   headerOne: string;
@@ -39,6 +42,9 @@ export default function ProfileAccordion(props: {
   headerTwoPlaceholder: string;
   headerOneOptions: Array<string>;
   headerTwoOptions: Array<string>;
+  headerOneErrValidations: Array<(value: string) => boolean | string>;
+  headerTwoErrValidations: Array<(value: string) => boolean | string>;
+  descErrValidations: Array<(value: string) => boolean | string>;
 }) {
   //controls whether accordion is expanded to show description or not
   const [expanded, setExpanded] = React.useState<boolean>(false);
@@ -57,18 +63,6 @@ export default function ProfileAccordion(props: {
   const GroupAccordContext = useGroupAccordContext();
   const groupState = GroupAccordContext.groupState;
   const setGroupState = GroupAccordContext.setGroupState;
-
-  //test error validation functions
-  const doesntHaveCar = (val: string) => {
-    return val === "car" || "doesn't have car";
-  };
-  const doesntHaveB = (val: string) => {
-    return (
-      (val.length > 0 && val[val.length - 1] === "B") || "doesn't have B end"
-    );
-  };
-
-  let errValid = [(val: string) => val.length > 0 || "needs to be empty"];
 
   //onChange handler for header one
   const headerOneOnChange = (
@@ -122,8 +116,8 @@ export default function ProfileAccordion(props: {
       groupState.map((profileAccordion, index) => {
         if (index === props.accordionIndex) {
           return {
-            headerOne: newValue ? newValue : "",
-            headerTwo: profileAccordion.headerTwo,
+            headerOne: profileAccordion.headerOne,
+            headerTwo: newValue ? newValue : "",
             descText: profileAccordion.descText,
           };
         }
@@ -155,7 +149,7 @@ export default function ProfileAccordion(props: {
             placeholderText={props.headerOnePlaceholder}
             options={props.headerOneOptions}
             onChange={headerOneOnChange}
-            errValidations={errValid}
+            errValidations={props.headerOneErrValidations}
           />
         </Box>
         <ProfileAccordionComboBox
@@ -164,7 +158,7 @@ export default function ProfileAccordion(props: {
           placeholderText={props.headerTwoPlaceholder}
           options={props.headerTwoOptions}
           onChange={headerTwoOnChange}
-          errValidations={errValid}
+          errValidations={props.headerTwoErrValidations}
         />
         <Grid
           xs={0.5}
@@ -215,7 +209,7 @@ export default function ProfileAccordion(props: {
           text={props.descText}
           charLimit={100}
           accordionIndex={props.accordionIndex}
-          errorValidation={errValid}
+          errValidations={props.descErrValidations}
         />
       </AccordionDetails>
     </Accordion>

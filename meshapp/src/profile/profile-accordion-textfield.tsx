@@ -18,7 +18,8 @@ import ErrorIcon from "@mui/icons-material/Error";
  * @param {string} props.placeholder - The placeholder text
  * @param {string} props.text - The initial text content
  * @param {number} props.charLimit - The max number of characters allowed
- * @param {number} props.key - The index of the current Profile Accordion
+ * @param {number} props.accordionIndex - The index of the current Profile Accordion
+ * @param {Array<function>} errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  */
 const ProfileAccordionTextField = (props: {
   label: string;
@@ -26,7 +27,7 @@ const ProfileAccordionTextField = (props: {
   text: string;
   charLimit: number;
   accordionIndex: number;
-  errorValidation: Array<(value: string) => boolean | string>;
+  errValidations: Array<(value: string) => boolean | string>;
 }) => {
   //grab context
   const GroupAccordContext = useGroupAccordContext();
@@ -44,7 +45,7 @@ const ProfileAccordionTextField = (props: {
     //set the text to be displayed
     setText(newText);
     //go through error validation rules, if there are errors then save the first message
-    let errResult = props.errorValidation.reduce(
+    let errResult = props.errValidations.reduce(
       (prevResult: boolean | string, curErrVal) => {
         if (prevResult && typeof prevResult !== "string") {
           return curErrVal(newText);

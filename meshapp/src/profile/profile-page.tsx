@@ -283,9 +283,12 @@ const ProfileEducation = (props: any) => {
           headerOnePlaceholder="header1Placeholder"
           headerTwoPlaceholder="header2Placeholder"
           headerOneOptions={["car", "dog", "fish"]}
-          headerTwoOptions={["cat", "fish", "fish"]}
+          headerTwoOptions={["cat", "fish"]}
           descPlaceholder="descPlaceholder"
           charLimit={100}
+          headerOneErrValidations={[(val: string) =>  val.length > 0 || "cannot be empty"]}
+          headerTwoErrValidations={[(val: string) =>  val.length > 0 || "cannot be empty"]}
+          descErrValidations={[(val: string) =>  val.length > 0 || "cannot be empty"]}
         />
       </Box>
     </ThemeProvider>

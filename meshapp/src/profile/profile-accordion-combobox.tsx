@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 import ErrorIcon from "@mui/icons-material/Error";
-import { VisualState } from "framer-motion";
+import React from "react";
 
 //for displaying a label for options and a corresponding value to store
 export type option = {
