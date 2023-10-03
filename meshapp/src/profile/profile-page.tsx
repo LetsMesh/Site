@@ -14,7 +14,6 @@ import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
 import ProfileGroupAccordion from "./profile-group_accordion";
 
-
 const theme = createTheme({
   palette: {
     mode: "light",
@@ -194,7 +193,6 @@ const ProfileBiography = (props: { biography: string }) => {
   );
 };
 
-
 /**
  * Displays the user's role(s) (mentor, mentee, or both).
  *
@@ -264,20 +262,31 @@ const ProfileEducation = (props: any) => {
         >
           Education
         </Typography>
-        <ProfileGroupAccordion groupAccordArgs= {
-          [{headerOne: "B.S. Animal Happiness",headerTwo:"gray words",  descText: "descText"},
-          {headerOne: "B.S. Animal Happiness",headerTwo:"gray words", descText: "descText"},
-          {headerOne: "B.S. Animal Happiness",headerTwo:"gray words",  descText: "descText"}]
-          }
+        <ProfileGroupAccordion
+          groupAccordArgs={[
+            {
+              headerOne: "B.S. Animal Happiness",
+              headerTwo: "gray words",
+              descText: "descText",
+            },
+            {
+              headerOne: "B.S. Animal Happiness",
+              headerTwo: "gray words",
+              descText: "descText",
+            },
+            {
+              headerOne: "B.S. Animal Happiness",
+              headerTwo: "gray words",
+              descText: "descText",
+            },
+          ]}
           headerOnePlaceholder="header1Placeholder"
           headerTwoPlaceholder="header2Placeholder"
           headerOneOptions={["car", "dog", "fish"]}
           headerTwoOptions={["cat", "fish", "fish"]}
           descPlaceholder="descPlaceholder"
-          charLimit={100} 
-
-          
-          />
+          charLimit={100}
+        />
       </Box>
     </ThemeProvider>
   );

@@ -9,9 +9,9 @@ import ErrorIcon from "@mui/icons-material/Error";
 /**
  * A React component that renders a text field with editing capabilities.
  * Includes a character limit and an edit/save mode toggle, will use context from
- * parent to access and set state
+ * parent to access and set state.
  *
- * Used in the Profile Page Accordion .
+ * Used in the Profile Page Accordion (src/profile/profile-accordion.tsx)
  *
  * @param props - Properties of the component
  * @param {string} props.label - The label
@@ -36,11 +36,14 @@ const ProfileAccordionTextField = (props: {
   //used to set edit mode
   const [editMode, setEditMode] = useState(false);
 
+  //handles onChange event for text
   const handleTextChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     let newText = event.target.value;
+    //set the text to be displayed
     setText(newText);
+    //go through error validation rules, if there are errors then save the first message
     let errResult = props.errorValidation.reduce(
       (prevResult: boolean | string, curErrVal) => {
         if (prevResult && typeof prevResult !== "string") {
@@ -51,13 +54,17 @@ const ProfileAccordionTextField = (props: {
       },
       true
     );
+    //if there's no error then hide it
     if (errResult && typeof errResult !== "string") {
       hideError();
-    } else {
+    }
+    //otherwise display the error
+    else {
       setErrorMessage(errResult as string);
       showError();
       return;
     }
+    //edit description for corresponding accordion, copy the rest
     setGroupState(
       groupState.map((profileAccordion, index) => {
         if (index === props.accordionIndex) {
@@ -76,18 +83,20 @@ const ProfileAccordionTextField = (props: {
     );
   };
 
+  //for toggling edit mode
   const handleEditClick = () => {
     setEditMode(true);
   };
-
   const handleSaveClick = () => {
     setEditMode(false);
   };
 
+  //for toggling whether to display error or not
   const [hasError, setHasError] = useState(false);
   const showError = () => setHasError(true);
   const hideError = () => setHasError(false);
 
+  //for storing the error message
   const [errorMessage, setErrorMessage] = useState("");
   const [text, setText] = useState(groupState[props.accordionIndex].descText);
   return (
@@ -97,6 +106,7 @@ const ProfileAccordionTextField = (props: {
       placeholder={props.placeholder}
       InputLabelProps={{ shrink: true }}
       InputProps={{
+        //conditionally renders error tooltip based on error
         startAdornment: hasError && (
           <Tooltip
             disableFocusListener
@@ -108,6 +118,7 @@ const ProfileAccordionTextField = (props: {
             <ErrorIcon color="error" />
           </Tooltip>
         ),
+        //conditionally renders edit/save icons based on edit mode
         endAdornment: editMode ? (
           <Box paddingLeft={2}>
             <SaveIcon
