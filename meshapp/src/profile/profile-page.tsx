@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Grid,
@@ -10,9 +9,9 @@ import {
 
 import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
-import { Profile } from "./types/profile";
+import { Education, Profile } from "./types/profile";
 import "./styling/profile-page.css";
-import {ProfileGroupAccordion} from "./profile-group_accordion";
+import { ProfileGroupAccordion } from "./profile-group_accordion";
 
 const theme = createTheme({
   palette: {
@@ -87,7 +86,7 @@ const ProfilePage = (props: Profile) => {
               <ProfileExperience />
             </Box>
             <Box>
-              <ProfileEducation />
+              <ProfileEducation education={props.education} />
             </Box>
           </Grid>
           <Grid
@@ -248,8 +247,22 @@ const ProfileExperience = (props: any) => {
   );
 };
 
-// TODO: To be fully implemented
-const ProfileEducation = (props: any) => {
+/**
+ * Displays the user's education history (degree, school, description)
+ *
+ * @param props - Properties of the component
+ * @param {Education} props.education - Array of objects that represent a single education
+ *
+ */
+const ProfileEducation = (props: { education: Education }) => {
+  //starting error validation functions
+  const isEmpty = (inputName: string) => (val: string) =>
+    val.length > 0 || `${inputName} cannot be empty.`;
+  const whiteSpace = (inputName: string) => (val: string) =>
+    val.trim() === val ||
+    `${inputName} cannot have whitespace at beginning or end.`;
+  const charLimit = (inputName: string) => (val: string) =>
+    val.length < 100 || `${inputName} cannot be longer than 100 characters.`;
   return (
     <ThemeProvider theme={theme}>
       <Box className="profile-page-column-body">
@@ -263,32 +276,32 @@ const ProfileEducation = (props: any) => {
           Education
         </Typography>
         <ProfileGroupAccordion
-          groupAccordArgs={[
-            {
-              headerOne: "B.S. Animal Happiness",
-              headerTwo: "gray words",
-              descText: "descText",
-            },
-            {
-              headerOne: "B.S. Animal Happiness",
-              headerTwo: "gray words",
-              descText: "descText",
-            },
-            {
-              headerOne: "B.S. Animal Happiness",
-              headerTwo: "gray words",
-              descText: "descText",
-            },
+          groupAccordArgs={props.education.map((currentEd) => {
+            return {
+              headerOne: currentEd.degree,
+              headerTwo: currentEd.school,
+              descText: currentEd.description,
+            };
+          })}
+          headerOnePlaceholder="Level of Education"
+          headerTwoPlaceholder="School"
+          headerOneOptions={[
+            "High School Diploma",
+            "Associates Degree",
+            "Bachelors Degree",
           ]}
-          headerOnePlaceholder="header1Placeholder"
-          headerTwoPlaceholder="header2Placeholder"
-          headerOneOptions={["car", "dog", "fish"]}
-          headerTwoOptions={["cat", "fish"]}
-          descPlaceholder="descPlaceholder"
-          charLimit={100}
-          headerOneErrValidations={[(val: string) =>  val.length > 0 || "cannot be empty"]}
-          headerTwoErrValidations={[(val: string) =>  val.length > 0 || "cannot be empty"]}
-          descErrValidations={[(val: string) =>  val.length > 0 || "cannot be empty"]}
+          headerTwoOptions={["Cal Poly Pomona", "Mt. San Antonio College"]}
+          descPlaceholder="Enter a description here"
+          headerOneErrValidations={[
+            isEmpty("Level of Education"),
+            whiteSpace("Level of Education"),
+          ]}
+          headerTwoErrValidations={[isEmpty("School"), whiteSpace("School")]}
+          descErrValidations={[
+            isEmpty("Description"),
+            whiteSpace("Description"),
+            charLimit("Description"),
+          ]}
         />
       </Box>
     </ThemeProvider>

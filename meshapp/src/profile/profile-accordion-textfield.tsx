@@ -7,8 +7,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 
 /**
  * A React component that renders a text field with editing capabilities.
- * Includes a character limit and an edit/save mode toggle, will use context from
- * parent to access and set state.
+ * Includes an edit/save mode toggle
  *
  * Used in the Profile Page Accordion (src/profile/profile-accordion.tsx)
  *
@@ -16,7 +15,6 @@ import ErrorIcon from "@mui/icons-material/Error";
  * @param {string} props.label - The label
  * @param {string} props.placeholder - The placeholder text
  * @param {string} props.text - The state text value from the group accordion state for the corresponding description
- * @param {number} props.charLimit - The max number of characters allowed
  * @param {number} props.accordionIndex - The index of the current Profile Accordion
  * @param {function} props.onChange - function that takes in a new text value to change the corresponding state entry
  * @param {Array<function>} props.errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
@@ -25,7 +23,6 @@ const ProfileAccordionTextField = (props: {
   label: string;
   placeholder: string;
   text: string;
-  charLimit: number;
   accordionIndex: number;
   onChange: (newValue: string) => void;
   errValidations: Array<(value: string) => boolean | string>;

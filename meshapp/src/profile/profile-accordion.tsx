@@ -24,7 +24,6 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {string} props.headerTwo - value for combobox of this accordion's headerTwo, passed down from group state array data
  * @param {string} props.descPlaceholder - placeholder for description textfield
  * @param {string} props.descText - value for description textfield, passed down from group state array data
- * @param {number} props.charLimit - character limit for description textfield
  * @param {number} props.accordionIndex - index of this accordion within the group state array
  * @param {string} props.headerOnePlaceholder - placeholder for headerOne combobox
  * @param {string} props.headerTwoPlaceholder - placeholder for headerTwo combobox
@@ -35,13 +34,13 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {Array<function>} props.descErrValidations - an array of functions to evaluate the description text value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {groupState} props.groupState - the group accordion state data for all accordions
  * @param {setGroupState} props.setGroupState - the group accordion state setter method
+ * @param {boolean} alwaysOpen - if this is set true, then the accordion will be permanently open and the expand icon will disappear
  */
 export default function ProfileAccordion(props: {
   headerOne: string;
   headerTwo: string;
   descPlaceholder: string;
   descText: string;
-  charLimit: number;
   accordionIndex: number;
   headerOnePlaceholder: string;
   headerTwoPlaceholder: string;
@@ -52,6 +51,7 @@ export default function ProfileAccordion(props: {
   descErrValidations: Array<(value: string) => boolean | string>;
   groupState: groupAccordionState;
   setGroupState: setGroupAccordionState;
+  alwaysOpen?: boolean;
 }) {
   //controls whether accordion is expanded to show description or not
   const [expanded, setExpanded] = React.useState<boolean>(false);
@@ -157,7 +157,7 @@ export default function ProfileAccordion(props: {
 
   return (
     <Accordion
-      expanded={expanded}
+      expanded={props.alwaysOpen ? props.alwaysOpen : expanded}
       sx={{
         "&.MuiAccordion-root": {
           margin: 0,
@@ -165,7 +165,9 @@ export default function ProfileAccordion(props: {
       }}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreFilled onClick={toggleExpand} />}
+        expandIcon={
+          props.alwaysOpen ? null : <ExpandMoreFilled onClick={toggleExpand} />
+        }
       >
         {/*Header One Combo Box */}
         <Box sx={{ width: "33%", flexShrink: 0 }}>
@@ -235,7 +237,6 @@ export default function ProfileAccordion(props: {
           label={"Description"}
           placeholder={props.descPlaceholder}
           text={props.descText}
-          charLimit={100}
           accordionIndex={props.accordionIndex}
           errValidations={props.descErrValidations}
           onChange={descOnChange}

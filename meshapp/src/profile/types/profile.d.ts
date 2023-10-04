@@ -9,7 +9,14 @@ export type Profile = {
   isMentor: boolean;
   isMentee: boolean;
   biography: string;
+  education: Education;
 };
 
-// TODO: Include Experience, Education, and Interests props as they get implemented
+// TODO: Include Experience, and Interests props as they get implemented
 //        Maybe separate these into their own types?
+
+export type Education = Array<{
+  degree: string;
+  school: string;
+  description: string;
+}>;
