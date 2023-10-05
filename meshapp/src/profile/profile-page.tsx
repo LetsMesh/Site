@@ -42,6 +42,7 @@ const theme = createTheme({
  * @param {string} props.image - A URL to user's profile image
  * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
  * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
+ * @param {Education} props.education - an array containing objects that each contain a degree,school, and description  
  */
 const ProfilePage = (props: Profile) => {
   return (
