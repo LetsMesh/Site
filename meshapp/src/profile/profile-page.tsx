@@ -329,7 +329,6 @@ const ProfileEducation = (props: { education: Education }) => {
           ]}
           comboTwoValErrValidations={[isEmpty("School"), whiteSpace("School")]}
           descErrValidations={[
-            isEmpty("Description"),
             whiteSpace("Description"),
             charLimit("Description"),
           ]}

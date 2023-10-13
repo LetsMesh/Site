@@ -66,7 +66,6 @@ export function ProfileAccordionComboBox(props: {
     };
   });
 
-  //onChange handler
   const onChangeHandler = (
     event: SyntheticEvent<Element, Event>,
     val: string | option | null
