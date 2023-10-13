@@ -20,34 +20,34 @@ import SaveIcon from "@mui/icons-material/Save";
  * Used in Profile Group Accordion (src/profile/profile-group_accordion.tsx)
  *
  * @param props - Properties of the component
- * @param {string} props.headerOne - value for combobox of this accordion's headerOne, passed down from group state array data
- * @param {string} props.headerTwo - value for combobox of this accordion's headerTwo, passed down from group state array data
+ * @param {string} props.comboOneVal - value for the first combobox within the accordion, passed down from group state array data
+ * @param {string} props.comboTwoVal - value for the second combobox within the accordion, passed down from group state array data
  * @param {string} props.descPlaceholder - placeholder for description textfield
  * @param {string} props.descText - value for description textfield, passed down from group state array data
  * @param {number} props.accordionIndex - index of this accordion within the group state array
- * @param {string} props.headerOnePlaceholder - placeholder for headerOne combobox
- * @param {string} props.headerTwoPlaceholder - placeholder for headerTwo combobox
- * @param {Array<string>} props.headerOneOptions - list of options to be provided to headerOne combobox
- * @param {Array<string>} props.headerTwoOptions - list of options to be provided to headerTwo combobox
- * @param {Array<function>} props.headerOneErrValidations - an array of functions to evaluate the header one value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
- * @param {Array<function>} props.headerTwoErrValidations - an array of functions to evaluate the header two value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {string} props.comboOneValPlaceholder - placeholder for comboOneVal combobox
+ * @param {string} props.comboTwoValPlaceholder - placeholder for comboTwoVal combobox
+ * @param {Array<string>} props.comboOneValOptions - list of options to be provided to comboOneVal combobox
+ * @param {Array<string>} props.comboTwoValOptions - list of options to be provided to comboTwoVal combobox
+ * @param {Array<function>} props.comboOneValErrValidations - an array of functions to evaluate the first combo box value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {Array<function>} props.comboTwoValErrValidations - an array of functions to evaluate the second combobox value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Array<function>} props.descErrValidations - an array of functions to evaluate the description text value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {groupState} props.groupState - the group accordion state data for all accordions
  * @param {setGroupState} props.setGroupState - the group accordion state setter method
- * @param {boolean} alwaysOpen - if this is set true, then the accordion will be permanently open and the expand icon will disappear
+ * @param {boolean} props.alwaysOpen - if this is set true, then the accordion will be permanently open and the expand icon will disappear
  */
 export default function ProfileAccordion(props: {
-  headerOne: string;
-  headerTwo: string;
+  comboOneVal: string;
+  comboTwoVal: string;
   descPlaceholder: string;
   descText: string;
   accordionIndex: number;
-  headerOnePlaceholder: string;
-  headerTwoPlaceholder: string;
-  headerOneOptions: Array<string>;
-  headerTwoOptions: Array<string>;
-  headerOneErrValidations: Array<(value: string) => boolean | string>;
-  headerTwoErrValidations: Array<(value: string) => boolean | string>;
+  comboOneValPlaceholder: string;
+  comboTwoValPlaceholder: string;
+  comboOneValOptions: Array<string>;
+  comboTwoValOptions: Array<string>;
+  comboOneValErrValidations: Array<(value: string) => boolean | string>;
+  comboTwoValErrValidations: Array<(value: string) => boolean | string>;
   descErrValidations: Array<(value: string) => boolean | string>;
   groupState: groupAccordionState;
   setGroupState: setGroupAccordionState;
@@ -69,8 +69,8 @@ export default function ProfileAccordion(props: {
   const groupState = props.groupState;
   const setGroupState = props.setGroupState;
 
-  //onChange handler for header one
-  const headerOneOnChange = (
+  //onChange handler for first combo box
+  const comboOneValOnChange = (
     event: React.SyntheticEvent<Element, Event>,
     val: string | option | null
   ) => {
@@ -83,27 +83,27 @@ export default function ProfileAccordion(props: {
     } else {
       newValue = val.value;
     }
-    //edit the header one for the specific accordion, copy everything else
+    //edit the first combo box value for the specific accordion, copy everything else
     setGroupState(
       groupState.map((profileAccordion, index) => {
         if (index === props.accordionIndex) {
           return {
-            headerOne: newValue ? newValue : "",
-            headerTwo: profileAccordion.headerTwo,
+            comboOneVal: newValue ? newValue : "",
+            comboTwoVal: profileAccordion.comboTwoVal,
             descText: profileAccordion.descText,
           };
         }
         return {
-          headerOne: profileAccordion.headerOne,
-          headerTwo: profileAccordion.headerTwo,
+          comboOneVal: profileAccordion.comboOneVal,
+          comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
         };
       })
     );
   };
 
-  //onChange handler for header two
-  const headerTwoOnChange = (
+  //onChange handler for second combobox
+  const comboTwoValOnChange = (
     event: React.SyntheticEvent<Element, Event>,
     val: string | option | null
   ) => {
@@ -116,19 +116,19 @@ export default function ProfileAccordion(props: {
     } else {
       newValue = val.value;
     }
-    //edit the header two for the specific accordion, copy everything else
+    //edit the second combobox value for the specific accordion, copy everything else
     setGroupState(
       groupState.map((profileAccordion, index) => {
         if (index === props.accordionIndex) {
           return {
-            headerOne: profileAccordion.headerOne,
-            headerTwo: newValue ? newValue : "",
+            comboOneVal: profileAccordion.comboOneVal,
+            comboTwoVal: newValue ? newValue : "",
             descText: profileAccordion.descText,
           };
         }
         return {
-          headerOne: profileAccordion.headerOne,
-          headerTwo: profileAccordion.headerTwo,
+          comboOneVal: profileAccordion.comboOneVal,
+          comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
         };
       })
@@ -141,14 +141,14 @@ export default function ProfileAccordion(props: {
       groupState.map((profileAccordion, index) => {
         if (index === props.accordionIndex) {
           return {
-            headerOne: profileAccordion.headerOne,
-            headerTwo: profileAccordion.headerTwo,
+            comboOneVal: profileAccordion.comboOneVal,
+            comboTwoVal: profileAccordion.comboTwoVal,
             descText: newValue,
           };
         }
         return {
-          headerOne: profileAccordion.headerOne,
-          headerTwo: profileAccordion.headerTwo,
+          comboOneVal: profileAccordion.comboOneVal,
+          comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
         };
       })
@@ -169,25 +169,25 @@ export default function ProfileAccordion(props: {
           props.alwaysOpen ? null : <ExpandMoreFilled onClick={toggleExpand} />
         }
       >
-        {/*Header One Combo Box */}
+        {/*First combobox */}
         <Box sx={{ width: "33%", flexShrink: 0 }}>
           <ProfileAccordionComboBox
-            value={props.headerOne}
+            value={props.comboOneVal}
             disabled={!editMode}
-            placeholderText={props.headerOnePlaceholder}
-            options={props.headerOneOptions}
-            onChange={headerOneOnChange}
-            errValidations={props.headerOneErrValidations}
+            placeholderText={props.comboOneValPlaceholder}
+            options={props.comboOneValOptions}
+            onChange={comboOneValOnChange}
+            errValidations={props.comboOneValErrValidations}
           />
         </Box>
-        {/*Header Two Combo Box */}
+        {/*Second combobox */}
         <ProfileAccordionComboBox
-          value={props.headerTwo}
+          value={props.comboTwoVal}
           disabled={!editMode}
-          placeholderText={props.headerTwoPlaceholder}
-          options={props.headerTwoOptions}
-          onChange={headerTwoOnChange}
-          errValidations={props.headerTwoErrValidations}
+          placeholderText={props.comboTwoValPlaceholder}
+          options={props.comboTwoValOptions}
+          onChange={comboTwoValOnChange}
+          errValidations={props.comboTwoValErrValidations}
         />
         <Grid
           xs={0.5}

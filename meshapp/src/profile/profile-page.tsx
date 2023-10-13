@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -50,7 +49,7 @@ const theme = createTheme({
  * @param {string} props.image - A URL to user's profile image
  * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
  * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
- * @param {Education} props.education - an array containing objects that each contain a degree,school, and description  
+ * @param {Education} props.education - an array containing objects that each contain a degree,school, and description
  * @param {number} props.accountID - ID of Profile account
  */
 
@@ -310,25 +309,25 @@ const ProfileEducation = (props: { education: Education }) => {
         <ProfileGroupAccordion
           groupAccordArgs={props.education.map((currentEd) => {
             return {
-              headerOne: currentEd.degree,
-              headerTwo: currentEd.school,
+              comboOneVal: currentEd.degree,
+              comboTwoVal: currentEd.school,
               descText: currentEd.description,
             };
           })}
-          headerOnePlaceholder="Level of Education"
-          headerTwoPlaceholder="School"
-          headerOneOptions={[
+          comboOneValPlaceholder="Level of Education"
+          comboTwoValPlaceholder="School"
+          comboOneValOptions={[
             "High School Diploma",
             "Associates Degree",
             "Bachelors Degree",
           ]}
-          headerTwoOptions={["Cal Poly Pomona", "Mt. San Antonio College"]}
+          comboTwoValOptions={["Cal Poly Pomona", "Mt. San Antonio College"]}
           descPlaceholder="Enter a description here"
-          headerOneErrValidations={[
+          comboOneValErrValidations={[
             isEmpty("Level of Education"),
             whiteSpace("Level of Education"),
           ]}
-          headerTwoErrValidations={[isEmpty("School"), whiteSpace("School")]}
+          comboTwoValErrValidations={[isEmpty("School"), whiteSpace("School")]}
           descErrValidations={[
             isEmpty("Description"),
             whiteSpace("Description"),
