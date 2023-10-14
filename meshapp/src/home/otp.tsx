@@ -3,7 +3,6 @@ import {
   Button,
   Divider,
   Grid,
-  Skeleton,
   Theme,
   Typography,
 } from "@mui/material";
@@ -11,15 +10,17 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
 import OtpInput from 'react-otp-input';
 
+
 const buttonTheme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: 25,
-          width: "75%",
+          width: "100%",
           height: "4.5rem",
           fontSize: "1.5rem",
+          border: '2px solid #ccc',
         },
       },
     },
@@ -36,7 +37,7 @@ const Otp = () => {
     fontWeight: 'bold',
     border: '2px solid #ccc',
     borderRadius: '5px',
-    margin: '5px',
+    marginRight: '5px',
   };
 
   return (
@@ -52,7 +53,6 @@ const Otp = () => {
           direction="column"
           spacing={5}
           alignItems="center"
-          justifyContent="center"
           p={2}
           sx={{
             boxShadow: 10,
@@ -65,13 +65,19 @@ const Otp = () => {
           }}
         >
           <Grid item>
-            <Typography align="center" variant="h4" fontWeight={"bold"} marginBottom={"20px"}>
+            <Typography align="center" variant="h4" fontWeight={"bold"}>
               Verify MFA
             </Typography>
-            <Typography align="center" variant="subtitle1" marginBottom={"10px"}>
+          </Grid>
+          <Grid item xs>
+            <Typography align="center" variant="subtitle1">
               We have sent an email to your account. Please enter the 6-digit code.
             </Typography>
+          </Grid>
+          <Grid item>
             <Divider orientation="horizontal" />
+          </Grid>
+          <Grid item xs>
             <OtpInput
               value={otp}
               onChange={setOtp}
@@ -82,7 +88,9 @@ const Otp = () => {
               skipDefaultStyles={true}
               inputStyle={boxText}
             />
-            <button onClick={() => console.log(otp)}>Test</button>
+          </Grid>
+          <Grid item xs>
+            <Button variant="contained" onClick={() => console.log(otp)}>Submit</Button>
           </Grid>
         </Grid>
       </Grid>
