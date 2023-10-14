@@ -9,12 +9,7 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
-import { paths } from "../Routing/RoutePaths";
-import { Link as RouterLink } from "react-router-dom";
 import OtpInput from 'react-otp-input';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-
 
 const buttonTheme = createTheme({
   components: {
