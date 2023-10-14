@@ -9,9 +9,13 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
-import LoginWindow from "../components/login-form";
 import { paths } from "../Routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
+import OtpInput from 'react-otp-input';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+
+
 const buttonTheme = createTheme({
   components: {
     MuiButton: {
@@ -27,37 +31,19 @@ const buttonTheme = createTheme({
   },
 });
 
-const SignUp = () => {
-  return (
-    <Grid
-      container
-      direction="column"
-      spacing={5}
-      sx={{ textAlign: "center", alignItems: "center" }}
-    >
-      <Grid item xs width={"80%"}>
-        <Typography variant="h2" fontWeight={"bold"}>
-          Don't have an account with us yet?
-        </Typography>
-      </Grid>
-      <Grid item xs>
-        <Button
-          variant="contained"
-          sx={{ width: "15em" }}
-          component={RouterLink}
-          to={paths.sign_up}
-        >
-          {"Sign Up >"}
-        </Button>
-      </Grid>
-      <Grid item xs>
-        <Skeleton variant="rounded" height={"15em"} width={"30em"} />
-      </Grid>
-    </Grid>
-  );
-};
-
 const Otp = () => {
+  const [otp, setOtp] = useState('');
+
+  const boxText = {
+    width: '40px',
+    height: '40px',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    border: '2px solid #ccc',
+    borderRadius: '5px',
+    margin: '5px',
+  };
+
   return (
     <ThemeProvider
       theme={(theme: Theme) => {
@@ -68,7 +54,10 @@ const Otp = () => {
         <Grid
           container
           wrap="nowrap"
+          direction="column"
           spacing={5}
+          alignItems="center"
+          justifyContent="center"
           p={2}
           sx={{
             boxShadow: 10,
@@ -80,14 +69,25 @@ const Otp = () => {
             borderRadius: 5,
           }}
         >
-          <Grid item xs>
-            <SignUp />
-          </Grid>
-          <Grid item xs={1}>
-            <Divider orientation="vertical" />
-          </Grid>
-          <Grid item xs>
-            <LoginWindow />
+          <Grid item>
+            <Typography align="center" variant="h4" fontWeight={"bold"} marginBottom={"20px"}>
+              Verify MFA
+            </Typography>
+            <Typography align="center" variant="subtitle1" marginBottom={"10px"}>
+              We have sent an email to your account. Please enter the 6-digit code.
+            </Typography>
+            <Divider orientation="horizontal" />
+            <OtpInput
+              value={otp}
+              onChange={setOtp}
+              numInputs={6}
+              renderSeparator={<span> </span>}
+              renderInput={(props) => <input {...props} />}
+              inputType={'tel'}
+              skipDefaultStyles={true}
+              inputStyle={boxText}
+            />
+            <button onClick={() => console.log(otp)}>Test</button>
           </Grid>
         </Grid>
       </Grid>
