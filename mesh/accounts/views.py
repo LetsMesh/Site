@@ -246,10 +246,10 @@ class Verify2FAView(View):
         data = json.loads(request.body.decode('utf-8')) 
         user = getUserServices(request)
         if user == None:
-            return JsonResponse({"status": "verification fail", "message": f"No user with the username or password exists"}, status=404)
+            return JsonResponse({"status": "Verification failed", "message": f"No user with the username or password exists"}, status=404)
         valid_otp = getOTPValidityService(user, data.get('otp', None))
         if not valid_otp:
-            return JsonResponse({"status": "verification fail", "message": f"OTP is invalid"}, status=400)
+            return JsonResponse({"status": "Verification failed", "message": f"OTP is invalid"}, status=400)
         return JsonResponse({"status":"successfully verified"}, status = 201)
 
 class LoginView(View):
