@@ -32,7 +32,7 @@ const buttonTheme = createTheme({
 const Otp = () => {
   const [otp, setOtp] = useState('');
   const navigate = useNavigate();
-  const [cookies, , removeCookie] = useCookies(['user_id']);
+  const [cookies] = useCookies(['user_id']);
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

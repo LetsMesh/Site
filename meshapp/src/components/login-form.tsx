@@ -25,7 +25,7 @@ const LoginScreen = (props: ComponentProps) => {
   };
 
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['user_id']);
+  const [, setCookie] = useCookies(['user_id']);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
