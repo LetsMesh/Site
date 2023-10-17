@@ -257,4 +257,4 @@ class LoginView(View):
         user = getLoginUserService(request)
         if user == None:
             return JsonResponse({"status": "fail", "message": f"No user with the username or password exists" }, status=404)
-        return JsonResponse({'user_id': user.id})
+        return JsonResponse({'user_id': user.accountID, 'enabled_2fa': user.enabled2Factor})
