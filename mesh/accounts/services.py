@@ -33,7 +33,7 @@ def postEmailCodeService(user):
     no return value
     """
     if(not user.enabled2Factor):
-        #check if the user has 2fa enabledd generated if not generate one
+        #check if the user has 2fa enabled, if not generate one
         user.enabled2Factor = True
         otp_base32 = pyotp.random_base32()
         user.otp_base32 = otp_base32
