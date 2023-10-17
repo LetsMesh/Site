@@ -62,7 +62,9 @@ def getOTPValidityService(user, otp):
 
 def getLoginUserService(request):
     """
-    Return the user id
+    Check if the password from request is correct
+
+    @return: the user account object
     """
     data = json.loads(request.body.decode('utf-8')) 
     email_ = data.get('email', None)

@@ -253,8 +253,14 @@ class Verify2FAView(View):
         return JsonResponse({"status":"successfully verified"}, status = 201)
 
 class LoginView(View):
+    """
+    Verify Login Request
+
+    Return status 404 if the user does not exist
+    Return status 201 if user is successfully verified
+    """
     def post(self, request, *args, **kwargs):
         user = getLoginUserService(request)
         if user == None:
             return JsonResponse({"status": "fail", "message": f"No user with the username or password exists" }, status=404)
-        return JsonResponse({'user_id': user.accountID, 'enabled_2fa': user.enabled2Factor})
+        return JsonResponse({'user_id': user.accountID, 'enabled_2fa': user.enabled2Factor}, status = 201)
