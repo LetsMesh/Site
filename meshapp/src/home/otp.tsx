@@ -11,6 +11,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
 import OtpInput from 'react-otp-input';
 import { axiosInstance } from "../config/axiosConfig";
+import { useCookies } from 'react-cookie';
 
 const buttonTheme = createTheme({
   components: {
@@ -29,34 +30,34 @@ const buttonTheme = createTheme({
 });
 
 const Otp = () => {
-  const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
   const navigate = useNavigate();
+  const [cookies, , removeCookie] = useCookies(['user_id']);
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.append('otp', otp)
-    setLoading(true);
-    // alert(data.get("otp")); //for debug
     const response = await axiosInstance.post('accounts/verify-two-factor-auth/',{
-      "accountID":1,  //TODO: Get accountID from cookie (SHOULD BE FROM LOGIN)
+      "accountID":cookies.user_id,
       "otp":data.get("otp")
     })
       .then((axiosResponse) => {
         alert("Verified");
-        setLoading(false);
         navigate('/logged_in_home');
       })
       .catch((error) => {
         if(error.response){
-          alert("Incorrect Pin"); //TODO: Handle event to load the page with the error
-          setLoading(false);
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          alert(error.response.data.message); //TODO: Improve the error response
         }
         else if (error.request) {
+          //request was made but no response was received
           console.log(error.request);
         }
         else {
+          // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message);
         }
         console.log(error.config);
