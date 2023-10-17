@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { axiosInstance } from "../config/axiosConfig";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 interface ComponentProps {
   updateShowForgotPasswordState: () => void;
@@ -21,6 +23,50 @@ const LoginScreen = (props: ComponentProps) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     console.log(formData);
   };
+
+  const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(['user_id']);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const response = await axiosInstance.post('accounts/login/',{
+      "email":formData.user,
+      "password":formData.pass
+    })
+      .then((axiosResponse) => {
+        if(axiosResponse.data.enabled_2fa){
+          setCookie('user_id', axiosResponse.data.user_id, { path:'/', maxAge:150 });
+          axiosInstance.post('accounts/set-two-factor-auth/', {
+            "accountID":axiosResponse.data.user_id
+          })
+          .then(() => {
+            navigate('/otp');
+          })
+          .catch((error) => {
+            alert(error.response.data.message);
+          });
+        }
+        else{
+          navigate('/logged_in_home')
+        }
+      })
+      .catch((error) => {
+        if(error.response){
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          alert(error.response.data.message); //TODO: Improve the error response 
+        }
+        else if (error.request) {
+          //request was made but no response was received
+          console.log(error.request);
+        }
+        else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      });
+  }
 
   return (
     <Grid
@@ -56,9 +102,11 @@ const LoginScreen = (props: ComponentProps) => {
         </Stack>
       </Grid>
       <Grid item xs sx={{ textAlign: "center", width: "100%" }}>
-        <Button variant="contained" sx={{ width: "70%" }}>
-          Login
-        </Button>
+        <form onSubmit={handleSubmit}>
+          <Button variant="contained" type="submit" sx={{ width: "70%" }}>
+            Login
+          </Button>
+        </form>
       </Grid>
       <Grid item xs sx={{ textAlign: "center", alignItems: "center" }}>
         <Stack spacing={2}>
