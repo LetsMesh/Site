@@ -12,6 +12,7 @@ import { deepmerge } from "@mui/utils";
 import OtpInput from 'react-otp-input';
 import { axiosInstance } from "../config/axiosConfig";
 import { useCookies } from 'react-cookie';
+import { useEffect } from "react";
 
 const buttonTheme = createTheme({
   components: {
@@ -32,7 +33,9 @@ const buttonTheme = createTheme({
 const Otp = () => {
   const [otp, setOtp] = useState('');
   const navigate = useNavigate();
-  const [cookies] = useCookies(['user_id']);
+  const [cookies, , removeCookie] = useCookies(['user_id']);
+
+  useEffect(() =>{},[cookies]);
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,6 +47,7 @@ const Otp = () => {
     })
       .then((axiosResponse) => {
         alert("Verified");
+        removeCookie("user_id");
         navigate('/logged_in_home');
       })
       .catch((error) => {

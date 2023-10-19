@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { axiosInstance } from "../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
+import { useEffect } from "react";
 
 interface ComponentProps {
   updateShowForgotPasswordState: () => void;
@@ -25,7 +26,9 @@ const LoginScreen = (props: ComponentProps) => {
   };
 
   const navigate = useNavigate();
-  const [, setCookie] = useCookies(['user_id']);
+  const [cookies, setCookie] = useCookies(['user_id']);
+
+  useEffect(() =>{},[cookies]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
