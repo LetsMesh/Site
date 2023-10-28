@@ -9,14 +9,23 @@ export type Profile = {
   isMentor: boolean;
   isMentee: boolean;
   biography: string;
+  education: Education;
   accountID: number;
 };
-
+ 
 export type ProfileInterests = {
   currentTags: string[];
   recommendedTags: string[];
   setTags: (tags: string[]) => void;
 };
 
+export type Education = Array<{
+  degree: string;
+  school: string;
+  description: string;
+}>;
+
 // TODO: Include Experience and Education props as they get implemented
 //        Maybe separate these into their own types?
+
+

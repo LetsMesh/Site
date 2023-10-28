@@ -10,9 +10,10 @@ import {
 
 import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
+import { Education, Profile } from "./types/profile";
 import ProfileInterestsComponent from "./profile-interests";
-import { Profile } from "./types/profile";
 import "./styling/profile-page.css";
+import { ProfileGroupAccordion } from "./profile-group_accordion";
 
 import { axiosInstance } from "../config/axiosConfig";
 
@@ -48,6 +49,7 @@ const theme = createTheme({
  * @param {string} props.image - A URL to user's profile image
  * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
  * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
+ * @param {Education} props.education - an array containing objects that each contain a degree,school, and description
  * @param {number} props.accountID - ID of Profile account
  */
 
@@ -110,7 +112,7 @@ const ProfilePage = (props: Profile) => {
               <ProfileExperience />
             </Box>
             <Box>
-              <ProfileEducation />
+              <ProfileEducation education={props.education} />
             </Box>
           </Grid>
           <Grid
@@ -276,8 +278,22 @@ const ProfileExperience = (props: any) => {
   );
 };
 
-// TODO: To be fully implemented
-const ProfileEducation = (props: any) => {
+/**
+ * Displays the user's education history (degree, school, description)
+ *
+ * @param props - Properties of the component
+ * @param {Education} props.education - Array of objects that represent a single education
+ *
+ */
+const ProfileEducation = (props: { education: Education }) => {
+  //starting error validation functions
+  const isEmpty = (inputName: string) => (val: string) =>
+    val.length > 0 || `${inputName} cannot be empty.`;
+  const whiteSpace = (inputName: string) => (val: string) =>
+    val.trim() === val ||
+    `${inputName} cannot have whitespace at beginning or end.`;
+  const charLimit = (inputName: string) => (val: string) =>
+    val.length < 100 || `${inputName} cannot be longer than 100 characters.`;
   return (
     <ThemeProvider theme={theme}>
       <Box className="profile-page-column-body">
@@ -290,7 +306,33 @@ const ProfileEducation = (props: any) => {
         >
           Education
         </Typography>
-        <TestComponent />
+        <ProfileGroupAccordion
+          groupAccordArgs={props.education.map((currentEd) => {
+            return {
+              comboOneVal: currentEd.degree,
+              comboTwoVal: currentEd.school,
+              descText: currentEd.description,
+            };
+          })}
+          comboOneValPlaceholder="Level of Education"
+          comboTwoValPlaceholder="School"
+          comboOneValOptions={[
+            "High School Diploma",
+            "Associates Degree",
+            "Bachelors Degree",
+          ]}
+          comboTwoValOptions={["Cal Poly Pomona", "Mt. San Antonio College"]}
+          descPlaceholder="Enter a description here"
+          comboOneValErrValidations={[
+            isEmpty("Level of Education"),
+            whiteSpace("Level of Education"),
+          ]}
+          comboTwoValErrValidations={[isEmpty("School"), whiteSpace("School")]}
+          descErrValidations={[
+            whiteSpace("Description"),
+            charLimit("Description"),
+          ]}
+        />
       </Box>
     </ThemeProvider>
   );
