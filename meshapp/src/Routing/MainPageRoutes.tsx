@@ -1,6 +1,7 @@
 import LoggedOutPage from "../home/logged-out/home";
 import SignUp from "../components/SignUp/SignUp";
 import Login from "../home/login";
+import Otp from "../home/otp";
 import ForgotPassword from "../components/password-forms/forgot-password-form";
 import LoggedInHome from "../home/logged-in/LoggedInHome";
 import ProfilePage from "../profile/profile-page";
@@ -18,6 +19,7 @@ export default function MainPageRoutes() {
       <Route path={paths.logged_out_home} element={<LoggedOutPage />} />
       <Route path={paths.sign_up} element={<SignUp />} />
       <Route path={paths.login_page} element={<Login />} />
+      <Route path={paths.otp} element={<Otp />} />
       <Route path={paths.forgot_password} element={<ForgotPassword />} />
       {/*Logged In Pages*/}
       <Route path={paths.logged_in_home} element={<LoggedInHome />} />
