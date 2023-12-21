@@ -1,6 +1,6 @@
 from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.core import serializers
+from django.core.exceptions import ValidationError
+from django.core.serializers import serialize
 from .models import *
 import bcrypt
 import os
@@ -17,60 +17,89 @@ class AccountsView(View):
     Handles HTTP requests related to the collection of Account, supporting GET to 
     retrieve the list of all Account and POST to create a new Account.
     """
-    def get(self, request, *args, **kwargs):
+
+    def get(self, request):
         """
         Handle GET requests.
 
-        Retrieves a list of all accounts in JSON format.
+        Retrieves all Accounts from the database and returns them in a JSON-formatted array.
+        Each element in the array is a JSON object representing an Account, including its model name, primary key, and other fields.
 
-        Returns a JSON response containing all Account.
+        Returns a 200 HTTP status code along with the JSON-formatted array of Accounts.
         """
         accounts = Account.objects.all()
-        accounts_list = serializers.serialize('json', accounts)
-        return JsonResponse(accounts_list, safe=False)
-
-    def post(self, request, *args, **kwargs):
+        serialized_data = serialize('json', accounts)
+        return HttpResponse(serialized_data, status=200, content_type='application/json')
+    
+    def post(self, request):
         """
         Handle POST requests.
 
-        Creates a new account. The required fields are 'email', 'encryptedPass', 'phoneNum', 
-        'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee'. If all fields are 
+        Creates a new account. The required fields are 'email', 'password', 'phoneNum', 'isMentor', 'isMentee'. If all fields are 
         present and valid, it returns a JSON response with the newly created account's ID and 
         a HTTP status code 201, indicating that the account has been successfully created.
         
         Returns a JSON response with the newly created account's ID and a 201 status code.
         """
-        REQUIRED_FIELDS = ['email', 'encryptedPass', 'phoneNum', 'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee']
-        data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
-        account = Account.objects.create(
-            email = data['email'],
-            encryptedPass = data['encryptedPass'],
-            phoneNum = data['phoneNum'],
-            displayTheme = data['displayTheme'],
-            enabled2Factor = data['enabled2Factor'],
-            isMentor = data['isMentor'],
-            isMentee = data['isMentee']
-        )
-        return JsonResponse({'account_id': account.accountID}, status=201)
+        try:
+            REQUIRED_FIELDS = ['email', 'password', 'phoneNum', 'isMentor', 'isMentee']
+            data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
+            # data = json.loads(request.body)
+            salt,hash = encrypt(data['password'])
+            new_account = Account(
+                email=data['email'],
+                encryptedPass=hash,
+                salt=salt,
+                phoneNum=data['phoneNum'],
+                isMentor=data['isMentor'],
+                isMentee=data['isMentee'],
+            )
+            new_account.full_clean()
+            new_account.save()
+            return JsonResponse({'accountID': new_account.accountID}, status=201)
+        
+        except (KeyError, json.JSONDecodeError, ValidationError):
+            return JsonResponse(
+                {
+                    'error': 'Failed to create. Invalid data format',
+                },
+                status=400,
+                content_type='application/json'
+            )
 
 
-class AccountsDetailView(View):
+class SingleAccountView(View):
     """
     View for getting an Account by ID or updating an Account.
     """
-    def get(self, request, account_id, *args, **kwargs):
+
+    def get(self, request, account_id):
         """
         Handle GET requests.
 
-        Returns a JSON response containing the Account with the given ID.
-        If the Account does not exist, it returns a 404 status code and an error message.
+        Returns a JSON response containing the details of a single Account
+        identified by the given account_id. The JSON object contains the model
+        name, primary key, and other fields of the Account.
+
+        Returns a 404 status code and a JSON object containing an error message
+        if the account does not exist.
         """
         try:
             account = Account.objects.get(accountID=account_id)
-            account_detail = serializers.serialize('json', [account])
-            return JsonResponse(account_detail, safe=False)
         except Account.DoesNotExist:
             return JsonResponse({'error': 'Account does not exist'}, status=404)
+
+        # Manually construct the response data
+        account_data = {
+            'email': account.email,
+            'encryptedPass': account.encryptedPass.decode('utf-8'),  # Assuming it's stored as bytes
+            'salt': account.salt.decode('utf-8'),  # Assuming it's stored as bytes
+            'phoneNum': account.phoneNum,
+            'isMentor': account.isMentor,
+            'isMentee': account.isMentee
+        }
+
+        return JsonResponse(account_data, status=200)
 
     def patch(self, request, account_id, *args, **kwargs):
         """
@@ -96,16 +125,34 @@ class AccountsDetailView(View):
 
         data = json.loads(request.body)
         account.email = data.get('email', account.email)
-        account.encryptedPass = data.get('encryptedPass', account.encryptedPass)
-        account.phoneNum = data.get('phoneNum', account.phoneNum)
-        account.displayTheme = data.get('displayTheme', account.displayTheme)
-        account.enabled2Factor = data.get('enabled2Factor', account.enabled2Factor)
+        if (data.get('password')):
+            salt, hash = encrypt(data.get('password'))
+            account.encryptedPass = hash
+            account.salt = salt
         account.isMentor = data.get('isMentor', account.isMentor)
         account.isMentee = data.get('isMentee', account.isMentee)
         account.save()
         return HttpResponse(status=204)
+    
+    def delete(self, request, account_id):
+        """
+        Handle DELETE requests.
 
-def encrypt(password ):
+        Deletes the Account with the given ID.
+        If the Account does not exist, it returns a 404 status code and an error message.
+
+        Returns a 204 HTTP status to indicate that the request has succeeded 
+        but does not include an entity-body in the response.
+        """
+        try:
+            account = Account.objects.get(accountID=account_id)
+        except Account.DoesNotExist:
+            return JsonResponse({'message': 'Account does not exist'}, status=404)
+
+        account.delete()
+        return JsonResponse({'message': f'successfully deleted Account with account_id: {account_id}'}, status=204)
+
+def encrypt(password):
     salt = bcrypt.gensalt(12)
 
     pepper = os.getenv("PEPPER")
@@ -142,24 +189,24 @@ def create_account(request):
                 phoneNum = phone_number,
                 isMentee = is_mentee,
                 isMentor = is_mentor
-                )
+            )
             user_account.save()
 
-            return JsonResponse(
+            return HttpResponse(
                 {
                     "status":"successfully created"
                 },
                 status = 201
             )
         else:
-            return JsonResponse(
+            return HttpResponse(
                 {
                     "status":"account with same email or phone number exists"
                 },
                 status = 409
             )
     else :
-        return JsonResponse(
+        return HttpResponse(
             {
                 "status":f"{request.method} method not allowed"
             },
@@ -175,7 +222,7 @@ def check_password(request):
 
         user_created = Account.objects.filter(email = email,phoneNum = phoneNumber).values()
         if not bool(user_created):
-            return JsonResponse(
+            return HttpResponse(
                 {
                     "error":"Account not found",
                 },
@@ -188,14 +235,14 @@ def check_password(request):
 
             if hash == decrypt(password, salt):
 
-                return JsonResponse(
+                return HttpResponse(
                     {
                         "message":"Access granted"
                     },
                     status = 200
                 )
             else:
-                return JsonResponse(
+                return HttpResponse(
                     {
                         "message":"Access denied, wrong password"
                     },
@@ -203,7 +250,7 @@ def check_password(request):
                 )
 
     else :
-        return JsonResponse(
+        return HttpResponse(
             {
                 "status":f"{request.method} method not allowed"
             },
