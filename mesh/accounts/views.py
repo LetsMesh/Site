@@ -35,8 +35,7 @@ class AccountsView(View):
         """
         Handle POST requests.
 
-        Creates a new account. The required fields are 'email', 'encryptedPass', 'phoneNum', 
-        'displayTheme', 'enabled2Factor', 'isMentor', 'isMentee'. If all fields are 
+        Creates a new account. The required fields are 'email', 'password', 'phoneNum', 'isMentor', 'isMentee'. If all fields are 
         present and valid, it returns a JSON response with the newly created account's ID and 
         a HTTP status code 201, indicating that the account has been successfully created.
         
