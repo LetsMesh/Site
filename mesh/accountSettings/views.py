@@ -15,12 +15,10 @@ def display_theme(request, account_id):
         try:
             account = Account.objects.get(pk=account_id)
             settings = Settings.objects.get(accountID=account_id)
-            parsed_obj = json.loads(serialize('json', [{"displayTheme": settings.displayTheme}]))[0]
             
-            return HttpResponse(
-                json.dumps(parsed_obj),
+            return JsonResponse(
+                {"displayTheme": settings.displayTheme},
                 status=200,
-                content_type='application/json'
             )
         except Account.DoesNotExist:
             return JsonResponse({'error': 'Account does not exist'}, status=404)
@@ -79,9 +77,7 @@ class SettingsView(View):
         
         except Account.DoesNotExist:
             return JsonResponse({'error': 'Account does not exist'}, status=404)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-        except (KeyError, ValidationError):
+        except (KeyError, ValidationError, json.JSONDecodeError):
             return JsonResponse(
                 {
                     'error': 'Failed to create. Invalid data format',
