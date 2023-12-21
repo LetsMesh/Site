@@ -1,3 +1,8 @@
+'''
+You can run this test with
+
+python manage.py test mesh.tests.settings_tests
+'''
 import json
 
 from django.test import TestCase, Client
@@ -12,9 +17,8 @@ class SettingsTest(TestCase):
         test_account = Account.objects.create(
             email="settingstest@gmail.com",
             encryptedPass=bytes("password_test", "utf-8"),
+            salt=bytes("salt", "utf-8"),
             phoneNum="1234567890",
-            displayTheme="0",
-            enabled2Factor=False,
             isMentor=False,
             isMentee=True
         )
@@ -37,7 +41,11 @@ class SettingsTest(TestCase):
         
     def test_display_theme(self):
         test_user = Account.objects.get(email="settingstest@gmail.com")
-        response = self.client.get("/settings/displayTheme", {"accountID": test_user.accountID})
+        response = self.client.get(
+            "/settings/displayTheme", 
+            data={"accountID": test_user.accountID},
+            content_type='application/json'
+        )
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEquals(json_response.get("data"), {"get": {"displayTheme": "0"}})
 
