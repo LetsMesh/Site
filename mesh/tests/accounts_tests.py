@@ -110,11 +110,6 @@ class AccountTest(TestCase):
         updated_account = Account.objects.get(accountID=self.test_account.accountID)
         self.assertEqual(updated_account.isMentor, updated_account_data['isMentor'])
         self.assertEqual(updated_account.isMentee, updated_account_data['isMentee'])
-        
-        # # check password
-        # from ..accounts.views import decrypt
-        # self.assertEqual(updated_account.email, updated_account_data['email'])
-        # self.assertEqual(updated_account.encryptedPass, decrypt(updated_account_data['password'], updated_account.salt))
 
     def test_check_password(self):
         """
