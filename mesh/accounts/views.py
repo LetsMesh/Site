@@ -56,11 +56,7 @@ class AccountsView(View):
             )
             new_account.full_clean()
             new_account.save()
-            return HttpResponse(
-                new_account.accountID, 
-                status=201,
-                content_type='application/json'
-            )
+            return JsonResponse({'accountID': new_account.accountID}, status=201)
         
         except (KeyError, json.JSONDecodeError, ValidationError):
             return JsonResponse(
