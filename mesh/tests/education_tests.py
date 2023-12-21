@@ -2,7 +2,6 @@
 You can run this test with
 
 python manage.py test mesh.tests.education_tests
-
 '''
 
 import json
@@ -24,8 +23,6 @@ class EducationTestCase(TestCase):
             encryptedPass=bytes('password', 'utf-8'),
             salt=bytes('salt', 'utf-8'),
             phoneNum='1234567890',
-            displayTheme='D',
-            enabled2Factor=False,
             isMentor=False,
             isMentee=True
         )
