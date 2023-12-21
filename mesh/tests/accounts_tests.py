@@ -58,7 +58,8 @@ class AccountTest(TestCase):
         Test case for creating a new account.
 
         A POST request containing new account data is sent to the '/api/accounts/' endpoint.
-        The test passes if the response status code is 201.
+        The test passes if the response status code is 201 and the created account has the same
+        information as `data`
         """
         data = {
             'email': 'new@email.com',
@@ -67,9 +68,19 @@ class AccountTest(TestCase):
             'isMentor': True,
             'isMentee': False
         }
-        import json
         response = self.client.post('/accounts/', json.dumps(data), content_type='application/json')
         self.assertEqual(response.status_code, 201)
+        
+        json_response = json.loads(response.content.decode("utf-8"))
+        account = Account.objects.get(accountID=json_response["accountID"])
+        self.assertEqual(account.accountID, json_response["accountID"])
+        self.assertEqual(account.email, data["email"])
+        self.assertEqual(account.phoneNum, data["phoneNum"])
+        self.assertEqual(account.isMentor, data["isMentor"])
+        self.assertEqual(account.isMentee, data["isMentee"])
+        
+        from ..accounts.views import decrypt
+        self.assertEqual(account.encryptedPass, decrypt(data['password'], account.salt))
 
     def test_patch_update_account(self):
         """
