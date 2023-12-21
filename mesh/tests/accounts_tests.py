@@ -1,5 +1,5 @@
 '''
-you can run this test with
+You can run this test with
 
 python manage.py test mesh.tests.accounts_tests
 '''
@@ -16,12 +16,13 @@ class AccountTest(TestCase):
         Set up test environment. Create a Client instance and a test account.
         """
         self.client = Client()
-        self.test_account = Account(email='test@email.com',
+        self.test_account = Account(
+            email='test@email.com',
             encryptedPass=b'some_encrypted_pass',
             salt=b'some_salt',
             phoneNum='1234567890',
             isMentor=False,
-            isMentee=False
+            isMentee=True
         )
         self.test_account.full_clean()
         self.test_account.save()
@@ -78,7 +79,11 @@ class AccountTest(TestCase):
             "isMentee": True,
         }
 
-        response = self.client.patch(f'/accounts/{self.test_account.accountID}/', updated_account_data, content_type='application/json')
+        response = self.client.patch(
+            f'/accounts/{self.test_account.accountID}/', 
+            data=updated_account_data, 
+            content_type='application/json'
+        )
         # check if the update operation went successfully
         self.assertEqual(response.status_code, 204)
 
