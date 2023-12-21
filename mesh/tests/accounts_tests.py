@@ -4,9 +4,9 @@ You can run this test with
 python manage.py test mesh.tests.accounts_tests
 '''
 
+import json
 from django.test import TestCase, Client
 from ..accounts.models import Account  
-
 class AccountTest(TestCase):
     """
     Test case for the Account model.
@@ -46,6 +46,12 @@ class AccountTest(TestCase):
         """
         response = self.client.get(f'/accounts/{self.test_account.accountID}/')
         self.assertEqual(response.status_code, 200)
+        
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(json_response["email"], self.test_account.email)
+        self.assertEqual(json_response["encryptedPass"], self.test_account.encryptedPass.decode('utf-8'))
+        self.assertEqual(json_response["isMentor"], self.test_account.isMentor)
+        self.assertEqual(json_response["isMentee"], self.test_account.isMentee)
 
     def test_post_create_account(self):
         """

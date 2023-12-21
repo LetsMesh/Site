@@ -93,18 +93,17 @@ class SingleAccountView(View):
         except Account.DoesNotExist:
             return JsonResponse({'error': 'Account does not exist'}, status=404)
 
-        # Serialize the account and parse it as JSON
-        serialized_data = serialize('json', [account])
-        parsed_data = json.loads(serialized_data)
+        # Manually construct the response data
+        account_data = {
+            'email': account.email,
+            'encryptedPass': account.encryptedPass.decode('utf-8'),  # Assuming it's stored as bytes
+            'salt': account.salt.decode('utf-8'),  # Assuming it's stored as bytes
+            'phoneNum': account.phoneNum,
+            'isMentor': account.isMentor,
+            'isMentee': account.isMentee
+        }
 
-        # Extract the first element from the parsed list
-        single_account_data = parsed_data[0] if parsed_data else {}
-
-        return HttpResponse(
-            json.dumps(single_account_data), 
-            status=200,
-            content_type='application/json'
-        )
+        return JsonResponse(account_data, status=200)
 
     def patch(self, request, account_id, *args, **kwargs):
         """
