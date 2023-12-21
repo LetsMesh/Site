@@ -16,7 +16,6 @@ urlpatterns = [
     # DELETE  /accounts/:account_id - delete account with id account_id
     path('<int:account_id>/', accounts_views.SingleAccountView.as_view(), name='single_account'), 
     
-    path('createAccount',create_account,name = "create"),
     path('checkAccount',check_password, name = "check")
 ]
 
