@@ -61,40 +61,38 @@ To check if your versions are correct you can use the following commands:
 Check node version with `node -v` -> This should show v20.2.0 in the console.
 Check npm version with `npm -v` -> This should show 9.6.6 in the console.
 
-1. Clone and change directories to the repository in the directory (ex. Desktop) you would like to work in. `git clone [repo link]`.
+1. Clone and change directories to the repository /site. `git clone [repo link]`.
 2. Development is done on the `dev_new` branch. Ensure you are working either on `dev_new` or a branch that has branched off of `dev_new`. To switch to a branch, use `git checkout [branch_name]`.
 3. Install pipenv with pip using `pip install pipenv`.
    - If pip is not recognized, you can do `py -m ensurepip` to check that pip is installed, then restart your Terminal.
-4. **IMPORTANT** Get the .env file from another contributor and store it on your root directory '/SITE' if you haven't already before running this command.
+4. **IMPORTANT** Go to the LetsMesh Discord and the #current-sprint channel. The pinned comment will direct you to an .env file template. Fill that out and store it on your root directory '/SITE'.
 5. Initialize the virtual environment and install virtual environment dependencies using `pipenv install`.
 6. Activate the virtual environment using `pipenv shell`.
-7. Go to `Site/meshapp/` and run an `npm install`. You can change your directory to this folder using `cd meshapp`.
-8. Build the frontend by running `npm run build`.
-9. Return to the root directory and start the backend server / run the application with `python manage.py runserver`.
+7. Build the frontend by running `npm run init:frontend`.
+8. Return to the root directory and start the backend server / run the application with `python manage.py runserver`.
     - `cd ..` (Windows) or `cd -` (MacOS) to go back a directory.
-
-**MYSQL SETUP** (If you are on a Mac, consider switching to Windows if you have one)
-1. Download MySQL over [here](https://dev.mysql.com/downloads/installer/). Download the larger file.
-2. Do the setup and do the full download (spam next until you see the password portion).
-3. Make a password for the root account or a custom username.
-   - Make sure you remember your passwords and username (username is by default root).
-4. Write the username and password in your .env file.
-5. Spam next until you finish and then you’re done.
-
-Next we're onto Django.
-1. Open a terminal and make sure MySQL is installed by typing in `mysql -V`
-   - If the command doesn’t work it may be because mysql isn’t added to your path. The default location for mysql server should be: C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe. A possible solution can be found [here](https://stackoverflow.com/questions/5920136/mysql-is-not-recognised-as-an-internal-or-external-command-operable-program-or-b).
-   - If it says Access Denied, move onto the next step.
-2. Login to MySQL by using  `mysql --u [username] --p` and then type in the password you saved previously when prompted.
-   - FYI: You should manually type the password as pasting it may not work.
-4. You should be prompted into the MySQL shell, where you will then create a database by using `CREATE DATABASE mesh;`.
-5. Confirm your database is created with `SHOW DATABASES;`.
-6. Make sure your pip environment is opened with `pipenv shell`.
-7. Type in `python manage.py makemigrations`.
+    - Alternatively, you can use `npm run start` instead for the same effect, but make sure you're in the root directory.
+9. Download MySQL over [here](https://dev.mysql.com/downloads/installer/). Download the larger file.
+10. Do the setup and spam next until you see the password portion.
+    - Make sure you are not using the legacy version. Select the 8.x version.
+12. Make a password for the root account or a custom username.
+    - Make sure you remember your passwords and username (username is by default root).
+13. Write the username and password in your .env file.
+14. Spam next until you finish and then you’re done.
+15. Open a terminal and make sure MySQL is installed by typing in `mysql -V`
+    - If the command doesn’t work it may be because mysql isn’t added to your path. The default location for mysql server should be: C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe. A possible solution can be found [here](https://stackoverflow.com/questions/5920136/mysql-is-not-recognised-as-an-internal-or-external-command-operable-program-or-b).
+    - If it says Access Denied, move onto the next step.
+16. Login to MySQL by using  `mysql --u [username] --p` and then type in the password when prompted.
+    - FYI: You should manually type the password as pasting it may not work.
+17. You should be prompted into the MySQL shell, where you will then create a database by using `CREATE DATABASE mesh;`.
+18. Confirm your database is created with `SHOW DATABASES;`.
+19. Use `\q` or `exit` to quit MySQL.
+20. Make sure your pip environment is opened with `pipenv shell` and that you are in the root directory.
+21. Run `npm run init` to set up the backend and frontend.
     - You will most likely be given warnings. Warnings are fine errors aren’t. Google your errors.
-8. Type in `python manage.py migrate`.
-    - Similar to the previous step warnings are fine, errors aren’t.
-9. Make sure your frontend is set up with `npm run build`, then run `python manage.py runserver`, and you should be good to go.
+    - Tip: `npm run init:frontend` and `npm run init:backend` will set up the frontend and the backend, respectively.
+
+**Now you should be good to go!**
 
 #### Tips:
 
@@ -104,7 +102,7 @@ Next we're onto Django.
 
 ### Running the Application:
 
-- Build The app using `npm run build` within the meshapp\ directory
+- Build the app using `npm run build` within the meshapp\ directory
 - Return to the root directory of the repository
 - Run `python manage.py runserver`
 
