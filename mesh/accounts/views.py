@@ -64,7 +64,7 @@ class AccountsView(View):
 
             if created_email or created_phone:
                 return JsonResponse(
-                    data={ "status":"account with same email or phone number exists" },
+                    data={ "error" : "account with same email or phone number exists" },
                     status=409
                 )
             
@@ -178,7 +178,7 @@ class SingleAccountView(View):
         try:
             account = Account.objects.get(accountID=account_id)
         except Account.DoesNotExist:
-            return JsonResponse({'message': 'Account does not exist'}, status=404)
+            return JsonResponse({'error': 'Account does not exist'}, status=404)
 
         account.delete()
         return JsonResponse({'message': f'successfully deleted Account with account_id: {account_id}'}, status=204)
