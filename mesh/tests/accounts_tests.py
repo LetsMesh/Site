@@ -175,7 +175,7 @@ class AccountTest(TestCase):
         response = self.client.patch('/accounts/change-password/', json.dumps(change_password_data), content_type='application/json')
         self.assertEqual(response.status_code, 204)
 
-        # verify if the password has indeed been changed b y attempting to log in with the new password
+        # verify if the password has indeed been changed by attempting to log in with the new password
         login_data = {
             'email': 'test_change_password@email.com',
             'password': 'new_secure_password'
