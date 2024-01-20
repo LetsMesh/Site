@@ -33,12 +33,19 @@ class AccountsView(View):
 
     def get(self, request):
         """
-        Handle GET requests.
+        Handles GET requests to retrieve a list of all Account instances.
 
-        Retrieves all Accounts from the database and returns them in a JSON-formatted array.
-        Each element in the array is a JSON object representing an Account, including its model name, primary key, and other fields.
+        Retrieves all Account records from the database and serializes them into JSON format. 
+        Returns a JSON array where each element represents an Account with its details.
 
-        Returns a 200 HTTP status code along with the JSON-formatted array of Accounts.
+        Responses:
+            - HTTP 200 (OK): Successfully retrieved and returned all Account records.
+
+        Parameters:
+            request: The HTTP request object.
+
+        Returns:
+            HttpResponse: A JSON-formatted array of all Accounts with HTTP status 200.
         """
         accounts = Account.objects.all()
         serialized_data = serialize('json', accounts)
@@ -46,13 +53,22 @@ class AccountsView(View):
     
     def post(self, request):
         """
-        Handle POST requests.
+        Handles POST requests to create a new Account.
 
-        Creates a new account. The required fields are 'email', 'password', 'phoneNum', 'isMentor', 'isMentee'. If all fields are 
-        present and valid, it returns a JSON response with the newly created account's ID and 
-        a HTTP status code 201, indicating that the account has been successfully created.
-        
-        Returns a JSON response with the newly created account's ID and a 201 status code.
+        Expects a JSON payload with required fields: 'email', 'password', 'phoneNum', 'isMentor', and 'isMentee'.
+        Validates the presence and uniqueness of 'email' and 'phoneNum'. Encrypts the password and creates a new Account instance.
+        Saves the instance to the database if all validations pass.
+
+        Responses:
+            - HTTP 201 (Created): Successfully created a new Account.
+            - HTTP 400 (Bad Request): If data is invalid or missing required fields.
+            - HTTP 409 (Conflict): If an account with the same email or phone number already exists.
+
+        Parameters:
+            request: The HTTP request object with necessary account data.
+
+        Returns:
+            JsonResponse: A response with the new account's ID and status, along with an appropriate HTTP status code.
         """
         try:
             REQUIRED_FIELDS = ['email', 'password', 'phoneNum', 'isMentor', 'isMentee']
@@ -100,20 +116,26 @@ class AccountsView(View):
 
 class SingleAccountView(View):
     """
-    View for getting an Account by ID or updating an Account.
+    View for getting or updating an Account by ID.
     """
 
     def get(self, request, account_id):
         """
-        Handle GET requests.
-        GET /accounts/<int:account_id>
+        Handles GET requests to retrieve details of a single Account identified by account_id.
 
-        Returns a JSON response containing the details of a single Account
-        identified by the given account_id. The JSON object contains the model
-        name, primary key, and other fields of the Account.
+        Fetches the Account instance from the database using the provided account_id.
+        Serializes the Account data into JSON format for response.
 
-        Returns a 404 status code and a JSON object containing an error message
-        if the account does not exist.
+        Responses:
+            - HTTP 200 (OK): Successfully retrieved the Account details.
+            - HTTP 404 (Not Found): If no Account is found with the provided account_id.
+
+        Parameters:
+            request: The HTTP request object.
+            account_id: The ID of the Account to retrieve.
+
+        Returns:
+            JsonResponse: Account details in JSON format with an appropriate HTTP status code.
         """
         try:
             account = Account.objects.get(accountID=account_id)
@@ -134,23 +156,21 @@ class SingleAccountView(View):
 
     def patch(self, request, account_id, *args, **kwargs):
         """
-        Handle PATCH requests.
-        PATCH /accounts/<int:account_id>
+        Handles PATCH requests to update specific fields of an Account identified by account_id.
 
-        Updates the specified fields of the Account with the given ID.
-        THIS DOES NOT INCLUDE EMAIL, 3rd PARTY ACCOUNT, or PASSWORD CHANGES.
-        
-        If the Account does not exist, it returns a 404 status code and an error message.
+        Expects a JSON payload with any of the following fields: 'phoneNum', 'isMentor', 'isMentee'.
+        Updates the specified fields for the Account instance if it exists.
 
-        Updates the account information with data from the request body. 
+        Responses:
+            - HTTP 204 (No Content): Successfully updated the Account.
+            - HTTP 404 (Not Found): If no Account is found with the provided account_id.
 
-        If a field is not provided in the request body, the current value for 
-        that field will remain unchanged. 
+        Parameters:
+            request: The HTTP request object with update data.
+            account_id: The ID of the Account to update.
 
-        After updating the account information, it saves the changes to the database.
-
-        Returns a 204 HTTP status to indicate that the request has succeeded 
-        but does not include an entity-body in the response.
+        Returns:
+            HttpResponse: An HTTP status code indicating the outcome of the request.
         """
         try:
             account = Account.objects.get(accountID=account_id)
@@ -184,6 +204,26 @@ class SingleAccountView(View):
         return JsonResponse({'message': f'successfully deleted Account with account_id: {account_id}'}, status=204)
 
 def check_password(request):
+    """
+    Handles a POST request to authenticate a user's credentials.
+
+    The function expects a JSON payload with 'email' and 'password' fields. It retrieves the user's 
+    account using the provided email. If the account exists, the function checks if the provided password 
+    matches the encrypted password stored in the database.
+
+    Responses:
+        - HTTP 200 (OK): If credentials are valid and authentication is successful.
+        - HTTP 401 (Unauthorized): If credentials are invalid.
+        - HTTP 400 (Bad Request): If required fields are missing/invalid or JSON format is incorrect.
+        - HTTP 500 (Internal Server Error): For any other unexpected errors.
+        - HTTP 405 (Method Not Allowed): If the HTTP method is not POST.
+
+    Parameters:
+        request: The HTTP request object containing the payload with 'email' and 'password'.
+
+    Returns:
+        JsonResponse: An HTTP response with the appropriate status code based on the outcome of the operation.
+    """
     if request.method == "POST":
         try:
             data = json.loads(request.body)
