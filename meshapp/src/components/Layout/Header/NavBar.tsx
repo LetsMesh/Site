@@ -5,10 +5,11 @@ import { useTheme } from "@mui/material/styles";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { BrandingLogo } from "./Branding";
 import { FlexBetween } from "../../resuables/FlexBetween";
+import { useNavigate } from "react-router-dom";
 
 export const NavBar: React.FC<AppBarProps> = () => {
   const theme = useTheme();
-
+  const navigate = useNavigate();
   return (
     <AppBar
       sx={{
@@ -34,7 +35,7 @@ export const NavBar: React.FC<AppBarProps> = () => {
               sx={{ display: { xs: "none", md: "flex" } }}
               color="success"
               variant="contained"
-              // onClick={() => (window.location.href = `${API_URL}/auth/login`)}
+              onClick={() => navigate("/login")}
             >
               Sign in
             </Button>
