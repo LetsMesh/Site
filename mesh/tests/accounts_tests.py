@@ -35,17 +35,17 @@ class AccountTest(TestCase):
         """
         Test case for getting all accounts. 
 
-        A GET request is sent to the '/api/accounts' endpoint.
+        A GET request is sent to the '/accounts/' endpoint.
         The test passes if the response status code is 200.
         """
-        response = self.client.get('/accounts')
+        response = self.client.get('/accounts/')
         self.assertEqual(response.status_code, 200)
 
     def test_get_specific_account(self):
         """
         Test case for getting a specific account. 
 
-        A GET request is sent to the '/api/accounts/{account_id}' endpoint.
+        A GET request is sent to the '/accounts/{account_id}/' endpoint.
         The test passes if the response status code is 200.
         """
         response = self.client.get(f'/accounts/{self.test_account.accountID}/')
@@ -61,7 +61,7 @@ class AccountTest(TestCase):
         """
         Test case for creating a new account.
 
-        A POST request containing new account data is sent to the '/api/accounts' endpoint.
+        A POST request containing new account data is sent to the '/accounts/' endpoint.
         The test passes if the response status code is 201 and the created account has the same
         information as `data`
         """
@@ -90,7 +90,7 @@ class AccountTest(TestCase):
         """
         Test case for updating an account. 
 
-        A PATCH request containing updated account data is sent to the '/api/accounts/{account_id}/' endpoint.
+        A PATCH request containing updated account data is sent to the '/accounts/{account_id}/' endpoint.
         The test passes if the response status code is 204 and the account data is successfully updated in the database.
         """
         updated_account_data = {
