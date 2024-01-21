@@ -12,8 +12,8 @@ root.render(
   <React.StrictMode>
     <ThemeContextProvider>
       <MainThemeProvider>
-        <TwoFactorAuthReminders />
-        <ProfilePage {...exampleProfile} />
+        {/* <TwoFactorAuthReminders /> */}
+        {/* <ProfilePage {...exampleProfile} /> */}
         <AppRoutes />
       </MainThemeProvider>
     </ThemeContextProvider>
