@@ -7,8 +7,9 @@ import {
   Typography,
   createTheme,
 } from "@mui/material";
-import { paths } from "../../Routing/RoutePaths";
+import { paths } from "../../../Routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
+import { FlexBetween } from "../../resuables/FlexBetween";
 
 const Footer = () => {
   let textTheme = createTheme({
@@ -77,8 +78,7 @@ const Footer = () => {
       <Grid
         container
         direction="column"
-        xs={12}
-        sx={{ backgroundColor: "secondary.main" }}
+        sx={{ backgroundColor: "cardBackground.main" }}
       >
         {/*footer logo and links container*/}
         <Grid
@@ -86,13 +86,15 @@ const Footer = () => {
           display="flex"
           direction="row"
           justifyContent="space-between"
-          rowGap={2}
-          xs={12}
           p={2}
         >
           <Grid item>
-            <Typography color="footerLogoColor.main" variant="h1">
-              Mesh
+            <Typography
+              color="footerLogoColor.main"
+              variant="h1"
+              sx={{ fontFamily: "cocogoose", fontWeight: 700 }}
+            >
+              mesh
             </Typography>
           </Grid>
 
@@ -107,7 +109,7 @@ const Footer = () => {
           >
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
-              <Link component={RouterLink} to={paths.logged_out_home}>
+              <Link component={RouterLink} to={paths.home}>
                 home
               </Link>
               <Link href="">about</Link>
@@ -127,7 +129,7 @@ const Footer = () => {
                 Project Site
               </Link>
               <Link href="https://www.amazon.com/How-Talk-Your-About-Safety/dp/045149492X/?tag=judgeabook-20">
-                Discord Inv
+                Discord Server
               </Link>
               <Link href="https://media.tenor.com/ys-mxRCoXUQAAAAd/kitten-belly-dance.gif">
                 Report Bug
@@ -151,24 +153,13 @@ const Footer = () => {
           </Grid>
         </Grid>
         {/*footer copyright */}
-        <Grid
-          container
-          direction="row"
-          sx={{ flexWrap: "nowrap", backgroundColor: "cardBackground.main" }}
-          justifyContent="space-between"
-          alignItems="center"
-          p={2}
-          color="text.main"
-        >
-          <Grid item>
-            <Typography variant="h3">
-              Mesh is a part of Let's Mesh @ 2023
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="h3">This is not a real product</Typography>
-          </Grid>
-        </Grid>
+
+        <FlexBetween p={2} color="text.main">
+          <Typography variant="h3">
+            Mesh is a part of Let's Mesh @ 2024
+          </Typography>
+          <Typography variant="h3">This is not a real product</Typography>
+        </FlexBetween>
       </Grid>
     </ThemeProvider>
   );

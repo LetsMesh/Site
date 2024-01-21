@@ -1,14 +1,14 @@
 import { Grid, Typography, Box, Stack } from "@mui/material";
-import React from "react";
+import sprout1 from "../../../../assets/media/sprout1.png";
+import sprout2 from "../../../../assets/media/sprout2.png";
+import sprout3 from "../../../../assets/media/sprout3.png";
+import sprout4 from "../../../../assets/media/sprout4.png";
+import {
+  GridContainer,
+  GridItem,
+} from "../../../../components/resuables/Grids";
 
-import sprout1 from "../../assets/media/sprout1.png";
-import sprout2 from "../../assets/media/sprout2.png";
-import sprout3 from "../../assets/media/sprout3.png";
-import sprout4 from "../../assets/media/sprout4.png";
-
-//contains the whole section for the advertising messages
-export default function advertSection() {
-  const title = "Discover Your Path to Success with Mesh";
+const AdvertisementSection = () => {
   const sproutImages = [sprout1, sprout2, sprout3, sprout4];
   const advertMessages = [
     "Connect with Experienced Mentors and Passionate Mentees across Various Career Disciplines",
@@ -23,7 +23,7 @@ export default function advertSection() {
       <Grid
         item
         container
-        xs={12}
+        // xs={12}
         sm={8}
         flexBasis="content"
         gap={"20px"}
@@ -37,7 +37,7 @@ export default function advertSection() {
           minHeight={"100px"}
           minWidth={"100px"}
           p={"0 0 10px 0"}
-          borderRadius={"20%"}
+          borderRadius={"15%"}
           display={"flex"}
           alignItems="flex-end"
           justifyContent="center"
@@ -52,7 +52,6 @@ export default function advertSection() {
           }}
         >
           {/*sprout image*/}
-
           <img src={sproutImages[index]} width={"80%"} alt="sprout" />
         </Box>
         {/*advert message*/}
@@ -74,33 +73,41 @@ export default function advertSection() {
   );
 
   return (
-    //contains the section title and the advert container
-    <Grid container item direction="column" xs={12} color="text.main">
-      <Grid
-        item
-        xs={12}
-        sx={{
-          backgroundColor: "secondary.main",
-          padding: "20px 0",
-        }}
-      >
-        <Typography variant="h3" textAlign={"center"}>
-          {title}
-        </Typography>
-      </Grid>
+    // contains the section title and the advert container
+    <>
+      <GridContainer>
+        <GridItem
+          sx={{
+            backgroundColor: "secondary.main",
+            padding: "10px 0",
+            margin: 0,
+          }}
+        >
+          <Typography textAlign={"center"} sx={{ fontSize: "36px" }}>
+            Discover your path to success with{" "}
+            <span
+              style={{
+                fontFamily: "cocogoose",
+                fontWeight: 700,
+              }}
+            >
+              mesh 🌱
+            </span>
+          </Typography>
+        </GridItem>
 
-      <Grid
-        container
-        xs={12}
-        rowSpacing={1}
-        p={5}
-        bgcolor={"cardBackground.main"}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {advertContainer}
-      </Grid>
-    </Grid>
+        <GridItem
+          container
+          rowSpacing={1}
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {advertContainer}
+        </GridItem>
+      </GridContainer>
+    </>
   );
-}
+};
+
+export default AdvertisementSection;

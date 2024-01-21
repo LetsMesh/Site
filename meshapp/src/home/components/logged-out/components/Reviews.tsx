@@ -3,9 +3,10 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import React from "react";
 import { Grid, Typography, Box, Stack } from "@mui/material";
+import { GridItem } from "../../../../components/resuables/Grids";
 
 //contains the reviews section
-export default function reviewsSection() {
+const ReviewsSection = () => {
   //has the title, reviews, ratings, and their corresponding reviewer names and positions
   const title = "See What Our Users Say About Mesh";
   const reviewMessages = [
@@ -108,9 +109,8 @@ export default function reviewsSection() {
   //returns the title of the section and the review container vertically stacked on each other
 
   return (
-    <Grid
+    <GridItem
       container
-      item
       direction="column"
       xs={12}
       p={3}
@@ -130,6 +130,8 @@ export default function reviewsSection() {
           {reviewColumns}
         </Grid>
       </Grid>
-    </Grid>
+    </GridItem>
   );
-}
+};
+
+export default ReviewsSection;

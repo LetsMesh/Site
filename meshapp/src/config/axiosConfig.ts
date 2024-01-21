@@ -13,9 +13,9 @@ Then you can make calls as such -> axiosInstance.get(), axiosInstance.post(), et
 For more detailed explanation dive into the documentation: https://axios-http.com/docs/example
 */
 
-const baseURL: string = 'http://localhost:8000/'
+const baseURL: string = "http://localhost:8000/";
 
 export const axiosInstance = axios.create({
-    baseURL: baseURL, 
-    timeout: 5000,
-  });
+  baseURL: baseURL,
+  timeout: 5000,
+});
