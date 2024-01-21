@@ -142,13 +142,43 @@ function getPalette(mode: PaletteMode) {
 
 //returns custom component theme based on dark or light mode
 function getComponents(mode: PaletteMode) {
+  const universalStyles = {
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          "&.MuiAlert-standardError": {
+            backgroundColor: "#FDEDED",
+            color: "#5F2120",
+          },
+        },
+      },
+    },
+    MuiStepConnector: {
+      styleOverrides: {
+        root: {
+          ".MuiStepConnector-line": {
+            borderColor: "#BDBDBD",
+          },
+        },
+      },
+    },
+  };
+
   //light mode
   return {
+    ...universalStyles,
     ...(mode === "light"
       ? {
           MuiButton: {
             styleOverrides: {
               root: {
+                fontWeight: "500",
+                fontSize: "14px",
+                padding: "calc(0.5em - 1px) 1em",
+                transition: "transform 0.3s", // Smooth transition
+                // "&:hover": {
+                //   transform: "translateY(-2px)", // Move up by 2 pixels on hover
+                // },
                 "&.MuiButton-contained:not(.Mui-disabled)": {
                   backgroundColor: "#74D194",
                 },
@@ -156,6 +186,13 @@ function getComponents(mode: PaletteMode) {
                   borderColor: "#74D19480",
                   color: "#247C67",
                 },
+              },
+            },
+          },
+          MuiIconButton: {
+            styleOverrides: {
+              root: {
+                borderRadius: "8px",
               },
             },
           },
@@ -180,10 +217,16 @@ function getComponents(mode: PaletteMode) {
         }
       : {
           //dark mode
-
           MuiButton: {
             styleOverrides: {
               root: {
+                fontWeight: "500",
+                fontSize: "14px",
+                padding: "calc(0.5em - 1px) 1em",
+                transition: "transform 0.3s", // Smooth transition
+                // "&:hover": {
+                //   transform: "translateY(-2px)", // Move up by 2 pixels on hover
+                // },
                 "&.MuiButton-contained:not(.Mui-disabled)": {
                   backgroundColor: "#247C67",
                 },
@@ -191,6 +234,13 @@ function getComponents(mode: PaletteMode) {
                   borderColor: "#247C6780",
                   color: "#27383A",
                 },
+              },
+            },
+          },
+          MuiIconButton: {
+            styleOverrides: {
+              root: {
+                borderRadius: "8px",
               },
             },
           },
@@ -213,27 +263,6 @@ function getComponents(mode: PaletteMode) {
             },
           },
         }),
-
-    //universal
-    MuiAlert: {
-      styleOverrides: {
-        root: {
-          "&.MuiAlert-standardError": {
-            backgroundColor: "#FDEDED",
-            color: "#5F2120",
-          },
-        },
-      },
-    },
-    MuiStepConnector: {
-      styleOverrides: {
-        root: {
-          ".MuiStepConnector-line": {
-            borderColor: "#BDBDBD",
-          },
-        },
-      },
-    },
   };
 }
 
