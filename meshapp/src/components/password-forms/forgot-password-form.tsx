@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React, { useState } from "react";
-import { axiosInstance } from "../../config/axiosConfig";
+import { axiosInstance } from "../../hooks/axiosConfig";
 
 export const PasswordReset = () => {
   const passwordResetConfirmedEndpoint = "user/reset/confirmed";

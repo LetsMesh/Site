@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { axiosInstance } from "../config/axiosConfig";
+import { axiosInstance } from "../hooks/axiosConfig";
 
 interface ComponentProps {
   updateShowForgotPasswordState: () => void;
