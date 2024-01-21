@@ -9,23 +9,10 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
-import LoginWindow from "../components/login-form";
+
 import { paths } from "../Routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
-const buttonTheme = createTheme({
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 25,
-          width: "75%",
-          height: "4.5rem",
-          fontSize: "1.5rem",
-        },
-      },
-    },
-  },
-});
+import LoginWindow from "./components/login-window";
 
 const SignUp = () => {
   return (
@@ -59,39 +46,33 @@ const SignUp = () => {
 
 const Login = () => {
   return (
-    <ThemeProvider
-      theme={(theme: Theme) => {
-        return createTheme(deepmerge(buttonTheme, theme));
-      }}
-    >
-      <Grid container p={0} bgcolor="primary.main">
-        <Grid
-          container
-          wrap="nowrap"
-          spacing={5}
-          p={2}
-          sx={{
-            boxShadow: 10,
-            margin: "10em auto",
-            maxWidth: "50%",
-            minWidth: "1000px",
-            bgcolor: "cardBackground.main",
-            color: "text.main",
-            borderRadius: 5,
-          }}
-        >
-          <Grid item xs>
-            <SignUp />
-          </Grid>
-          <Grid item xs={1}>
-            <Divider orientation="vertical" />
-          </Grid>
-          <Grid item xs>
-            <LoginWindow />
-          </Grid>
+    <Grid container p={0} bgcolor="primary.main">
+      <Grid
+        container
+        wrap="nowrap"
+        spacing={5}
+        p={2}
+        sx={{
+          boxShadow: 10,
+          margin: "5em auto",
+          maxWidth: "50%",
+          minWidth: "1000px",
+          bgcolor: "cardBackground.main",
+          color: "text.main",
+          borderRadius: "15px",
+        }}
+      >
+        <Grid item xs>
+          <SignUp />
+        </Grid>
+        <Grid item xs={1}>
+          <Divider orientation="vertical" />
+        </Grid>
+        <Grid item xs>
+          <LoginWindow />
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </Grid>
   );
 };
 

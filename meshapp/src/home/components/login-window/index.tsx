@@ -6,9 +6,30 @@ import {
   Stack,
   Typography,
   TextField,
+  Divider,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { axiosInstance } from "../hooks/axiosConfig";
+import { axiosInstance } from "../../../hooks/axiosConfig";
+import { GridContainer, GridItem } from "../../../components/resuables/Grids";
+
+const LoginWindow = () => {
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+  const updateShowForgotPasswordState = () => {
+    setShowForgotPassword((prevState) => !prevState);
+  };
+  return showForgotPassword ? (
+    <ForgotPasswordScreen
+      updateShowForgotPasswordState={updateShowForgotPasswordState}
+    />
+  ) : (
+    <LoginScreen
+      updateShowForgotPasswordState={updateShowForgotPasswordState}
+    />
+  );
+};
+
+export default LoginWindow;
 
 interface ComponentProps {
   updateShowForgotPasswordState: () => void;
@@ -22,23 +43,20 @@ const LoginScreen = (props: ComponentProps) => {
   };
 
   return (
-    <Grid
-      item
-      container
+    <GridContainer
       direction="column"
-      spacing={3}
+      spacing={2}
       sx={{ alignItems: "center", color: "text.main" }}
     >
-      <Grid
-        item
-        xs
-        sx={{ alignSelf: "flex-start", textAlign: "left", mx: "15%" }}
-      >
-        <Typography variant="h2" fontWeight={"bold"}>
+      <GridItem>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: "bold", marginLeft: "auto", textAlign: "center" }}
+        >
           Login
         </Typography>
-      </Grid>
-      <Grid item xs sx={{ width: "70%" }}>
+      </GridItem>
+      <GridItem sx={{ width: "90%" }}>
         <Stack spacing={2}>
           <TextField
             id="user"
@@ -52,31 +70,40 @@ const LoginScreen = (props: ComponentProps) => {
             onChange={handleChange}
             label="Password"
           />
-        </Stack>
-      </Grid>
-      <Grid item xs sx={{ textAlign: "center", width: "100%" }}>
-        <Button variant="contained" sx={{ width: "70%" }}>
-          Login
-        </Button>
-      </Grid>
-      <Grid item xs sx={{ textAlign: "center", alignItems: "center" }}>
-        <Stack spacing={2}>
-          <Link
-            onClick={() => props.updateShowForgotPasswordState()}
-            href="#"
+          <Button
+            variant="contained"
             sx={{
-              textDecoration: "underline",
-              fontSize: "1.5em",
-              color: "text.main",
+              width: "100%",
+              fontSize: "16px",
+              fontWeight: "bold",
+              alignSelf: "center",
+              textTransform: "none",
             }}
           >
-            Forgot Password
-          </Link>
-          <Typography variant="h5" fontWeight="bold">
-            OR
-          </Typography>
+            Log in
+          </Button>
         </Stack>
+      </GridItem>
+      {/* <GridItem xs sx={{ textAlign: "center", width: "100%" }}>
+        
+      </GridItem> */}
+      <Grid item xs sx={{ textAlign: "center", alignItems: "center" }}>
+        <Link
+          onClick={() => props.updateShowForgotPasswordState()}
+          href="#"
+          sx={{
+            fontWeight: "500",
+
+            textDecoration: "underline",
+            color: "text.main",
+          }}
+        >
+          Forgotten password?
+        </Link>
       </Grid>
+      <GridItem>
+        <Divider>or</Divider>
+      </GridItem>
       <Grid item xs width={"100%"}>
         <Stack spacing={2} sx={{ alignItems: "center" }}>
           <Button
@@ -105,7 +132,7 @@ const LoginScreen = (props: ComponentProps) => {
           </Button>
         </Stack>
       </Grid>
-    </Grid>
+    </GridContainer>
   );
 };
 
@@ -142,73 +169,41 @@ const ForgotPasswordScreen = (props: ComponentProps) => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      sx={{
-        textAlign: "center",
-        width: "100%",
-        margin: "auto",
-        bgcolor: "cardBackground.main",
-        color: "text.main",
-        borderRadius: 5,
-      }}
-    >
-      <Grid container spacing={3} p={2} sx={{ width: "100%", margin: "auto" }}>
-        <Grid xs sx={{ textAlign: "center" }} item>
-          <Typography
-            variant="h2"
-            sx={{ fontWeight: "bold", marginLeft: "auto", textAlign: "center" }}
+    <GridContainer direction={"column"} alignItems={"center"} spacing={2} p={2}>
+      <Grid xs sx={{ textAlign: "center" }} item>
+        <Typography
+          variant="h3"
+          sx={{ fontWeight: "bold", marginLeft: "auto", textAlign: "center" }}
+        >
+          Find Your Account
+        </Typography>
+      </Grid>
+      <GridItem sx={{ width: "100%" }}>
+        <Stack spacing={3} sx={{ alignItems: "center" }}>
+          <TextField
+            sx={{ width: "100%" }}
+            type="text"
+            label="Email"
+            {...register("email", { required: true })}
+            onChange={handleChange}
+          />
+          <GridContainer
+            alignItems={"center"}
+            gap={2}
+            justifyContent={"center"}
           >
-            Forgot Password
-          </Typography>
-        </Grid>
-        <Grid xs item>
-          <Stack spacing={3} sx={{ alignItems: "center" }}>
-            <TextField
-              sx={{ width: "90%" }}
-              type="text"
-              label="Email"
-              {...register("email", { required: true })}
-              onChange={handleChange}
-            />
-            <Button
-              variant="contained"
-              sx={{ borderRadius: 25, width: "15em" }}
-              onClick={onClickSend}
-            >
-              Send Link to Email
-            </Button>
             <Link
               sx={{ color: "text.main", fontWeight: "bold" }}
               onClick={onClickReturn}
             >
               Return to Login
             </Link>
-          </Stack>
-          <Grid></Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+            <Button variant="contained" onClick={onClickSend}>
+              Send Link to Email
+            </Button>
+          </GridContainer>
+        </Stack>
+      </GridItem>
+    </GridContainer>
   );
 };
-
-const LoginWindow = () => {
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-
-  const updateShowForgotPasswordState = () => {
-    setShowForgotPassword((prevState) => !prevState);
-  };
-  return showForgotPassword ? (
-    <ForgotPasswordScreen
-      updateShowForgotPasswordState={updateShowForgotPasswordState}
-    />
-  ) : (
-    <LoginScreen
-      updateShowForgotPasswordState={updateShowForgotPasswordState}
-    />
-  );
-};
-
-export default LoginWindow;

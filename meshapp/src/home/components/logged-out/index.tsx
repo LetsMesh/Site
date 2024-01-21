@@ -2,9 +2,9 @@ import WelcomeMessage from "./components/WelcomeMessage";
 import AdvertisementSection from "./components/Advertisement";
 import ReviewsSection from "./components/Reviews";
 import { GridContainer, GridItem } from "../../../components/resuables/Grids";
-import LoginWindow from "./components/Login";
-import { Box } from "@mui/material";
+import LoginWindow from "../login-window";
 
+import { Box } from "@mui/material";
 const LoggedOutHome = () => {
   return (
     <GridContainer sx={{ margin: "0", padding: "0px" }}>
