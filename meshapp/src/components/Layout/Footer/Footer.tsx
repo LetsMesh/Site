@@ -90,9 +90,12 @@ const Footer = () => {
         >
           <Grid item>
             <Typography
-              color="footerLogoColor.main"
               variant="h1"
-              sx={{ fontFamily: "cocogoose", fontWeight: 700 }}
+              sx={{
+                fontFamily: "cocogoose",
+                fontWeight: 700,
+                color: "text.main",
+              }}
             >
               mesh
             </Typography>
