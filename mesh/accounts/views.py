@@ -1,4 +1,5 @@
 from django.http import JsonResponse, HttpResponse
+import json
 from django.core.exceptions import ValidationError
 from django.core.serializers import serialize
 from .models import *
@@ -9,7 +10,6 @@ from django.views import View
 
 from .models import Account
 from ..utils.validate_data import validate_json_and_required_fields
-import json
 
 
 class AccountsView(View):
