@@ -7,7 +7,7 @@ import LoginWindow from "../login-window";
 import { Box } from "@mui/material";
 const LoggedOutHome = () => {
   return (
-    <GridContainer sx={{ margin: "0", padding: "0px" }}>
+    <GridContainer sx={{ margin: "0", padding: "0px", color: "text.main" }}>
       {/*-------------------------------Login Bubble--------------------------------------*/}
       <GridContainer sx={{ padding: "20px 0" }}>
         <GridItem
@@ -16,7 +16,6 @@ const LoggedOutHome = () => {
           rowGap={2}
           alignItems="center"
           alignSelf="center"
-          color="#F2E8DE"
           p={0}
           md
           lg

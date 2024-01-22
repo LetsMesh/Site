@@ -8,7 +8,7 @@ import { GridItem } from "../../../../components/resuables/Grids";
 //contains the reviews section
 const ReviewsSection = () => {
   //has the title, reviews, ratings, and their corresponding reviewer names and positions
-  const title = "See What Our Users Say About Mesh";
+
   const reviewMessages = [
     '"Mesh has been a game-changer in my career. I found an amazing mentor who guided me through every step. Highly recommended!"',
     '"As a mentor on Mesh, I have had the opportunity to make a real impact on the lives of aspiring professionals. It\'s an incredible platform!"',
@@ -116,20 +116,31 @@ const ReviewsSection = () => {
       p={3}
       sx={{ backgroundColor: "secondary.main" }}
     >
-      <Grid item xs={12} color="text.main">
-        <Typography variant="h3" textAlign={"center"}>
-          {title}
-        </Typography>
-        <Grid
-          item
+      <GridItem color="text.main">
+        <GridItem>
+          <Typography
+            textAlign={"center"}
+            sx={{ fontFamily: "cocogoose", fontSize: "2em" }}
+          >
+            See what our users say about{" "}
+            <span
+              style={{
+                fontWeight: 700,
+              }}
+            >
+              mesh 🌱
+            </span>
+          </Typography>
+        </GridItem>
+        <GridItem
           container
           alignItems={"flex-start"}
           justifyContent={"space-evenly"}
           xs={12}
         >
           {reviewColumns}
-        </Grid>
-      </Grid>
+        </GridItem>
+      </GridItem>
     </GridItem>
   );
 };

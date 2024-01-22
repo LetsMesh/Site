@@ -37,17 +37,17 @@ const AdvertisementSection = () => {
           minHeight={"100px"}
           minWidth={"100px"}
           p={"0 0 10px 0"}
-          borderRadius={"15%"}
+          borderRadius={"24px"}
           display={"flex"}
           alignItems="flex-end"
           justifyContent="center"
           sx={{
-            background: "#D9D9D9",
+            // background: "#D9D9D9",
             "@media (min-width: 600px)": {
               minWidth: "215px",
-              minHeight: "215px",
-              maxHeight: "215px",
               maxWidth: "215px",
+              minHeight: "150px",
+              maxHeight: "175px",
             },
           }}
         >
@@ -58,6 +58,7 @@ const AdvertisementSection = () => {
         <Typography
           variant="body1"
           textAlign={index % 2 === 0 ? "left" : "right"}
+          sx={{ color: "text.main" }}
         >
           {message}
         </Typography>
@@ -83,11 +84,13 @@ const AdvertisementSection = () => {
             margin: 0,
           }}
         >
-          <Typography textAlign={"center"} sx={{ fontSize: "36px" }}>
+          <Typography
+            textAlign={"center"}
+            sx={{ fontSize: "2em", fontFamily: "cocogoose" }}
+          >
             Discover your path to success with{" "}
             <span
               style={{
-                fontFamily: "cocogoose",
                 fontWeight: 700,
               }}
             >
@@ -102,6 +105,7 @@ const AdvertisementSection = () => {
           direction="column"
           alignItems="center"
           justifyContent="center"
+          sx={{ margin: "20px 0" }}
         >
           {advertContainer}
         </GridItem>

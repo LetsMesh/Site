@@ -16,7 +16,7 @@ const WelcomeMessage = () => {
         Find Your Perfect Mentor or Mentee with{" "}
         <span style={{ fontWeight: "700", fontSize: "1.2em" }}>mesh</span>
       </Typography>
-      <Typography variant="body1" fontWeight={250} textAlign={"center"}>
+      <Typography fontWeight={500} textAlign={"center"}>
         Unlock Your Potential with Expert Guidance and Support.
       </Typography>
       <Button variant="contained" component={RouterLink} to={paths.sign_up}>
