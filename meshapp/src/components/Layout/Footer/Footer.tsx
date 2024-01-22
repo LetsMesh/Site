@@ -159,7 +159,10 @@ const Footer = () => {
 
         <FlexBetween p={2} color="text.main">
           <Typography variant="h3">
-            Mesh is a part of Let's Mesh @ 2024
+            ©2023-2024, <span style={{ fontFamily: "cocogoose" }}>mesh</span> is
+            a part of{" "}
+            <span style={{ fontFamily: "cocogoose" }}>Let's mesh</span>. All
+            rights reserved.
           </Typography>
           <Typography variant="h3">This is not a real product</Typography>
         </FlexBetween>

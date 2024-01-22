@@ -120,7 +120,7 @@ const ReviewsSection = () => {
         <GridItem>
           <Typography
             textAlign={"center"}
-            sx={{ fontFamily: "cocogoose", fontSize: "2em" }}
+            sx={{ fontSize: "2em", fontFamily: "cocogoose" }}
           >
             See what our users say about{" "}
             <span

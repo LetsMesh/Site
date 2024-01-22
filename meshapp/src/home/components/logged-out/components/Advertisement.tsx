@@ -23,7 +23,6 @@ const AdvertisementSection = () => {
       <Grid
         item
         container
-        // xs={12}
         sm={8}
         flexBasis="content"
         gap={"20px"}

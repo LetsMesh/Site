@@ -1,14 +1,12 @@
 import React from "react";
 import { AppBar, AppBarProps, Toolbar } from "@mui/material";
 import { Button } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { BrandingLogo } from "./Branding";
 import { FlexBetween } from "../../resuables/FlexBetween";
 import { useNavigate } from "react-router-dom";
 
 export const NavBar: React.FC<AppBarProps> = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
   return (
     <AppBar

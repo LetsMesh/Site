@@ -4,12 +4,22 @@ import ReviewsSection from "./components/Reviews";
 import { GridContainer, GridItem } from "../../../components/resuables/Grids";
 import LoginWindow from "../login-window";
 
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
+
 const LoggedOutHome = () => {
+  const theme = useTheme();
   return (
     <GridContainer sx={{ margin: "0", padding: "0px", color: "text.main" }}>
       {/*-------------------------------Login Bubble--------------------------------------*/}
-      <GridContainer sx={{ padding: "20px 0" }}>
+      <GridContainer
+        sx={{
+          padding: "20px 10px", // default padding for the smallest screens
+          [theme.breakpoints.up("md")]: {
+            padding: "20px 10%", // padding for medium screens and up
+          },
+          width: "100%",
+        }}
+      >
         <GridItem
           container
           direction="column"
@@ -36,9 +46,8 @@ const LoggedOutHome = () => {
               borderRadius: "16px",
               padding: "20px 10px",
               filter: "drop-shadow(4px 4px 3px rgba(0,0,0,.6))",
-              width: "75%",
-              minWidth: "360px",
-              maxWidth: "400px",
+              width: "100%",
+              maxWidth: "360px",
             }}
           >
             <LoginWindow />
