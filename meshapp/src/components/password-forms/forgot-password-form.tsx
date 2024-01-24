@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React, { useState } from "react";
-import { axiosInstance } from "../../hooks/axiosConfig";
+import { apiAxiosInstance } from "../../utils/axios/axiosConfig";
 
 export const PasswordReset = () => {
   const passwordResetConfirmedEndpoint = "user/reset/confirmed";
@@ -37,7 +37,7 @@ export const PasswordReset = () => {
 
   const onSubmit = () => {
     if (formData.password == formData.confirmedPassword) {
-      const res = axiosInstance
+      const res = apiAxiosInstance
         .post(passwordResetConfirmedEndpoint, {
           newpassword: formData.confirmedPassword,
         })
@@ -59,7 +59,7 @@ export const PasswordReset = () => {
         margin: "auto",
         width: "480px",
         bgcolor: "cardBackground.main",
-        color: "text.main",
+        color: "text.primary",
         borderRadius: 5,
       }}
     >
