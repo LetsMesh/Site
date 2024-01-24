@@ -26,7 +26,7 @@ from b2sdk.v1 import B2Api, InMemoryAccountInfo, UploadSourceBytes
 
 class BiographyView(View):
     """
-    View for getting an biography by accountId or updating an biography by accountID.
+    View for getting an biography by accountID or updating an biography by accountID.
     """
 
     def get(self, request, account_id, *args, **kwargs):
