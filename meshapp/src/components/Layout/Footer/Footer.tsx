@@ -1,4 +1,5 @@
 import {
+  Box,
   Grid,
   Link,
   Stack,
@@ -10,6 +11,7 @@ import {
 import { paths } from "../../../Routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
 import { FlexBetween } from "../../resuables/FlexBetween";
+import MeshLogo from "../../svgs/Logo";
 
 const Footer = () => {
   let textTheme = createTheme({
@@ -19,7 +21,7 @@ const Footer = () => {
           root: {
             textDecoration: "none",
             fontSize: "11px",
-            fontWeight: "600",
+            fontWeight: "500",
             color: "inherit",
             "&:hover": {
               filter: "brightness(2)",
@@ -31,6 +33,7 @@ const Footer = () => {
     },
     typography: {
       h1: {
+        fontFamily: "cocogoose",
         fontWeight: "600",
         fontSize: "20px",
         lineHeight: "20px",
@@ -78,7 +81,7 @@ const Footer = () => {
       <Grid
         container
         direction="column"
-        sx={{ backgroundColor: "cardBackground.main" }}
+        sx={{ backgroundColor: "secondary.main" }}
       >
         {/*footer logo and links container*/}
         <Grid
@@ -89,16 +92,29 @@ const Footer = () => {
           p={2}
         >
           <Grid item>
-            <Typography
-              variant="h1"
-              sx={{
-                fontFamily: "cocogoose",
-                fontWeight: 700,
-                color: "text.main",
-              }}
+            <Box
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
             >
-              mesh
-            </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href={"/"}
+                sx={{
+                  color: "primary.main",
+                  fontFamily: "cocogoose",
+                  fontWeight: 600,
+                  fontSize: "36px",
+                  display: { xs: "flex", md: "flex" },
+                  textDecoration: "none",
+                }}
+              >
+                mesh
+              </Typography>
+              <MeshLogo sx={{ fontSize: "36px", color: "primary.main" }} />
+            </Box>
           </Grid>
 
           <Grid
@@ -108,7 +124,7 @@ const Footer = () => {
             xs={11}
             sm={6}
             sx={{ flexWrap: "nowrap" }}
-            color="text.main"
+            color="text.primary"
           >
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
@@ -157,12 +173,9 @@ const Footer = () => {
         </Grid>
         {/*footer copyright */}
 
-        <FlexBetween p={2} color="text.main">
+        <FlexBetween p={2} color="text.primary">
           <Typography variant="h3">
-            ©2023-2024, <span style={{ fontFamily: "cocogoose" }}>mesh</span> is
-            a part of{" "}
-            <span style={{ fontFamily: "cocogoose" }}>Let's mesh</span>. All
-            rights reserved.
+            Mesh is a part of Let's Mesh. All rights reserved. @ 2023 - 2024
           </Typography>
           <Typography variant="h3">This is not a real product</Typography>
         </FlexBetween>
