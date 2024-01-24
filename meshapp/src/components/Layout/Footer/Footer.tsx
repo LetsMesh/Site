@@ -12,6 +12,7 @@ import { paths } from "../../../Routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
 import { FlexBetween } from "../../resuables/FlexBetween";
 import MeshLogo from "../../svgs/Logo";
+import { useAccountContext } from "../../../contexts/UserContext";
 
 const Footer = () => {
   let textTheme = createTheme({
@@ -21,12 +22,6 @@ const Footer = () => {
           root: {
             textDecoration: "none",
             fontSize: "11px",
-            fontWeight: "500",
-            color: "inherit",
-            "&:hover": {
-              filter: "brightness(2)",
-              transition: "200ms ease-in",
-            },
           },
         },
       },
@@ -49,6 +44,8 @@ const Footer = () => {
       },
     },
   });
+
+  const { account } = useAccountContext();
 
   return (
     <ThemeProvider
@@ -81,7 +78,9 @@ const Footer = () => {
       <Grid
         container
         direction="column"
-        sx={{ backgroundColor: "secondary.main" }}
+        sx={{
+          ...(account && { marginBottom: "40px" }),
+        }}
       >
         {/*footer logo and links container*/}
         <Grid
@@ -90,6 +89,7 @@ const Footer = () => {
           direction="row"
           justifyContent="space-between"
           p={2}
+          sx={{ backgroundColor: "secondary.main" }}
         >
           <Grid item>
             <Box
@@ -173,7 +173,11 @@ const Footer = () => {
         </Grid>
         {/*footer copyright */}
 
-        <FlexBetween p={2} color="text.primary">
+        <FlexBetween
+          p={2}
+          color="text.primary"
+          sx={{ backgroundColor: "cardBackground.main" }}
+        >
           <Typography variant="h3">
             Mesh is a part of Let's Mesh. All rights reserved. @ 2023 - 2024
           </Typography>

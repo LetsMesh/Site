@@ -1,4 +1,4 @@
-import { Box, Toolbar, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import { NavBar } from "./Header/NavBar";
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer/Footer";
@@ -7,13 +7,20 @@ import MessageBar from "../MessageBar";
 
 export const PageLayout = () => {
   return (
-    <Box width="100%" height="100%">
+    <Box
+      width="100%"
+      height="100%"
+      sx={{
+        bgcolor: "primary.main",
+      }}
+    >
       <Box>
         <NavBar />
-        <Toolbar />
         <TwoFactorAuthReminders />
-        <Outlet />
-        {/* <MessageBar /> */}
+        <Box sx={{ minHeight: "90vh", paddingTop: "64px" }}>
+          <Outlet />
+        </Box>
+        <MessageBar />
         <Footer />
       </Box>
     </Box>
