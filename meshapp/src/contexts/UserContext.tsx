@@ -7,22 +7,38 @@ import React, {
 } from "react";
 import { apiAxiosInstance } from "../utils/axios/axiosConfig";
 
+interface AccountSettings {
+  isVerified: boolean;
+  hasContentFilterEnabled: boolean;
+  displayTheme: string;
+  is2FAEnabled: boolean;
+}
+
+interface Account {
+  accountID: number;
+  email: string;
+  phoneNum: string;
+  isMentor: boolean;
+  isMentee: boolean;
+  settings?: AccountSettings;
+}
+
 interface AccountContextType {
-  accountID: number | null;
-  updateAccountID: React.Dispatch<React.SetStateAction<number | null>>;
+  account: Account | null;
+  updateAccount: React.Dispatch<React.SetStateAction<Account | null>>;
   isLoading: boolean;
 }
 
 const AccountContext = createContext<AccountContextType | undefined>(undefined);
 
 interface AccountProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export const AccountProvider: React.FC<AccountProviderProps> = ({
   children,
 }) => {
-  const [accountID, setAccountID] = useState<number | null>(null);
+  const [account, setAccount] = useState<Account | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -30,10 +46,9 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({
       try {
         const response = await apiAxiosInstance.get("/auth/session/");
         if (response.data.is_logged_in) {
-          console.log("logged in account with ID", response.data.accountID);
-          setAccountID(response.data.accountID);
+          setAccount(response.data.account);
         } else {
-          setAccountID(null);
+          setAccount(null);
         }
       } catch (error) {
         console.error("Session check failed", error);
@@ -47,17 +62,17 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({
 
   return (
     <AccountContext.Provider
-      value={{ accountID, updateAccountID: setAccountID, isLoading }}
+      value={{ account, updateAccount: setAccount, isLoading }}
     >
       {children}
     </AccountContext.Provider>
   );
 };
 
-export const useAccount = (): AccountContextType => {
+export const useAccountContext = (): AccountContextType => {
   const context = useContext(AccountContext);
   if (context === undefined) {
-    throw new Error("useAccount must be used within a UserProvider");
+    throw new Error("useAccountContext must be used within an AccountProvider");
   }
   return context;
 };

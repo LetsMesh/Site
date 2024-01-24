@@ -26,7 +26,7 @@ import {
 } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { paths } from "../../Routing/RoutePaths";
-import { useAccount } from "../../contexts/UserContext";
+import { useAccountContext } from "../../contexts/UserContext";
 import { ThemeSwitch } from "./Header/ThemeSwitch";
 import { FlexBetween } from "../resuables/FlexBetween";
 
@@ -68,7 +68,7 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
   handleDrawerClose,
   handleDrawerOpen,
 }) => {
-  const { accountID } = useAccount();
+  const { account } = useAccountContext();
 
   return (
     <div>
@@ -103,8 +103,8 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                 }}
               >
                 <FlexBetween>
-                  <div style={{ flexGrow: accountID ? 0 : 1 }}>
-                    {accountID && (
+                  <div style={{ flexGrow: account ? 0 : 1 }}>
+                    {account && (
                       <IconButton
                         sx={{
                           color: "text.primary",

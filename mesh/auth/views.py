@@ -34,10 +34,33 @@ def logout_view(request):
     logout(request)
     return JsonResponse({'status': 'Logged out successfully!'})
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+from mesh.accounts.models import Account
+
 @ensure_csrf_cookie
 def session_view(request):
     if request.user.is_authenticated:
-        return JsonResponse({'is_logged_in': True, 'accountID': request.user.accountID}, status=200)
+        account = Account.objects.filter(accountID=request.user.accountID).select_related('settings').first()
+        if account:
+            account_data = {
+                'accountID': account.accountID,
+                'email': account.email,
+                'phoneNum': account.phoneNum,
+                'isMentor': account.isMentor,
+                'isMentee': account.isMentee,
+            }
+            # Check if account settings exist and include them
+            if hasattr(account, 'settings'):
+                account_data['settings'] = {
+                    'isVerified': account.settings.isVerified,
+                    'hasContentFilterEnabled': account.settings.hasContentFilterEnabled,
+                    'displayTheme': account.settings.displayTheme,
+                    'is2FAEnabled': account.settings.is2FAEnabled,
+                }
+            return JsonResponse({'is_logged_in': True, 'account': account_data}, status=200)
+        else:
+            return JsonResponse({'is_logged_in': False, 'error': 'Account not found'}, status=404)
     else:
         return JsonResponse({'is_logged_in': False}, status=401)
 

@@ -11,7 +11,7 @@ import { Button } from "@mui/material";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { BrandingLogo } from "../../BrandingLogo";
 import { FlexBetween } from "../../resuables/FlexBetween";
-import { useAccount } from "../../../contexts/UserContext";
+import { useAccountContext } from "../../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Notifications as NotificationsIcon } from "@mui/icons-material";
@@ -19,7 +19,7 @@ import MenuDrawer from "../SideDrawer";
 
 export const NavBar: React.FC<AppBarProps> = () => {
   const navigate = useNavigate();
-  const { accountID } = useAccount();
+  const { account } = useAccountContext();
 
   // drawer (side menu) open state
   const [open, setOpen] = React.useState(false);
@@ -48,7 +48,7 @@ export const NavBar: React.FC<AppBarProps> = () => {
         >
           <>
             <FlexBetween
-              sx={{ display: { xs: "flex", md: accountID ? "flex" : "none" } }}
+              sx={{ display: { xs: "flex", md: account ? "flex" : "none" } }}
             >
               <IconButton
                 onClick={handleDrawerOpen}
@@ -59,7 +59,7 @@ export const NavBar: React.FC<AppBarProps> = () => {
               >
                 <MenuIcon />
               </IconButton>
-              {accountID && (
+              {account && (
                 <IconButton
                   sx={{
                     color: "text.primary",
@@ -77,7 +77,7 @@ export const NavBar: React.FC<AppBarProps> = () => {
             <FlexBetween
               gap={"16px"}
               sx={{
-                display: { xs: "none", md: accountID ? "none" : "flex" },
+                display: { xs: "none", md: account ? "none" : "flex" },
               }}
             >
               <FlexBetween gap={"16px"}>
@@ -103,7 +103,7 @@ export const NavBar: React.FC<AppBarProps> = () => {
                 </Link>
               </FlexBetween>
               <ThemeSwitch />
-              {accountID === null && (
+              {account === null && (
                 <Button
                   color="success"
                   variant="contained"

@@ -11,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { apiAxiosInstance } from "../../utils/axios/axiosConfig";
 import { GridContainer, GridItem } from "../resuables/Grids";
-import { useAccount } from "../../contexts/UserContext";
+import { useAccountContext } from "../../contexts/UserContext";
 import { useLogin } from "../../utils/hooks/useAuth";
 
 const LoginWindow = () => {
@@ -40,7 +40,7 @@ interface ComponentProps {
 const LoginScreen = (props: ComponentProps) => {
   const [formData, setFormData] = useState({ user: null, pass: null });
   const { login, isLoading, error } = useLogin();
-  const { updateAccountID: setAccountID } = useAccount();
+  const { updateAccount: setAccount } = useAccountContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -54,9 +54,9 @@ const LoginScreen = (props: ComponentProps) => {
         // Handle response here. For example, store the user data in the state or context.
         if (data.is_logged_in) {
           // Handle successful login
-          setAccountID(data.accountID);
+          setAccount(data.account);
         } else {
-          setAccountID(null);
+          setAccount(null);
         }
       } else {
         // Handle login error
