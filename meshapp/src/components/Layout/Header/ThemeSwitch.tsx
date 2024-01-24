@@ -4,7 +4,7 @@ import { IconButton } from "@mui/material";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useTheme } from "@mui/material/styles";
-import { useThemeContext } from "../../../theme/ThemeContextProvider";
+import { useThemeContext } from "../../../themes/ThemeContextProvider";
 
 export const ThemeSwitch: FC = () => {
   const colorMode = useThemeContext();

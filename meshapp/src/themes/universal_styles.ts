@@ -21,9 +21,8 @@ export const componentsUniversalStyles = {
   MuiButton: {
     styleOverrides: {
       root: {
-        fontWeight: "bold",
-        fontSize: "14px",
         padding: "calc(0.5em - 1px) 1em",
+        borderRadius: "8px",
       },
     },
   },
@@ -31,6 +30,19 @@ export const componentsUniversalStyles = {
     styleOverrides: {
       root: {
         borderRadius: "8px",
+      },
+    },
+  },
+  MuiLink: {
+    styleOverrides: {
+      root: {
+        textDecoration: "underline",
+        fontWeight: "500",
+        color: "inherit",
+        "&:hover": {
+          filter: "brightness(2)",
+          transition: "200ms ease-in",
+        },
       },
     },
   },

@@ -52,5 +52,25 @@ export const lightTheme = createTheme({
   },
   components: {
     ...componentsUniversalStyles,
+    ...{
+      MuiCheckbox: {
+        styleOverrides: {
+          root: {
+            "&.Mui-checked": {
+              color: "#247C67",
+            },
+          },
+        },
+      },
+      MuiStepIcon: {
+        styleOverrides: {
+          root: {
+            "&.Mui-completed,&.Mui-active": {
+              color: "#247C67",
+            },
+          },
+        },
+      },
+    },
   },
 });

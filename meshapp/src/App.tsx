@@ -2,8 +2,8 @@ import "./App.css";
 import AppRoutes from "./Routing/AppRoutes";
 import ProfilePage from "./profile/profile-page";
 import { exampleProfile } from "./profile/tests/profile-examples";
-import { ThemeContextProvider } from "./theme/ThemeContextProvider";
-import { MainThemeProvider } from "./theme/MainThemeProvider";
+import { ThemeContextProvider } from "./themes/ThemeContextProvider";
+import { MainThemeProvider } from "./themes/MainThemeProvider";
 import { AccountProvider } from "./contexts/UserContext";
 import React from "react";
 
