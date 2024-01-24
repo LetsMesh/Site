@@ -120,16 +120,9 @@ const ReviewsSection = () => {
         <GridItem>
           <Typography
             textAlign={"center"}
-            sx={{ fontSize: "2em", fontFamily: "cocogoose" }}
+            sx={{ fontSize: "2em", fontWeight: 700, fontFamily: "cocogoose" }}
           >
-            See what our users say about{" "}
-            <span
-              style={{
-                fontWeight: 700,
-              }}
-            >
-              mesh 🌱
-            </span>
+            See What Our Users Say About Mesh 🌱
           </Typography>
         </GridItem>
         <GridItem
