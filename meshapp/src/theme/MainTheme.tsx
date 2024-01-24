@@ -1,4 +1,4 @@
-import { PaletteMode, createTheme } from "@mui/material";
+import { PaletteMode, createTheme, Typography } from "@mui/material";
 
 //gets pallete colors and component colors based on mode
 const getDesignTokens = (mode: PaletteMode) => ({
@@ -10,6 +10,18 @@ const getDesignTokens = (mode: PaletteMode) => ({
   components: {
     ...getComponents(mode),
   },
+  typography: {
+    fontFamily: [
+      "Cocogoose",
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+    ].join(","),
+  },
 });
 
 //returns custom palette colors based on dark or light mode
@@ -19,13 +31,28 @@ function getPalette(mode: PaletteMode) {
     ...(mode === "light"
       ? {
           primary: {
+            // dark green (theme color)
             main: "#0B7D66",
+            light: "#87bfb4",
+            dark: "#096452",
+            contrastText: "#fff",
           },
           secondary: {
+            // beige
             main: "#F2E8DE",
+            light: "#f6efe8",
+            dark: "#c2bab2",
+            contrastText: "#000000",
+          },
+          success: {
+            // green
+            main: "#74D194",
+            light: "#74D194",
+            dark: "#5da777",
+            contrastText: "#fff",
           },
           cardBackground: {
-            main: "#FFFFFF",
+            main: "#fff",
           },
           action: {
             active: "#0000008F",
@@ -136,7 +163,6 @@ function getPalette(mode: PaletteMode) {
     sendMessageBorder: {
       main: "#000000CC",
     },
-    divider: "#0000001F",
   };
 }
 
@@ -162,6 +188,22 @@ function getComponents(mode: PaletteMode) {
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontWeight: "500",
+          fontSize: "14px",
+          padding: "calc(0.5em - 1px) 1em",
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "8px",
+        },
+      },
+    },
   };
 
   //light mode
@@ -169,33 +211,6 @@ function getComponents(mode: PaletteMode) {
     ...universalStyles,
     ...(mode === "light"
       ? {
-          MuiButton: {
-            styleOverrides: {
-              root: {
-                fontWeight: "500",
-                fontSize: "14px",
-                padding: "calc(0.5em - 1px) 1em",
-                transition: "transform 0.3s", // Smooth transition
-                // "&:hover": {
-                //   transform: "translateY(-2px)", // Move up by 2 pixels on hover
-                // },
-                "&.MuiButton-contained:not(.Mui-disabled)": {
-                  backgroundColor: "#74D194",
-                },
-                "&.MuiButton-outlined": {
-                  borderColor: "#74D19480",
-                  color: "#247C67",
-                },
-              },
-            },
-          },
-          MuiIconButton: {
-            styleOverrides: {
-              root: {
-                borderRadius: "8px",
-              },
-            },
-          },
           MuiCheckbox: {
             styleOverrides: {
               root: {
@@ -216,34 +231,6 @@ function getComponents(mode: PaletteMode) {
           },
         }
       : {
-          //dark mode
-          MuiButton: {
-            styleOverrides: {
-              root: {
-                fontWeight: "500",
-                fontSize: "14px",
-                padding: "calc(0.5em - 1px) 1em",
-                transition: "transform 0.3s", // Smooth transition
-                // "&:hover": {
-                //   transform: "translateY(-2px)", // Move up by 2 pixels on hover
-                // },
-                "&.MuiButton-contained:not(.Mui-disabled)": {
-                  backgroundColor: "#247C67",
-                },
-                "&.MuiButton-outlined": {
-                  borderColor: "#247C6780",
-                  color: "#27383A",
-                },
-              },
-            },
-          },
-          MuiIconButton: {
-            styleOverrides: {
-              root: {
-                borderRadius: "8px",
-              },
-            },
-          },
           MuiCheckbox: {
             styleOverrides: {
               root: {
