@@ -10,7 +10,7 @@ export const PageLayout = () => {
       <Box>
         <NavBar />
         <Toolbar />
-        {/* <TwoFactorAuthReminders /> */}
+        <TwoFactorAuthReminders />
         <Outlet />
         {/*Message and Footer Routes*/}
         <Footer />

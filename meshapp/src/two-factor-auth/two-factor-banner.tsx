@@ -6,6 +6,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ReactComponent as Logo } from "../assets/two-factor-assets/two-factor-icon.svg";
 
 import "./styling/two-factor-banner.css";
+import { useAccountContext } from "../contexts/UserContext";
 
 /**
  * A React component that renders a banner to remind users to enable Two-Factor Authentication (2FA).
@@ -16,10 +17,12 @@ import "./styling/two-factor-banner.css";
  * @param {function} props.handleClose - A function for handling the closing of the banner
  * @param {function} props.handleOptIn - A function for handling the user's decision to enable 2FA
  */
-function TwoFactorBanner(props: any) {
+const TwoFactorBanner = (props: any) => {
+  const { account } = useAccountContext();
+  if (account === null) return null;
   return (
     <Slide direction="down" in={props.visible} mountOnEnter unmountOnExit>
-      <div className="banner">
+      <div className="banner" style={{ position: "fixed", marginTop: "72px" }}>
         <div className="bannerLogo">
           <Logo
             style={{
@@ -30,31 +33,24 @@ function TwoFactorBanner(props: any) {
         </div>
 
         <div className="descText">
-          <Typography sx={{ fontSize: 17, fontFamily: "cocogoose" }}>
+          <Typography sx={{ fontSize: 17 }}>
             Secure your account with Two-Factor Authentication
           </Typography>
         </div>
 
-        <div className="bannerBtn">
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              fontSize: 16,
-              backgroundColor: "#0B7D66",
-              fontFamily: "cocogoose",
-              "&:hover": {
-                backgroundColor: "#0A6B57",
-              },
-              borderRadius: 3,
-            }}
-            endIcon={<ChevronRightIcon />}
-            onClick={props.handleOptIn}
-          >
-            GO TO SETTINGS
-          </Button>
-          <div />
-        </div>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#0B7D66",
+            "&:hover": {
+              backgroundColor: "#0A6B57",
+            },
+          }}
+          endIcon={<ChevronRightIcon />}
+          onClick={props.handleOptIn}
+        >
+          GO TO SETTINGS
+        </Button>
 
         <div className="bannerCloseBtn">
           <CloseIcon
@@ -70,6 +66,6 @@ function TwoFactorBanner(props: any) {
       </div>
     </Slide>
   );
-}
+};
 
 export default TwoFactorBanner;

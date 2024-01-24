@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import TwoFactorAuthModal from "./two-factor-popup";
 import TwoFactorBanner from "./two-factor-banner";
-
-import "../tempfiles/TempBody.css";
+import { useAccountContext } from "../contexts/UserContext";
 
 /**
  * A React component used to remind the user about enabling Two-Factor Authentication (2FA) in their settings.
@@ -17,19 +16,17 @@ import "../tempfiles/TempBody.css";
  * 2. A banner (TwoFactorBanner) that reminds users about enabling 2FA.
  */
 const TwoFactorAuthReminders = () => {
-  // Used to track popup's visibility
   const [modalVisible, setModalVisible] = useState(false);
+  const [bannerVisible, setBannerVisible] = useState(false);
+  const { account } = useAccountContext();
+
   const handleModalOpen = () => setModalVisible(true);
   const handleModalClose = () => {
     setModalVisible(false);
     localStorage.setItem("promptedFor2FA", "true");
-
-    // Upon closing the modal, show the banner
     handleBannerOpen();
   };
 
-  // Used to track banner's visibility
-  const [bannerVisible, setBannerVisible] = useState(false);
   const handleBannerOpen = () => setBannerVisible(true);
   const handleBannerClose = () => setBannerVisible(false);
 
@@ -37,20 +34,21 @@ const TwoFactorAuthReminders = () => {
   // If not, check if the user has been prompted to enable 2FA (if not, show modal)
   // Otherwise, show the banner
   useEffect(() => {
-    const enabled = localStorage.getItem("2FA-Enabled");
-    const prompted = localStorage.getItem("promptedFor2FA");
+    const promptedFor2FA = localStorage.getItem("promptedFor2FA");
+    const is2FAEnabled = account?.settings?.is2FAEnabled;
 
-    if (!enabled) {
-      if (!prompted) {
-        handleModalOpen();
-      } else {
-        handleBannerOpen();
-      }
+    // Show modal only if 2FA is not enabled and the user hasn't been prompted yet
+    if (!is2FAEnabled && !promptedFor2FA) {
+      handleModalOpen();
     }
-  }, []);
+    // Show banner if 2FA is not enabled but the user has been prompted
+    else if (!is2FAEnabled && promptedFor2FA) {
+      handleBannerOpen();
+    }
+  }, [account]);
 
   return (
-    <body>
+    <div>
       <TwoFactorAuthModal
         visible={modalVisible}
         handleOpen={handleModalOpen}
@@ -60,7 +58,7 @@ const TwoFactorAuthReminders = () => {
         visible={bannerVisible}
         handleClose={handleBannerClose}
       />
-    </body>
+    </div>
   );
 };
 
