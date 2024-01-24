@@ -8,7 +8,7 @@ import { Routes, Route, Link as RouterLink } from "react-router-dom";
 import { paths } from "./RoutePaths";
 import { PageLayout } from "../components/Layout";
 import HomePage from "../pages/home";
-import { Link, useTheme } from "@mui/material";
+import { Link } from "@mui/material";
 
 //contains routes for the main page
 export default function MainPageRoutes() {
@@ -33,7 +33,6 @@ export default function MainPageRoutes() {
 
 //just a component containing links to pages for demonstration
 function Nav() {
-  const theme = useTheme();
   return (
     <div
       style={{
