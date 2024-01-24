@@ -5,7 +5,7 @@ import {
   GridContainer,
   GridItem,
 } from "../../../../components/resuables/Grids";
-import LoginWindow from "../../../../components/login-window";
+import LoginWindow from "../../../../components/LoginWindow";
 
 import { Box, useTheme } from "@mui/material";
 
