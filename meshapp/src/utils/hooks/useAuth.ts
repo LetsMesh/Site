@@ -16,7 +16,7 @@ export const useLogin = () => {
       });
 
       setIsLoading(false);
-      return response.data;
+      return response;
     } catch (err: any) {
       setError(err.response?.data?.error || "An error occurred");
       setIsLoading(false);
