@@ -1,42 +1,37 @@
+# in auth folder: views.py  (auth.views)
+
 import json
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, logout
 from django.views.decorators.http import require_POST,require_GET
 from django.views.decorators.csrf import ensure_csrf_cookie
-
 from mesh.accounts.models import Account
-from mesh.accounts.views import decrypt
-
 from .backend import AccountAuthenticationBackend
 
 @require_POST
 def login_view(request):
+    """
+    Handles user login requests.
+
+    This view expects a POST request with 'email' and 'password' in the JSON body. It authenticates
+    the user using a custom authentication backend, creates a session upon successful authentication,
+    and returns user details along with login status.
+
+    Returns:
+        JsonResponse: A response with a success message and user details if authentication is successful,
+                      otherwise an error message.
+    """
     try:
         data = json.loads(request.body)
         email = data.get("email")
         password = data.get("password")
 
+        account_backend = AccountAuthenticationBackend()
         # Query to check if user exists
-        account: Account = AccountAuthenticationBackend().authenticate(request=request,email=email, password=password)
+        account: Account = account_backend.authenticate(request=request,email=email, password=password)
         if account:
             login(request, account)  # This creates the session
-            account = Account.objects.filter(accountID=account.accountID).select_related('settings').first()
-            if account:
-                account_data = {
-                    'accountID': account.accountID,
-                    'email': account.email,
-                    'phoneNum': account.phoneNum,
-                    'isMentor': account.isMentor,
-                    'isMentee': account.isMentee,
-                }
-                # Check if account settings exist and include them
-                if hasattr(account, 'settings'):
-                    account_data['settings'] = {
-                        'isVerified': account.settings.isVerified,
-                        'hasContentFilterEnabled': account.settings.hasContentFilterEnabled,
-                        'displayTheme': account.settings.displayTheme,
-                        'is2FAEnabled': account.settings.is2FAEnabled,
-                    }
+            account_data = account_backend.get_account_data(account.accountID)
             return JsonResponse({"message": "Access granted", "is_logged_in": True, "account": account_data}, status=200)
         else:
             # Generic error message for security
@@ -48,34 +43,34 @@ def login_view(request):
 
 @require_POST
 def logout_view(request):
+    """
+    Handles user logout requests.
+
+    This view expects a POST request and logs out the user by ending the session.
+
+    Returns:
+        JsonResponse: A response indicating successful logout.
+    """
     logout(request)
     return JsonResponse({'status': 'Logged out successfully!'})
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
-from mesh.accounts.models import Account
-
 @ensure_csrf_cookie
+@require_GET
 def session_view(request):
+    """
+    Handles session check requests.
+
+    This view expects a GET request. It checks if the user is authenticated and, if so,
+    retrieves their account details including settings. It's decorated with `ensure_csrf_cookie`
+    to ensure CSRF protection.
+
+    Returns:
+        JsonResponse: A response with the user's account details if authenticated, or an error message.
+    """
     if request.user.is_authenticated:
-        account = Account.objects.filter(accountID=request.user.accountID).select_related('settings').first()
+        account = AccountAuthenticationBackend().get_account_data(request.user.accountID)
         if account:
-            account_data = {
-                'accountID': account.accountID,
-                'email': account.email,
-                'phoneNum': account.phoneNum,
-                'isMentor': account.isMentor,
-                'isMentee': account.isMentee,
-            }
-            # Check if account settings exist and include them
-            if hasattr(account, 'settings'):
-                account_data['settings'] = {
-                    'isVerified': account.settings.isVerified,
-                    'hasContentFilterEnabled': account.settings.hasContentFilterEnabled,
-                    'displayTheme': account.settings.displayTheme,
-                    'is2FAEnabled': account.settings.is2FAEnabled,
-                }
-            return JsonResponse({'is_logged_in': True, 'account': account_data}, status=200)
+            return JsonResponse({'is_logged_in': True, 'account': account}, status=200)
         else:
             return JsonResponse({'is_logged_in': False, 'error': 'Account not found'}, status=404)
     else:
