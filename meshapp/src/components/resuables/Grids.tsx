@@ -27,7 +27,6 @@ const GridItem: React.FC<GridItemProps> = (props) => (
     textAlign={"left"}
     alignSelf={"top"}
     xs={12}
-    md={12}
     p={0}
     m={0}
     {...props}
