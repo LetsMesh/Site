@@ -11,14 +11,11 @@ export const ThemeSwitch: FC = () => {
   const theme = useTheme();
 
   return (
-    <IconButton
-      sx={{ ml: 1, mr: 1, borderRadius: "8px" }}
-      onClick={colorMode.toggleThemeMode}
-    >
+    <IconButton onClick={colorMode.toggleThemeMode}>
       {theme.palette.mode === "dark" ? (
-        <DarkModeIcon sx={{ color: "white" }} />
+        <DarkModeIcon sx={{ color: "text.primary" }} />
       ) : (
-        <LightModeIcon sx={{ color: "black" }} />
+        <LightModeIcon sx={{ color: "text.primary" }} />
       )}
     </IconButton>
   );
