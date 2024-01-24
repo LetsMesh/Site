@@ -1,9 +1,8 @@
-import * as React from "react";
-import { useTheme } from "@mui/material/styles";
-
+import React from "react";
 import {
   Box,
   Button,
+  Collapse,
   IconButton,
   List,
   ListItem,
@@ -14,7 +13,6 @@ import {
 } from "@mui/material";
 
 import {
-  Menu as MenuIcon,
   Notifications as NotificationsIcon,
   Home as HomeIcon,
   Receipt as ProfileIcon,
@@ -23,8 +21,12 @@ import {
   Settings as SettingsIcon,
   Logout as LogoutIcon,
   ChevronLeft as ChevronLeftIcon,
+  ContactSupport,
+  ExpandLess,
+  ExpandMore,
+  Info as InfoIcon,
 } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { paths } from "../../Routing/RoutePaths";
 import { useAccountContext } from "../../contexts/UserContext";
 import { ThemeSwitch } from "./Header/ThemeSwitch";
@@ -38,30 +40,71 @@ interface MenuDrawerProps {
 
 const drawerWidth = 250;
 
-type ListItemTypes = { text: String; Icon: React.ElementType; path: String };
+type ListItemTypes = {
+  text: String;
+  Icon: React.ElementType;
+  handleDrawerClose: () => void;
+  path?: String;
+  isExpand?: boolean;
+  onExpandClick?: () => void;
+};
 
 // TODO: (#258) Add routes to each menu item when routing is implemented
-const ListItemComponent = ({ text, Icon, path }: ListItemTypes) => (
-  <ListItem
-    component={({ innerRef, ...props }) => <RouterLink {...props} to={path} />}
-  >
-    <ListItemButton
-      sx={{
-        borderBottom: "1px solid",
-        borderColor: "text.secondary",
-        padding: "4px 8px",
-      }}
+const ListItemComponent = ({
+  text,
+  Icon,
+  path,
+  isExpand,
+  onExpandClick,
+  handleDrawerClose,
+}: ListItemTypes) => {
+  const location = useLocation(); // Get current location
+  const isActive = path && path === location.pathname; // Check if current path matches
+
+  return (
+    <ListItem
+      component={({ innerRef, ...props }) => (
+        <RouterLink {...props} to={path} />
+      )}
     >
-      <ListItemIcon sx={{ color: "text.primary" }}>
-        <Icon />
-      </ListItemIcon>
-      <ListItemText
-        primaryTypographyProps={{ color: "text.primary" }}
-        primary={text}
-      />
-    </ListItemButton>
-  </ListItem>
-);
+      <ListItemButton
+        sx={{
+          borderBottom: "1px solid",
+          borderColor: "text.secondary",
+          padding: "4px 8px",
+          backgroundColor: isActive ? "primary.light" : "inherit", // Highlight if active
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            color: "text.primary",
+            marginRight: "-16px", // Adjust this value to change the gap
+          }}
+          onClick={handleDrawerClose}
+        >
+          <Icon />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ color: "text.primary" }}
+          primary={text}
+          onClick={handleDrawerClose}
+        />
+        {onExpandClick &&
+          (isExpand !== null && isExpand == true ? (
+            <ExpandLess
+              sx={{ color: "text.primary" }}
+              onClick={onExpandClick}
+            />
+          ) : (
+            <ExpandMore
+              sx={{ color: "text.primary" }}
+              onClick={onExpandClick}
+            />
+          ))}
+      </ListItemButton>
+    </ListItem>
+  );
+};
 
 const MenuDrawer: React.FC<MenuDrawerProps> = ({
   open,
@@ -69,6 +112,11 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
   handleDrawerOpen,
 }) => {
   const { account } = useAccountContext();
+
+  const [homeOpen, setHomeOpen] = React.useState(false);
+  const toggleHome = () => {
+    setHomeOpen(!homeOpen);
+  };
 
   return (
     <div>
@@ -132,39 +180,72 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                   text="Home"
                   Icon={HomeIcon}
                   path={paths.home}
+                  onExpandClick={toggleHome}
+                  isExpand={homeOpen}
+                  handleDrawerClose={handleDrawerClose}
                 />
-                <ListItemComponent
-                  text="Profile"
-                  Icon={ProfileIcon}
-                  path={paths.profile_page}
-                />
-                <ListItemComponent
-                  text="Messaging"
-                  Icon={MessagingIcon}
-                  path={"/"}
-                />
-                <ListItemComponent
-                  text="Swiping"
-                  Icon={SwipingIcon}
-                  path={paths.profile_swipe}
-                />
+                <Collapse in={homeOpen} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    sx={{ paddingLeft: "16px" }}
+                  >
+                    <ListItemComponent
+                      text="About Us"
+                      Icon={InfoIcon}
+                      path="/about-us"
+                      handleDrawerClose={handleDrawerClose}
+                    />
+                    <ListItemComponent
+                      text="Contact Us"
+                      Icon={ContactSupport}
+                      path="/contact-us"
+                      handleDrawerClose={handleDrawerClose}
+                    />
+                  </List>
+                </Collapse>
+                {account && (
+                  <>
+                    <ListItemComponent
+                      text="Profile"
+                      Icon={ProfileIcon}
+                      path={paths.profile_page}
+                      handleDrawerClose={handleDrawerClose}
+                    />
+                    <ListItemComponent
+                      text="Messaging"
+                      Icon={MessagingIcon}
+                      path={paths.messages}
+                      handleDrawerClose={handleDrawerClose}
+                    />
+                    <ListItemComponent
+                      text="Swiping"
+                      Icon={SwipingIcon}
+                      path={paths.profile_swipe}
+                      handleDrawerClose={handleDrawerClose}
+                    />
+                  </>
+                )}
               </List>
             </div>
             {/* Bottom Content */}
-            <div>
-              <List sx={{ marginTop: "auto", padding: "0" }}>
-                <ListItemComponent
-                  text="Settings"
-                  Icon={SettingsIcon}
-                  path={"/"}
-                />
-                <ListItemComponent
-                  text="Logout"
-                  Icon={LogoutIcon}
-                  path={paths.home}
-                />
-              </List>
-            </div>
+            {account && (
+              <div>
+                <List sx={{ marginTop: "auto", padding: "0" }}>
+                  <ListItemComponent
+                    text="Settings"
+                    Icon={SettingsIcon}
+                    path={paths.settings}
+                    handleDrawerClose={handleDrawerClose}
+                  />
+                  <ListItemComponent
+                    text="Logout"
+                    Icon={LogoutIcon}
+                    handleDrawerClose={handleDrawerClose}
+                  />
+                </List>
+              </div>
+            )}
           </div>
         </Box>
       </SwipeableDrawer>
