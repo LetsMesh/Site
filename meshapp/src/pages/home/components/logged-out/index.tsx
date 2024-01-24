@@ -16,7 +16,7 @@ const LoggedOutHome = () => {
       {/*-------------------------------Login Bubble--------------------------------------*/}
       <GridContainer
         sx={{
-          padding: "20px 10px", // default padding for the smallest screens
+          padding: "20px 16px", // default padding for the smallest screens
           [theme.breakpoints.up("md")]: {
             padding: "20px 5%", // padding for medium screens and up
           },
