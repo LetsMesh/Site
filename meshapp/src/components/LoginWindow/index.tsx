@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Grid,
@@ -13,6 +13,7 @@ import { apiAxiosInstance } from "../../utils/axios/axiosConfig";
 import { GridContainer, GridItem } from "../resuables/Grids";
 import { useAccountContext } from "../../contexts/UserContext";
 import { useLogin } from "../../utils/hooks/useAuth";
+import LoadingProgress from "../resuables/LoadingProgress";
 
 const LoginWindow = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -49,23 +50,21 @@ const LoginScreen = (props: ComponentProps) => {
 
   const handleLogin = async () => {
     if (formData.user !== null && formData.pass !== null) {
-      const data = await login(formData.user, formData.pass);
-      if (data) {
-        // Handle response here. For example, store the user data in the state or context.
-        if (data.is_logged_in) {
-          // Handle successful login
-          setAccount(data.account);
-        } else {
-          setAccount(null);
-        }
-      } else {
+      const response = await login(formData.user, formData.pass);
+      if (!response || response.status !== 200) {
         // Handle login error
-        console.error("Login error", error);
+        alert("Invalid credentials");
+        return;
       }
+
+      // Handle response here. For example, store the user data in the state or context.
+      setAccount(response.data.account);
     } else {
       console.error("Invalid form", error);
     }
   };
+
+  useEffect(() => {}, [isLoading]);
 
   return (
     <GridContainer
@@ -95,19 +94,23 @@ const LoginScreen = (props: ComponentProps) => {
             onChange={handleChange}
             label="Password"
           />
-          <Button
-            variant="contained"
-            color="success"
-            sx={{
-              width: "100%",
-              fontSize: "16px",
-              alignSelf: "center",
-              textTransform: "none",
-            }}
-            onClick={handleLogin}
-          >
-            Log in
-          </Button>
+          {isLoading ? (
+            <LoadingProgress />
+          ) : (
+            <Button
+              variant="contained"
+              color="success"
+              sx={{
+                width: "100%",
+                fontSize: "16px",
+                alignSelf: "center",
+                textTransform: "none",
+              }}
+              onClick={handleLogin}
+            >
+              Log in
+            </Button>
+          )}
         </Stack>
       </GridItem>
 
