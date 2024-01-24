@@ -1,5 +1,5 @@
 import "./App.css";
-import AppRoutes from "./Routing/AppRoutes";
+import AppRoutes from "./routing/AppRoutes";
 import ProfilePage from "./profile/profile-page";
 import { exampleProfile } from "./profile/tests/profile-examples";
 import { ThemeContextProvider } from "./themes/ThemeContextProvider";

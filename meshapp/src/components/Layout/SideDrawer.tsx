@@ -27,7 +27,7 @@ import {
   Info as InfoIcon,
 } from "@mui/icons-material";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { paths } from "../../Routing/RoutePaths";
+import { paths } from "../../routing/RoutePaths";
 import { useAccountContext } from "../../contexts/UserContext";
 import { ThemeSwitch } from "./Header/ThemeSwitch";
 import { FlexBetween } from "../resuables/FlexBetween";

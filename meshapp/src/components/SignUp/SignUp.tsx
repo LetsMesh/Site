@@ -11,7 +11,7 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Theme, ThemeProvider, Typography, createTheme } from "@mui/material";
-import { paths } from "../../Routing/RoutePaths";
+import { paths } from "../../routing/RoutePaths";
 import { useNavigate } from "react-router-dom";
 //step labels
 const stepLabels = ["Create Account", "Verify Email", "Go to Profile"];

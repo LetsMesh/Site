@@ -1,6 +1,6 @@
 import { Button, Divider, Grid, Skeleton, Typography } from "@mui/material";
 
-import { paths } from "../../Routing/RoutePaths";
+import { paths } from "../../routing/RoutePaths";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import LoginWindow from "../../components/login-window";
 import { GridContainer, GridItem } from "../../components/resuables/Grids";

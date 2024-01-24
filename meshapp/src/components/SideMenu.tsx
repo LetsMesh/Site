@@ -21,7 +21,7 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 
-import { paths } from "../Routing/RoutePaths";
+import { paths } from "../routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
 type ListItemTypes = { text: String; Icon: React.ElementType; path: String };
 

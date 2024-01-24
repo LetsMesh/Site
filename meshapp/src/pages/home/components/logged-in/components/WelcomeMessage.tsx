@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-import { paths } from "../../../../../Routing/RoutePaths";
+import { paths } from "../../../../../routing/RoutePaths";
 import { ChevronRight } from "@mui/icons-material";
 
 const WelcomeMessage = () => {

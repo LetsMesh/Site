@@ -1,5 +1,5 @@
 import { Typography, Grid, Button } from "@mui/material";
-import { paths } from "../../../../../Routing/RoutePaths";
+import { paths } from "../../../../../routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
 
 const WelcomeMessage = () => {
