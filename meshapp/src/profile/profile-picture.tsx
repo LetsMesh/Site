@@ -18,7 +18,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import ErrorIcon from "@mui/icons-material/Error";
 
 import "./styling/profile-page.css";
-import { axiosInstance } from "../hooks/axiosConfig";
+import { apiAxiosInstance } from "../utils/axios/axiosConfig";
 
 const tooltipErrorTheme = createTheme({
   components: {
@@ -55,7 +55,7 @@ const ProfilePicture = (props: { image: string; accountID: number }) => {
 
   // Gets the user's profile picture and saves it to the display image
   React.useEffect(() => {
-    axiosInstance
+    apiAxiosInstance
       .get("profiles/profile-picture/" + props.accountID)
       .then((response) => {
         console.log(response);

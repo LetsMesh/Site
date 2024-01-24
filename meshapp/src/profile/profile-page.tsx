@@ -15,7 +15,7 @@ import ProfileInterestsComponent from "./profile-interests";
 import "./styling/profile-page.css";
 import { ProfileGroupAccordion } from "./profile-group_accordion";
 
-import { axiosInstance } from "../hooks/axiosConfig";
+import { apiAxiosInstance } from "../utils/axios/axiosConfig";
 
 // New Imports
 import ProfileHeader from "./profile-header";
@@ -174,7 +174,7 @@ const ProfileBiography = (props: { biography: string; accountID: number }) => {
 
   //Gets the user's biography and saves it to the display biography.
   useEffect(() => {
-    axiosInstance
+    apiAxiosInstance
       .get("profiles/biography/" + props.accountID)
       .then((response) => {
         console.log(response);
@@ -196,7 +196,7 @@ const ProfileBiography = (props: { biography: string; accountID: number }) => {
    * @param {string} text - The inputted text that the user wants to save
    */
   function saveBiography(text: string) {
-    axiosInstance
+    apiAxiosInstance
       .post("profiles/biography/" + props.accountID, {
         biography: text,
       })

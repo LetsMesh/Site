@@ -99,7 +99,7 @@ export default function StepOne() {
           {/* Title */}
           <Grid container justifyContent="center" spacing={8}>
             <Grid item xs={12}>
-              <Typography variant="h5" color="text.main">
+              <Typography variant="h5" color="text.primary">
                 Contact Information
               </Typography>
             </Grid>
@@ -138,7 +138,7 @@ export default function StepOne() {
         <Grid item xs={9} sm={8} md={6}>
           <Grid container justifyContent="center">
             <Grid item xs={12}>
-              <Typography variant="h5" color="text.main">
+              <Typography variant="h5" color="text.primary">
                 Location Information
               </Typography>
             </Grid>
