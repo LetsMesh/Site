@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import TwoFactorAuthModal from "./two-factor-popup";
 import TwoFactorBanner from "./two-factor-banner";
-import { useAccountContext } from "../contexts/UserContext";
+import { useAccountContext } from "../../contexts/UserContext";
 
 /**
  * A React component used to remind the user about enabling Two-Factor Authentication (2FA) in their settings.

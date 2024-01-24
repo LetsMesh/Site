@@ -1,9 +1,8 @@
-import React from "react";
 import { Modal, Button, Typography, Fade, Backdrop } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { ReactComponent as Logo } from "../assets/two-factor-assets/two-factor-icon.svg";
+import { ReactComponent as Logo } from "../../assets/two-factor-assets/two-factor-icon.svg";
 
 import "./styling/two-factor-popup.css";
 
