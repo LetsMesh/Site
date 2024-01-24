@@ -3,6 +3,7 @@ import { NavBar } from "./Header/NavBar";
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer/Footer";
 import TwoFactorAuthReminders from "../../two-factor-auth/two-factor-reminder";
+import MessageBar from "../MessageBar";
 
 export const PageLayout = () => {
   return (
@@ -12,7 +13,7 @@ export const PageLayout = () => {
         <Toolbar />
         <TwoFactorAuthReminders />
         <Outlet />
-        {/*Message and Footer Routes*/}
+        {/* <MessageBar /> */}
         <Footer />
       </Box>
     </Box>
