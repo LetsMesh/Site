@@ -1,12 +1,12 @@
 import { Grid, Typography, Box, Stack } from "@mui/material";
-import sprout1 from "../../../../assets/media/sprout1.png";
-import sprout2 from "../../../../assets/media/sprout2.png";
-import sprout3 from "../../../../assets/media/sprout3.png";
-import sprout4 from "../../../../assets/media/sprout4.png";
+import sprout1 from "../../../../../assets/media/sprout1.png";
+import sprout2 from "../../../../../assets/media/sprout2.png";
+import sprout3 from "../../../../../assets/media/sprout3.png";
+import sprout4 from "../../../../../assets/media/sprout4.png";
 import {
   GridContainer,
   GridItem,
-} from "../../../../components/resuables/Grids";
+} from "../../../../../components/resuables/Grids";
 
 const AdvertisementSection = () => {
   const sproutImages = [sprout1, sprout2, sprout3, sprout4];
@@ -57,7 +57,7 @@ const AdvertisementSection = () => {
         <Typography
           variant="body1"
           textAlign={index % 2 === 0 ? "left" : "right"}
-          sx={{ color: "text.main" }}
+          sx={{ color: "text.primary" }}
         >
           {message}
         </Typography>
@@ -85,16 +85,9 @@ const AdvertisementSection = () => {
         >
           <Typography
             textAlign={"center"}
-            sx={{ fontSize: "2em", fontFamily: "cocogoose" }}
+            sx={{ fontSize: "2em", fontFamily: "cocogoose", fontWeight: 700 }}
           >
-            Discover your path to success with{" "}
-            <span
-              style={{
-                fontWeight: 700,
-              }}
-            >
-              mesh 🌱
-            </span>
+            Discover your path to success with <span style={{}}>mesh 🌱</span>
           </Typography>
         </GridItem>
 

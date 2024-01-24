@@ -9,8 +9,10 @@ import {
   Divider,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { axiosInstance } from "../../../hooks/axiosConfig";
-import { GridContainer, GridItem } from "../../../components/resuables/Grids";
+import { apiAxiosInstance } from "../../utils/axios/axiosConfig";
+import { GridContainer, GridItem } from "../resuables/Grids";
+import { useAccount } from "../../contexts/UserContext";
+import { useLogin } from "../../utils/hooks/useAuth";
 
 const LoginWindow = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -37,20 +39,43 @@ interface ComponentProps {
 
 const LoginScreen = (props: ComponentProps) => {
   const [formData, setFormData] = useState({ user: null, pass: null });
+  const { login, isLoading, error } = useLogin();
+  const { updateAccountID: setAccountID } = useAccount();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     console.log(formData);
+  };
+
+  const handleLogin = async () => {
+    if (formData.user !== null && formData.pass !== null) {
+      const data = await login(formData.user, formData.pass);
+      if (data) {
+        // Handle response here. For example, store the user data in the state or context.
+        if (data.is_logged_in) {
+          // Handle successful login
+          setAccountID(data.accountID);
+        } else {
+          setAccountID(null);
+        }
+      } else {
+        // Handle login error
+        console.error("Login error", error);
+      }
+    } else {
+      console.error("Invalid form", error);
+    }
   };
 
   return (
     <GridContainer
       direction="column"
       spacing={2}
-      sx={{ alignItems: "center", color: "text.main" }}
+      sx={{ alignItems: "center", color: "text.primary" }}
     >
       <GridItem>
         <Typography
-          variant="h4"
+          fontSize={"32px"}
           sx={{ fontWeight: "bold", marginLeft: "auto", textAlign: "center" }}
         >
           Login
@@ -72,21 +97,20 @@ const LoginScreen = (props: ComponentProps) => {
           />
           <Button
             variant="contained"
+            color="success"
             sx={{
               width: "100%",
               fontSize: "16px",
-              fontWeight: "bold",
               alignSelf: "center",
               textTransform: "none",
             }}
+            onClick={handleLogin}
           >
             Log in
           </Button>
         </Stack>
       </GridItem>
-      {/* <GridItem xs sx={{ textAlign: "center", width: "100%" }}>
-        
-      </GridItem> */}
+
       <Grid item xs sx={{ textAlign: "center", alignItems: "center" }}>
         <Link
           onClick={() => props.updateShowForgotPasswordState()}
@@ -95,14 +119,14 @@ const LoginScreen = (props: ComponentProps) => {
             fontWeight: "500",
 
             textDecoration: "underline",
-            color: "text.main",
+            color: "text.primary",
           }}
         >
           Forgotten password?
         </Link>
       </Grid>
-      <GridItem>
-        <Divider>or</Divider>
+      <GridItem sx={{ alignSelf: "stretch" }}>
+        <Divider orientation="horizontal">or</Divider>
       </GridItem>
       <Grid item xs width={"100%"}>
         <Stack spacing={2} sx={{ alignItems: "center" }}>
@@ -114,9 +138,10 @@ const LoginScreen = (props: ComponentProps) => {
               color: "black",
               whiteSpace: "nowrap",
               "&:hover": { bgcolor: "#D9D9D9" },
+              textTransform: "none",
             }}
           >
-            SIGN IN WITH GOOGLE
+            Sign in with Google
           </Button>
           <Button
             sx={{
@@ -126,9 +151,10 @@ const LoginScreen = (props: ComponentProps) => {
               color: "white",
               whiteSpace: "nowrap",
               "&:hover": { bgcolor: "#748ADA" },
+              textTransform: "none",
             }}
           >
-            SIGN IN WITH DISCORD
+            Sign in with Discord
           </Button>
         </Stack>
       </Grid>
@@ -158,7 +184,7 @@ const ForgotPasswordScreen = (props: ComponentProps) => {
   };
 
   const onClickSend = () => {
-    const res = axiosInstance.post(forgotPasswordEndpoint, {
+    const res = apiAxiosInstance.post(forgotPasswordEndpoint, {
       email: formData.email,
     });
     console.log("email: " + formData.email);
@@ -193,7 +219,7 @@ const ForgotPasswordScreen = (props: ComponentProps) => {
             justifyContent={"center"}
           >
             <Link
-              sx={{ color: "text.main", fontWeight: "bold" }}
+              sx={{ color: "text.primary", fontWeight: "bold" }}
               onClick={onClickReturn}
             >
               Return to Login

@@ -3,7 +3,7 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import React from "react";
 import { Grid, Typography, Box, Stack } from "@mui/material";
-import { GridItem } from "../../../../components/resuables/Grids";
+import { GridItem } from "../../../../../components/resuables/Grids";
 
 //contains the reviews section
 const ReviewsSection = () => {
@@ -116,7 +116,7 @@ const ReviewsSection = () => {
       p={3}
       sx={{ backgroundColor: "secondary.main" }}
     >
-      <GridItem color="text.main">
+      <GridItem color="text.primary">
         <GridItem>
           <Typography
             textAlign={"center"}

@@ -1,8 +1,11 @@
 import WelcomeMessage from "./components/WelcomeMessage";
 import AdvertisementSection from "./components/Advertisement";
 import ReviewsSection from "./components/Reviews";
-import { GridContainer, GridItem } from "../../../components/resuables/Grids";
-import LoginWindow from "../login-window";
+import {
+  GridContainer,
+  GridItem,
+} from "../../../../components/resuables/Grids";
+import LoginWindow from "../../../../components/login-window";
 
 import { Box, useTheme } from "@mui/material";
 
@@ -15,9 +18,10 @@ const LoggedOutHome = () => {
         sx={{
           padding: "20px 10px", // default padding for the smallest screens
           [theme.breakpoints.up("md")]: {
-            padding: "20px 10%", // padding for medium screens and up
+            padding: "20px 5%", // padding for medium screens and up
           },
           width: "100%",
+          gap: "10px",
         }}
       >
         <GridItem
@@ -29,6 +33,7 @@ const LoggedOutHome = () => {
           p={0}
           md
           lg
+          sx={{ padding: { lg: "0 100px", xs: "0 16px" } }}
         >
           <WelcomeMessage />
         </GridItem>

@@ -1,20 +1,12 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Divider,
-  Grid,
-  Skeleton,
-  Theme,
-  Typography,
-} from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material";
-import { deepmerge } from "@mui/utils";
+import { Button, Divider, Grid, Skeleton, Typography } from "@mui/material";
 
-import { paths } from "../Routing/RoutePaths";
-import { Link as RouterLink } from "react-router-dom";
-import LoginWindow from "./components/login-window";
+import { paths } from "../../Routing/RoutePaths";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import LoginWindow from "../../components/login-window";
+import { GridContainer, GridItem } from "../../components/resuables/Grids";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   return (
     <Grid
       container
@@ -22,7 +14,7 @@ const SignUp = () => {
       spacing={5}
       sx={{ textAlign: "center", alignItems: "center" }}
     >
-      <Grid item xs width={"80%"}>
+      <Grid item xs>
         <Typography variant="h2" fontWeight={"bold"}>
           Don't have an account with us yet?
         </Typography>
@@ -30,49 +22,46 @@ const SignUp = () => {
       <Grid item xs>
         <Button
           variant="contained"
-          sx={{ width: "15em" }}
-          component={RouterLink}
-          to={paths.sign_up}
+          color="success"
+          onClick={() => navigate(paths.sign_up)}
         >
           {"Sign Up >"}
         </Button>
       </Grid>
-      <Grid item xs>
-        <Skeleton variant="rounded" height={"15em"} width={"30em"} />
-      </Grid>
+      <GridItem sx={{ alignSelf: "stretch" }}>
+        <Skeleton variant="rounded" height={"15em"} width={"100%"} />
+      </GridItem>
     </Grid>
   );
 };
 
 const Login = () => {
   return (
-    <Grid container p={0} bgcolor="primary.main">
-      <Grid
-        container
-        wrap="nowrap"
+    <GridContainer bgcolor="primary.main">
+      <GridContainer
+        // wrap="nowrap"
         spacing={5}
         p={2}
         sx={{
           boxShadow: 10,
           margin: "5em auto",
-          maxWidth: "50%",
-          minWidth: "1000px",
+          width: "90%",
           bgcolor: "cardBackground.main",
-          color: "text.main",
+          color: "text.primary",
           borderRadius: "15px",
         }}
       >
         <Grid item xs>
           <SignUp />
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={1} sx={{ alignSelf: "stretch" }}>
           <Divider orientation="vertical" />
         </Grid>
         <Grid item xs>
           <LoginWindow />
         </Grid>
-      </Grid>
-    </Grid>
+      </GridContainer>
+    </GridContainer>
   );
 };
 
