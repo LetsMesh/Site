@@ -6,22 +6,7 @@ import React, {
   ReactNode,
 } from "react";
 import { apiAxiosInstance } from "../utils/axios/axiosConfig";
-
-interface AccountSettings {
-  isVerified: boolean;
-  hasContentFilterEnabled: boolean;
-  displayTheme: string;
-  is2FAEnabled: boolean;
-}
-
-interface Account {
-  accountID: number;
-  email: string;
-  phoneNum: string;
-  isMentor: boolean;
-  isMentee: boolean;
-  settings?: AccountSettings;
-}
+import { Account } from "../utils/types/Account";
 
 interface AccountContextType {
   account: Account | null;
