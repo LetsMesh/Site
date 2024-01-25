@@ -1,10 +1,12 @@
 import { PaletteMode } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import getMainTheme from "./MainTheme";
 import { useAccountContext } from "../contexts/UserContext";
+import { useUpdateAccountSetting } from "../utils/hooks/useUpdateAccount";
 
 export const useColorTheme = () => {
   const { account } = useAccountContext();
+  const { updateAccount } = useUpdateAccountSetting();
 
   // Get stored theme mode from local storage
   const storedMode = localStorage.getItem("themeMode");
@@ -12,28 +14,37 @@ export const useColorTheme = () => {
   // Determine the initial theme mode
   const determineInitialMode = (): PaletteMode => {
     if (account && account.settings && account.settings.displayTheme) {
-      // If user is logged in and has a display theme setting
-      return account.settings.displayTheme.toLowerCase() == "light"
+      return account.settings.displayTheme.toLowerCase() === "0"
         ? "light"
         : "dark";
     } else if (storedMode === "dark" || storedMode === "light") {
-      // Use stored mode if it's valid
       return storedMode;
     }
-    // Default to light mode
     return "light";
   };
 
-  const initialMode: PaletteMode = determineInitialMode();
+  const [mode, setMode] = useState<PaletteMode>(determineInitialMode());
 
-  // Store state of current theme mode
-  const [mode, setMode] = useState<PaletteMode>(initialMode);
+  // Update mode when account changes
+  useEffect(() => {
+    const newMode = determineInitialMode();
+    if (newMode !== mode) {
+      setMode(newMode);
+      localStorage.setItem("themeMode", newMode);
+    }
+  }, [account]);
 
-  // Handles toggling theme mode state and updating local storage
-  const toggleThemeMode = () => {
+  // Toggle theme mode and update account settings
+  const toggleThemeMode = async () => {
     const newMode = mode === "light" ? "dark" : "light";
     setMode(newMode);
     localStorage.setItem("themeMode", newMode);
+
+    if (account) {
+      await updateAccount(account.accountID, {
+        displayTheme: newMode === "light" ? "0" : "1",
+      });
+    }
   };
 
   // Create current theme based on current mode
