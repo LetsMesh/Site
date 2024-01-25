@@ -31,6 +31,7 @@ import { paths } from "../../routing/RoutePaths";
 import { useAccountContext } from "../../contexts/UserContext";
 import { ThemeSwitch } from "./Header/ThemeSwitch";
 import { FlexBetween } from "../resuables/FlexBetween";
+import { BASE_URL } from "../../utils/axios/axiosConfig";
 
 interface MenuDrawerProps {
   open: boolean;
@@ -238,11 +239,31 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                     path={paths.settings}
                     handleDrawerClose={handleDrawerClose}
                   />
-                  <ListItemComponent
-                    text="Logout"
-                    Icon={LogoutIcon}
-                    handleDrawerClose={handleDrawerClose}
-                  />
+                  <ListItem>
+                    <ListItemButton
+                      sx={{
+                        borderBottom: "1px solid",
+                        borderColor: "text.secondary",
+                        padding: "4px 8px",
+                      }}
+                      onClick={() =>
+                        (window.location.href = `${BASE_URL}/auth/logout/`)
+                      }
+                    >
+                      <ListItemIcon
+                        sx={{
+                          color: "text.primary",
+                          marginRight: "-16px", // Adjust this value to change the gap
+                        }}
+                      >
+                        <LogoutIcon />
+                      </ListItemIcon>
+                      <ListItemText
+                        primaryTypographyProps={{ color: "text.primary" }}
+                        primary={"logout"}
+                      />
+                    </ListItemButton>
+                  </ListItem>
                 </List>
               </div>
             )}
