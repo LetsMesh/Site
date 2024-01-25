@@ -61,8 +61,8 @@ class AuthTestCase(TestCase):
         """
         Test case for user logout functionality.
 
-        Asserts that a logged-in user can log out successfully and the session is ended,
-        verified by the absence of '_auth_user_id' in the client session.
+        Asserts that a logged-in user can log out successfully, and the response redirects
+        to the home page, verified by the status code 302 (redirection).
         """
         # First login
         response = self.client.post('/auth/login/', {'email': 'test@example.com', 'password': self.test_account_password}, content_type='application/json')
@@ -70,8 +70,14 @@ class AuthTestCase(TestCase):
 
         # Test logout
         response = self.client.post('/auth/logout/')
-        self.assertEqual(response.status_code, 200)
-        self.assertFalse('_auth_user_id' in self.client.session)
+        self.assertEqual(response.status_code, 302)  # HTTP status code for redirection
+        import os
+        self.assertEqual(response['Location'], os.environ.get('WEB_URL', 'http://localhost:3000'))  # Redirect URL check
+
+        # Verify that the user is logged out
+        response = self.client.get('/auth/session/')
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertFalse(json_response['is_logged_in'])
 
     def test_session_authenticated(self):
         """
