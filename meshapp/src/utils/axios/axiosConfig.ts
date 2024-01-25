@@ -13,10 +13,11 @@ Then you can make calls as such -> axiosInstance.get(), axiosInstance.post(), et
 For more detailed explanation dive into the documentation: https://axios-http.com/docs/example
 */
 
-const baseURL: string = "http://localhost:8000/";
+export const BASE_URL =
+  process.env.REACT_APP_API_URL ?? "http://localhost:8000";
 
 export const apiAxiosInstance = axios.create({
-  baseURL: baseURL,
+  baseURL: BASE_URL,
   timeout: 5000,
   withCredentials: true, // Important for cookies to be sent
 });
