@@ -286,7 +286,7 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                       </ListItemIcon>
                       <ListItemText
                         primaryTypographyProps={{ color: "text.primary" }}
-                        primary={"logout"}
+                        primary={"Logout"}
                       />
                     </ListItemButton>
                   </ListItem>
