@@ -74,7 +74,7 @@ const ListItemComponent = ({
           borderColor: "text.secondary",
           padding: "4px 8px",
           backgroundColor: isActive ? "primary.light" : "inherit", // Highlight if active
-          borderRadius: "8px 8px 0 0",
+          borderRadius: "6px 6px 0 0",
         }}
       >
         <ListItemIcon
