@@ -1,4 +1,4 @@
-import { PaletteMode, createTheme, Typography } from "@mui/material";
+import { PaletteMode, createTheme } from "@mui/material";
 import { lightTheme } from "./light";
 import { darkTheme } from "./dark";
 
