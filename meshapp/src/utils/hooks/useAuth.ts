@@ -1,6 +1,8 @@
 // hooks/useLogin.ts
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiAxiosInstance } from "../axios/axiosConfig";
+import { useNavigate } from "react-router-dom";
+import { useAccountContext } from "../../contexts/UserContext";
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,4 +27,15 @@ export const useLogin = () => {
   };
 
   return { login, isLoading, error };
+};
+
+export const useAuthRedirect = () => {
+  const navigate = useNavigate();
+  const { account } = useAccountContext();
+
+  useEffect(() => {
+    if (account) {
+      navigate("/");
+    }
+  }, [account]);
 };
