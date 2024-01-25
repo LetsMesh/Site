@@ -11,3 +11,16 @@ export const paths = {
   settings: "/settings",
   messages: "/messages",
 };
+
+export const logged_in_paths = [
+  paths.profile_page,
+  paths.profile_swipe,
+  paths.settings,
+  paths.messages,
+];
+
+export const logged_out_paths = [
+  paths.login_page,
+  paths.forgot_password,
+  paths.sign_up,
+];
