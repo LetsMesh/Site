@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import Footer from "./Footer/Footer";
 import TwoFactorAuthReminders from "../two-factor-reminder/two-factor-reminder";
 import MessageBar from "../MessageBar";
+import ScrollToTop from "./ScrollToTop";
 
 export const PageLayout = () => {
   return (
@@ -14,6 +15,7 @@ export const PageLayout = () => {
         bgcolor: "primary.main",
       }}
     >
+      <ScrollToTop />
       <Box>
         <NavBar />
         <TwoFactorAuthReminders />
