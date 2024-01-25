@@ -12,6 +12,7 @@ const LoggedInHome = () => {
         justifyContent="center"
         alignItems="center"
         p={{ lg: 10, md: 10, xs: 5 }}
+        sx={{ margin: "auto auto" }}
       >
         {/* For lg and md screens */}
         <Grid

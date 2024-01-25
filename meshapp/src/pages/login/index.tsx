@@ -11,7 +11,6 @@ import { paths } from "../../routing/RoutePaths";
 import { useNavigate } from "react-router-dom";
 import LoginWindow from "../../components/LoginWindow";
 import { GridContainer, GridItem } from "../../components/resuables/Grids";
-import { useEffect } from "react";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -45,7 +44,6 @@ const SignUp = () => {
 
 const Login = () => {
   const navigate = useNavigate();
-
   return (
     <GridContainer bgcolor="primary.main">
       <GridContainer
@@ -84,6 +82,15 @@ const Login = () => {
           }}
         >
           <LoginWindow />
+        </GridItem>
+        <GridItem
+          sx={{
+            alignSelf: "stretch",
+            display: { xs: "block", md: "none" },
+            paddingRight: "40px",
+          }}
+        >
+          <Divider orientation="horizontal" />
         </GridItem>
         <GridItem
           sx={{
