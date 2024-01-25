@@ -62,9 +62,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+WEB_URL = os.environ.get('WEB_URL', 'http://localhost:3000')
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    WEB_URL,
 ]
 
 ROOT_URLCONF = 'mesh.urls'

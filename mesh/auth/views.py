@@ -1,7 +1,7 @@
 # in auth folder: views.py  (auth.views)
 
 import json
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout
 from django.views.decorators.http import require_POST,require_GET
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -41,18 +41,19 @@ def login_view(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-@require_POST
 def logout_view(request):
     """
     Handles user logout requests.
 
-    This view expects a POST request and logs out the user by ending the session.
+    This view expects a POST request, logs out the user by ending the session, and
+    redirects to the home page.
 
     Returns:
-        JsonResponse: A response indicating successful logout.
+        HttpResponseRedirect: A response that redirects to the home page after successful logout.
     """
     logout(request)
-    return JsonResponse({'status': 'Logged out successfully!'})
+    import os
+    return HttpResponseRedirect(os.environ.get('WEB_URL', 'http://localhost:3000'))
 
 @ensure_csrf_cookie
 @require_GET
