@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import LoggedOutHome from "./components/logged-out";
 import LoggedInHome from "./components/logged-in";
 import { useAccountContext } from "../../contexts/UserContext";
@@ -9,7 +8,6 @@ import { useTheme } from "@mui/material";
 const HomePage = () => {
   const { account, isLoading } = useAccountContext();
 
-  const theme = useTheme();
   if (isLoading) {
     // Display loading indicator while loading
     return (

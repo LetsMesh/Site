@@ -1,8 +1,7 @@
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
-import React from "react";
-import { Grid, Typography, Box, Stack } from "@mui/material";
+import { Typography, Box, Stack } from "@mui/material";
 import { GridItem } from "../../../../../components/resuables/Grids";
 
 //contains the reviews section

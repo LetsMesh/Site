@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import group_image from "../../../../../assets/media/group_image.png";
 
 const ImageGraphic = () => {

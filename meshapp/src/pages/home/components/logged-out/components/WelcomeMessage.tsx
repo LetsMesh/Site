@@ -1,4 +1,4 @@
-import { Typography, Grid, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { paths } from "../../../../../routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
 
