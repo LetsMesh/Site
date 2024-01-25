@@ -26,7 +26,12 @@ import {
   ExpandMore,
   Info as InfoIcon,
 } from "@mui/icons-material";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  Link as RouterLink,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { paths } from "../../routing/RoutePaths";
 import { useAccountContext } from "../../contexts/UserContext";
 import { ThemeSwitch } from "./Header/ThemeSwitch";
@@ -120,6 +125,8 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
     setHomeOpen(!homeOpen);
   };
 
+  const navigate = useNavigate();
+
   return (
     <div>
       <SwipeableDrawer
@@ -205,7 +212,7 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                     />
                   </List>
                 </Collapse>
-                {account && (
+                {account ? (
                   <>
                     <ListItemComponent
                       text="Profile"
@@ -226,6 +233,25 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                       handleDrawerClose={handleDrawerClose}
                     />
                   </>
+                ) : (
+                  <ListItem
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="success"
+                      onClick={() => {
+                        navigate(paths.login_page);
+                        handleDrawerClose();
+                      }}
+                    >
+                      Sign in
+                    </Button>
+                  </ListItem>
                 )}
               </List>
             </div>
