@@ -18,7 +18,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import ErrorIcon from "@mui/icons-material/Error";
 
 import "./styling/profile-page.css";
-import { apiAxiosInstance } from "../utils/axios/axiosConfig";
+import { apiAxiosInstance } from "../../utils/axios/axiosConfig";
 
 const tooltipErrorTheme = createTheme({
   components: {

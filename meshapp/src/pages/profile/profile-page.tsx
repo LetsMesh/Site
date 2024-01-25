@@ -15,7 +15,7 @@ import ProfileInterestsComponent from "./profile-interests";
 import "./styling/profile-page.css";
 import { ProfileGroupAccordion } from "./profile-group_accordion";
 
-import { apiAxiosInstance } from "../utils/axios/axiosConfig";
+import { apiAxiosInstance } from "../../utils/axios/axiosConfig";
 
 // New Imports
 import ProfileHeader from "./profile-header";

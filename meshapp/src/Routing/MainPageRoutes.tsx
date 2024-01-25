@@ -1,9 +1,9 @@
 import SignUp from "../components/SignUp/SignUp";
 import Login from "../pages/login";
 import ForgotPassword from "../components/password-forms/forgot-password-form";
-import ProfilePage from "../profile/profile-page";
-import { exampleProfile } from "../profile/tests/profile-examples";
-import Slider from "../ProfileCardCarousel/Swiper";
+import ProfilePage from "../pages/profile/profile-page";
+import { exampleProfile } from "../pages/profile/tests/profile-examples";
+import Slider from "../pages/swiping/Swiper";
 import { Routes, Route, Link as RouterLink } from "react-router-dom";
 import { paths } from "./RoutePaths";
 import { PageLayout } from "../components/Layout";

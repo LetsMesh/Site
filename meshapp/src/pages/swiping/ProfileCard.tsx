@@ -26,7 +26,7 @@ import HeartIcon from "@mui/icons-material/Favorite";
 import { motion } from "framer-motion";
 import React from "react";
 
-import { paths } from "../routing/RoutePaths";
+import { paths } from "../../routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
 function ProfileCard(
   index: number,
