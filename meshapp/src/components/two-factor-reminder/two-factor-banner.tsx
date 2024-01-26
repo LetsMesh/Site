@@ -28,7 +28,7 @@ const TwoFactorBanner = (props: any) => {
         style={{
           position: "fixed",
           paddingTop: "74px",
-          background: theme.palette.secondary.main,
+          background: theme.palette.secondary.light,
         }}
       >
         <div className="bannerContent">
