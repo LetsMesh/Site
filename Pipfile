@@ -5,9 +5,12 @@ name = "pypi"
 
 [packages]
 django = "*"
+django-cors-headers = "*"
 mysqlclient = "*"
 bcrypt = "*"
 b2sdk.v1 = "*"
+
+channels = "*"
 
 [dev-packages]
 

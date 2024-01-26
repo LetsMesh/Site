@@ -1,0 +1,27 @@
+# /Site/docker-compose.yml
+
+version: "3.8"
+services:
+  redis:
+    image: redis:alpine
+    platform: linux/arm64/v8
+  backend:
+    build: ./
+    command: pipenv run python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+  frontend:
+    build: ./meshapp
+    volumes:
+      - ./meshapp:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+volumes:
+  mysql-data:
