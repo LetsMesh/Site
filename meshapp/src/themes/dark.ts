@@ -20,8 +20,8 @@ export const darkTheme = createTheme({
       disabledBackground: "#F1E8DF1F",
     },
     text: {
-      primary: "#F1E8DFDE",
-      secondary: "#F2E8DE99",
+      primary: "#F1E8DF",
+      secondary: "#F2E8DE",
       disabled: "#F2E8DE61",
     },
     messageBackground: {
