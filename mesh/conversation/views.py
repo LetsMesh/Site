@@ -1,103 +1,97 @@
-from django.shortcuts import render
+# mesh/conversation/views.py
 
-# Create your views here.
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from .models import Account, Message
 import json
-
-@require_POST
-def create_message(request):
-    try:
-        data = json.loads(request.body)
-        from_account_id = data.get('from_account_id')
-        to_account_id = data.get('to_account_id')
-        message_text = data.get('message')
-
-        from_account = Account.objects.get(accountID=from_account_id)
-        to_account = Account.objects.get(accountID=to_account_id)
-
-        message = Message.objects.create(
-            from_account=from_account,
-            to_account=to_account,
-            message=message_text
-        )
-        return JsonResponse({'status': 'success', 'message_id': message.messageID}, status=201)
-    except Account.DoesNotExist:
-        return JsonResponse({'error': 'Account not found'}, status=404)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.views.decorators.http import require_GET
 from django.views import View
 
-class MessageView(View):
-    def put(self, request, message_id):
+from .models import Conversation, Message, ConversationParticipant
+from ..accounts.models import Account
+from ..profiles.models import Profile
+from ..utils.validate_data import validate_json_and_required_fields
+
+class ConversationsView(View):
+    
+    def post(self, request):
+        '''
+        create new conversation
+        '''
         try:
-            data = json.loads(request.body)
-            message_text = data.get('message')
-            message = Message.objects.get(messageID=message_id)
-            message.message = message_text
-            message.save()
-            return JsonResponse({'status': 'success', 'message': 'Message updated'}, status=200)
-        except Message.DoesNotExist:
-            return JsonResponse({'error': 'Message not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            REQUIRED_FIELDS = ['participants', 'conversation_type']
+            data = validate_json_and_required_fields(request.body, REQUIRED_FIELDS)
+            
+            participants = data['participants']
+            conversation_type = data['conversation_type']
 
-    def delete(self, request, message_id):
-        try:
-            message = Message.objects.get(messageID=message_id)
-            message.message = None  # Or set to empty string ''
-            message.save()
-            return JsonResponse({'status': 'success', 'message': 'Message deleted'}, status=200)
-        except Message.DoesNotExist:
-            return JsonResponse({'error': 'Message not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            if not isinstance(participants, list):
+                return HttpResponseBadRequest("Invalid data")
 
-from django.views.decorators.http import require_GET
-from django.db.models import Q
+            # Create the conversation
+            conversation = Conversation.objects.create(conversation_type=conversation_type)
 
-@require_GET
-def get_conversation(request, account1_id, account2_id):
-    try:
-        messages = Message.objects.filter(
-            Q(from_account_id=account1_id, to_account_id=account2_id) | 
-            Q(from_account_id=account2_id, to_account_id=account1_id)
-        ).order_by('timestamp')
+            # Add participants to the conversation
+            for accountID in participants:
+                account = Account.objects.get(accountID=accountID)
+                ConversationParticipant.objects.create(conversation=conversation, account=account)
 
-        messages_data = [{
-            'message_id': message.messageID,
-            'from_account_id': message.from_account.accountID,
-            'to_account_id': message.to_account.accountID,
-            'message': message.message,
-            'timestamp': message.timestamp
-        } for message in messages]
+            return JsonResponse({'conversation_id': conversation.conversationID}, status=201)
+        except json.JSONDecodeError:
+            return HttpResponseBadRequest("Invalid JSON")
+        except KeyError:
+            return HttpResponseBadRequest("Missing data")
+        
+    def get(self, request):
+        accountID = request.user.accountID
+        conversations = Conversation.objects.filter(participants__account=accountID).distinct()
+        conversations_data = []
 
-        return JsonResponse({'messages': messages_data}, status=200)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        import random
 
-@require_GET
-def get_account_conversations(request, account_id):
-    try:
-        messages = Message.objects.filter(Q(from_account_id=account_id) | Q(to_account_id=account_id)).order_by('timestamp')
+        for conversation in conversations:
+            participants_data = []
+            for participant in ConversationParticipant.objects.filter(conversation=conversation):
+                if participant.account.accountID != accountID:
+                    participants_data.append({
+                        "accountID": participant.account.accountID,
+                        "name": participant.account.email,  # Assuming userName represents the name of the user
+                        "isMentor": participant.account.isMentor,
+                        "isMentee": participant.account.isMentor
+                    })
 
-        conversations = {}
-        for message in messages:
-            other_account_id = message.from_account.accountID if message.from_account.accountID != account_id else message.to_account.accountID
-            if other_account_id not in conversations:
-                conversations[other_account_id] = []
+            messages_data = list(conversation.messages.values(
+                'messageID', 'account_id', 'message', 'timestamp'
+            ))
 
-            conversations[other_account_id].append({
-                'message_id': message.messageID,
-                'from_account_id': message.from_account.accountID,
-                'to_account_id': message.to_account.accountID,
-                'message': message.message,
-                'timestamp': message.timestamp
+            conversations_data.append({
+                "conversationID": conversation.conversationID,
+                "participants": participants_data,
+                "conversation_type": Conversation.ConversationTypes(conversation.conversation_type).label,
+                "messages": messages_data
             })
 
-        return JsonResponse({'conversations': conversations}, status=200)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({'conversations': conversations_data})
+
+@require_GET
+def conversation_messages(request, conversation_id):
+    page = request.GET.get('page', 1)
+    per_page = 10  # Number of messages per page
+    messages = Message.objects.filter(conversation_id=conversation_id).order_by('-timestamp')
+    paginator = Paginator(messages, per_page)
+    
+    try:
+        messages_page = paginator.page(page)
+    except PageNotAnInteger:
+        messages_page = paginator.page(1)
+    except EmptyPage:
+        messages_page = paginator.page(paginator.num_pages)
+
+    # Convert messages_page to JSON or a suitable format
+    return JsonResponse({'messages': list(messages_page.object_list.values())})
+
+class ConversationParticipantsView(View):
+    def get(self, request):
+        pass
+    
+    def patch(self, request):
+        pass
