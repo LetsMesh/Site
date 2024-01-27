@@ -2,6 +2,8 @@ import {
   Box,
   Chip,
   IconButton,
+  List,
+  ListItem,
   Stack,
   TextField,
   Typography,
@@ -49,7 +51,7 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
   const [newMessage, setNewMessage] = useState("");
 
   const sendMessage = () => {
-    if (ws && newMessage.trim() && newMessage.trim() != "") {
+    if (ws && newMessage.trim() && newMessage.trim() !== "") {
       ws.send(
         JSON.stringify({
           accountID: account?.accountID,
@@ -118,27 +120,29 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
       <Box
         sx={{
           flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
           overflowY: "auto",
           borderTop: `solid ${theme.palette.secondary.contrastText} 1px`,
+          paddingRight: "10px",
         }}
       >
-        {messages.map((message) => (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent:
-                message.account_id == account?.accountID
-                  ? "flex-end"
-                  : "flex-start",
-            }}
-          >
-            <MessageChip content={message.message} />
-          </div>
-        ))}
+        <List dense={false} sx={{ padding: 0 }}>
+          {messages.map((message) => (
+            <ListItem
+              key={message.messageID}
+              sx={{
+                width: "100%",
+                padding: "0",
+                display: "flex",
+                justifyContent:
+                  message.account_id === account?.accountID
+                    ? "flex-end"
+                    : "flex-start",
+              }}
+            >
+              <MessageChip content={message.message} />
+            </ListItem>
+          ))}
+        </List>
       </Box>
 
       <Box
