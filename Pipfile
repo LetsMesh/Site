@@ -11,6 +11,8 @@ bcrypt = "*"
 b2sdk.v1 = "*"
 
 channels = "*"
+channels_redis = "*"
+daphne = "*"
 
 [dev-packages]
 
