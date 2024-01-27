@@ -1,18 +1,13 @@
 // src/components/MessageBar/components/MessageBox.tsx
 
-import {
-  Box,
-  IconButton,
-  List,
-  Stack,
-  TextField,
-  useTheme,
-} from "@mui/material";
-import { Close as CloseIcon, Search as SearchIcon } from "@mui/icons-material";
-import { dummy_conversations } from "../examples/conversations";
-import ConversationComponent from "./Conversation";
+import { Box, useTheme } from "@mui/material";
 
-const messageBoxWidth = 400;
+import Conversations from "./Conversations";
+import { useState } from "react";
+import ChatBox from "./ChatBox";
+import { Conversation } from "../types/Conversation";
+
+export const messageBoxWidth = 400;
 
 interface MessageBoxProps {
   showSearch: boolean;
@@ -24,6 +19,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({
   setShowSearch,
 }) => {
   const theme = useTheme();
+  const [convo, setConvo] = useState<Conversation | null>(null);
 
   if (!showSearch) return null;
 
@@ -39,71 +35,19 @@ const MessageBox: React.FC<MessageBoxProps> = ({
         zIndex: 101,
         borderTopLeftRadius: "6px",
         padding: "10px 10px 0 10px",
+        minHeight: "200px",
+        height: "50vh",
       }}
     >
-      <Stack>
-        <TextField
-          fullWidth
-          variant="standard"
-          placeholder="Search conversations"
-          InputProps={{
-            startAdornment: <SearchIcon />,
-          }}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+      {convo === null ? (
+        <Conversations
+          showSearch={showSearch}
+          setShowSearch={setShowSearch}
+          setConvo={setConvo}
         />
-        <Box
-          sx={{
-            overflowY: "auto",
-            maxHeight: "50vh",
-          }}
-        >
-          <List dense={false}>
-            {dummy_conversations.map((convo) => (
-              <ConversationComponent
-                conversation={convo}
-                key={convo.with.accountID}
-              />
-            ))}
-          </List>
-        </Box>
-        <div
-          style={{
-            backgroundColor: theme.palette.secondary.main,
-            width: "100%",
-            height: "40px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            zIndex: 100,
-            borderTop: "sold black 1px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              padding: "0",
-              width: messageBoxWidth,
-              backgroundColor: showSearch
-                ? theme.palette.secondary.light
-                : theme.palette.secondary.main,
-              height: "100%",
-              alignItems: "center",
-              justifyContent: "flex-end",
-            }}
-          >
-            <IconButton
-              sx={{ color: "black" }}
-              onClick={() => setShowSearch(!showSearch)}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-        </div>
-      </Stack>
+      ) : (
+        <ChatBox conversation={convo} setConvo={setConvo} />
+      )}
     </Box>
   );
 };

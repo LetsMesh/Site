@@ -4,11 +4,9 @@ import { IconButton, useTheme } from "@mui/material";
 import { useState } from "react";
 import EmailIcon from "@mui/icons-material/Email";
 import { useAccountContext } from "../../contexts/UserContext";
-import MessageBox from "./components/MessageBox";
+import MessageBox, { messageBoxWidth } from "./components/MessageBox";
 import { useLocation } from "react-router-dom";
 import { paths } from "../../routing/RoutePaths";
-
-const messageBoxWidth = 400;
 
 const MessageBar = () => {
   const theme = useTheme();
@@ -26,6 +24,7 @@ const MessageBar = () => {
         style={{
           position: "fixed",
           bottom: 0,
+
           backgroundColor: theme.palette.secondary.main,
           width: "100%",
           height: "40px",
@@ -41,9 +40,6 @@ const MessageBar = () => {
             display: "flex",
             padding: "0 10px",
             width: messageBoxWidth,
-            backgroundColor: showSearch
-              ? theme.palette.secondary.light
-              : theme.palette.secondary.main,
             height: "100%",
             alignItems: "center",
             justifyContent: "flex-end",
@@ -51,7 +47,7 @@ const MessageBar = () => {
         >
           {pathname !== paths.messages && (
             <IconButton
-              sx={{ color: "black" }}
+              sx={{ color: "primary.contrastText", borderRadius: 0 }}
               onClick={() => setShowSearch(!showSearch)}
             >
               <EmailIcon />

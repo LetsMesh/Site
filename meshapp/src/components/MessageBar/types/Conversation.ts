@@ -9,13 +9,19 @@ export interface ConversationUser {
 
 export interface Message {
   messageID: number;
-  fromAccountID: number;
-  toAccountID: number;
+  account_id: number;
   message: string;
   timestamp: string;
 }
 
+export enum ConversationType {
+  DM = "Direct Message",
+  GROUP = "Group Conversation",
+}
+
 export interface Conversation {
-  with: ConversationUser;
+  conversationID: number;
+  participants: ConversationUser[];
+  conversation_type: ConversationType;
   messages: Message[];
 }
