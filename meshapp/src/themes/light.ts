@@ -8,7 +8,7 @@ export const lightTheme = createTheme({
       // dark green (theme color)
       main: "#0B7D66",
       light: "#87bfb4",
-      dark: "#0B7D66",
+      dark: "#096452",
       contrastText: "#000000",
     },
     secondary: {
