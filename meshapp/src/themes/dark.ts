@@ -12,7 +12,17 @@ export const darkTheme = createTheme({
     },
     secondary: {
       main: "#969696",
+      light: "#b6b6b6",
+      dark: "#787878",
+      contrastText: "#fff",
     },
+    info: {
+      main: "#7984f5",
+      light: "#a1a8f8",
+      dark: "#6169c4",
+      contrastText: "#fff",
+    },
+
     cardBackground: {
       main: "#212121",
     },
