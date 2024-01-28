@@ -9,6 +9,7 @@ import { paths } from "./RoutePaths";
 import { PageLayout } from "../components/Layout";
 import HomePage from "../pages/home";
 import { Link } from "@mui/material";
+import SettingPage from "../pages/setting";
 
 //contains routes for the main page
 export default function MainPageRoutes() {
@@ -20,6 +21,7 @@ export default function MainPageRoutes() {
         <Route path={paths.sign_up} element={<SignUp />} />
         <Route path={paths.login_page} element={<Login />} />
         <Route path={paths.forgot_password} element={<ForgotPassword />} />
+        <Route path={paths.settings} element={<SettingPage />} />
         <Route
           path={paths.profile_page}
           element={<ProfilePage {...exampleProfile} />}
