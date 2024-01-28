@@ -34,6 +34,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,"media/")
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,7 +53,6 @@ INSTALLED_APPS = [
     # conversation websockets
     'channels',
     # to run the django backend
-    "daphne",
 ]
 
 # TODO: https://github.com/LetsMesh/Site/issues/202
@@ -108,10 +108,7 @@ DATABASES = {
         'NAME': os.getenv("DB_NAME"),
         'USER': os.getenv("DB_USER"),
         'PASSWORD': os.getenv("DB_PASSWORD"),
-        # For Docker to access host network, 
-        'HOST': 'host.docker.internal',
-        # switch to localhost if you run manage.py locally
-        # 'HOST': 'localhost',
+        'HOST': os.getenv("DB_HOST", "localhost"),
         'PORT': '3306',
     }
 }
