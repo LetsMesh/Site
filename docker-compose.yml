@@ -8,8 +8,6 @@ services:
     platform: linux/arm64/v8
   backend:
     build: ./
-    # bind to 0.0.0.0 instead of 127.0.0.1 to make the server accessible outside the container
-    command: pipenv run daphne -b 0.0.0.0 -p 8000 mesh.asgi:application
     environment:
       - DB_HOST=host.docker.internal
     volumes:

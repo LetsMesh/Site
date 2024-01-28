@@ -19,3 +19,10 @@ COPY Pipfile Pipfile.lock /code/
 
 # Install Python dependencies
 RUN pipenv install
+
+# Copy the entrypoint script
+COPY entrypoint.sh /code/
+RUN chmod +x /code/entrypoint.sh
+
+# Set the script as the entrypoint
+ENTRYPOINT ["/code/entrypoint.sh"]
