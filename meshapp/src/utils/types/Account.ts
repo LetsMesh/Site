@@ -11,5 +11,5 @@ export interface Account {
   phoneNum: string;
   isMentor: boolean;
   isMentee: boolean;
-  settings?: AccountSettings;
+  settings: AccountSettings;
 }
