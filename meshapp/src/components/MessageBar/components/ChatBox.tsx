@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Close, Send } from "@mui/icons-material";
 import { Conversation, ConversationType } from "../types/Conversation";
 import { useAccountContext } from "../../../contexts/UserContext";
@@ -25,6 +25,7 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
   const { account } = useAccountContext();
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState(conversation.messages);
+  const lastMessageRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     // Establish WebSocket connection for the specific conversation
@@ -72,6 +73,13 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
       sendMessage();
     }
   };
+
+  useEffect(() => {
+    // currently, the messages will be scrolled to the newest message whenever the messages array change
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]); // Run this effect whenever the messages array changes
 
   return (
     <Stack
@@ -121,14 +129,14 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
         sx={{
           flexGrow: 1,
           overflowY: "auto",
-          borderTop: `solid ${theme.palette.secondary.contrastText} 1px`,
-          paddingRight: "10px",
+          padding: "10px 10px 0 5px",
         }}
       >
         <List dense={false} sx={{ padding: 0 }}>
-          {messages.map((message) => (
+          {messages.map((message, index) => (
             <ListItem
               key={message.messageID}
+              ref={index === messages.length - 1 ? lastMessageRef : null}
               sx={{
                 width: "100%",
                 padding: "0",
