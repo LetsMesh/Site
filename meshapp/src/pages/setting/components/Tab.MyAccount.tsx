@@ -16,108 +16,134 @@ const MyAccountSetting = () => {
 
   if (!account) return null;
   return (
-    <Box sx={{ width: "100%" }}>
-      <Stack gap={2}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-          }}
-        >
-          <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
-            My Account
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
+        <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
+          My Account
+        </Typography>
+        <AccountInfo title={"Email"} value={account.email} />
+        <AccountInfo title={"Phone Number"} value={account.phoneNum} />
+      </Box>
+      <Divider />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
+        <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
+          Password and Authentication
+        </Typography>
+        <Box>
+          <Typography
+            sx={{
+              textTransform: "uppercase",
+              color: account.settings.is2FAEnabled
+                ? theme.palette.success.dark
+                : theme.palette.error.dark,
+              fontSize: "12px",
+              mb: 1,
+              fontWeight: "600",
+            }}
+          >
+            <div style={{ display: "flex", gap: 1 }}>
+              {account.settings.is2FAEnabled ? (
+                <>
+                  <Lock />
+                  Multi-factor Authentication Enabled
+                </>
+              ) : (
+                <>
+                  <LockOpen />
+                  Multi-factor Authentication Disabled
+                </>
+              )}
+            </div>
           </Typography>
-          <AccountInfo title={"Email"} value={account.email} />
-          <AccountInfo title={"Phone Number"} value={account.phoneNum} />
+          <Button
+            variant="contained"
+            color="info"
+            size="small"
+            sx={{
+              textTransform: "none",
+            }}
+          >
+            Change Password
+          </Button>
         </Box>
-        <Divider />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-          }}
-        >
-          <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
-            Password and Authentication
+        <Box>
+          <Typography
+            sx={{
+              textTransform: "uppercase",
+              color: "text.secondary",
+              fontSize: "12px",
+              mb: 1,
+              fontWeight: "600",
+            }}
+          >
+            <div style={{ display: "flex", gap: 1 }}>
+              <SecurityIcon />
+              Authentication
+            </div>
           </Typography>
-          <Box>
-            <Typography
-              sx={{
-                textTransform: "uppercase",
-                color: account.settings.is2FAEnabled
-                  ? theme.palette.success.dark
-                  : theme.palette.error.dark,
-                fontSize: "12px",
-                mb: 1,
-                fontWeight: "600",
-              }}
-            >
-              <div style={{ display: "flex", gap: 1 }}>
-                {account.settings.is2FAEnabled ? (
-                  <>
-                    <Lock />
-                    Multi-factor Authentication Enabled
-                  </>
-                ) : (
-                  <>
-                    <LockOpen />
-                    Multi-factor Authentication Disabled
-                  </>
-                )}
-              </div>
-            </Typography>
-            <Button variant="contained" color="info" size="small">
-              Change Password
-            </Button>
-          </Box>
-          <Box>
-            <Typography
-              sx={{
-                textTransform: "uppercase",
-                color: "text.secondary",
-                fontSize: "12px",
-                mb: 1,
-                fontWeight: "600",
-              }}
-            >
-              <div style={{ display: "flex", gap: 1 }}>
-                <SecurityIcon />
-                Authentication
-              </div>
-            </Typography>
-            <Button variant="contained" color="info" size="small">
-              Enable Multi-factor Authentication
-            </Button>
-          </Box>
+          <Button
+            variant="contained"
+            color="info"
+            size="small"
+            sx={{
+              textTransform: "none",
+            }}
+          >
+            Enable Multi-factor Authentication
+          </Button>
         </Box>
-        <Divider />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-          }}
-        >
-          <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
-            Account Removal
-          </Typography>
-          <Typography sx={{ fontSize: "12px" }}>
-            Disabling your account means you can recover it at anytime after
-            taking this action
-          </Typography>
-          <Box display={"flex"} gap={1}>
-            <Button variant="contained" color="error" size="small">
-              Disable Account
-            </Button>
-            <Button variant="outlined" color="error" size="small">
-              Disable Account
-            </Button>
-          </Box>
+      </Box>
+      <Divider />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
+        <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
+          Account Removal
+        </Typography>
+        <Typography sx={{ fontSize: "12px" }}>
+          Disabling your account means you can recover it at anytime after
+          taking this action
+        </Typography>
+        <Box display={"flex"} gap={1}>
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+            sx={{
+              textTransform: "none",
+            }}
+          >
+            Disable Account
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            size="small"
+            sx={{
+              textTransform: "none",
+            }}
+          >
+            Delete Account
+          </Button>
         </Box>
-      </Stack>
-    </Box>
+      </Box>
+    </>
   );
 };
 

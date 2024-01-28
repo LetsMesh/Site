@@ -5,6 +5,7 @@ import LoadingProgress from "../../components/resuables/LoadingProgress";
 import {
   Box,
   Divider,
+  Stack,
   Tab,
   Tabs,
   Typography,
@@ -69,8 +70,10 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ width: "100%" }}>
+            <Stack gap={2}>{children}</Stack>
+          </Box>
         </Box>
       )}
     </div>
@@ -135,7 +138,7 @@ const SettingPage = () => {
               bgcolor: "secondary.dark",
               borderRadius: "12px 0 0 12px",
               padding: "10px 0",
-              minWidth: "125px",
+              minWidth: "120px",
             }}
           >
             <CustomTab label="My Account" {...a11yProps(0)} />
