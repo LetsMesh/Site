@@ -20,7 +20,7 @@ const ConversationCard: React.FC<ConversationComponentProps> = ({
 }) => {
   const theme = useTheme();
 
-  const msg: Message = conversation.messages[0];
+  const msg: Message = conversation.messages[conversation.messages.length - 1];
   return (
     <>
       <ListItemAvatar>
@@ -53,7 +53,7 @@ const ConversationCard: React.FC<ConversationComponentProps> = ({
                   textOverflow: "ellipsis",
                 }}
               >
-                {conversation.conversation_type == ConversationType.DM
+                {conversation.conversation_type === ConversationType.DM
                   ? conversation.participants[0].name
                   : conversation.participants
                       .map((user) => user.name)
@@ -66,7 +66,7 @@ const ConversationCard: React.FC<ConversationComponentProps> = ({
                 size="small"
                 sx={{ fontSize: "11px" }}
                 color={
-                  conversation.conversation_type == ConversationType.DM
+                  conversation.conversation_type === ConversationType.DM
                     ? "primary"
                     : "info"
                 }
