@@ -6,27 +6,14 @@ import React, {
   ReactNode,
 } from "react";
 import { apiAxiosInstance } from "../utils/axios/axiosConfig";
+import { Account } from "../utils/types/Account";
 
-interface AccountSettings {
-  isVerified: boolean;
-  hasContentFilterEnabled: boolean;
-  displayTheme: string;
-  is2FAEnabled: boolean;
-}
-
-interface Account {
-  accountID: number;
-  email: string;
-  phoneNum: string;
-  isMentor: boolean;
-  isMentee: boolean;
-  settings?: AccountSettings;
-}
+type LoadingState = "initializing" | "loading" | "completed";
 
 interface AccountContextType {
   account: Account | null;
   updateAccount: React.Dispatch<React.SetStateAction<Account | null>>;
-  isLoading: boolean;
+  loadingState: LoadingState;
 }
 
 const AccountContext = createContext<AccountContextType | undefined>(undefined);
@@ -39,9 +26,11 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({
   children,
 }) => {
   const [account, setAccount] = useState<Account | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadingState, setLoadingState] =
+    useState<LoadingState>("initializing");
 
   useEffect(() => {
+    setLoadingState("loading");
     const checkSession = async () => {
       try {
         const response = await apiAxiosInstance.get("/auth/session/");
@@ -53,7 +42,7 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({
       } catch (error) {
         console.error("Session check failed", error);
       } finally {
-        setIsLoading(false);
+        setLoadingState("completed");
       }
     };
 
@@ -62,7 +51,7 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({
 
   return (
     <AccountContext.Provider
-      value={{ account, updateAccount: setAccount, isLoading }}
+      value={{ account, updateAccount: setAccount, loadingState }}
     >
       {children}
     </AccountContext.Provider>

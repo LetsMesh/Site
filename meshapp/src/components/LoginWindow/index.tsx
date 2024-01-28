@@ -87,12 +87,14 @@ const LoginScreen = (props: ComponentProps) => {
             type="text"
             onChange={handleChange}
             label="Email"
+            color="info"
           />
           <TextField
             id="pass"
             type="password"
             onChange={handleChange}
             label="Password"
+            color="info"
           />
           {isLoading ? (
             <LoadingProgress />

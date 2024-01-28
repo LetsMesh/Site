@@ -1,4 +1,11 @@
-import { Button, Divider, Grid, Skeleton, Typography } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Grid,
+  Link,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 
 import { paths } from "../../routing/RoutePaths";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +43,7 @@ const SignUp = () => {
 };
 
 const Login = () => {
+  const navigate = useNavigate();
   return (
     <GridContainer bgcolor="primary.main">
       <GridContainer
@@ -49,17 +57,75 @@ const Login = () => {
           bgcolor: "cardBackground.main",
           color: "text.primary",
           borderRadius: "15px",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Grid item xs>
+        <GridItem xs={5} sx={{ display: { xs: "none", md: "block" } }}>
           <SignUp />
-        </Grid>
-        <Grid item xs={1} sx={{ alignSelf: "stretch" }}>
+        </GridItem>
+        <GridItem
+          xs={1}
+          sx={{
+            alignSelf: "stretch",
+            display: { xs: "none", md: "block" },
+          }}
+        >
           <Divider orientation="vertical" />
-        </Grid>
-        <Grid item xs>
+        </GridItem>
+        <GridItem
+          xs
+          sx={{
+            padding: "40px 40px 0 40px",
+            width: "100%",
+            maxWidth: "360px",
+          }}
+        >
           <LoginWindow />
-        </Grid>
+        </GridItem>
+        <GridItem
+          sx={{
+            alignSelf: "stretch",
+            display: { xs: "block", md: "none" },
+            paddingRight: "40px",
+          }}
+        >
+          <Divider orientation="horizontal" />
+        </GridItem>
+        <GridItem
+          sx={{
+            display: { xs: "block", md: "none" },
+            padding: "40px 40px 0 40px",
+            gap: "5px",
+            textAlign: "center",
+          }}
+        >
+          <Typography>
+            Don't have an account with us yet?{" "}
+            <Link
+              onClick={() => navigate(paths.sign_up)}
+              sx={{
+                fontWeight: "700",
+                cursor: "pointer",
+                textDecoration: "underline",
+                color: "text.primary",
+              }}
+            >
+              {/* In this code, {'\u00A0'} is used to insert a non-breaking space between "Sign" and "up". 
+              This will ensure that the entire "Sign up" text stays on the same line and wraps together when necessary. */}
+              Sign{"\u00A0"}up
+            </Link>
+          </Typography>
+        </GridItem>
+        <GridItem
+          sx={{
+            alignSelf: "stretch",
+            padding: "40px 40px 0 40px",
+            display: { xs: "block", md: "none" },
+          }}
+        >
+          <Skeleton variant="rounded" height={"15em"} width={"100%"} />
+        </GridItem>
       </GridContainer>
     </GridContainer>
   );

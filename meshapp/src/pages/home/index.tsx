@@ -6,9 +6,9 @@ import LoadingProgress from "../../components/resuables/LoadingProgress";
 import { useTheme } from "@mui/material";
 
 const HomePage = () => {
-  const { account, isLoading } = useAccountContext();
+  const { account, loadingState } = useAccountContext();
 
-  if (isLoading) {
+  if (loadingState != "completed") {
     // Display loading indicator while loading
     return (
       <GridContainer>
