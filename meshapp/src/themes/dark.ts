@@ -6,6 +6,9 @@ export const darkTheme = createTheme({
     mode: "dark",
     primary: {
       main: "#27383A",
+      light: "#87bfb4",
+      dark: "#0B7D66",
+      contrastText: "#fff",
     },
     secondary: {
       main: "#969696",
@@ -20,8 +23,8 @@ export const darkTheme = createTheme({
       disabledBackground: "#F1E8DF1F",
     },
     text: {
-      primary: "#F1E8DFDE",
-      secondary: "#F2E8DE99",
+      primary: "#F1E8DF",
+      secondary: "#F2E8DE",
       disabled: "#F2E8DE61",
     },
     messageBackground: {
