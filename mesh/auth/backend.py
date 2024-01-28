@@ -97,7 +97,6 @@ class AccountAuthenticationBackend(BaseBackend):
                     }
                 }
 
-                print(account_data)
                 return account_data
         
         return None
