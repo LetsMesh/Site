@@ -112,9 +112,8 @@ class SettingsDetailView(View):
             setting.isVerified = data.get('isVerified', setting.isVerified)
             setting.verificationToken = data.get('verificationToken', setting.verificationToken)
             setting.hasContentFilterEnabled = data.get('hasContentFilterEnabled', setting.hasContentFilterEnabled)
-            setting.displayTheme = Settings.Themes.LIGHT if str(data.get('displayTheme', setting.displayTheme)).lower() == 'light' else Settings.Themes.DARK
+            setting.displayTheme = Settings.Themes.LIGHT if str(data.get('displayTheme', setting.displayTheme)).lower() == Settings.Themes.LIGHT else Settings.Themes.DARK
             setting.is2FAEnabled = data.get('is2FAEnabled', setting.is2FAEnabled)
-
             # Save the updated setting
             setting.save()
             return HttpResponse(status=204)
@@ -127,9 +126,9 @@ class SettingsDetailView(View):
                 setting = Settings.objects.create(
                     accountID=account,
                     isVerified=data.get('isVerified', False),
-                    verificationToken=data.get('verificationToken', ""),
+                    verificationToken=data.get('verificationToken', None),
                     hasContentFilterEnabled=data.get('hasContentFilterEnabled', False),
-                    displayTheme=Settings.Themes.LIGHT if str(data.get('displayTheme', setting.displayTheme)).lower() == 'light' else Settings.Themes.DARK,
+                    displayTheme=Settings.Themes.LIGHT if str(data.get('displayTheme', Settings.Themes.LIGHT)).lower() == '0' else Settings.Themes.DARK,
                     is2FAEnabled=data.get('is2FAEnabled', False)
                 )
                 
