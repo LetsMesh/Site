@@ -72,29 +72,32 @@ class AccountAuthenticationBackend(BaseBackend):
             A dictionary containing the account data and its settings if they exist,
             otherwise None.
 
-        This method retrieves an Account instance based on the provided account ID.
-        If the account exists, it also retrieves the account's settings if they are
-        associated with the account. The method then returns a dictionary containing
-        the account data and its settings. If the account does not exist or if there
-        are no settings associated with it, None is returned.
+        If the account does not have settings, a default Settings instance is created.
         """
-        account_with_settings = Account.objects.filter(accountID=accountID).select_related('settings').first()
-        if account_with_settings:
-            account_data = {
-                'accountID': account_with_settings.accountID,
-                'email': account_with_settings.email,
-                'phoneNum': account_with_settings.phoneNum,
-                'isMentor': account_with_settings.isMentor,
-                'isMentee': account_with_settings.isMentee,
-                'settings': None
-            }
-            # Include settings if they exist
-            if hasattr(account_with_settings, 'settings'):
-                account_data['settings'] = {
-                    'isVerified': account_with_settings.settings.isVerified,
-                    'hasContentFilterEnabled': account_with_settings.settings.hasContentFilterEnabled,
-                    'displayTheme': account_with_settings.settings.displayTheme,
-                    'is2FAEnabled': account_with_settings.settings.is2FAEnabled,
+        from django.db import transaction
+        from mesh.accountSettings.models import Settings
+        with transaction.atomic():
+            account_with_settings = Account.objects.filter(accountID=accountID).select_related('settings').first()
+            if account_with_settings:
+                # Create default settings if they do not exist
+                if not hasattr(account_with_settings, 'settings'):
+                    Settings.objects.create(accountID=account_with_settings)
+
+                account_data = {
+                    'accountID': account_with_settings.accountID,
+                    'email': account_with_settings.email,
+                    'phoneNum': account_with_settings.phoneNum,
+                    'isMentor': account_with_settings.isMentor,
+                    'isMentee': account_with_settings.isMentee,
+                    'settings': {
+                        'isVerified': account_with_settings.settings.isVerified,
+                        'hasContentFilterEnabled': account_with_settings.settings.hasContentFilterEnabled,
+                        'displayTheme': account_with_settings.settings.displayTheme,
+                        'is2FAEnabled': account_with_settings.settings.is2FAEnabled,
+                    }
                 }
-            return account_data
+
+                print(account_data)
+                return account_data
+        
         return None
