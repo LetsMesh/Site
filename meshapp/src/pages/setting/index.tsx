@@ -1,17 +1,6 @@
 import React from "react";
-import { GridContainer, GridItem } from "../../components/resuables/Grids";
-import { useAccountContext } from "../../contexts/UserContext";
-import LoadingProgress from "../../components/resuables/LoadingProgress";
-import {
-  Box,
-  Divider,
-  Stack,
-  Tab,
-  Tabs,
-  Typography,
-  styled,
-  useTheme,
-} from "@mui/material";
+import { GridContainer } from "../../components/resuables/Grids";
+import { Box, Divider, Stack, Tab, Tabs, styled } from "@mui/material";
 import MyAccountSetting from "./components/Tab.MyAccount";
 import AppearanceSetting from "./components/Tab.Appearance";
 
@@ -105,8 +94,7 @@ const SettingPage = () => {
         overflowX: "hidden",
       }}
     >
-      <GridContainer
-        spacing={5}
+      <Box
         sx={{
           boxShadow: 10,
           margin: "auto",
@@ -174,7 +162,7 @@ const SettingPage = () => {
             Contact Us
           </TabPanel>
         </Box>
-      </GridContainer>
+      </Box>
     </GridContainer>
   );
 };
