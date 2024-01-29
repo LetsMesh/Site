@@ -199,6 +199,7 @@ const ChatBox: FC<ChatBoxProps> = ({
             maxRows={4}
             value={newMessage}
             onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
             placeholder="Type a message..."
             variant="standard"
             size="small"
