@@ -108,6 +108,43 @@ const ListItemComponent = ({
   );
 };
 
+/**
+ * ### MenuDrawer Component
+ *
+ * This component is responsible for rendering a navigational drawer that slides in from the left.
+ * It is primarily used for navigation in mobile views, but can also be utilized in desktop layouts.
+ * The drawer includes links to various parts of the application and can be dynamically altered
+ * based on the user's authentication status.
+ *
+ * #### Props:
+ * - `open`: Boolean indicating whether the drawer is open.
+ * - `handleDrawerClose`: Function to be called when the drawer needs to be closed.
+ * - `handleDrawerOpen`: Function to be called when the drawer needs to be opened.
+ *
+ * The component uses `SwipeableDrawer` from Material-UI for smooth opening and closing animations.
+ * It also employs `List` and `ListItem` components to display navigational items. Each item in the list
+ * can be a link, a toggle for a nested list, or a button (like the logout button).
+ *
+ * #### Usage:
+ * ```
+ * <MenuDrawer
+ *   open={drawerOpenState}
+ *   handleDrawerClose={handleDrawerClose}
+ *   handleDrawerOpen={handleDrawerOpen}
+ * />
+ * ```
+ *
+ * The component integrates with the React Router for navigation and uses the `useAccountContext` hook
+ * to access the user's account information, allowing conditional rendering of menu items based on user
+ * authentication status.
+ *
+ * #### Dependencies:
+ * - Material-UI components: Box, Button, Collapse, IconButton, List, ListItem, ListItemButton, etc.
+ * - React Router components: RouterLink, useLocation, useNavigate.
+ * - Icons from `@mui/icons-material`.
+ * - Custom components: ThemeSwitch, FlexBetween.
+ * - Account context from `../../contexts/UserContext`.
+ */
 const MenuDrawer: React.FC<MenuDrawerProps> = ({
   open,
   handleDrawerClose,
@@ -144,7 +181,7 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
             }}
           >
             <div>
-              {/* Top Content */}
+              {/* Top Content (Notifications Button, Theme Switch, and Close Button) */}
               <div
                 style={{
                   display: "flex",
@@ -177,8 +214,15 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                   Close
                 </Button>
               </div>
+              {/* Navigation tabs
+                - Home (includes a drop down select for `About Us` and `Contact Us` pages)
+                - Profile
+                - Messaging
+                - Swiping
+              */}
               <div style={{ flexGrow: 1 }}></div>
               <List sx={{ color: "text.secondary", padding: "0" }}>
+                {/* Home navigation (can be expanded to more navigations links) */}
                 <ListItemComponent
                   text="Home"
                   Icon={HomeIcon}
@@ -207,6 +251,7 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                     />
                   </List>
                 </Collapse>
+                {/* Display the `Sign In` button if the user is not logged in,  otherwise, display the nagivation components */}
                 {account ? (
                   <>
                     <ListItemComponent
@@ -250,16 +295,21 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
                 )}
               </List>
             </div>
-            {/* Bottom Content */}
+            {/* Bottom Content 
+            - Settings page navigation
+            - Logout button
+            */}
             {account && (
               <div>
                 <List sx={{ marginTop: "auto", padding: "0" }}>
+                  {/* setting navigation */}
                   <ListItemComponent
                     text="Settings"
                     Icon={SettingsIcon}
                     path={paths.settings}
                     handleDrawerClose={handleDrawerClose}
                   />
+                  {/* logout button */}
                   <ListItem>
                     <ListItemButton
                       sx={{

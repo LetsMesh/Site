@@ -25,6 +25,49 @@ interface ChatBoxProps {
   updateMessages: (newMessages: Message[]) => void;
 }
 
+/**
+ * ### ChatBox Component
+ *
+ * #### Overview:
+ * The ChatBox component is responsible for rendering a chat interface for a specific conversation.
+ * It displays messages, allows users to send new messages, and handles real-time message updates via WebSocket.
+ *
+ * #### Props:
+ * - `conversation`: An object representing the current conversation.
+ * - `setConvo`: A function to update the current conversation.
+ * - `showUserHeader` (optional): A boolean to control the display of the conversation header.
+ * - `updateMessages`: A function to update the messages in the parent component's state.
+ *
+ * #### Functionality:
+ * - Connects to a WebSocket server for real-time messaging.
+ * - Displays the conversation's messages.
+ * - Allows users to send new messages, which are then sent to the server via WebSocket.
+ * - Automatically scrolls to the newest message when the messages list updates.
+ * - Optionally shows a header with conversation details (participants' names, conversation type).
+ *
+ * #### Styling:
+ * - Uses Material-UI's Box, Chip, IconButton, List, ListItem, Stack, TextField, Typography, and useTheme.
+ * - Responsive design accommodates different screen sizes.
+ *
+ * #### Dependencies:
+ * - Material-UI components and icons.
+ * - WebSocket for real-time communication.
+ * - `Conversation`, `ConversationType`, `Message` types from "../../utils/types/Conversation".
+ * - `useAccountContext` from "../../contexts/UserContext" for account information.
+ *
+ * #### Usage:
+ * This component is used within the messaging part of the application, where users interact in chat conversations.
+ *
+ * #### Example:
+ * ```
+ * <ChatBox
+ *   conversation={currentConversation}
+ *   setConvo={setCurrentConversation}
+ *   showUserHeader={true}
+ *   updateMessages={handleMessagesUpdate}
+ * />
+ * ```
+ */
 const ChatBox: FC<ChatBoxProps> = ({
   conversation,
   setConvo,
@@ -33,46 +76,44 @@ const ChatBox: FC<ChatBoxProps> = ({
 }) => {
   const theme = useTheme();
   const { account } = useAccountContext();
+
+  // State for WebSocket connection and messages
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState(conversation.messages);
   const lastMessageRef = useRef<HTMLLIElement>(null);
 
+  // Establish WebSocket connection for the specific conversation
   useEffect(() => {
-    // Establish WebSocket connection for the specific conversation
     const conversationId = conversation.conversationID;
     const webSocket = new WebSocket(
       `ws://localhost:8000/ws/chat/${conversationId}/`
-    ); // Unique URL per conversation
+    );
     setWs(webSocket);
 
     webSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("data", data);
-
       if (data.message) {
         setMessages((prev) => [...prev, data]);
       }
     };
 
-    return () => {
-      webSocket.close();
-    };
-  }, [conversation.conversationID]); // Reconnect if conversationID changes
+    return () => webSocket.close(); // Close WebSocket on component unmount
+  }, [conversation.conversationID]);
 
+  // State for handling new message input
   const [newMessage, setNewMessage] = useState("");
 
+  // Function to send a message
   const sendMessage = () => {
-    if (ws && newMessage.trim() && newMessage.trim() !== "") {
+    if (ws && newMessage.trim()) {
       ws.send(
-        JSON.stringify({
-          accountID: account?.accountID,
-          message: newMessage,
-        })
+        JSON.stringify({ accountID: account?.accountID, message: newMessage })
       );
       setNewMessage("");
     }
   };
 
+  // Handlers for message input changes and key presses
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewMessage(event.target.value);
   };
@@ -84,11 +125,12 @@ const ChatBox: FC<ChatBoxProps> = ({
     }
   };
 
+  // Effect to scroll to the newest message and update messages in parent state
   useEffect(() => {
     if (updateMessages) {
       updateMessages(messages);
     }
-    // currently, the messages will be scrolled to the newest message whenever the messages array change
+
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({
         behavior: "smooth",
@@ -96,7 +138,7 @@ const ChatBox: FC<ChatBoxProps> = ({
         inline: "start",
       });
     }
-  }, [messages]); // Run this effect whenever the messages array changes
+  }, [messages, updateMessages]);
 
   return (
     <Stack
@@ -105,6 +147,7 @@ const ChatBox: FC<ChatBoxProps> = ({
       spacing={1}
       style={{ height: "100%" }}
     >
+      {/* Optionally render the conversation header */}
       {(showUserHeader == null || showUserHeader == true) && (
         <Box
           style={{
@@ -146,6 +189,7 @@ const ChatBox: FC<ChatBoxProps> = ({
           </div>
         </Box>
       )}
+      {/* Messages list */}
       <Box
         sx={{
           flexGrow: 1,
@@ -173,7 +217,7 @@ const ChatBox: FC<ChatBoxProps> = ({
           ))}
         </List>
       </Box>
-
+      {/* Message input field */}
       <Box
         style={{
           width: "100%",

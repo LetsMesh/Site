@@ -16,7 +16,7 @@ const HomePage = () => {
       </GridContainer>
     );
   } else {
-    // Decide which component to render based on accountID
+    // Decide which component to render based on login state
     return (
       <GridContainer>
         {account !== null ? <LoggedInHome /> : <LoggedOutHome />}

@@ -20,6 +20,41 @@ interface ConversationComponentProps {
   conversation: Conversation;
 }
 
+/**
+ * ### ConversationCard Component
+ *
+ * #### Overview:
+ * This component renders a single conversation item for display in a list of conversations.
+ * It shows the latest message, participants, and the time since the last message was sent.
+ *
+ * #### Props:
+ * - `conversation`: An object representing the conversation. It includes details such as the participants,
+ *   conversation type, and messages.
+ *
+ * #### Functionality:
+ * - Displays the latest message in the conversation and the relative time since it was sent.
+ * - Shows the names of the participants involved in the conversation.
+ * - Utilizes an Avatar icon for visual representation.
+ * - Handles long text gracefully with ellipsis for overflow.
+ *
+ * #### Styling:
+ * - Uses Material-UI's Avatar, ListItemAvatar, ListItemText, and Typography components for layout and styling.
+ * - Dynamically adjusts styles based on theme context.
+ *
+ * #### Dependencies:
+ * - Material-UI components: Avatar, ListItemAvatar, ListItemText, Typography, useTheme.
+ * - Icon component: FolderIcon from Material-UI for the Avatar.
+ * - Utility function: relativeTimeFromDates to display relative time.
+ * - Types: Conversation, ConversationType, Message from "../../utils/types/Conversation".
+ *
+ * #### Usage:
+ * This component is intended for use in a list of conversations, such as in a messaging sidebar or chat application.
+ *
+ * #### Example:
+ * ```
+ * <ConversationCard conversation={aConversation} />
+ * ```
+ */
 const ConversationCard: React.FC<ConversationComponentProps> = ({
   conversation,
 }) => {
@@ -103,7 +138,7 @@ const ConversationCard: React.FC<ConversationComponentProps> = ({
                   }}
                 >
                   {relativeTimeFromDates(new Date(msg.timestamp))}
-                </div>{" "}
+                </div>
               </>
             ) : (
               <Typography

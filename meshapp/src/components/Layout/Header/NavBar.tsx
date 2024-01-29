@@ -6,29 +6,30 @@ import {
   Typography,
   Link,
   IconButton,
+  Button,
 } from "@mui/material";
-import { Button } from "@mui/material";
-import { ThemeSwitch } from "./ThemeSwitch";
-import { BrandingLogo } from "../../BrandingLogo";
-import { FlexBetween } from "../../resuables/FlexBetween";
-import { useAccountContext } from "../../../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Notifications as NotificationsIcon } from "@mui/icons-material";
-import MenuDrawer from "../SideDrawer";
+import MenuDrawer from "../SideDrawer"; // Custom component for the side menu drawer
+import { ThemeSwitch } from "./ThemeSwitch"; // Component to switch between light and dark themes
+import { BrandingLogo } from "../../BrandingLogo"; // Custom branding logo component
+import { FlexBetween } from "../../resuables/FlexBetween"; // Reusable component for layout
+import { useAccountContext } from "../../../contexts/UserContext"; // Context for account information
+import { useNavigate } from "react-router-dom"; // Hook for navigation
 
+/**
+ * NavBar Component
+ * This component represents the navigation bar at the top of the page.
+ * It includes a logo, theme switch, notification icon, menu icon for smaller screens, and login button.
+ */
 export const NavBar: React.FC<AppBarProps> = () => {
   const navigate = useNavigate();
-  const { account } = useAccountContext();
+  const { account } = useAccountContext(); // Get the current account context
 
-  // drawer (side menu) open state
+  // State for managing the side menu drawer's open/close state
   const [open, setOpen] = React.useState(false);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
 
   return (
     <>
