@@ -3,7 +3,7 @@
 import { Box, useTheme } from "@mui/material";
 
 import ConversationsBox from "./ConversationsBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChatBox from "./ChatBox";
 import { Conversation, Message } from "../../utils/types/Conversation";
 import useFetchConversations from "../../utils/hooks/useFetchConversations";
@@ -30,6 +30,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 
   const [conversations, setConversations] =
     useState<Conversation[]>(fetchedConversations);
+
+  useEffect(() => {
+    setConversations(fetchedConversations);
+  }, [fetchedConversations]);
 
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null);
