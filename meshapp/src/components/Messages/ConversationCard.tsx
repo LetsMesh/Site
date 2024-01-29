@@ -14,6 +14,7 @@ import {
   useTheme,
 } from "@mui/material";
 import FolderIcon from "@mui/icons-material/Folder";
+import { relativeTimeFromDates } from "../../utils/utils/relativeTimestamp";
 
 interface ConversationComponentProps {
   conversation: Conversation;
@@ -101,7 +102,7 @@ const ConversationCard: React.FC<ConversationComponentProps> = ({
                     flexShrink: 0,
                   }}
                 >
-                  {new Date(msg.timestamp).toLocaleString()}
+                  {relativeTimeFromDates(new Date(msg.timestamp))}
                 </div>{" "}
               </>
             ) : (
