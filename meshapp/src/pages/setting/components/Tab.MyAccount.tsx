@@ -8,7 +8,14 @@ import {
 } from "@mui/material";
 import { useAccountContext } from "../../../contexts/UserContext";
 import { FC } from "react";
-import { Security as SecurityIcon, Lock, LockOpen } from "@mui/icons-material";
+import {
+  Security as SecurityIcon,
+  Lock,
+  LockOpen,
+  GppMaybe,
+  Verified,
+} from "@mui/icons-material";
+import ChangePasswordButton from "./ChangePasswordButton";
 
 const MyAccountSetting = () => {
   const { account } = useAccountContext();
@@ -24,9 +31,22 @@ const MyAccountSetting = () => {
           gap: "8px",
         }}
       >
-        <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
-          My Account
-        </Typography>
+        <div
+          style={{
+            display: "flex",
+            gap: "4px",
+            alignItems: "center",
+          }}
+        >
+          <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
+            My Account
+          </Typography>
+          {account.settings.isVerified ? (
+            <Verified color="primary" />
+          ) : (
+            <GppMaybe color="error" />
+          )}
+        </div>
         <AccountInfo title={"Email"} value={account.email} />
         <AccountInfo title={"Phone Number"} value={account.phoneNum} />
       </Box>
@@ -49,7 +69,7 @@ const MyAccountSetting = () => {
                 ? theme.palette.success.dark
                 : theme.palette.error.dark,
               fontSize: "12px",
-              mb: 1,
+              mb: "6px",
               fontWeight: "600",
             }}
           >
@@ -67,16 +87,7 @@ const MyAccountSetting = () => {
               )}
             </div>
           </Typography>
-          <Button
-            variant="contained"
-            color="info"
-            size="small"
-            sx={{
-              textTransform: "none",
-            }}
-          >
-            Change Password
-          </Button>
+          <ChangePasswordButton />
         </Box>
         <Box>
           <Typography
@@ -84,7 +95,7 @@ const MyAccountSetting = () => {
               textTransform: "uppercase",
               color: "text.secondary",
               fontSize: "12px",
-              mb: 1,
+              mb: "6px",
               fontWeight: "600",
             }}
           >
