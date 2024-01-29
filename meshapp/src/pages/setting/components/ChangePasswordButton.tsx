@@ -113,7 +113,7 @@ const ChangePasswordButton = () => {
               type="submit"
               variant="contained"
               color="success"
-              disabled={loadingState == "loading"}
+              disabled={loadingState === "loading"}
             >
               Submit
             </Button>
