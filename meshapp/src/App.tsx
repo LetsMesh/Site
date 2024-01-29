@@ -1,11 +1,11 @@
 import "./App.css";
 import AppRoutes from "./routing/AppRoutes";
-import ProfilePage from "./pages/profile/profile-page";
-import { exampleProfile } from "./pages/profile/tests/profile-examples";
 import { ThemeContextProvider } from "./themes/ThemeContextProvider";
 import { MainThemeProvider } from "./themes/MainThemeProvider";
 import { AccountProvider } from "./contexts/UserContext";
 import React from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
         <ThemeContextProvider>
           <MainThemeProvider>
             <AppRoutes />
+            <ToastContainer />
           </MainThemeProvider>
         </ThemeContextProvider>
       </AccountProvider>
