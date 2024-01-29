@@ -7,8 +7,7 @@ import React, {
 } from "react";
 import { apiAxiosInstance } from "../utils/axios/axiosConfig";
 import { Account } from "../utils/types/Account";
-
-type LoadingState = "initializing" | "loading" | "completed";
+import { LoadingState } from "../utils/types/loading";
 
 interface AccountContextType {
   account: Account | null;
