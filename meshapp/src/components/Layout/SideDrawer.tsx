@@ -26,12 +26,7 @@ import {
   ExpandMore,
   Info as InfoIcon,
 } from "@mui/icons-material";
-import {
-  Navigate,
-  Link as RouterLink,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { paths } from "../../routing/RoutePaths";
 import { useAccountContext } from "../../contexts/UserContext";
 import { ThemeSwitch } from "./Header/ThemeSwitch";
