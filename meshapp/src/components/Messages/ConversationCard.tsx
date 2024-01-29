@@ -1,9 +1,13 @@
 // src/components/MessageBar/components/ConversationComponent.tsx
+
 import React from "react";
-import { Conversation, ConversationType, Message } from "../types/Conversation";
+import {
+  Conversation,
+  ConversationType,
+  Message,
+} from "../../utils/types/Conversation";
 import {
   Avatar,
-  Chip,
   ListItemAvatar,
   ListItemText,
   Typography,
@@ -43,9 +47,10 @@ const ConversationCard: React.FC<ConversationComponentProps> = ({
               alignItems: "center",
             }}
           >
-            <div style={{ maxWidth: "calc(100% - 130px)", marginRight: "8px" }}>
+            <div style={{ maxWidth: "100%", marginRight: "8px" }}>
               <Typography
                 sx={{
+                  fontFamily: "sans-serif",
                   color: "text.primary",
                   fontSize: "14px",
                   overflow: "hidden",
@@ -59,18 +64,6 @@ const ConversationCard: React.FC<ConversationComponentProps> = ({
                       .map((user) => user.name)
                       .join(", ")}
               </Typography>
-            </div>
-            <div>
-              <Chip
-                label={conversation.conversation_type}
-                size="small"
-                sx={{ fontSize: "11px" }}
-                color={
-                  conversation.conversation_type === ConversationType.DM
-                    ? "primary"
-                    : "info"
-                }
-              />
             </div>
           </div>
         }

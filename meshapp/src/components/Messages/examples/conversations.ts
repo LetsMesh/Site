@@ -1,6 +1,9 @@
 // src/components/MessageBar/examples/conversations.ts
 
-import { Conversation, ConversationType } from "../types/Conversation";
+import {
+  Conversation,
+  ConversationType,
+} from "../../../utils/types/Conversation";
 
 export const dummy_conversations: Conversation[] = [
   {

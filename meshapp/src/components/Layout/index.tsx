@@ -3,7 +3,7 @@ import { NavBar } from "./Header/NavBar";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Footer from "./Footer/Footer";
 import TwoFactorAuthReminders from "../two-factor-reminder/two-factor-reminder";
-import MessageBar from "../MessageBar";
+import MessageBar from "../Messages/MessageBar";
 import ScrollToTop from "./ScrollToTop";
 import { useAccountContext } from "../../contexts/UserContext";
 import LoadingProgress from "../resuables/LoadingProgress";

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Conversation } from "../types/Conversation";
-import { apiAxiosInstance } from "../../../utils/axios/axiosConfig";
-import { useAccountContext } from "../../../contexts/UserContext";
+import { apiAxiosInstance } from "../axios/axiosConfig";
+import { useAccountContext } from "../../contexts/UserContext";
 
 const useFetchConversations = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);

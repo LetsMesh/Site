@@ -4,7 +4,7 @@ import { IconButton, useTheme } from "@mui/material";
 import { useState } from "react";
 import EmailIcon from "@mui/icons-material/Email";
 import { useAccountContext } from "../../contexts/UserContext";
-import MessageBox, { messageBoxWidth } from "./components/MessageBox";
+import MessageBox, { messageBoxWidth } from "./MessageBox";
 import { useLocation } from "react-router-dom";
 import { paths } from "../../routing/RoutePaths";
 

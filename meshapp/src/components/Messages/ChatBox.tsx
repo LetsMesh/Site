@@ -11,16 +11,26 @@ import {
 } from "@mui/material";
 import { FC, useEffect, useRef, useState } from "react";
 import { Close, Send } from "@mui/icons-material";
-import { Conversation, ConversationType } from "../types/Conversation";
-import { useAccountContext } from "../../../contexts/UserContext";
-import { messageBoxWidth } from "./MessageBox";
+import {
+  Conversation,
+  ConversationType,
+  Message,
+} from "../../utils/types/Conversation";
+import { useAccountContext } from "../../contexts/UserContext";
 
 interface ChatBoxProps {
   conversation: Conversation;
   setConvo: (value: Conversation | null) => void;
+  showUserHeader?: boolean;
+  updateMessages: (newMessages: Message[]) => void;
 }
 
-const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
+const ChatBox: FC<ChatBoxProps> = ({
+  conversation,
+  setConvo,
+  showUserHeader,
+  updateMessages,
+}) => {
   const theme = useTheme();
   const { account } = useAccountContext();
   const [ws, setWs] = useState<WebSocket | null>(null);
@@ -75,9 +85,16 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
   };
 
   useEffect(() => {
+    if (updateMessages) {
+      updateMessages(messages);
+    }
     // currently, the messages will be scrolled to the newest message whenever the messages array change
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+      lastMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start",
+      });
     }
   }, [messages]); // Run this effect whenever the messages array changes
 
@@ -88,43 +105,47 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
       spacing={1}
       style={{ height: "100%" }}
     >
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
+      {(showUserHeader == null || showUserHeader == true) && (
+        <Box
           style={{
-            maxWidth: "calc(100% - 150px)",
-            justifyContent: "center",
-            padding: "0 8px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Typography
-            sx={{
-              color: "primary.contrastText",
-              fontSize: "14px",
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
+          <div
+            style={{
+              maxWidth: "calc(100% - 150px)",
+              justifyContent: "center",
+              padding: "0 8px",
             }}
           >
-            {conversation.conversation_type === ConversationType.DM
-              ? conversation.participants[0].name
-              : conversation.participants.map((user) => user.name).join(", ")}
-          </Typography>
-        </div>
-        <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
-          <Chip
-            label={conversation.participants[0].isMentee ? "Mentee" : "Mentor"}
-            size="small"
-            sx={{ fontSize: "11px" }}
-            color={"success"}
-          />
-        </div>
-      </Box>
+            <Typography
+              sx={{
+                color: "primary.contrastText",
+                fontSize: "14px",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {conversation.conversation_type === ConversationType.DM
+                ? conversation.participants[0].name
+                : conversation.participants.map((user) => user.name).join(", ")}
+            </Typography>
+          </div>
+          <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
+            <Chip
+              label={
+                conversation.participants[0].isMentee ? "Mentee" : "Mentor"
+              }
+              size="small"
+              sx={{ fontSize: "11px" }}
+              color={"success"}
+            />
+          </div>
+        </Box>
+      )}
       <Box
         sx={{
           flexGrow: 1,
@@ -156,7 +177,6 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
       <Box
         style={{
           width: "100%",
-          height: "40px",
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-end",
@@ -167,8 +187,7 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
           style={{
             display: "flex",
             padding: "0",
-            width: messageBoxWidth,
-            height: "100%",
+            width: "100%",
             alignItems: "center",
             justifyContent: "flex-end",
             gap: "8px",
@@ -176,6 +195,8 @@ const ChatBox: FC<ChatBoxProps> = ({ conversation, setConvo }) => {
         >
           <TextField
             fullWidth
+            multiline
+            maxRows={4}
             value={newMessage}
             onChange={handleInputChange}
             placeholder="Type a message..."

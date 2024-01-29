@@ -1,38 +1,27 @@
 // src/components/MessageBar/components/Conversations.tsx
 
-import {
-  Box,
-  IconButton,
-  List,
-  ListItem,
-  Stack,
-  TextField,
-  useTheme,
-} from "@mui/material";
+import { Box, IconButton, Stack, TextField, useTheme } from "@mui/material";
 import { Close as CloseIcon, Search as SearchIcon } from "@mui/icons-material";
-import { dummy_conversations } from "../examples/conversations";
-import ConversationCard from "./ConversationCard";
-import { Conversation } from "../types/Conversation";
+import { Conversation } from "../../utils/types/Conversation";
 import { messageBoxWidth } from "./MessageBox";
-import useFetchConversations from "../hooks/useFetchConversations";
-import { useAccountContext } from "../../../contexts/UserContext";
-import LoadingProgress from "../../resuables/LoadingProgress";
+import ConversationsList from "./ConversationsList";
 
 interface ConversationsProps {
+  conversations: Conversation[];
   showSearch: boolean;
   setShowSearch: (value: boolean) => void;
-  setConvo: (value: Conversation | null) => void;
+  selectedConversation: Conversation | null;
+  setSelectedConversation: (value: Conversation | null) => void;
 }
 
-const Conversations: React.FC<ConversationsProps> = ({
+const ConversationsBox: React.FC<ConversationsProps> = ({
+  conversations,
   showSearch,
   setShowSearch,
-  setConvo,
+  selectedConversation,
+  setSelectedConversation,
 }) => {
   const theme = useTheme();
-  const { account } = useAccountContext();
-
-  const { conversations, isLoading, error } = useFetchConversations();
 
   if (!showSearch) return null;
 
@@ -63,37 +52,11 @@ const Conversations: React.FC<ConversationsProps> = ({
           maxHeight: "50vh",
         }}
       >
-        <List dense={false} sx={{ padding: 0 }}>
-          {isLoading ? (
-            <LoadingProgress />
-          ) : error ? (
-            <div>Error: {error}</div>
-          ) : (
-            conversations.map((convo) => (
-              <ListItem
-                onClick={() => setConvo(convo)}
-                key={convo.conversationID}
-                sx={{
-                  padding: "0 8px",
-                  marginBottom: "4px",
-                  gap: "0px",
-                  width: "100%",
-                  borderColor: "text.secondary",
-                  cursor: "pointer",
-                  ":hover": {
-                    backgroundColor: theme.palette.secondary.dark,
-                  },
-                  borderRadius: "4px",
-                }}
-              >
-                <ConversationCard
-                  conversation={convo}
-                  key={convo.conversationID}
-                />
-              </ListItem>
-            ))
-          )}
-        </List>
+        <ConversationsList
+          conversations={conversations}
+          selectedConversation={selectedConversation}
+          setSelectedConversation={setSelectedConversation}
+        />
       </Box>
       <div
         style={{
@@ -135,4 +98,4 @@ const Conversations: React.FC<ConversationsProps> = ({
   );
 };
 
-export default Conversations;
+export default ConversationsBox;
