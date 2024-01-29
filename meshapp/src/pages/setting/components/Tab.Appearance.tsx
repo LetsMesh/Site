@@ -1,11 +1,4 @@
-import {
-  Stack,
-  Typography,
-  Button,
-  FormControlLabel,
-  Box,
-  useTheme,
-} from "@mui/material";
+import { Typography, FormControlLabel, useTheme } from "@mui/material";
 import CustomThemeSwitch from "./CustomThemeSwitch";
 import { useAccountContext } from "../../../contexts/UserContext";
 import { useThemeContext } from "../../../themes/ThemeContextProvider";
