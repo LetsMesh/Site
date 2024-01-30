@@ -11,7 +11,7 @@ RUN mkdir /code
 WORKDIR /code
 
 # Install any needed packages specified in requirements.txt
-RUN apt-get update && apt-get install -y default-libmysqlclient-dev gcc python3-dev
+RUN apt-get update && apt-get install -y dos2unix default-libmysqlclient-dev gcc python3-dev
 RUN pip install pipenv
 
 # Copy the current directory contents into the container at /code
@@ -23,6 +23,7 @@ RUN pipenv install
 # Copy the entrypoint script
 COPY entrypoint.sh /code/
 RUN chmod +x /code/entrypoint.sh
+RUN dos2unix /code/entrypoint.sh
 
 # Set the script as the entrypoint
-ENTRYPOINT ["/code/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "/code/entrypoint.sh"]
