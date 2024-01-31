@@ -90,6 +90,16 @@ const ChatBox: FC<ChatBoxProps> = ({
     );
     setWs(webSocket);
 
+    webSocket.onclose = (event) => {
+      if (event.code == 1006) {
+        console.error("Chat room disconnected unexpectedly.");
+      }
+    };
+
+    webSocket.onopen = (event) => {
+      console.log("Chat room connected.");
+    };
+
     webSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.message) {
@@ -138,7 +148,7 @@ const ChatBox: FC<ChatBoxProps> = ({
         inline: "start",
       });
     }
-  }, [messages, updateMessages]);
+  }, [messages]);
 
   return (
     <Stack
