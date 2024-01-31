@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import FolderIcon from "@mui/icons-material/Folder";
 import { relativeTimeFromDates } from "../../utils/utils/relativeTimestamp";
+import MeshPfp from "../svgs/MeshPfp";
 
 interface ConversationComponentProps {
   conversation: Conversation;
@@ -63,14 +64,9 @@ const ConversationCard: React.FC<ConversationComponentProps> = ({
   const msg: Message = conversation.messages[conversation.messages.length - 1];
   return (
     <>
-      <ListItemAvatar>
-        <Avatar
-          sx={{
-            width: 36,
-            height: 36,
-          }}
-        >
-          <FolderIcon />
+      <ListItemAvatar sx={{ alignItems: "center" }}>
+        <Avatar>
+          <MeshPfp fontSize="large" />
         </Avatar>
       </ListItemAvatar>
       <ListItemText
