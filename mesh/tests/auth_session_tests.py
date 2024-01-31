@@ -45,6 +45,8 @@ class AuthTestCase(TestCase):
 
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertTrue(json_response['is_logged_in'])
+        self.assertIsNotNone(json_response['account'])
+        self.assertIsNotNone(json_response['account']['settings'])
 
     def test_login_failure(self):
         """
@@ -95,6 +97,8 @@ class AuthTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertTrue(json_response['is_logged_in'])
+        self.assertIsNotNone(json_response['account'])
+        self.assertIsNotNone(json_response['account']['settings'])
 
     def test_session_unauthenticated(self):
         """
