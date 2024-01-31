@@ -12,7 +12,7 @@ import os, django
 from django.core.asgi import get_asgi_application
 
 from channels.routing import ProtocolTypeRouter, URLRouter
-# from mesh.routing import application as channel_application
+from channels.security.websocket import AllowedHostsOriginValidator
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mesh.settings')
 # Initialize Django ASGI application early to ensure the AppRegistry
@@ -25,5 +25,5 @@ from mesh.routing import websocket_urlpatterns  # Import after Django setup
 
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
-    "websocket": URLRouter(websocket_urlpatterns),
+    "websocket": AllowedHostsOriginValidator(URLRouter(websocket_urlpatterns)),
 })
