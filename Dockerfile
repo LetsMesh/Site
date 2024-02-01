@@ -1,7 +1,7 @@
 # /Site/Dockerfile
 
 # Use an official Python runtime as a parent image
-FROM python:3.11
+FROM python:3.8
 
 # Set environment variables
 ENV PYTHONUNBUFFERED 1
@@ -21,4 +21,9 @@ COPY Pipfile Pipfile.lock /code/
 RUN pipenv install
 
 # Copy the entrypoint script
-CMD ["pipenv", "run", "python", "manage.py", "runserver"]
+COPY entrypoint.sh /code/
+RUN chmod +x /code/entrypoint.sh
+RUN dos2unix /code/entrypoint.sh
+
+# Set the script as the entrypoint
+ENTRYPOINT ["/bin/bash", "/code/entrypoint.sh"]
