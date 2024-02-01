@@ -1,0 +1,42 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal:focus {
+  outline: none;
+}
+
+.container {
+  background: #ffffff;
+  border-radius: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  padding: 20px;
+  gap: 10px;
+  overflow: auto;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+@font-face {
+  font-family: "cocogoose";
+  src: url("../../../../public/fonts/cocogoose.ttf");
+}
+
+.text,
+.btn {
+  text-align: center;
+  width: 75%;
+  overflow-wrap: break-word;
+}

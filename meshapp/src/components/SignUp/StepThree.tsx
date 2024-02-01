@@ -17,7 +17,7 @@ export default function StepThree() {
       <Grid
         container
         justifyContent="center"
-        color={"text.main"}
+        color={"text.primary"}
         marginTop={10}
         marginBottom={10}
         alignItems={"center"}

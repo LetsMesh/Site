@@ -1,10 +1,8 @@
 # in accounts folder: urls.py  (accounts.urls)
 
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views as accounts_views
 from .views import *
-from ..exampleapi import views as exampleapi_views
 
 urlpatterns = [
     # GET    /accounts/ - get all the accounts 

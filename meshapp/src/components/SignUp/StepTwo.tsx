@@ -137,7 +137,7 @@ export default function StepTwo() {
     <Grid
       container
       bgcolor={"cardBackground.main"}
-      color={"text.main"}
+      color={"text.primary"}
       height="80vh"
       alignItems={"center"}
     >

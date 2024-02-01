@@ -1,0 +1,44 @@
+.banner {
+  box-sizing: border-box;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: left;
+  align-items: center;
+  padding: 4px 12px;
+
+  color: #fff;
+  column-gap: 10px;
+  position: absolute;
+  top: 0px;
+  z-index: 999;
+  box-shadow: 0px 1px 3px black;
+
+  justify-content: space-between;
+}
+
+.bannerContent {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.bannerLogo {
+  display: flex;
+}
+
+.descText {
+  display: flex;
+  margin-top: 2px;
+  margin-right: 10px;
+}
+
+.bannerBtn {
+  display: flex;
+}
+
+.bannerCloseBtn {
+  display: flex;
+  cursor: pointer;
+}

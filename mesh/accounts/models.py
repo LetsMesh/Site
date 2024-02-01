@@ -1,5 +1,6 @@
 # in accounts folder: (accounts.models) models.py
 from django.db import models
+from django.utils import timezone
 
 class Account(models.Model):
     accountID = models.AutoField(primary_key=True)
@@ -11,7 +12,13 @@ class Account(models.Model):
     phoneNum = models.CharField(max_length=15)
     isMentor = models.BooleanField(default=False)
     isMentee = models.BooleanField(default=False)
+    last_login = models.DateTimeField(default=timezone.now)
 
+    @property
+    def is_authenticated(self):
+        # Assuming all Account instances represent authenticated users
+        return True
+    
     def __str__(self) -> str:
         return str(self.accountID)
     

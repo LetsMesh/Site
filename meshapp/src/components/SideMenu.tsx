@@ -21,7 +21,7 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 
-import { paths } from "../Routing/RoutePaths";
+import { paths } from "../routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
 type ListItemTypes = { text: String; Icon: React.ElementType; path: String };
 
@@ -50,11 +50,7 @@ export default function SideMenu() {
   const MenuList = () => (
     <>
       <List sx={{ color: "text.secondary" }}>
-        <ListItemComponent
-          text="Home"
-          Icon={HomeIcon}
-          path={paths.logged_in_home}
-        />
+        <ListItemComponent text="Home" Icon={HomeIcon} path={paths.home} />
         <ListItemComponent
           text="Profile"
           Icon={ProfileIcon}
@@ -69,11 +65,7 @@ export default function SideMenu() {
       </List>
       <List sx={{ marginTop: "auto" }}>
         <ListItemComponent text="Settings" Icon={SettingsIcon} path={"/"} />
-        <ListItemComponent
-          text="Logout"
-          Icon={LogoutIcon}
-          path={paths.logged_out_home}
-        />
+        <ListItemComponent text="Logout" Icon={LogoutIcon} path={paths.home} />
       </List>
     </>
   );

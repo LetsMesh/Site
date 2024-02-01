@@ -1,25 +1,24 @@
-import logo from "./logo.svg";
 import "./App.css";
+import AppRoutes from "./routing/AppRoutes";
+import { ThemeContextProvider } from "./themes/ThemeContextProvider";
+import { MainThemeProvider } from "./themes/MainThemeProvider";
+import { AccountProvider } from "./contexts/UserContext";
 import React from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.StrictMode>
+      <AccountProvider>
+        <ThemeContextProvider>
+          <MainThemeProvider>
+            <AppRoutes />
+            <ToastContainer />
+          </MainThemeProvider>
+        </ThemeContextProvider>
+      </AccountProvider>
+    </React.StrictMode>
   );
 }
 

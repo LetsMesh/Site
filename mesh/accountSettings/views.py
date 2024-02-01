@@ -102,19 +102,45 @@ class SettingsDetailView(View):
     def patch(self, request, account_id):
         """
         Handle PATCH requests to update a specific setting.
+        If the setting doesn't exist for the given account but the account exists,
+        it creates a new setting for it.
         """
+        data = json.loads(request.body)
         try:
             setting = Settings.objects.get(accountID=account_id)
+            # Update the setting's attributes with the data received
+            setting.isVerified = data.get('isVerified', setting.isVerified)
+            setting.verificationToken = data.get('verificationToken', setting.verificationToken)
+            setting.hasContentFilterEnabled = data.get('hasContentFilterEnabled', setting.hasContentFilterEnabled)
+            setting.displayTheme = Settings.Themes.LIGHT if str(data.get('displayTheme', setting.displayTheme)).lower() == Settings.Themes.LIGHT else Settings.Themes.DARK
+            setting.is2FAEnabled = data.get('is2FAEnabled', setting.is2FAEnabled)
+            # Save the updated setting
+            setting.save()
+            return HttpResponse(status=204)
+        
         except Settings.DoesNotExist:
-            return JsonResponse({'error': 'Settings do not exist'}, status=404)
+            try:
+                # Check if the account exists
+                account = Account.objects.get(pk=account_id)
+                # Create new settings with default or provided values
+                setting = Settings.objects.create(
+                    accountID=account,
+                    isVerified=data.get('isVerified', False),
+                    verificationToken=data.get('verificationToken', None),
+                    hasContentFilterEnabled=data.get('hasContentFilterEnabled', False),
+                    displayTheme=Settings.Themes.LIGHT if str(data.get('displayTheme', Settings.Themes.LIGHT)).lower() == '0' else Settings.Themes.DARK,
+                    is2FAEnabled=data.get('is2FAEnabled', False)
+                )
+                
+                setting.full_clean()  # Validates the model
+                setting.save()
+                return HttpResponse(status=204)
+            except Account.DoesNotExist:
+                return JsonResponse({'error': 'Account does not exist'}, status=404)
+            except ObjectDoesNotExist:
+                return JsonResponse({'error': 'Account does not exist'}, status=404)
+            except Exception as e:
+                print(e)
+                return JsonResponse({'error': str(e)}, status=500)
 
-        data = json.loads(request.body)
-        # Here, update the setting's attributes based on the data received
-        setting.isVerified = data.get('isVerified', setting.isVerified)
-        setting.verificationToken = data.get('verificationToken', setting.verificationToken)
-        setting.hasContentFilterEnabled = data.get('hasContentFilterEnabled', setting.hasContentFilterEnabled)
-        setting.displayTheme = data.get('displayTheme', setting.displayTheme)
-        setting.is2FAEnabled = data.get('is2FAEnabled', setting.is2FAEnabled)
-        # After updating, save the setting
-        setting.save()
-        return HttpResponse(status=204)
+        

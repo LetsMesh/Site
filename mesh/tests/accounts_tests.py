@@ -8,6 +8,7 @@ import json
 from django.test import TestCase, Client
 from ..accounts.models import Account  
 from ..accounts.views import encrypt
+
 class AccountTest(TestCase):
     """
     Test case for the Account model.
