@@ -175,7 +175,7 @@ const ChatBox: FC<ChatBoxProps> = ({
           >
             <Typography
               sx={{
-                color: "primary.contrastText",
+                color: "text.secondary",
                 fontSize: "14px",
                 overflow: "hidden",
                 whiteSpace: "nowrap",
@@ -260,12 +260,12 @@ const ChatBox: FC<ChatBoxProps> = ({
           />
           <IconButton
             onClick={sendMessage}
-            sx={{ color: "primary.contrastText", borderRadius: 0 }}
+            sx={{ color: "text.secondary", borderRadius: 0 }}
           >
             <Send />
           </IconButton>
           <IconButton
-            sx={{ color: "primary.contrastText", borderRadius: 0 }}
+            sx={{ color: "text.secondary", borderRadius: 0 }}
             onClick={() => setConvo(null)}
           >
             <Close />
