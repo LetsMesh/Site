@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import Swal from 'sweetalert2'
 
 /**
  * Error handler for axios request attempt
@@ -10,7 +11,12 @@ export function errorHandler(error: AxiosError): void{
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     const responseData = error.response.data as { message:string };
-    alert(responseData.message); //TODO: Improve the error response 
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Something went wrong!",
+      footer: responseData.message
+    });
     console.error("Error, received a status code response outside of range 2xx")
     console.error("Error data:", error.response.data);
     console.error("Error status code:", error.response.status);

@@ -14,6 +14,7 @@ import { axiosInstance } from "../config/axiosConfig";
 import { useCookies } from 'react-cookie';
 import { useEffect } from "react";
 import { errorHandler } from "../config/errorHandlerModule";
+import Swal from 'sweetalert2'
 
 const buttonTheme = createTheme({
   components: {
@@ -47,7 +48,13 @@ const Otp = () => {
       "otp":data.get("otp")
     })
       .then((axiosResponse) => {
-        alert("Verified");
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Verified!",
+          showConfirmButton: false,
+          timer: 1500
+        });
         removeCookie("user_id");
         navigate('/logged_in_home');
       })
