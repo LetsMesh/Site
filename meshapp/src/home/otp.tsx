@@ -13,6 +13,7 @@ import OtpInput from 'react-otp-input';
 import { axiosInstance } from "../config/axiosConfig";
 import { useCookies } from 'react-cookie';
 import { useEffect } from "react";
+import { errorHandler } from "../config/errorHandlerModule";
 
 const buttonTheme = createTheme({
   components: {
@@ -50,22 +51,7 @@ const Otp = () => {
         removeCookie("user_id");
         navigate('/logged_in_home');
       })
-      .catch((error) => {
-        if(error.response){
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          alert(error.response.data.message); //TODO: Improve the error response
-        }
-        else if (error.request) {
-          //request was made but no response was received
-          console.log(error.request);
-        }
-        else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      .catch(errorHandler); // User's OTP could not be verified
   }
   
 

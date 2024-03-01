@@ -12,6 +12,7 @@ import { axiosInstance } from "../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import { useEffect } from "react";
+import { errorHandler } from "../config/errorHandlerModule";
 
 interface ComponentProps {
   updateShowForgotPasswordState: () => void;
@@ -45,30 +46,13 @@ const LoginScreen = (props: ComponentProps) => {
           .then(() => {
             navigate('/otp');
           })
-          .catch((error) => {
-            alert(error.response.data.message);
-          });
+          .catch(errorHandler);  // Somehow, user's account ID could not be found
         }
         else{
           navigate('/logged_in_home')
         }
       })
-      .catch((error) => {
-        if(error.response){
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          alert(error.response.data.message); //TODO: Improve the error response 
-        }
-        else if (error.request) {
-          //request was made but no response was received
-          console.log(error.request);
-        }
-        else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      .catch(errorHandler);  // User attempted to login and an error occured
   }
 
   return (
