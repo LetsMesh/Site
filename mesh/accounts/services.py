@@ -56,7 +56,7 @@ def getOTPValidityService(user, otp):
     Verify the OTP
     """
     totp = pyotp.TOTP(user.otp_base32, interval=60)
-    if not totp.verify(otp):
+    if not totp.verify(otp, valid_window=2):
         return False
     return True
 
