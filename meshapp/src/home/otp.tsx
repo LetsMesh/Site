@@ -39,6 +39,81 @@ const Otp = () => {
 
   useEffect(() =>{},[cookies]);
 
+  useEffect(() => {
+    if(cookies.user_id === undefined){  // Page is accessed not through login attempt
+      let timerInterval: any;
+      Swal.fire({
+        title: "No session detected",
+        html: "Returning to login page in <b></b> seconds",
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const popup = Swal.getPopup();
+          if (popup !== null){
+            const timer = popup.querySelector("b");
+            if (timer !== null){
+              timerInterval = setInterval(() => {
+                let timeleft = Swal.getTimerLeft();
+                if(typeof timeleft === "number"){
+                  timeleft = Math.ceil(timeleft / 1000);
+                }
+                else{
+                  timeleft = 0;
+                }
+                timer.textContent = `${timeleft}`;
+              }, 100);
+            }
+          }
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then(() => {
+        navigate('/logged_out_home');
+      });
+    }
+    else {
+      const timeoutID = setTimeout(() => {  // Timer within OTP valid interval
+        let timerInterval: any;
+        Swal.fire({
+          title: "Timeout",
+          html: "Returning to login page in <b></b> seconds",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const popup = Swal.getPopup();
+            if (popup !== null){
+              const timer = popup.querySelector("b");
+              if (timer !== null){
+                timerInterval = setInterval(() => {
+                  let timeleft = Swal.getTimerLeft();
+                  if(typeof timeleft === "number"){
+                    timeleft = Math.ceil(timeleft / 1000);
+                  }
+                  else{
+                    timeleft = 0;
+                  }
+                  timer.textContent = `${timeleft}`;
+                }, 100);
+              }
+            }
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        }).then(() => {
+          navigate('/logged_out_home'); // Return to login page if OTP isn't validated within interval
+          removeCookie("user_id");
+        });
+      }, 60000);  // OTP interval in ms
+      return () => {
+        clearTimeout(timeoutID);  // stop timer if OTP is valid
+      };
+    }
+  }, [])
+
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
