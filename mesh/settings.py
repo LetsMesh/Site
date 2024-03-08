@@ -64,7 +64,6 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    #allow request from localhost port 3000 for testing
     'http://localhost:3000',
 ]
 
