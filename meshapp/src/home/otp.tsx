@@ -33,7 +33,7 @@ const buttonTheme = createTheme({
 });
 
 const Otp = () => {
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState(''); // inital OTP as empty
   const navigate = useNavigate();
   const [cookies, , removeCookie] = useCookies(['user_id']);
 
@@ -188,6 +188,7 @@ const Otp = () => {
           <form onSubmit={handleSubmit}>
             <Grid item xs>
               <OtpInput
+              {/* OTP input field settings */}
                 value={otp}
                 onChange={setOtp}
                 numInputs={6}
