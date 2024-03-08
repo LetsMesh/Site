@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
  * 
  * @param error the error information from `AxiosError`
  */
-export function errorHandler(error: AxiosError): void{
+export function axiosErrorHandler(error: AxiosError): void{
   if(error.response){
     const responseData = error.response.data as { message:string };
     Swal.fire({
@@ -29,4 +29,4 @@ export function errorHandler(error: AxiosError): void{
   console.log(error.config);
 }
 
-export default errorHandler;
+export default axiosErrorHandler;

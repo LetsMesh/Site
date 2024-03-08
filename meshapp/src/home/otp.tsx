@@ -11,9 +11,11 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
 import OtpInput from 'react-otp-input';
 import { axiosInstance } from "../config/axiosConfig";
+import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useEffect } from "react";
-import { errorHandler } from "../config/errorHandlerModule";
+import { axiosErrorHandler } from "../config/axiosErrorHandler";
+import { defaultErrorHandler } from "../config/defaultErrorHandler";
 import Swal from 'sweetalert2'
 
 const buttonTheme = createTheme({
@@ -118,22 +120,30 @@ const Otp = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.append('otp', otp)
-    const response = await axiosInstance.post('accounts/verify-two-factor-auth/',{
-      "accountID":cookies.user_id,
-      "otp":data.get("otp")
-    })
-      .then((axiosResponse) => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Verified!",
-          showConfirmButton: false,
-          timer: 1500
-        });
-        removeCookie("user_id");
-        navigate('/logged_in_home');
+    try{
+      await axiosInstance.post('accounts/verify-two-factor-auth/',{
+        "accountID":cookies.user_id,
+        "otp":data.get("otp")
       })
-      .catch(errorHandler); // User's OTP could not be verified
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Verified!",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      removeCookie("user_id");
+      navigate('/logged_in_home');
+    }
+    catch(error){
+      if (axios.isAxiosError(error)){
+        // User's OTP could not be verified
+        axiosErrorHandler(error);
+      }
+      else{
+        defaultErrorHandler(error)
+      }
+    }
   }
   
 
@@ -187,8 +197,8 @@ const Otp = () => {
           </Grid>
           <form onSubmit={handleSubmit}>
             <Grid item xs>
-              <OtpInput
               {/* OTP input field settings */}
+              <OtpInput
                 value={otp}
                 onChange={setOtp}
                 numInputs={6}

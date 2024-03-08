@@ -9,10 +9,12 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { axiosInstance } from "../config/axiosConfig";
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import { useEffect } from "react";
-import { errorHandler } from "../config/errorHandlerModule";
+import { axiosErrorHandler } from "../config/axiosErrorHandler";
+import { defaultErrorHandler } from "../config/defaultErrorHandler";
 
 interface ComponentProps {
   updateShowForgotPasswordState: () => void;
@@ -33,26 +35,30 @@ const LoginScreen = (props: ComponentProps) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const response = await axiosInstance.post('accounts/login/',{
-      "email":formData.user,
-      "password":formData.pass
-    })
-      .then((axiosResponse) => {
-        if(axiosResponse.data.enabled_2fa){
-          setCookie('user_id', axiosResponse.data.user_id, { path:'/', maxAge:150 });
-          axiosInstance.post('accounts/set-two-factor-auth/', {
-            "accountID":axiosResponse.data.user_id
-          })
-          .then(() => {
-            navigate('/otp');
-          })
-          .catch(errorHandler);  // Somehow, user's account ID could not be found
-        }
-        else{
-          navigate('/logged_in_home')
-        }
-      })
-      .catch(errorHandler);  // User attempted to login and an error occured
+    try{
+      let response = await axiosInstance.post('accounts/login/',{
+        "email":formData.user,
+        "password":formData.pass
+      });
+      if(response.data.enabled_2fa){
+        setCookie('user_id', response.data.user_id, { path:'/', maxAge:150 });
+        await axiosInstance.post('accounts/set-two-factor-auth/', {
+          "accountID":response.data.user_id
+        });
+        navigate('/otp');
+      }
+      else{
+        navigate('/logged_in_home')
+      }
+    }
+    catch(error){
+      if (axios.isAxiosError(error)){
+        axiosErrorHandler(error);
+      }
+      else{
+        defaultErrorHandler(error)
+      }
+    }
   }
 
   return (
