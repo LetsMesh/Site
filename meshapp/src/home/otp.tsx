@@ -39,8 +39,6 @@ const Otp = () => {
   const navigate = useNavigate();
   const [cookies, , removeCookie] = useCookies(['user_id']);
 
-  useEffect(() =>{},[cookies]);
-
   useEffect(() => {
     if(cookies.user_id === undefined){  // Page is accessed not through login attempt
       let timerInterval: any;
@@ -114,7 +112,7 @@ const Otp = () => {
         clearTimeout(timeoutID);  // stop timer if OTP is valid
       };
     }
-  }, [])
+  }, [cookies, navigate, removeCookie])
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -12,7 +12,6 @@ import { axiosInstance } from "../config/axiosConfig";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
-import { useEffect } from "react";
 import { axiosErrorHandler } from "../config/axiosErrorHandler";
 import { defaultErrorHandler } from "../config/defaultErrorHandler";
 
@@ -29,9 +28,7 @@ const LoginScreen = (props: ComponentProps) => {
   };
 
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['user_id']);
-
-  useEffect(() =>{},[cookies]);
+  const [, setCookie] = useCookies(['user_id']);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,7 +38,7 @@ const LoginScreen = (props: ComponentProps) => {
         "password":formData.pass
       });
       if(response.data.enabled_2fa){
-        setCookie('user_id', response.data.user_id, { path:'/', maxAge:150 });
+        setCookie('user_id', response.data.user_id, { path:'/', maxAge:60 });
         await axiosInstance.post('accounts/set-two-factor-auth/', {
           "accountID":response.data.user_id
         });
