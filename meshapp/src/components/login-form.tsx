@@ -42,7 +42,7 @@ const LoginScreen = (props: ComponentProps) => {
         await axiosInstance.post('accounts/set-two-factor-auth/', {
           "accountID":response.data.user_id
         });
-        navigate('/otp');
+        navigate('/otp'); // go to the OTP (One Time Password) input field page
       }
       else{
         navigate('/logged_in_home')

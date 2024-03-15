@@ -27,9 +27,9 @@ def get_user_services(request):
 
 def post_email_code_service(user):
     """
-    Check if the user has otp seed generated
-    If it does not exist, random base32 otp seed will be generated and saved for this user
-    otherwise, use the saved otp seed
+    Check if the user has OTP(One Time Password) secret key generated
+    If it does not exist, random base32 OTP secret key will be generated and saved for this user
+    otherwise, use the saved OTP secret key
 
     @return
     no return value
@@ -58,7 +58,7 @@ def post_email_code_service(user):
 
 def get_OTP_validity_service(user, otp):
     """
-    Verify the OTP
+    Verify the One Time Password
     """
     totp = pyotp.TOTP(user.otp_base32, interval=60)
     if not totp.verify(otp, valid_window=2):

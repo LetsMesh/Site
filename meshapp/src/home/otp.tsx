@@ -34,7 +34,7 @@ const buttonTheme = createTheme({
   },
 });
 
-const Otp = () => {
+const Otp = () => { // OTP: One Time Password
   const [otp, setOtp] = useState(''); // inital OTP as empty
   const navigate = useNavigate();
   const [cookies, , removeCookie] = useCookies(['user_id']);

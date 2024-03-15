@@ -220,7 +220,7 @@ class Set2FAView(View):
     otherwise, get_user_services would return None
 
     if user object is None, return JsonResponse of status 404
-    otherwise, post_email_code_service would attempt to send the email for the otp
+    otherwise, post_email_code_service would attempt to send the email for the One Time Password
     """
 
     def post(self, request):
@@ -239,14 +239,14 @@ class Set2FAView(View):
 
 class Verify2FAView(View):
     """
-    Verify if the 6 digit otp is correct
+    Verify if the 6 digit OTP(One Time Password) is correct
 
-    Body should be a JSON request with the accountID and otp as the field
+    Body should be a JSON request with the accountID and OTP as the field
 
-    the account id will first be verified if it exist, if so check the validity of the otp
+    the account id will first be verified if it exist, if so check the validity of the OTP
 
     return status 404 if the user does not exist
-    return status 400 if the input otp is not valid
+    return status 400 if the input OTP is not valid
     return status 201 upon successful verification
     """
 
@@ -261,8 +261,8 @@ class Verify2FAView(View):
                 },
                 status=404,
             )
-        valid_otp = get_OTP_validity_service(user, data.get("otp", None))
-        if not valid_otp:
+        valid_OTP = get_OTP_validity_service(user, data.get("OTP", None))
+        if not valid_OTP:
             return JsonResponse(
                 {"status": "Verification failed", "message": f"OTP is invalid"},
                 status=400,
