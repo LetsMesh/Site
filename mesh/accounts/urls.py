@@ -7,16 +7,19 @@ from .views import *
 
 
 urlpatterns = [
-    # GET    /api/accounts/ 
+    # GET    /api/accounts/
     # POST   /api/accounts/
-    path('', accounts_views.AccountsView.as_view(), name='account'),
+    path("", accounts_views.AccountsView.as_view(), name="account"),
     # GET    /api/accounts/:account_id
     # PATCH  /api/accounts/:account_id
-    path('<int:account_id>/', accounts_views.AccountsDetailView.as_view(), name='create_account'), 
-    path('login/', accounts_views.LoginView.as_view()),
-    path('set-two-factor-auth/', accounts_views.Set2FAView.as_view()),
-    path('verify-two-factor-auth/', accounts_views.Verify2FAView.as_view()),
-    path('createAccount',create_account,name = "create"),
-    path('checkAccount',check_password, name = "check")
+    path(
+        "<int:account_id>/",
+        accounts_views.AccountsDetailView.as_view(),
+        name="create_account",
+    ),
+    path("login/", accounts_views.LoginView.as_view()),
+    path("set-two-factor-auth/", accounts_views.Set2FAView.as_view()),
+    path("verify-two-factor-auth/", accounts_views.Verify2FAView.as_view()),
+    path("createAccount", create_account, name="create"),
+    path("checkAccount", check_password, name="check"),
 ]
-
