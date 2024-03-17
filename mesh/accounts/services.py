@@ -61,7 +61,7 @@ def get_OTP_validity_service(user, otp):
     Verify the One Time Password
     """
     totp = pyotp.TOTP(user.otp_base32, interval=60)
-    if not totp.verify(otp, valid_window=2):
+    if not totp.verify(otp, valid_window=1):
         return False
     return True
 
