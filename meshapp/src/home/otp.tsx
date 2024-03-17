@@ -11,11 +11,10 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { deepmerge } from "@mui/utils";
 import OtpInput from 'react-otp-input';
 import { axiosInstance } from "../config/axiosConfig";
-import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useEffect } from "react";
-import { axiosErrorHandler } from "../config/axiosErrorHandler";
-import { defaultErrorHandler } from "../config/defaultErrorHandler";
+import { axiosErrorHandler } from "../error/axiosErrorHandler";
+import { isError } from "../error/errorChecker";
 import Swal from 'sweetalert2'
 
 const buttonTheme = createTheme({
@@ -133,14 +132,11 @@ const Otp = () => { // OTP: One Time Password
       removeCookie("user_id");
       navigate('/logged_in_home');
     }
-    catch(error){
-      if (axios.isAxiosError(error)){
-        // User's OTP could not be verified
-        axiosErrorHandler(error);
-      }
-      else{
-        defaultErrorHandler(error)
-      }
+    catch(err){
+      const error = isError(err);
+      axiosErrorHandler(
+        new Error("Failed to verify a user's one time password request", { cause: error })
+      );
     }
   }
   
