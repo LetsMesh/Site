@@ -261,7 +261,7 @@ class Verify2FAView(View):
                 },
                 status=404,
             )
-        valid_OTP = get_OTP_validity_service(user, data.get("OTP", None))
+        valid_OTP = get_OTP_validity_service(user, data.get("otp", None))
         if not valid_OTP:
             return JsonResponse(
                 {"status": "Verification failed", "message": f"OTP is invalid"},
