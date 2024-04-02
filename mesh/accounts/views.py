@@ -389,5 +389,5 @@ class LoginView(View):
                 status=404,
             )
         return JsonResponse(
-            {"user_id": user.accountID, "enabled_2fa": user.enabled2Factor}, status=201
+            {"user_id": user.accountID, "enabled_2fa": user.is2FAEnabled}, status=201
         )
