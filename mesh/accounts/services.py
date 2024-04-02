@@ -1,5 +1,4 @@
 from .models import Account
-from ..accountSettings.models import Settings
 from django.http import JsonResponse
 from django.core.mail import send_mail
 import pyotp, json
