@@ -309,7 +309,9 @@ class Set2FAView(View):
     Body should be a JSON request with the accountID
     get_user_services checks if the account id exist and will return the account as an object
     otherwise, get_user_services would return None
-    if user object is None, return JsonResponse of status 404
+    Responses:
+        - HTTP 404 (Not Found): User Object is not found.
+        - HTTP 500 (Internal Server Error): For any other unexpected errors.
     otherwise, post_email_code_service would attempt to send the email for the One Time Password
     """
 
@@ -323,7 +325,11 @@ class Set2FAView(View):
                 },
                 status=404,
             )
-        post_email_code_service(user)
+        try:
+            user_setting = Settings.objects.get(accountID=user.accountID)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+        post_email_code_service(user, user_setting)
         return JsonResponse({"status": "successfully sent"}, status=201)
 
 class Verify2FAView(View):
@@ -376,6 +382,7 @@ class LoginView(View):
     """
     Verify Login Request
     Return status 404 if the user does not exist
+    Return status 500 if the user has no account setting
     Return status 201 if user is successfully verified
     """
 
@@ -389,8 +396,10 @@ class LoginView(View):
                 },
                 status=404,
             )
-        else:
+        try:
             user_setting = Settings.objects.get(accountID=user.accountID)
             return JsonResponse(
                 {"user_id": user.accountID, "enabled_2fa": user_setting.is2FAEnabled}, status=201
                 )
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)

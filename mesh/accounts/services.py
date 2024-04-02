@@ -18,14 +18,13 @@ def get_user_services(request):
         return None
 
 
-def post_email_code_service(user):
+def post_email_code_service(user, user_setting):
     """
     Check if the user has OTP(One Time Password) secret key generated
     If it does not exist, random base32 OTP secret key will be generated and saved for this user
     otherwise, use the saved OTP secret key
     @return: no return value
     """
-    user_setting = Settings.objects.get(accountID=user.accountID)
     if not user_setting.is2FAEnabled:
         # check if the user has 2fa enabled, if not generate one
         user_setting.is2FAEnabled = True
