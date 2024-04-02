@@ -328,7 +328,7 @@ class Set2FAView(View):
         try:
             user_setting = Settings.objects.get(accountID=user.accountID)
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            return JsonResponse({'error': (str(e) + " User's account setting is not detected")}, status=500)
         post_email_code_service(user, user_setting)
         return JsonResponse({"status": "successfully sent"}, status=201)
 
@@ -402,4 +402,4 @@ class LoginView(View):
                 {"user_id": user.accountID, "enabled_2fa": user_setting.is2FAEnabled}, status=201
                 )
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            return JsonResponse({'error': (str(e) + " User's account setting is not detected")}, status=500)
