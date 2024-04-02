@@ -1,4 +1,5 @@
 from .models import Account
+from ..accountSettings.models import Settings
 from django.http import JsonResponse
 from django.core.mail import send_mail
 import pyotp, json
@@ -24,9 +25,10 @@ def post_email_code_service(user):
     otherwise, use the saved OTP secret key
     @return: no return value
     """
-    if not user.is2FAEnabled:
+    user_setting = Settings.objects.get(accountID=user.accountID)
+    if not user_setting.is2FAEnabled:
         # check if the user has 2fa enabled, if not generate one
-        user.is2FAEnabled = True
+        user_setting.is2FAEnabled = True
         otp_base32 = pyotp.random_base32()
         user.otp_base32 = otp_base32
         user.save()

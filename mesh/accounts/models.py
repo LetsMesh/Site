@@ -11,7 +11,6 @@ class Account(models.Model):
     phoneNum = models.CharField(max_length=15)
     isMentor = models.BooleanField(default=False)
     isMentee = models.BooleanField(default=False)
-    is2FAEnabled= models.BooleanField(default=False)
     otp_base32 = models.CharField(
         max_length=200, null=True, blank=True
     )  # One Time Password's secret key

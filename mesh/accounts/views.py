@@ -9,6 +9,7 @@ from django.views import View
 
 from .models import Account
 from ..utils.validate_data import validate_json_and_required_fields
+from ..accountSettings.models import Settings
 import json
 
 from mesh.accounts.services import (
@@ -388,6 +389,8 @@ class LoginView(View):
                 },
                 status=404,
             )
-        return JsonResponse(
-            {"user_id": user.accountID, "enabled_2fa": user.is2FAEnabled}, status=201
-        )
+        else:
+            user_setting = Settings.objects.get(accountID=user.accountID)
+            return JsonResponse(
+                {"user_id": user.accountID, "enabled_2fa": user_setting.is2FAEnabled}, status=201
+                )
