@@ -9,7 +9,14 @@ from django.views import View
 
 from .models import Account
 from ..utils.validate_data import validate_json_and_required_fields
+from ..accountSettings.models import Settings
 import json
+
+from mesh.accounts.services import (
+    get_OTP_validity_service,
+    get_user_services,
+    post_email_code_service,
+)
 
 def encrypt(password):
     salt = bcrypt.gensalt(12)
@@ -295,4 +302,104 @@ def change_password(request):
 
     else:
         return JsonResponse({"error": f"{request.method} method not allowed"}, status=405)
-    
+
+class Set2FAView(View):
+    """
+    Send email to the user for 2FA Verification
+    Body should be a JSON request with the accountID
+    get_user_services checks if the account id exist and will return the account as an object
+    otherwise, get_user_services would return None
+    Responses:
+        - HTTP 404 (Not Found): User Object is not found.
+        - HTTP 500 (Internal Server Error): For any other unexpected errors.
+    otherwise, post_email_code_service would attempt to send the email for the One Time Password
+    """
+
+    def post(self, request):
+        user = get_user_services(request)
+        if user == None:
+            return JsonResponse(
+                {
+                    "status": "fail",
+                    "message": f"No user with the username or password exists",
+                },
+                status=404,
+            )
+        try:
+            user_setting = Settings.objects.get(accountID=user.accountID)
+        except Exception as e:
+            return JsonResponse({'error': (str(e) + " User's account setting is not detected")}, status=500)
+        post_email_code_service(user, user_setting)
+        return JsonResponse({"status": "successfully sent"}, status=201)
+
+class Verify2FAView(View):
+    """
+    Verify if the 6 digit OTP(One Time Password) is correct
+    Body should be a JSON request with the accountID and OTP as the field
+    the account id will first be verified if it exist, if so check the validity of the OTP
+    return status 404 if the user does not exist
+    return status 400 if the input OTP is not valid
+    return status 201 upon successful verification
+    """
+
+    def post(self, request):
+        data = json.loads(request.body.decode("utf-8"))
+        user = get_user_services(request)
+        if user == None:
+            return JsonResponse(
+                {
+                    "status": "Verification failed",
+                    "message": f"No user with the username or password exists",
+                },
+                status=404,
+            )
+        valid_OTP = get_OTP_validity_service(user, data.get("otp", None))
+        if not valid_OTP:
+            return JsonResponse(
+                {"status": "Verification failed", "message": f"OTP is invalid"},
+                status=400,
+            )
+        return JsonResponse({"status": "successfully verified"}, status=201)
+
+def get_login_user_service(request):
+    """
+    Check if the password from request is correct
+    @return: the user account object
+    """
+    data = json.loads(request.body.decode("utf-8"))
+    email_ = data.get("email", None)
+    password = data.get("password", None)
+    try:
+        user = Account.objects.get(email=email_)
+        salt = user.salt
+        if user.encryptedPass == decrypt(password, salt):
+            return user
+        else:
+            return None
+    except:
+        return None
+class LoginView(View):
+    """
+    Verify Login Request
+    Return status 404 if the user does not exist
+    Return status 500 if the user has no account setting
+    Return status 201 if user is successfully verified
+    """
+
+    def post(self, request, *args, **kwargs):
+        user = get_login_user_service(request)
+        if user == None:
+            return JsonResponse(
+                {
+                    "status": "fail",
+                    "message": f"No user with the username or password exists",
+                },
+                status=404,
+            )
+        try:
+            user_setting = Settings.objects.get(accountID=user.accountID)
+            return JsonResponse(
+                {"user_id": user.accountID, "enabled_2fa": user_setting.is2FAEnabled}, status=201
+                )
+        except Exception as e:
+            return JsonResponse({'error': (str(e) + " User's account setting is not detected")}, status=500)
