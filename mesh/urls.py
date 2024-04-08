@@ -1,3 +1,5 @@
+# mesh/urls.py
+
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
@@ -7,10 +9,12 @@ from mesh.exampleapi import urls as example_urls
 from mesh.profiles import urls as profile_urls
 from mesh.tags import urls as tags_urls
 from mesh.confirmation import urls as confirmation_urls
+from mesh.auth import urls as auth_urls
 from mesh.accounts import urls as accounts_urls
 from mesh.accountSettings import urls as accountsettings_urls
 from mesh.occupations import urls as occupations_urls
 from mesh.education import urls as education_urls
+from mesh.conversation import urls as conversations_urls
 
 '''
 # How to Add URL -> Best Practices
@@ -46,10 +50,12 @@ urlpatterns = [
     path('example/', include(example_urls)),
     path('profiles/', include(profile_urls)),
     path('tags/', include(tags_urls)),
+    path('auth/', include(auth_urls)),
     path('accounts/', include(accounts_urls)),
     path('account-settings/', include(accountsettings_urls)),
     path('confirmation/', include(confirmation_urls)),
     path('occupations/', include(occupations_urls)),
     path('educations/', include(education_urls)),
+    path('conversations/', include(conversations_urls)),
     re_path(r'.*', TemplateView.as_view(template_name='index.html')),
 ]
