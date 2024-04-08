@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+# mesh/settings.py
 
 from pathlib import Path
 import os
@@ -33,6 +34,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,"media/")
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,7 +49,10 @@ INSTALLED_APPS = [
     'mesh.conversation',
     'mesh.notifications',
     'mesh.tags',
-    'mesh.occupations'
+    'mesh.occupations',
+    # conversation websockets
+    'channels',
+    # to run the django backend
 ]
 
 # TODO: https://github.com/LetsMesh/Site/issues/202
@@ -57,14 +62,16 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+WEB_URL = os.environ.get('WEB_URL', 'http://localhost:3000')
+
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    WEB_URL,
 ]
 
 ROOT_URLCONF = 'mesh.urls'
@@ -98,10 +105,10 @@ WSGI_APPLICATION = 'mesh.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'NAME': os.getenv('DB_NAME', 'mesh'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': '3306',
     }
 }
@@ -155,6 +162,33 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = ['mesh.auth.backend.AccountAuthenticationBackend']
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
+
+# Security settings
+CSRF_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_HTTPONLY = False
+SESSION_COOKIE_HTTPONLY = True
+
+# conversation websockets
+# Define the ASGI application to point to your routing configuration
+ASGI_APPLICATION = 'mesh.asgi.application'
+
+# Configure the channels layer
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}
+
+# For production, set these lines to True
+# CSRF_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_HTTPONLY = True
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'meshapp/build/static')
