@@ -52,33 +52,48 @@ Project is designed to utilize django's powerful features.
 - PipFile & PipFile.lock: virtual environment dependencies, settings, and standardization for pipenv
 - requirements.txt: requirements for the project
 
-### Getting Your Environment Set Up:
+Great, here's an updated version of the instructions with some recommended Docker commands for users:
+
+### Getting Your Environment Set Up
 
 #### Run with Docker
 
-To run the Mesh project using Docker, follow these steps:
+Running the Mesh project with Docker simplifies the setup process by containerizing the application along with its Redis and MySQL dependencies. This means you do **not** need to install MySQL or Redis locally if you're using Docker.
 
-1. **Install MySQL Locally:**
+##### Prerequisites:
 
-   - Install MySQL on your local machine.
-   - Access the MySQL server and create a new database with `CREATE DATABASE mesh;`.
+- Docker and Docker Compose installed on your machine. Installation instructions can be found on [Docker's official website](https://www.docker.com/get-started).
 
-2. **Set Up Environment Variables:**
+##### Steps:
 
-   - Clone the `template.env` files located in the root folder `/Site` and in `/Site/meshapp` (for React environment variables).
-   - Rename both files to `.env`.
-   - Fill in the necessary environment variables in these files.
+1. **Environment Variables Setup**:
 
-3. **Install Docker and Docker Compose:**
+   - In the root folder `/Site`, duplicate the `template.env` file and rename the copy to `.env`.
+   - Ensure all necessary environment variables are defined in this `.env` file.
 
-   - Ensure that Docker and Docker Compose are installed on your machine.
-   - Instructions can be found at [Docker's official website](https://www.docker.com/get-started).
+2. **Docker Compose**:
+   - Navigate to the root directory of the project (`/Site`).
+   - Run the command: `docker-compose up --build`. This builds the Docker images and starts the containers.
 
-4. **Run Docker Compose:**
-   - Navigate to the root folder of the project (`/Site`).
-   - Run the command `docker-compose up --build -d`.
+##### Recommended Docker Commands
 
-This will build and run the necessary containers for the Mesh application in detached mode.
+- To rebuild and restart only the frontend service:
+  ```
+  docker-compose up --build frontend
+  ```
+- To rebuild and restart only the backend service:
+  ```
+  docker-compose up --build backend
+  ```
+- To stop and remove the containers:
+  ```
+  docker-compose down
+  ```
+- To view the logs of a specific service:
+  ```
+  docker-compose logs -f <service_name>
+  ```
+  Replace `<service_name>` with `frontend`, `backend`, `mysql`, or `redis` to see the logs for the respective service.
 
 #### Run locally (install directly in your local machine)
 

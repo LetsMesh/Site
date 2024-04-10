@@ -20,8 +20,8 @@ COPY Pipfile Pipfile.lock /code/
 # Install Python dependencies
 RUN pipenv install
 
-# Copy the entrypoint script
-COPY entrypoint.sh /code/
+# Copy everything to /code folder
+COPY . /code/
 RUN chmod +x /code/entrypoint.sh
 RUN dos2unix /code/entrypoint.sh
 

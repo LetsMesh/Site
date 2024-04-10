@@ -6,16 +6,47 @@ services:
   redis:
     image: redis:alpine
     platform: linux/arm64/v8
+  mysql:
+    image: mysql:8.3.0
+    platform: linux/x86_64
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./storage/mysql:/var/lib/mysql # Store MySQL data in the ./storage/mysql directory
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-p$$MYSQL_ROOT_PASSWORD",
+          "--protocol",
+          "tcp",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend:
     build: ./
     environment:
-      - DB_HOST=host.docker.internal
+      DB_HOST: mysql # Use the MySQL service name as the host
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASSWORD}
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     depends_on:
-      - redis
+      redis:
+        condition: service_started
+      mysql:
+        condition: service_healthy
+        restart: true
   frontend:
     build: ./meshapp
     volumes:
@@ -25,6 +56,5 @@ services:
       - "3000:3000"
     environment:
       - CHOKIDAR_USEPOLLING=true
-
 networks:
   default:
