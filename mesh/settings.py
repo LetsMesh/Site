@@ -63,8 +63,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+WEB_URL = os.environ.get('WEB_URL', 'http://localhost:3000')
+
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    WEB_URL,
 ]
 
 ROOT_URLCONF = 'mesh.urls'
@@ -155,6 +158,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = ['mesh.auth.backend.AccountAuthenticationBackend']
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
+
+# Security settings
+CSRF_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_HTTPONLY = False # For production, set this line to True
+SESSION_COOKIE_HTTPONLY = True
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'meshapp/build/static')

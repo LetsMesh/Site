@@ -50,11 +50,11 @@ const LoginScreen = (props: ComponentProps) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      let response = await axiosInstance.post("accounts/login/", {
+      const response = await axiosInstance.post("/auth/login/", {
         email: formData.user,
         password: formData.pass,
       });
-      if (response.data.enabled_2fa) {
+      if (response.data.account?.settings?.is2FAEnabled) {
         await handleTwoFactorAuth(response.data.user_id);
       } else {
         navigate("/logged_in_home");
