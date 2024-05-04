@@ -6,6 +6,7 @@
     "init:frontend": "cd meshapp && npm install",
     "init": "npm run init:frontend && npm run init:backend",
     "build": "cd meshapp && npm run build",
-    "start": "python manage.py runserver"
+    "start": "python manage.py runserver",
+    "test": "pipenv run python manage.py test --pattern=\"*_tests.py\""
   }
 }
