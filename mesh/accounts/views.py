@@ -378,28 +378,3 @@ def get_login_user_service(request):
             return None
     except:
         return None
-class LoginView(View):
-    """
-    Verify Login Request
-    Return status 404 if the user does not exist
-    Return status 500 if the user has no account setting
-    Return status 201 if user is successfully verified
-    """
-
-    def post(self, request, *args, **kwargs):
-        user = get_login_user_service(request)
-        if user == None:
-            return JsonResponse(
-                {
-                    "status": "fail",
-                    "message": f"No user with the username or password exists",
-                },
-                status=404,
-            )
-        try:
-            user_setting = Settings.objects.get(accountID=user.accountID)
-            return JsonResponse(
-                {"user_id": user.accountID, "enabled_2fa": user_setting.is2FAEnabled}, status=201
-                )
-        except Exception as e:
-            return JsonResponse({'error': (str(e) + " User's account setting is not detected")}, status=500)

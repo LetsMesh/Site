@@ -16,7 +16,7 @@ urlpatterns = [
     path('change-password/', change_password, name = "change_password"),
     # POST   /accounts/check-password
     path('check-password/', check_password, name = "check_password"),
-    path("login/", accounts_views.LoginView.as_view()),
+    # OAuth paths
     path("set-two-factor-auth/", accounts_views.Set2FAView.as_view()),
     path("verify-two-factor-auth/", accounts_views.Verify2FAView.as_view())
 ]
