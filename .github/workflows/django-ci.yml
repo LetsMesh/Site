@@ -2,6 +2,15 @@ name: Django CI
 
 on:
   push:
+    paths:
+      [
+        "mesh/**",
+        "manage.py",
+        "Pipfile",
+        "Pipfile.lock",
+        ".github/workflows/**",
+      ]
+  pull_request:
 
 jobs:
   build:
@@ -19,7 +28,7 @@ jobs:
           MYSQL_DATABASE: github-actions
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
       - uses: actions/checkout@v4
