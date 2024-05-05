@@ -11,6 +11,16 @@ jobs:
       matrix:
         python-version: [3.11]
 
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: testrootpass
+          MYSQL_DATABASE: github-actions
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -23,5 +33,12 @@ jobs:
           pip install pipenv
           pipenv install
       - name: Run Tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_NAME: github-actions
+          DB_USER: root
+          DB_PASS: testrootpass
         run: |
+          # Apply migrations and run tests
+          pipenv run python manage.py migrate
           pipenv run python manage.py test --pattern="*_tests.py"
