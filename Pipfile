@@ -4,10 +4,19 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+django = "~=4.1.7"
 mysqlclient = "*"
 bcrypt = "*"
-b2sdk.v1 = "*"
+asgiref = "~=3.6.0"
+b2sdk = {v1 = "*"}
+sqlparse = "~=0.4.3"
+tzdata = "~=2022.7"
+pyotp = "~=2.9.0"
+django-cors-headers = "~=4.3.1"
+
+channels = "*"
+channels_redis = "*"
+daphne = "*"
 
 [dev-packages]
 

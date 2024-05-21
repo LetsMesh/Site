@@ -125,3 +125,10 @@ body {
   position: relative;
   margin: 15px 40px 25px 40px;
 }
+
+.profile-page-interests-body {
+  display: "flex";
+  flex-direction: "row";
+  flex-wrap: "wrap";
+  margin-top: 12;
+}

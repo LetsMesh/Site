@@ -52,7 +52,50 @@ Project is designed to utilize django's powerful features.
 - PipFile & PipFile.lock: virtual environment dependencies, settings, and standardization for pipenv
 - requirements.txt: requirements for the project
 
-### Getting Your Environment Set Up:
+Great, here's an updated version of the instructions with some recommended Docker commands for users:
+
+### Getting Your Environment Set Up
+
+#### Run with Docker
+
+Running the Mesh project with Docker simplifies the setup process by containerizing the application along with its Redis and MySQL dependencies. This means you do **not** need to install MySQL or Redis locally if you're using Docker.
+
+##### Prerequisites:
+
+- Docker and Docker Compose installed on your machine. Installation instructions can be found on [Docker's official website](https://www.docker.com/get-started).
+
+##### Steps:
+
+1. **Environment Variables Setup**:
+
+   - In the root folder `/Site`, duplicate the `template.env` file and rename the copy to `.env`.
+   - Ensure all necessary environment variables are defined in this `.env` file.
+
+2. **Docker Compose**:
+   - Navigate to the root directory of the project (`/Site`).
+   - Run the command: `docker-compose up --build`. This builds the Docker images and starts the containers.
+
+##### Recommended Docker Commands
+
+- To rebuild and restart only the frontend service:
+  ```
+  docker-compose up --build frontend
+  ```
+- To rebuild and restart only the backend service:
+  ```
+  docker-compose up --build backend
+  ```
+- To stop and remove the containers:
+  ```
+  docker-compose down
+  ```
+- To view the logs of a specific service:
+  ```
+  docker-compose logs -f <service_name>
+  ```
+  Replace `<service_name>` with `frontend`, `backend`, `mysql`, or `redis` to see the logs for the respective service.
+
+#### Run locally (install directly in your local machine)
 
 **This project was initialized with python 3.11.3.** The download for which can be found [here](https://www.python.org/downloads/release/python-3113/).
 Please be sure when building the front end repository that you have the correct versions of node and npm. The correct version can be found and installed [here](https://nodejs.org/en/blog/release/v20.2.0).
@@ -92,7 +135,39 @@ Check npm version with `npm -v` -> This should show 9.6.6 in the console.
     - You will most likely be given warnings. Warnings are fine errors aren’t. Google your errors.
     - Tip: `npm run init:frontend` and `npm run init:backend` will set up the frontend and the backend, respectively.
 
-**Now you should be good to go!**
+- To Switch to `dev` or another branch, `git checkout branch_name` ex: `git checkout dev` will switch to branch.
+
+2. Install the correct version of python & pip.
+3. Install pipenv with pip -> `pip install pipenv`
+4. Initialize the virtual environment for yourself and installs virtual environment dependencies -> `pipenv install`
+   **IMPORTANT** Get the .env file from someone and store it on your root directory '/SITE' if you haven't already before running this command.
+5. Activate the virtual environment -> `pipenv shell`
+6. Go to `Site/meshapp/` and run an `npm install`
+7. Build the frontend -> in the same directory as step 7 run `npm run build`
+8. Return to the root directory and start the backend server / run the application -> `python manage.py runserver`
+   MYSQL SETUP (windows, if you have a mac, consider switching to a windows)
+9. Download Mysql over here https://dev.mysql.com/downloads/installer/ ( i downloaded the file that was 331.3 M)
+10. Do the setup and do the full download (spam next until you see the password portion)
+11. Make sure you are not using the legacy version, select the 8.x version
+    a. Make sure you remember your passwords and username(username is by default root)
+12. Spam next until you finish and then you’re done
+    Make sure you write the username and password in your.env file. With that being said,that’s it for your mysql setup, next thing we do is django.
+
+13. Open a terminal and make sure mysql is installed by typing in `mysql -V`
+    a. If the command doesn’t work it may be because mysql isn’t added to your path. The default location for mysql server should be:
+    C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe
+    i. Possible solution: https://stackoverflow.com/questions/5920136/mysql-is-not-recognised-as-an-internal-or-external-command-operable-program-or-b
+14. Once you have mysql downloaded, create a new database inside your mysql.
+    a. Login to mysql by using `mysql --u root --p` and then type in the password you saved previously when prompted
+    i. Do note that root is the default username so use whatever username you used
+    b. You should be prompted into they mysql shell, and then create a database by using `CREATE DATABASE mesh;`
+    c. Confirm your database is created with `SHOW DATABASES;`
+15. make sure your pip environment is opened (with `pipenv shell`)
+16. Type in `python manage.py makemigrations`
+    a. You will most likely be given warnings. Warnings are fine errors aren’t. Google your errors.
+17. Type in `python manage.py migrate`
+    a. Similar to the previous step warnings are fine, errors aren’t.
+18. Make sure your frontend is also set up (with npm run build) and then you are good to go. Run `python manage.py runserver` and you should be good to go.
 
 #### Tips:
 
@@ -136,5 +211,3 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-

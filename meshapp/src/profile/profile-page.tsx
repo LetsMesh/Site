@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -10,10 +10,15 @@ import {
 
 import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
-import { Profile } from "./types/profile";
+import { Education, Profile } from "./types/profile";
+import ProfileInterestsComponent from "./profile-interests";
 import "./styling/profile-page.css";
+import { ProfileGroupAccordion } from "./profile-group_accordion";
 
 import { axiosInstance } from "../config/axiosConfig";
+
+// New Imports
+import ProfileHeader from "./profile-header";
 
 const theme = createTheme({
   palette: {
@@ -44,6 +49,7 @@ const theme = createTheme({
  * @param {string} props.image - A URL to user's profile image
  * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
  * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
+ * @param {Education} props.education - an array containing objects that each contain a degree,school, and description
  * @param {number} props.accountID - ID of Profile account
  */
 
@@ -51,7 +57,20 @@ const ProfilePage = (props: Profile) => {
   return (
     <Box className="profile-page-container">
       <Box className="profile-page-header">
-        <ProfileHeader name={props.name} pronouns={props.pronouns} />
+        <ProfileHeader
+          label={props.name}
+          placeholder={"Nickname"}
+          text={props.name}
+          charLimit={15}
+          fontSize={"60px"}
+        />
+        <ProfileHeader
+          label={props.pronouns}
+          placeholder={"Pronouns"}
+          text={props.pronouns}
+          charLimit={8}
+          fontSize={"30px"}
+        />
       </Box>
       <Grid container sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
         <Grid
@@ -65,7 +84,10 @@ const ProfilePage = (props: Profile) => {
             occupationTitle={props.occupationTitle}
             occupationBusiness={props.occupationBusiness}
           />
-          <ProfileBiography biography={props.biography} accountID={props.accountID}/>
+          <ProfileBiography
+            biography={props.biography}
+            accountID={props.accountID}
+          />
         </Grid>
         <Grid
           item
@@ -79,7 +101,7 @@ const ProfilePage = (props: Profile) => {
             marginBottom: "-125px", // Adjusts container height to match transform
           }}
         >
-          <ProfilePicture image={props.image} />
+          <ProfilePicture image={props.image} accountID={props.accountID} />
           <ProfileRole isMentor={props.isMentor} isMentee={props.isMentee} />
         </Grid>
       </Grid>
@@ -90,7 +112,7 @@ const ProfilePage = (props: Profile) => {
               <ProfileExperience />
             </Box>
             <Box>
-              <ProfileEducation />
+              <ProfileEducation education={props.education} />
             </Box>
           </Grid>
           <Grid
@@ -116,42 +138,6 @@ const ProfilePage = (props: Profile) => {
  * @param {string} props.name - Name of user
  * @param {string} props.pronouns - Pronouns used by user
  */
-const ProfileHeader = (props: { name: string; pronouns: string }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
-        <Grid container alignItems="flex-end">
-          <Box
-            sx={{
-              maxWidth: "1000px",
-              wordBreak: "break-word",
-            }}
-          >
-            <Typography
-              variant="h1"
-              sx={{
-                lineHeight: 1,
-                display: "inline",
-                fontSize: "60px",
-              }}
-            >
-              {props.name}
-              <Typography
-                variant="h1"
-                sx={{
-                  display: "inline",
-                  fontSize: "30px",
-                }}
-              >
-                {` (${props.pronouns})`}
-              </Typography>
-            </Typography>
-          </Box>
-        </Grid>
-      </Box>
-    </ThemeProvider>
-  );
-};
 
 /**
  * Displays the user's current occupation.
@@ -182,43 +168,44 @@ const ProfileOccupation = (props: {
  * @param {string} props.biography - The initial text content of the bio
  * @param {number} props.accountID - accountID associated with the profile
  */
-const ProfileBiography = (props: {biography: string, accountID: number}) => {
+const ProfileBiography = (props: { biography: string; accountID: number }) => {
   const [biography, setBiography] = useState(props.biography);
   const [isLoading, setLoading] = useState(true);
-  
-  //Gets the user's biography and saves it to the display biography.  
+
+  //Gets the user's biography and saves it to the display biography.
   useEffect(() => {
-    axiosInstance.get("profiles/biography/" + props.accountID)
-    .then(response => {
-      console.log(response)
-      setBiography(response.data["biography"])
-      setLoading(false);
-    })
-    .catch(error => {
-      setLoading(false);
-      console.error(error)
-    })
-  }, [])
+    axiosInstance
+      .get("profiles/biography/" + props.accountID)
+      .then((response) => {
+        console.log(response);
+        setBiography(response.data["biography"]);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+      });
+  }, []);
 
   //Returns an initial loading mode before rendering the user's biography
-  if (isLoading)
-    return <div>loading...</div> 
+  if (isLoading) return <div>loading...</div>;
 
-  /** 
+  /**
    * Saves the user's biography.
-   * 
+   *
    * @param {string} text - The inputted text that the user wants to save
    */
   function saveBiography(text: string) {
-    axiosInstance.post("profiles/biography/" + props.accountID, {
-      "biography": text
-    })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error =>{
-      console.error(error)
-    })
+    axiosInstance
+      .post("profiles/biography/" + props.accountID, {
+        biography: text,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
@@ -291,8 +278,22 @@ const ProfileExperience = (props: any) => {
   );
 };
 
-// TODO: To be fully implemented
-const ProfileEducation = (props: any) => {
+/**
+ * Displays the user's education history (degree, school, description)
+ *
+ * @param props - Properties of the component
+ * @param {Education} props.education - Array of objects that represent a single education
+ *
+ */
+const ProfileEducation = (props: { education: Education }) => {
+  //starting error validation functions
+  const isEmpty = (inputName: string) => (val: string) =>
+    val.length > 0 || `${inputName} cannot be empty.`;
+  const whiteSpace = (inputName: string) => (val: string) =>
+    val.trim() === val ||
+    `${inputName} cannot have whitespace at beginning or end.`;
+  const charLimit = (inputName: string) => (val: string) =>
+    val.length < 100 || `${inputName} cannot be longer than 100 characters.`;
   return (
     <ThemeProvider theme={theme}>
       <Box className="profile-page-column-body">
@@ -305,27 +306,77 @@ const ProfileEducation = (props: any) => {
         >
           Education
         </Typography>
-        <TestComponent />
+        <ProfileGroupAccordion
+          groupAccordArgs={props.education.map((currentEd) => {
+            return {
+              comboOneVal: currentEd.degree,
+              comboTwoVal: currentEd.school,
+              descText: currentEd.description,
+            };
+          })}
+          comboOneValPlaceholder="Level of Education"
+          comboTwoValPlaceholder="School"
+          comboOneValOptions={[
+            "High School Diploma",
+            "Associates Degree",
+            "Bachelors Degree",
+          ]}
+          comboTwoValOptions={["Cal Poly Pomona", "Mt. San Antonio College"]}
+          descPlaceholder="Enter a description here"
+          comboOneValErrValidations={[
+            isEmpty("Level of Education"),
+            whiteSpace("Level of Education"),
+          ]}
+          comboTwoValErrValidations={[isEmpty("School"), whiteSpace("School")]}
+          descErrValidations={[
+            whiteSpace("Description"),
+            charLimit("Description"),
+          ]}
+        />
       </Box>
     </ThemeProvider>
   );
 };
 
-// TODO: To be fully implemented
-const ProfileInterests = (props: any) => {
+// NOTE: For the ProfileInterests, the ProfileInterests type is used in ProfileInterestsComponent
+//       and not here. It should probably also be renamed for clarity. It works though, so whatever.
+
+/**
+ * Displays the user's interest tags and supports editing them.
+ */
+const ProfileInterests = () => {
+  // NOTE: Used to simulate future HTTP requests - remove when API is implemented
+  const [testCurrentSelected, setTestCurrentSelected] = React.useState<
+    string[]
+  >(["hello", "world"]);
+
+  // Same as above
+  const testRecommended: string[] = [
+    "adventure",
+    "cozy",
+    "exploration",
+    "vibrant",
+    "serene",
+    "inspiring",
+  ];
+
   return (
     <ThemeProvider theme={theme}>
-      <Box className="profile-page-column-body">
+      <Box className="profile-page-column-body" sx={{ margin: "20px" }}>
         <Typography
           variant="h1"
           sx={{
-            marginBottom: "20px",
-            fontSize: "22px",
+            marginBottom: "15px",
+            fontSize: "26px",
           }}
         >
           Interests
         </Typography>
-        <TestComponent />
+        <ProfileInterestsComponent
+          currentTags={testCurrentSelected}
+          recommendedTags={testRecommended}
+          setTags={setTestCurrentSelected}
+        />
       </Box>
     </ThemeProvider>
   );
@@ -339,7 +390,9 @@ const TestComponent = (props: any) => {
       placeholder={"Test"}
       text={"Test"}
       charLimit={200}
-      handleSave={() => {return}}
+      handleSave={() => {
+        return;
+      }}
     />
   );
 };

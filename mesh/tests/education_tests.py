@@ -2,7 +2,6 @@
 You can run this test with
 
 python manage.py test mesh.tests.education_tests
-
 '''
 
 import json
@@ -24,13 +23,11 @@ class EducationTestCase(TestCase):
             encryptedPass=bytes('password', 'utf-8'),
             salt=bytes('salt', 'utf-8'),
             phoneNum='1234567890',
-            displayTheme='D',
-            enabled2Factor=False,
             isMentor=False,
             isMentee=True
         )
 
-        Profile.objects.create(
+        self.test_profile = Profile.objects.create(
             accountID=self.test_account,
             userName="profileTest",
             preferredName="Profile Test",
@@ -136,3 +133,36 @@ class EducationTestCase(TestCase):
         json_response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response.status_code, error_code)
         self.assertEqual(json_response.get('error'), error_msg)
+
+    """
+    GET tests
+    """
+    def test_get_all_educations_succeeds(self):
+        """Passes if a list of 2 educations and a 200 code is returned"""
+        Education.objects.create(degreeName="BA", collegeName="WASHU")
+        Education.objects.create(degreeName="PHD", collegeName="Imperial Academy")
+
+        response = self.client.get('/educations/')
+        json_response = json.loads(response.content.decode("utf-8"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(json_response), 2)
+    
+    def test_get_educations_from_one_account_succeeds(self):
+        """Passes if a dict of 2 educations and a 200 code is returned"""
+        test_education = Education.objects.create(degreeName="PHD", collegeName="Imperial Academy")
+        EducationBridge.objects.create(accountID=self.test_profile, educationID=test_education,
+                                       educationStartDate="2021-05-21",
+                                       educationEndDate="2022-05-31",
+                                       educationDescription='')
+        
+        test_education = Education.objects.create(degreeName="BS", collegeName="21")
+        EducationBridge.objects.create(accountID=self.test_profile, educationID=test_education,
+                                       educationStartDate="2021-05-21",
+                                       educationEndDate="2022-05-31",
+                                       educationDescription='')
+
+        response = self.client.get(f'/educations/{self.test_profile.accountID}/')
+        json_response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(json_response.values()), 2)
