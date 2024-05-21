@@ -48,7 +48,7 @@ const ProfileTextField = (props: {
       label={props.label}
       placeholder={props.placeholder}
       InputLabelProps={{ shrink: true }}
-      variant={"standard"}
+      variant={props.variant}
       InputProps={{
         endAdornment: editMode ? (
           <Box paddingLeft={2}>

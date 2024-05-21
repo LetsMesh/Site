@@ -110,7 +110,7 @@ const ProfilePage = (props: Profile) => {
         <Grid container>
           <Grid item xs={9}>
             <Box sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
-              <ProfileExperience accountID = {props.accountID}/>
+              <ProfileExperience />
             </Box>
             <Box>
               <ProfileEducation education={props.education} />
