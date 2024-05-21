@@ -23,7 +23,7 @@ const ProfileTextField = (props: {
   placeholder: string;
   text: string;
   charLimit: number;
-  handleSave: (text: string)=> void;
+  handleSave: (text: string) => void;
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
@@ -45,10 +45,10 @@ const ProfileTextField = (props: {
 
   return (
     <TextField
-      variant={props.variant}
       label={props.label}
       placeholder={props.placeholder}
       InputLabelProps={{ shrink: true }}
+      variant={"standard"}
       InputProps={{
         endAdornment: editMode ? (
           <Box paddingLeft={2}>

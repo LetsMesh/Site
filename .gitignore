@@ -6,3 +6,5 @@
 # Django
 *.pyc
 *.sqlite3
+
+storage/

@@ -1,5 +1,6 @@
 '''
 Command to test tags: 
+
 python manage.py test mesh.tests.tags_tests --noinput
 '''
 
@@ -23,8 +24,6 @@ class TagsTestCase(TestCase):
             encryptedPass=bytes('password', 'utf-8'),
             salt=bytes('salt', 'utf-8'),
             phoneNum='1234567890',
-            displayTheme='D',
-            enabled2Factor=False,
             isMentor=False,
             isMentee=True
         )
@@ -41,8 +40,6 @@ class TagsTestCase(TestCase):
             encryptedPass=bytes('JavascriptIsBestLanguage', 'utf-8'),
             salt=bytes('salt', 'utf-8'),
             phoneNum='9098692290',
-            displayTheme='D',
-            enabled2Factor=False,
             isMentor=True,
             isMentee=False
         )

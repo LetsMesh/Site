@@ -49,14 +49,14 @@ class BiographyView(View):
             return JsonResponse({'error': 'Invalid request. Profile does not exist'}, status=404)
         
     def post(self, request, account_id, *args, **kwargs):
-      """
-      Handle POST requests.
+        """
+        Handle POST requests.
 
-      Updates the biography of the listed profile.
+        Updates the biography of the listed profile.
 
-      Returns a JSON response containing the saved biography of the specified profile through id.
-      """
-      return post_data(account_id, "biography", request)
+        Returns a JSON response containing the saved biography of the specified profile through id.
+        """
+        return post_data(account_id, "biography", request)
 
 class ProfilePicturesView(View):
     """
@@ -105,7 +105,7 @@ class ProfilePicturesView(View):
 
             if check_if_file_is_not_image(image_file):
                 return JsonResponse(
-                    {"error": "Uplodaed file is not an image."}, status=400
+                    {"error": "Uploaded file is not an image."}, status=400
                 )
 
             image_file = image_file.read()
