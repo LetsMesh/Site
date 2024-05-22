@@ -45,6 +45,7 @@ def login_view(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
+@require_POST
 def logout_view(request):
     """
     Handles user logout requests.
