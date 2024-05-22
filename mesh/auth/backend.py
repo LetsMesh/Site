@@ -1,8 +1,9 @@
 # in auth folder: backend.py  (auth.backend)
 
 from django.contrib.auth.backends import BaseBackend
-from mesh.accounts.models import Account
+from django.db import transaction
 
+from mesh.accounts.models import Account
 from mesh.accounts.views import decrypt
 
 class AccountAuthenticationBackend(BaseBackend):
@@ -60,7 +61,8 @@ class AccountAuthenticationBackend(BaseBackend):
             return Account.objects.get(pk=user_id)
         except Account.DoesNotExist:
             return None
-        
+    
+    @transaction.atomic
     def get_account_data(self, accountID):
         """
         Retrieves account data along with its settings based on the account ID.
@@ -74,29 +76,25 @@ class AccountAuthenticationBackend(BaseBackend):
 
         If the account does not have settings, a default Settings instance is created.
         """
-        from django.db import transaction
         from mesh.accountSettings.models import Settings
-        with transaction.atomic():
-            account_with_settings = Account.objects.filter(accountID=accountID).select_related('settings').first()
-            if account_with_settings:
-                # Create default settings if they do not exist
-                if not hasattr(account_with_settings, 'settings'):
-                    Settings.objects.create(accountID=account_with_settings)
+        account_with_settings = Account.objects.filter(accountID=accountID).select_related('settings').first()
+        if account_with_settings:
+            # Create default settings if they do not exist
+            if not hasattr(account_with_settings, 'settings'):
+                Settings.objects.create(accountID=account_with_settings)
 
-                account_data = {
-                    'accountID': account_with_settings.accountID,
-                    'email': account_with_settings.email,
-                    'phoneNum': account_with_settings.phoneNum,
-                    'isMentor': account_with_settings.isMentor,
-                    'isMentee': account_with_settings.isMentee,
-                    'settings': {
-                        'isVerified': account_with_settings.settings.isVerified,
-                        'hasContentFilterEnabled': account_with_settings.settings.hasContentFilterEnabled,
-                        'displayTheme': account_with_settings.settings.displayTheme,
-                        'is2FAEnabled': account_with_settings.settings.is2FAEnabled,
-                    }
+            account_data = {
+                'accountID': account_with_settings.accountID,
+                'email': account_with_settings.email,
+                'phoneNum': account_with_settings.phoneNum,
+                'isMentor': account_with_settings.isMentor,
+                'isMentee': account_with_settings.isMentee,
+                'settings': {
+                    'isVerified': account_with_settings.settings.isVerified,
+                    'hasContentFilterEnabled': account_with_settings.settings.hasContentFilterEnabled,
+                    'displayTheme': account_with_settings.settings.displayTheme,
+                    'is2FAEnabled': account_with_settings.settings.is2FAEnabled,
                 }
+            }
 
-                return account_data
-        
-        return None
+            return account_data
