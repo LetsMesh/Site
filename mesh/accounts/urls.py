@@ -1,10 +1,8 @@
 # in accounts folder: urls.py  (accounts.urls)
 
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views as accounts_views
 from .views import *
-from ..exampleapi import views as exampleapi_views
 
 urlpatterns = [
     # GET    /accounts/ - get all the accounts 
@@ -18,7 +16,7 @@ urlpatterns = [
     path('change-password/', change_password, name = "change_password"),
     # POST   /accounts/check-password
     path('check-password/', check_password, name = "check_password"),
-    path("login/", accounts_views.LoginView.as_view()),
+    # OAuth paths
     path("set-two-factor-auth/", accounts_views.Set2FAView.as_view()),
     path("verify-two-factor-auth/", accounts_views.Verify2FAView.as_view())
 ]
