@@ -8,7 +8,7 @@ from ..accounts.models import Account
 from ..utils.validate_data import validate_json_and_required_fields
 
 
-class TagsView(View):
+class TagsDetailView(View):
     """
     Handles HTTP requests related to Tags,
     a GET call will retrieve tags from the specified account,
