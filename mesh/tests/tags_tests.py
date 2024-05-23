@@ -55,13 +55,13 @@ class TagsTestCase(TestCase):
         response_data = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(raw_response.status_code, 200)
         self.assertEqual(response_data['tags'], [{
-            'tagID': self.test_tag.tagID,
-            'tagName': f'{self.test_tag.tagName}',
-            'isDefault': self.test_tag.isDefault
+            'tag_id': self.test_tag.tagID,
+            'tag_name': f'{self.test_tag.tagName}',
+            'is_default': self.test_tag.isDefault
         }, {
-            'tagID': self.test_tag2.tagID,
-            'tagName': f'{self.test_tag2.tagName}',
-            'isDefault': self.test_tag2.isDefault
+            'tag_id': self.test_tag2.tagID,
+            'tag_name': f'{self.test_tag2.tagName}',
+            'is_default': self.test_tag2.isDefault
         }])
 
     def test_get_invalid_account_id(self):
@@ -78,51 +78,51 @@ class TagsTestCase(TestCase):
 
     def test_post_tags(self):
         raw_response = self.client.post(f'/tags/{self.sample_account.accountID}/',
-                                        {"tagID": self.test_tag3.tagID},  # adding the third tag
-                                        content_type="application/json")
+                                        {'tag_id': self.test_tag3.tagID},  # adding the third tag
+                                        content_type='application/json')
         response_data = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(raw_response.status_code, 201)
-        self.assertEqual(response_data['accountID'], self.sample_account.accountID)
-        self.assertEqual(response_data['tagID'], self.test_tag3.tagID)
+        self.assertEqual(response_data['account_id'], self.sample_account.accountID)
+        self.assertEqual(response_data['tag_id'], self.test_tag3.tagID)
 
         # test if tag was added using GET request
         raw_response = self.client.get(f'/tags/{self.sample_account.accountID}/')
         response_data = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(raw_response.status_code, 200)
         self.assertEqual(response_data['tags'], [{
-            'tagID': self.test_tag.tagID,
-            'tagName': f'{self.test_tag.tagName}',
-            'isDefault': self.test_tag.isDefault
+            'tag_id': self.test_tag.tagID,
+            'tag_name': f'{self.test_tag.tagName}',
+            'is_default': self.test_tag.isDefault
         }, {
-            'tagID': self.test_tag2.tagID,
-            'tagName': f'{self.test_tag2.tagName}',
-            'isDefault': self.test_tag2.isDefault
+            'tag_id': self.test_tag2.tagID,
+            'tag_name': f'{self.test_tag2.tagName}',
+            'is_default': self.test_tag2.isDefault
         }, {
-            'tagID': self.test_tag3.tagID,
-            'tagName': f'{self.test_tag3.tagName}',
-            'isDefault': self.test_tag3.isDefault
+            'tag_id': self.test_tag3.tagID,
+            'tag_name': f'{self.test_tag3.tagName}',
+            'is_default': self.test_tag3.isDefault
         }])
 
     def test_post_invalid_account_id(self):
         raw_response = self.client.post('/tags/9999/',  # using an invalid accountID
-                                        {"tagID": self.test_tag3.tagID},
-                                        content_type="application/json")
+                                        {'tag_id': self.test_tag3.tagID},
+                                        content_type='application/json')
         response_data = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(raw_response.status_code, 404)
         self.assertEqual(response_data['error'], 'Account does not exist.')
 
     def test_post_invalid_tag_id(self):
         raw_response = self.client.post(f'/tags/{self.sample_account.accountID}/',
-                                        {"tagID": 9999},  # using an invalid tagID
-                                        content_type="application/json")
+                                        {'tag_id': 9999},  # using an invalid tagID
+                                        content_type='application/json')
         response_data = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(raw_response.status_code, 404)
         self.assertEqual(response_data['error'], 'Tag does not exist.')
     
     def test_post_tag_already_exists(self):
         raw_response = self.client.post(f'/tags/{self.sample_account.accountID}/',
-                                        {"tagID": self.test_tag.tagID},  # sample account already has this tag
-                                        content_type="application/json")
+                                        {'tag_id': self.test_tag.tagID},  # sample account already has this tag
+                                        content_type='application/json')
         response_data = json.loads(raw_response.content.decode('utf-8'))
         self.assertEqual(raw_response.status_code, 409)
         self.assertEqual(response_data['error'], 'Account already has the tag with that id.')

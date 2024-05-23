@@ -38,9 +38,9 @@ class TagsDetailView(View):
             for tag_bridge in tag_bridges:
                 tag = tag_bridge.tagID
                 tag_data = {
-                    'tagID': tag.tagID,
-                    'tagName': tag.tagName,
-                    'isDefault': tag.isDefault
+                    'tag_id': tag.tagID,
+                    'tag_name': tag.tagName,
+                    'is_default': tag.isDefault
                 }
                 tags.append(tag_data)
 
@@ -63,16 +63,17 @@ class TagsDetailView(View):
             - HTTP 409 (Conflict): The account already has that tag.
 
         Parameters:
-            request: The HTTP request object.
+            request: The HTTP request object containing the payload 'tag_id'.
             account_id: The id of the account to store tags to.
+
 
         Returns:
             JsonResponse: The account ID and the tag ID.
         """
-        required_fields = ['tagID']
+        required_fields = ['tag_id']
         try:
             data = validate_json_and_required_fields(request.body, required_fields)
-            tag_id = data['tagID']
+            tag_id = data['tag_id']
             account = Account.objects.get(accountID=account_id)
             tag = Tag.objects.get(tagID=tag_id)
 
@@ -83,8 +84,8 @@ class TagsDetailView(View):
             else:
                 TagBridge.objects.create(tagID=tag, accountID=account)
                 return JsonResponse({
-                    'accountID': account.accountID,
-                    'tagID': tag.tagID
+                    'account_id': account.accountID,
+                    'tag_id': tag.tagID
                 }, status=201)
         except InvalidJsonFormat:
             return JsonResponse({
