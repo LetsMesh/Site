@@ -1,37 +1,52 @@
 from django.http import JsonResponse
-from ..tags.models import TagBridge
+from django.views import View
+
+from ..tags.models import TagBridge, Tag
 from ..accounts.models import Account
 
 
-def user_tags(request):
-    if request.method == "GET":
-        request_data = request.GET
-        response_data = {
-            "status": "",
-            "tags": []
-        }
+class TagsView(View):
+    """
+    Handles HTTP requests related to Tags,
+    a GET call will retrieve tags from the specified account,
+    a POST call will store tags for the specified account.
+    """
 
-        if (request_data.get("userID") is None):
-            response_data.update({"status": "Error: Missing userID field in request query."})
-            return JsonResponse(response_data, status=400)
-            # Returns a 400 error if request query string is missing userID field
-        
+    def get(self, request, account_id):
+        """
+        Handles GET requests to retrieve tags from a specific account.
+
+        Responses:
+            - HTTP 200 (OK): Successfully retrieved all tags related to an account.
+            - HTTP 404 (Not Found): An account was not found with that id.
+
+        Parameters:
+            request: The HTTP request object.
+            account_id: The id of the account to retrieve tags from.
+
+        Returns:
+            JsonResponse: An array of tags associated with the specified account.
+        """
         try:
-            Account.objects.get(accountID=int(request_data.get("userID")))
-        except:
-            response_data.update({"status": "Error: User with given userID does not exist."})
-            return JsonResponse(response_data, status=400)
-            # Returns a 400 error if user ID does not exist
+            # check if account exists
+            Account.objects.get(accountID=account_id)
+            tag_bridges = TagBridge.objects.filter(accountID=account_id)
+            tags = []
 
+            for tag_bridge in tag_bridges:
+                tag = tag_bridge.tagID
+                tag_data = {
+                    'tagID': tag.tagID,
+                    'tagName': tag.tagName,
+                    'isDefault': tag.isDefault
+                }
+                tags.append(tag_data)
 
-        tags_entry = TagBridge.objects.filter(accountID=request_data.get("userID"))
-        user_tags = []
+            return JsonResponse({
+                'tags': tags
+            }, status=200)
+        except Account.DoesNotExist:
+            return JsonResponse({
+                'error': 'Account does not exist.'
+            }, status=404)
 
-        for tag in tags_entry:
-            tag_entry = tag.tagID
-            user_tags.append(tag_entry.tagName)
-        # Groups all tag names associated with the user ID into a list
-
-        response_data.update({"status": "Success", "tags": user_tags})
-
-        return JsonResponse(response_data, status=200)
