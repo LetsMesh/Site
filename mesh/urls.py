@@ -12,6 +12,7 @@ from mesh.accountSettings import urls as accountsettings_urls
 from mesh.occupations import urls as occupations_urls
 from mesh.education import urls as education_urls
 from mesh.auth import urls as auth_urls
+from mesh.conversation import urls as conversation_urls
 
 '''
 # How to Add URL -> Best Practices
@@ -53,5 +54,6 @@ urlpatterns = [
     path('occupations/', include(occupations_urls)),
     path('educations/', include(education_urls)),
     path('auth/', include(auth_urls)),
+    path('conversations/', include(conversation_urls)),
     re_path(r'.*', TemplateView.as_view(template_name='index.html')),
 ]
