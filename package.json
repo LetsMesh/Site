@@ -7,6 +7,7 @@
     "init": "npm run init:frontend && npm run init:backend",
     "build": "cd meshapp && npm run build",
     "start": "python manage.py runserver",
-    "test": "pipenv run python manage.py test --pattern=\"*_tests.py\""
+    "test": "pipenv run python manage.py test --pattern=*_tests.py && pipenv run  pytest --maxfail=0 --disable-warnings mesh/tests/*_pytests.py",
+    "freeze": "pipenv run pip freeze  > requirements.txt"
   }
 }

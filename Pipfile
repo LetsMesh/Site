@@ -16,9 +16,12 @@ django-cors-headers = "~=4.3.1"
 
 channels = "*"
 channels_redis = "*"
-daphne = "*"
+uvicorn = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-django = "*"
+pytest-asyncio = "*"
 
 [requires]
 python_version = "3.11"
