@@ -8,6 +8,7 @@ import {
   Chip,
 } from "@mui/material";
 
+import ProfileOccupation from "./profile-occupation";
 import ProfileTextField from "./profile-textfield";
 import ProfilePicture from "./profile-picture";
 import { Education, Profile } from "./types/profile";
@@ -140,28 +141,6 @@ const ProfilePage = (props: Profile) => {
  */
 
 /**
- * Displays the user's current occupation.
- *
- * @param props - Properties of the component
- * @param {string} props.occupationTitle - Title of user's occupation
- * @param {string} props.occupationBusiness - Name of business/org the user affiliates with
- */
-const ProfileOccupation = (props: {
-  occupationTitle: string;
-  occupationBusiness: string;
-}) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-occupations">
-        <Typography variant="h1" sx={{ fontSize: "24px" }}>
-          {props.occupationTitle}, {props.occupationBusiness}
-        </Typography>
-      </Box>
-    </ThemeProvider>
-  );
-};
-
-/**
  * Displays the user's biography. It also has a max character limit of 300.
  *
  * @param props - Properties of the component
@@ -212,8 +191,9 @@ const ProfileBiography = (props: { biography: string; accountID: number }) => {
     <ThemeProvider theme={theme}>
       <Box className="profile-page-biography">
         <ProfileTextField
-          label={"Biography"}
-          placeholder={"Share your background and experiences"}
+          variant="outlined"
+          label="Biography"
+          placeholder="Share your background and experiences"
           text={biography}
           charLimit={300}
           handleSave={saveBiography}
@@ -386,9 +366,10 @@ const ProfileInterests = () => {
 const TestComponent = (props: any) => {
   return (
     <ProfileTextField
-      label={"Test"}
-      placeholder={"Test"}
-      text={"Test"}
+      variant="outlined"
+      label="Test"
+      placeholder="Test"
+      text="Test"
       charLimit={200}
       handleSave={() => {
         return;

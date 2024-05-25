@@ -13,7 +13,6 @@ root.render(
     <ThemeContextProvider>
       <MainThemeProvider>
         <TwoFactorAuthReminders />
-        <ProfilePage {...exampleProfile} />
         <AppRoutes />
       </MainThemeProvider>
     </ThemeContextProvider>

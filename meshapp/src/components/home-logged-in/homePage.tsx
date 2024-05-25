@@ -3,17 +3,14 @@ import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import group_image from "../../assets/media/group_image.png";
 import { paths } from "../../Routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
+
 export default function homePage() {
   /*-----------------Group image container------------*/
 
   const imgContainer = (
     <Grid container display="flex" justifyContent="center" bgcolor="#CCCCCC">
       <Grid item>
-        <img
-          alt="group_image"
-          srcSet={`${group_image} 500w`}
-          sizes="(min-width: 1450px) 740px, (min-width: 1200px) 590px, (min-width: 900px) 430px, (min-width: 600px) 280px, 220px"
-        ></img>
+        <img alt="group_image" srcSet={`${group_image} 1050w`}></img>
       </Grid>
     </Grid>
   );
@@ -54,7 +51,7 @@ export default function homePage() {
 
   const topText = () => {
     return (
-      <Grid item>
+      <Grid item xs={11}>
         <Typography
           color="#F2E8DE"
           fontFamily="cocogoose"
@@ -73,7 +70,7 @@ export default function homePage() {
 
   const bottomTextItem = () => {
     return (
-      <Grid item>
+      <Grid item xs={9}>
         <Typography
           color="#F2E8DE"
           fontFamily="cocogoose"
@@ -125,27 +122,25 @@ export default function homePage() {
         sx={{
           minHeight: "100vh",
         }}
+        gap="10px"
       >
         {imgAlertItem()}
 
         <Grid
           item
           container
-          sm={5}
           xs={10}
+          sm={5}
           gap="45px"
           display="flex"
           justifyContent="center"
           mb="75px"
         >
           {topText()}
-
           {/*-----------Grid item for bottom text & swipe button----------------*/}
-          <Grid item xs={9}>
-            <Grid container gap="20px" display="flex" justifyContent="center">
-              {bottomTextItem()}
-              {swipeButton()}
-            </Grid>
+          <Grid container gap="20px" display="flex" justifyContent="center">
+            {bottomTextItem()}
+            {swipeButton()}
           </Grid>
         </Grid>
       </Grid>

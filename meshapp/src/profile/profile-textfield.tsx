@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Box } from "@mui/material";
+import { TextField, Box, TextFieldVariants } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -18,6 +18,7 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {function} props.handleSave - Callback to save data
  */
 const ProfileTextField = (props: {
+  variant: TextFieldVariants;
   label: string;
   placeholder: string;
   text: string;
@@ -47,7 +48,7 @@ const ProfileTextField = (props: {
       label={props.label}
       placeholder={props.placeholder}
       InputLabelProps={{ shrink: true }}
-      variant={"standard"}
+      variant={props.variant}
       InputProps={{
         endAdornment: editMode ? (
           <Box paddingLeft={2}>
@@ -90,7 +91,7 @@ const ProfileTextField = (props: {
       value={text}
       onChange={handleTextChange}
       sx={{
-        "& .MuiOutlinedInput-root": {
+        "& .MuiInputBase-root": {
           "& fieldset": {
             transition: "border 0.10s ease-in-out",
           },
