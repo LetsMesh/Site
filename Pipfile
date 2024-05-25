@@ -13,12 +13,15 @@ sqlparse = "~=0.4.3"
 tzdata = "~=2022.7"
 pyotp = "~=2.9.0"
 django-cors-headers = "~=4.3.1"
-
 channels = "*"
 channels_redis = "*"
+uvicorn = "*"
 daphne = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-django = "*"
+pytest-asyncio = "*"
 
 [requires]
 python_version = "3.11"
