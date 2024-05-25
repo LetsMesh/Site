@@ -36,13 +36,13 @@ class ConversationModelTestCase(TestCase):
         # Check route POST /conversations to create a new conversation
         response = self.client.post(
             '/conversations/', 
-            json.dumps({
+            {
                 "participants": [
                     self.account1.accountID,
                     self.account2.accountID,                
                 ],
                 "conversationType": 0
-            }),
+            },
             content_type='application/json'
         )
 

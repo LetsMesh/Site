@@ -48,13 +48,13 @@ async def test_chat_consumer():
     # Add accounts to the conversation as participants
     response = client.post(
         '/conversations/', 
-        json.dumps({
+        {
             "participants": [
                 account1.accountID,
                 account2.accountID,                
             ],
             "conversationType": 0
-        }),
+        },
         content_type='application/json'
     )
     
