@@ -35,21 +35,19 @@ class ConversationsView(View):
             conversationType = data['conversationType']
 
             if not isinstance(participants, list):
-                return HttpResponseBadRequest("Invalid data")
+                return JsonResponse({'error': 'Invalid participants data'}, status=400)
 
             # Create the conversation
             conversation = Conversation.objects.create(conversationType=conversationType)
 
             # Add participants to the conversation
-            try:
-                for accountID in participants:
-                    account = Account.objects.get(accountID=accountID)
-                    ConversationParticipant.objects.create(conversation=conversation, account=account)
-            except Account.DoesNotExist:
-                return JsonResponse({'error': 'Participant account not found'}, status=404)
-
+            for accountID in participants:
+                account = Account.objects.get(accountID=accountID)
+                ConversationParticipant.objects.create(conversation=conversation, account=account)
+                
             return JsonResponse({'conversationID': conversation.conversationID}, status=201)
-        
+        except Account.DoesNotExist:
+            return JsonResponse({'error': 'Participant account not found'}, status=404)
         except (KeyError, json.JSONDecodeError, ValidationError):
             return JsonResponse({"error": "Invalid data format"}, status=400)
         except Exception as e:
@@ -110,9 +108,8 @@ def get_account_conversations(request, account_id):
         - status=500: If an internal server error occurs.
     """
     try:
-        accountID = account_id
         # Get the account object
-        account = get_object_or_404(Account, accountID=accountID)
+        account = Account.objects.get(accountID=account_id)
 
         # Get the conversations where the account is a participant
         conversation_participants = ConversationParticipant.objects.filter(account=account)
