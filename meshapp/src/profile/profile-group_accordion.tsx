@@ -13,6 +13,7 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
 //type of group accordion state
 export type groupAccordionState = Array<{
+  accordionId: number;
   comboOneVal: string;
   comboTwoVal: string;
   descText: string;
@@ -28,7 +29,11 @@ export type setGroupAccordionState = (newState: groupAccordionState) => void;
  * Used in the Profile Page (src/profile/profile-page.tsx).
  *
  * @param props - Properties of the component
- * @param {groupAccordionState} props.groupAccordArgs - The array containing data for each accordion
+ * @param {groupAccordionState} props.groupAccordState - the state array that contains the group accordion data
+ * @param {setGroupAccordionState} props.setGroupAccordState - the state mutator method for the group accordion data
+ * @param {Function} props.editAccordHandler = handler function that takes in an accordion's id and returns a function for editing on backend
+ * @param {Function} props.deleteAccordHandler - handler function that takes in an accordion's id and returns a function that deletes on both backend and locally
+ * @param {Function} props.addAccordHandler - handler function for adding an accord on the backend and locally
  * @param {string} props.descPlaceholder - the placeholder for the description textfield
  * @param {string} props.comboOneValPlaceholder - the placeholder for the first combobox combobox in each accordion
  * @param {string} props.comboTwoValPlaceholder - the placeholder for the second combobox combobox in each accordion
@@ -39,7 +44,10 @@ export type setGroupAccordionState = (newState: groupAccordionState) => void;
  * @param {Array<function>} props.descErrValidations - an array of functions to evaluate the description text value for each accordion for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  */
 export function ProfileGroupAccordion(props: {
-  groupAccordArgs: groupAccordionState;
+  groupAccordState: groupAccordionState;
+  setGroupAccordState: setGroupAccordionState;
+  editAccordHandler: Function;
+  deleteAccordHandler: Function;
   descPlaceholder: string;
   comboOneValPlaceholder: string;
   comboTwoValPlaceholder: string;
@@ -48,26 +56,16 @@ export function ProfileGroupAccordion(props: {
   comboOneValErrValidations: Array<(value: string) => boolean | string>;
   comboTwoValErrValidations: Array<(value: string) => boolean | string>;
   descErrValidations: Array<(value: string) => boolean | string>;
+  addAccordHandler: Function;
 }) {
-  //group accordion data state with set state method
-  const [GroupAccordState, setGroupAccordState] = useState(
-    props.groupAccordArgs.map((accord) => {
-      return {
-        comboOneVal: accord.comboOneVal,
-        comboTwoVal: accord.comboTwoVal,
-        descText: accord.descText,
-      };
-    })
-  );
-
   //state to control whether new accordion modal is open or not
   const [addOpen, setAddOpen] = useState(false);
   const showModal = () => setAddOpen(true);
   const hideModal = () => setAddOpen(false);
 
-  //state to store data for the new accordion
+  //state to store data for the new accordion, id doesn't matter since it won't really be used
   const [newAccordionData, setNewAccordionData] = useState([
-    { comboOneVal: "", comboTwoVal: "", descText: "" },
+    { comboOneVal: "", comboTwoVal: "", descText: "", accordionId: 0 },
   ]);
 
   return (
@@ -76,13 +74,13 @@ export function ProfileGroupAccordion(props: {
       container
       flexDirection={"column"}
       alignItems={"center"}
-      onClick={() => console.log(GroupAccordState)}
+      // onClick={() => console.log(props.groupAccordState)}
     >
       <Grid container flexDirection={"column"}>
-        {GroupAccordState.map((accordArgs, accordIndex) => {
+        {props.groupAccordState.map((accordArgs) => {
           return (
             <ProfileAccordion
-              accordionIndex={accordIndex}
+              accordionId={accordArgs.accordionId}
               comboOneVal={accordArgs.comboOneVal}
               comboTwoVal={accordArgs.comboTwoVal}
               descPlaceholder={props.descPlaceholder}
@@ -94,8 +92,10 @@ export function ProfileGroupAccordion(props: {
               comboOneValErrValidations={props.comboOneValErrValidations}
               comboTwoValErrValidations={props.comboTwoValErrValidations}
               descErrValidations={props.descErrValidations}
-              groupState={GroupAccordState}
-              setGroupState={setGroupAccordState}
+              groupState={props.groupAccordState}
+              setGroupState={props.setGroupAccordState}
+              editHandler={props.editAccordHandler(accordArgs.accordionId)}
+              deleteHandler={props.deleteAccordHandler(accordArgs.accordionId)}
             />
           );
         })}
@@ -112,8 +112,8 @@ export function ProfileGroupAccordion(props: {
         showModal={showModal}
         newAccordData={newAccordionData}
         setAccordData={setNewAccordionData}
-        groupState={GroupAccordState}
-        setGroupState={setGroupAccordState}
+        groupState={props.groupAccordState}
+        setGroupState={props.setGroupAccordState}
         comboOneValErrValidations={props.comboOneValErrValidations}
         comboTwoValErrValidations={props.comboTwoValErrValidations}
         descErrValidations={props.descErrValidations}
@@ -122,6 +122,7 @@ export function ProfileGroupAccordion(props: {
         comboTwoValPlaceholder={props.comboTwoValPlaceholder}
         comboOneValOptions={props.comboOneValOptions}
         comboTwoValOptions={props.comboTwoValOptions}
+        addAccordHandler={props.addAccordHandler}
       />
     </Grid>
   );
@@ -146,6 +147,7 @@ export function ProfileGroupAccordion(props: {
  * @param {string} props.comboTwoValPlaceholder - placeholder for second combobox
  * @param {Array<string>} props.comboOneValOptions - list of options to be provided for first combobox
  * @param {Array<string>} props.comboTwoValOptions -list of options to be provided for second combobox
+ * @param {Function} props.addAccordHandler - handler function for adding an accord on the backend and locally
  */
 function NewAccordionModal(props: {
   addOpen: boolean;
@@ -163,12 +165,13 @@ function NewAccordionModal(props: {
   comboTwoValPlaceholder: string;
   comboOneValOptions: Array<string>;
   comboTwoValOptions: Array<string>;
+  addAccordHandler: Function;
 }) {
   //grab the data for the current new accordion
   let newAccordData = props.newAccordData[0];
-  let comboOneValVal = newAccordData.comboOneVal;
-  let comboTwoValVal = newAccordData.comboTwoVal;
-  let descVal = newAccordData.descText;
+  let newComboOneVal = newAccordData.comboOneVal;
+  let newComboTwoVal = newAccordData.comboTwoVal;
+  let newDescVal = newAccordData.descText;
 
   //controls whether snackbar is open or not
   const [snackbar, setSnackbar] = useState(false);
@@ -199,11 +202,11 @@ function NewAccordionModal(props: {
       >
         <Box sx={{ width: "450px" }} onClick={() => console.log(newAccordData)}>
           <ProfileAccordion
-            accordionIndex={0}
-            comboOneVal={comboOneValVal}
-            comboTwoVal={comboTwoValVal}
+            accordionId={0}
+            comboOneVal={newComboOneVal}
+            comboTwoVal={newComboTwoVal}
             descPlaceholder={props.descPlaceholder}
-            descText={descVal}
+            descText={newDescVal}
             comboOneValPlaceholder={props.comboOneValPlaceholder}
             comboTwoValPlaceholder={props.comboTwoValPlaceholder}
             comboOneValOptions={props.comboOneValOptions}
@@ -247,7 +250,7 @@ function NewAccordionModal(props: {
       props.comboTwoValErrValidations,
       props.descErrValidations,
     ];
-    let values = [comboOneValVal, comboTwoValVal, descVal];
+    let values = [newComboOneVal, newComboTwoVal, newDescVal];
 
     //iterate through each value's array of error validations, determine the first error for the current value (or True if there are none), and store it
     let errResults = errValidArr.map((errValidations, index) => {
@@ -266,15 +269,10 @@ function NewAccordionModal(props: {
     //if there are no errors, hide the modal, add the new accordion data to real group accord data, and erase the modal accordion data
     if (errResults.every((err) => typeof err === "boolean")) {
       props.hideModal();
-      props.setGroupState([
-        ...props.groupState,
-        {
-          comboOneVal: comboOneValVal,
-          comboTwoVal: comboTwoValVal,
-          descText: descVal,
-        },
+      props.addAccordHandler(newComboOneVal, newComboTwoVal, newDescVal);
+      props.setAccordData([
+        { accordionId: 0, comboOneVal: "", comboTwoVal: "", descText: "" },
       ]);
-      props.setAccordData([{ comboOneVal: "", comboTwoVal: "", descText: "" }]);
     }
     //otherwise, display the error, and don't erase modal accordion data
     else {

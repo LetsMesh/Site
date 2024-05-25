@@ -12,6 +12,7 @@ import {
 import { Box, Grid } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
+import { Delete } from "@mui/icons-material";
 
 /**
  * A React Component that returns an accordion with two comboboxes and a description textfield.
@@ -20,11 +21,11 @@ import SaveIcon from "@mui/icons-material/Save";
  * Used in Profile Group Accordion (src/profile/profile-group_accordion.tsx)
  *
  * @param props - Properties of the component
+ * @param {string} props.accordionId - number representing ID of this accordion
  * @param {string} props.comboOneVal - value for the first combobox within the accordion, passed down from group state array data
  * @param {string} props.comboTwoVal - value for the second combobox within the accordion, passed down from group state array data
  * @param {string} props.descPlaceholder - placeholder for description textfield
  * @param {string} props.descText - value for description textfield, passed down from group state array data
- * @param {number} props.accordionIndex - index of this accordion within the group state array
  * @param {string} props.comboOneValPlaceholder - placeholder for comboOneVal combobox
  * @param {string} props.comboTwoValPlaceholder - placeholder for comboTwoVal combobox
  * @param {Array<string>} props.comboOneValOptions - list of options to be provided to comboOneVal combobox
@@ -32,16 +33,21 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {Array<function>} props.comboOneValErrValidations - an array of functions to evaluate the first combo box value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Array<function>} props.comboTwoValErrValidations - an array of functions to evaluate the second combobox value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Array<function>} props.descErrValidations - an array of functions to evaluate the description text value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
- * @param {groupState} props.groupState - the group accordion state data for all accordions
+ * @param {Function} props.editTaskHandler = handler function that takes in an accordion's id and returns a function for editing on backend
+ * @param {Function} props.deleteTaskHandler - handler function that takes in an accordion's id and returns a function that deletes on both backend and locally
+ *  @param {groupState} props.groupState - the group accordion state data for all accordions
  * @param {setGroupState} props.setGroupState - the group accordion state setter method
  * @param {boolean} props.alwaysOpen - if this is set true, then the accordion will be permanently open and the expand icon will disappear
- */
+ * @param {Function} props.editHandler - function for saving edit on backend (is optional since this component can be used for adding or editing/deleting accordion)
+ * @param {Function} props.deleteHandler - function for deleting on backend (is optional since this component can be used for adding or editing/deleting accordion)
+ 
+*/
 export default function ProfileAccordion(props: {
   comboOneVal: string;
   comboTwoVal: string;
   descPlaceholder: string;
   descText: string;
-  accordionIndex: number;
+  accordionId: number;
   comboOneValPlaceholder: string;
   comboTwoValPlaceholder: string;
   comboOneValOptions: Array<string>;
@@ -52,6 +58,8 @@ export default function ProfileAccordion(props: {
   groupState: groupAccordionState;
   setGroupState: setGroupAccordionState;
   alwaysOpen?: boolean;
+  editHandler?: Function;
+  deleteHandler?: Function;
 }) {
   //controls whether accordion is expanded to show description or not
   const [expanded, setExpanded] = React.useState<boolean>(false);
@@ -62,8 +70,23 @@ export default function ProfileAccordion(props: {
   const handleEditClick = () => {
     setEditMode(true);
   };
+
+  //also handles saving edit on backend, if the handler exists
   const handleSaveClick = () => {
     setEditMode(false);
+    if (props.editHandler) {
+      props.editHandler();
+    }
+  };
+
+  //delete click handler
+  const deleteClickHandler = () => {
+    //could pop up delete confirmation modal here, if so move delete handler call to confirmation button click handler
+
+    //delete task
+    if (props.deleteHandler) {
+      props.deleteHandler();
+    }
   };
 
   const groupState = props.groupState;
@@ -85,15 +108,17 @@ export default function ProfileAccordion(props: {
     }
     //edit the first combo box value for the specific accordion, copy everything else
     setGroupState(
-      groupState.map((profileAccordion, index) => {
-        if (index === props.accordionIndex) {
+      groupState.map((profileAccordion) => {
+        if (profileAccordion.accordionId === props.accordionId) {
           return {
+            accordionId: props.accordionId,
             comboOneVal: newValue ? newValue : "",
             comboTwoVal: profileAccordion.comboTwoVal,
             descText: profileAccordion.descText,
           };
         }
         return {
+          accordionId: profileAccordion.accordionId,
           comboOneVal: profileAccordion.comboOneVal,
           comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
@@ -118,15 +143,17 @@ export default function ProfileAccordion(props: {
     }
     //edit the second combobox value for the specific accordion, copy everything else
     setGroupState(
-      groupState.map((profileAccordion, index) => {
-        if (index === props.accordionIndex) {
+      groupState.map((profileAccordion) => {
+        if (profileAccordion.accordionId === props.accordionId) {
           return {
+            accordionId: props.accordionId,
             comboOneVal: profileAccordion.comboOneVal,
             comboTwoVal: newValue ? newValue : "",
             descText: profileAccordion.descText,
           };
         }
         return {
+          accordionId: profileAccordion.accordionId,
           comboOneVal: profileAccordion.comboOneVal,
           comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
@@ -138,15 +165,17 @@ export default function ProfileAccordion(props: {
   //onChange handler for description
   const descOnChange = (newValue: string) => {
     setGroupState(
-      groupState.map((profileAccordion, index) => {
-        if (index === props.accordionIndex) {
+      groupState.map((profileAccordion) => {
+        if (profileAccordion.accordionId === props.accordionId) {
           return {
+            accordionId: props.accordionId,
             comboOneVal: profileAccordion.comboOneVal,
             comboTwoVal: profileAccordion.comboTwoVal,
             descText: newValue,
           };
         }
         return {
+          accordionId: profileAccordion.accordionId,
           comboOneVal: profileAccordion.comboOneVal,
           comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
@@ -229,6 +258,19 @@ export default function ProfileAccordion(props: {
               />
             )
           }
+
+          {props.deleteHandler ? (
+            <Delete
+              onClick={deleteClickHandler}
+              sx={{
+                "&:hover": {
+                  color: "#0b7d66",
+                },
+                cursor: "pointer",
+                transition: "color 0.15s ease-in-out",
+              }}
+            />
+          ) : null}
         </Grid>
       </AccordionSummary>
       <AccordionDetails>
@@ -237,9 +279,9 @@ export default function ProfileAccordion(props: {
           label={"Description"}
           placeholder={props.descPlaceholder}
           text={props.descText}
-          accordionIndex={props.accordionIndex}
           errValidations={props.descErrValidations}
           onChange={descOnChange}
+          editHandler={props.editHandler}
         />
       </AccordionDetails>
     </Accordion>
