@@ -324,7 +324,7 @@ export default function ProfileAccordion(props: {
                 onClick={deleteIconClickHandler}
                 sx={{
                   "&:hover": {
-                    color: "#0b7d66",
+                    color: "error.main",
                   },
                   cursor: "pointer",
                   transition: "color 0.15s ease-in-out",
