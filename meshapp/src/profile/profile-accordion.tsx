@@ -9,11 +9,18 @@ import {
   groupAccordionState,
   setGroupAccordionState,
 } from "./profile-group_accordion";
-import { Box, Grid } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Modal,
+  Stack,
+  Button,
+  Typography,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import { Delete } from "@mui/icons-material";
-
 /**
  * A React Component that returns an accordion with two comboboxes and a description textfield.
  * Provides editing capabilities for these inputs.
@@ -79,14 +86,23 @@ export default function ProfileAccordion(props: {
     }
   };
 
-  //delete click handler
-  const deleteClickHandler = () => {
-    //could pop up delete confirmation modal here, if so move delete handler call to confirmation button click handler
+  //Delete Confirmation
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-    //delete task
+  const openDeleteConfirmModal = () => setDeleteConfirmOpen(true);
+  const closeDeleteConfirmModal = () => setDeleteConfirmOpen(false);
+
+  const deleteIconClickHandler = () => {
+    //pops up delete confirmation modal
+    openDeleteConfirmModal();
+  };
+
+  //when user confirms they want to delete
+  const confirmDeleteHandler = () => {
     if (props.deleteHandler) {
       props.deleteHandler();
     }
+    closeDeleteConfirmModal();
   };
 
   const groupState = props.groupState;
@@ -185,69 +201,127 @@ export default function ProfileAccordion(props: {
   };
 
   return (
-    <Accordion
-      expanded={props.alwaysOpen ? props.alwaysOpen : expanded}
-      sx={{
-        "&.MuiAccordion-root": {
-          margin: 0,
-        },
-      }}
-    >
-      <AccordionSummary
-        expandIcon={
-          props.alwaysOpen ? null : <ExpandMoreFilled onClick={toggleExpand} />
-        }
+    <>
+      {/*Modal for confirming deletion*/}
+      <Modal
+        open={deleteConfirmOpen}
+        onClose={closeDeleteConfirmModal}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        {/*First combobox */}
-        <Box sx={{ width: "33%", flexShrink: 0 }}>
-          <ProfileAccordionComboBox
-            value={props.comboOneVal}
-            disabled={!editMode}
-            placeholderText={props.comboOneValPlaceholder}
-            options={props.comboOneValOptions}
-            onChange={comboOneValOnChange}
-            errValidations={props.comboOneValErrValidations}
-          />
-        </Box>
-        {/*Second combobox */}
-        <ProfileAccordionComboBox
-          value={props.comboTwoVal}
-          disabled={!editMode}
-          placeholderText={props.comboTwoValPlaceholder}
-          options={props.comboTwoValOptions}
-          onChange={comboTwoValOnChange}
-          errValidations={props.comboTwoValErrValidations}
-        />
-        <Grid
-          xs={0.5}
-          display="flex"
-          flexDirection="row"
-          alignItems={"center"}
-          color={editMode ? "#0b7d66" : "#00000061"}
-          sx={{ marginRight: "8px" }}
+        <Stack
+          sx={{
+            width: "300px",
+            padding: 3,
+            borderRadius: 5,
+            backgroundColor: "white",
+            gap: "20px",
+          }}
         >
-          {
-            //conditional rendering for edit/save icons based on edit mode
-            editMode ? (
-              <SaveIcon
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleSaveClick();
-                }}
-                sx={{
-                  "&:hover": {
-                    color: "#0A6B57",
-                  },
-                  cursor: "pointer",
-                  transition: "color 0.15s ease-in-out",
-                }}
-              />
-            ) : (
-              <EditIcon
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleEditClick();
-                }}
+          <Typography variant="body1" sx={{ textAlign: "center" }}>
+            Are you sure you want to delete this?
+          </Typography>
+          <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={confirmDeleteHandler}
+            >
+              <Typography variant="button" sx={{ fontWeight: "600" }}>
+                Yes
+              </Typography>
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={closeDeleteConfirmModal}
+            >
+              <Typography variant="button" sx={{ fontWeight: "600" }}>
+                No
+              </Typography>
+            </Button>
+          </Container>
+        </Stack>
+      </Modal>
+      {/*Accordion*/}
+      <Accordion
+        expanded={props.alwaysOpen ? props.alwaysOpen : expanded}
+        sx={{
+          "&.MuiAccordion-root": {
+            margin: 0,
+          },
+        }}
+      >
+        <AccordionSummary
+          expandIcon={
+            props.alwaysOpen ? null : (
+              <ExpandMoreFilled onClick={toggleExpand} />
+            )
+          }
+        >
+          {/*First combobox */}
+          <Box sx={{ width: "33%", flexShrink: 0 }}>
+            <ProfileAccordionComboBox
+              value={props.comboOneVal}
+              disabled={!editMode}
+              placeholderText={props.comboOneValPlaceholder}
+              options={props.comboOneValOptions}
+              onChange={comboOneValOnChange}
+              errValidations={props.comboOneValErrValidations}
+            />
+          </Box>
+          {/*Second combobox */}
+          <ProfileAccordionComboBox
+            value={props.comboTwoVal}
+            disabled={!editMode}
+            placeholderText={props.comboTwoValPlaceholder}
+            options={props.comboTwoValOptions}
+            onChange={comboTwoValOnChange}
+            errValidations={props.comboTwoValErrValidations}
+          />
+          <Grid
+            xs={0.5}
+            display="flex"
+            flexDirection="row"
+            alignItems={"center"}
+            color={editMode ? "#0b7d66" : "#00000061"}
+            sx={{ marginRight: "8px" }}
+          >
+            {
+              //conditional rendering for edit/save icons based on edit mode
+              editMode ? (
+                <SaveIcon
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleSaveClick();
+                  }}
+                  sx={{
+                    "&:hover": {
+                      color: "#0A6B57",
+                    },
+                    cursor: "pointer",
+                    transition: "color 0.15s ease-in-out",
+                  }}
+                />
+              ) : (
+                <EditIcon
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleEditClick();
+                  }}
+                  sx={{
+                    "&:hover": {
+                      color: "#0b7d66",
+                    },
+                    cursor: "pointer",
+                    transition: "color 0.15s ease-in-out",
+                  }}
+                />
+              )
+            }
+
+            {props.deleteHandler ? (
+              <Delete
+                onClick={deleteIconClickHandler}
                 sx={{
                   "&:hover": {
                     color: "#0b7d66",
@@ -256,34 +330,21 @@ export default function ProfileAccordion(props: {
                   transition: "color 0.15s ease-in-out",
                 }}
               />
-            )
-          }
-
-          {props.deleteHandler ? (
-            <Delete
-              onClick={deleteClickHandler}
-              sx={{
-                "&:hover": {
-                  color: "#0b7d66",
-                },
-                cursor: "pointer",
-                transition: "color 0.15s ease-in-out",
-              }}
-            />
-          ) : null}
-        </Grid>
-      </AccordionSummary>
-      <AccordionDetails>
-        {/*Description Text Field */}
-        <ProfileAccordionTextField
-          label={"Description"}
-          placeholder={props.descPlaceholder}
-          text={props.descText}
-          errValidations={props.descErrValidations}
-          onChange={descOnChange}
-          editHandler={props.editHandler}
-        />
-      </AccordionDetails>
-    </Accordion>
+            ) : null}
+          </Grid>
+        </AccordionSummary>
+        <AccordionDetails>
+          {/*Description Text Field */}
+          <ProfileAccordionTextField
+            label={"Description"}
+            placeholder={props.descPlaceholder}
+            text={props.descText}
+            errValidations={props.descErrValidations}
+            onChange={descOnChange}
+            editHandler={props.editHandler}
+          />
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 }
