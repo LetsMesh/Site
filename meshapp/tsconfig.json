@@ -1,7 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Node 20",
-
   "compilerOptions": {
     "lib": ["es2023", "DOM"],
     "module": "Node16",
@@ -11,6 +10,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node"
-  }
-} 
+    "moduleResolution": "Node16",
+    "baseUrl": "."
+  },
+  "include": ["**/*.ts", "**/*.tsx", "types/*.d.ts"],
+  "exclude": ["node_modules"]
+}

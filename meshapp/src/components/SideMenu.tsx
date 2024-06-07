@@ -21,8 +21,8 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 
-import { paths } from "../Routing/RoutePaths";
 import { Link as RouterLink } from "react-router-dom";
+import { paths } from "src/routes/route-paths";
 type ListItemTypes = { text: String; Icon: React.ElementType; path: String };
 
 // TODO: (#258) Add routes to each menu item when routing is implemented
