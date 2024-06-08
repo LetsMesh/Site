@@ -82,9 +82,11 @@ const ProfilePicture = (props: { image: string; accountID: number }) => {
         {open && (
           <ProfilePictureEdit
             handleClose={handleClose}
+            image={image}
             setImage={setImage}
             showError={showError}
             setShowError={setShowError}
+            accountID={props.accountID}
           />
         )}
       </Box>
@@ -97,7 +99,7 @@ const ProfilePicture = (props: { image: string; accountID: number }) => {
  * Displays buttons that allow profile picture editing
  */
 const ProfilePictureEdit = (props: any) => {
-  const { handleClose, setImage, showError, setShowError } = props;
+  const { handleClose, image, setImage, showError, setShowError, accountID } = props;
   const DEFAULT_IMAGE: string = ""; // TODO: Update this when a default image is setup
 
   // Prevents entire container from closing when clicking on it
@@ -114,13 +116,41 @@ const ProfilePictureEdit = (props: any) => {
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
-      const url = URL.createObjectURL(file);
-      setImage(url);
-      setShowError(false);
+      const formData = new FormData();
+      formData.append("accountID", accountID);
+      formData.append("profilePicture", file);
+      if (!image) {
+        axiosInstance
+          .post("profiles/profile-picture", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            setImage(response.data["profilePicture"]);
+            setShowError(false);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        axiosInstance
+          .patch("profiles/profile-picture", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            setImage(response.data["profilePicture"]);
+            setShowError(false);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
       handleClose();
-
-      // TODO: Upload image to server via http (work here)
-      // ->
     } else {
       setShowError(true);
     }
@@ -140,7 +170,19 @@ const ProfilePictureEdit = (props: any) => {
       cancelButtonColor: "#d33",
     }).then((result) => {
       if (result.value) {
-        setImage(DEFAULT_IMAGE);
+        axiosInstance
+          .delete("profiles/profile-picture", {
+            data: {
+              accountID: accountID
+            }
+          })
+          .then((response) => {
+            console.log(response);
+            setImage(null);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
         handleClose();
       }
     });
