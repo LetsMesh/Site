@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'mesh.conversation',
     'mesh.notifications',
     'mesh.tags',
-    'mesh.occupations'
+    'mesh.occupations',
+    # channels layer for websockets
+    'channels',
 ]
 
 # TODO: https://github.com/LetsMesh/Site/issues/202
@@ -167,6 +169,20 @@ CSRF_COOKIE_SAMESITE = 'Strict'
 SESSION_COOKIE_SAMESITE = 'Strict'
 CSRF_COOKIE_HTTPONLY = False # For production, set this line to True
 SESSION_COOKIE_HTTPONLY = True
+
+# Conversation websockets
+# Define the ASGI application to point to routing configuration
+ASGI_APPLICATION = 'mesh.asgi.application'
+
+# Configure the channels layer
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'meshapp/build/static')

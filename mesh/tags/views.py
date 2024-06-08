@@ -1,37 +1,105 @@
 from django.http import JsonResponse
-from ..tags.models import TagBridge
+from django.views import View
+
+from ..exceptions.InvalidJsonFormat import InvalidJsonFormat
+from ..exceptions.MissingRequiredFields import MissingRequiredFields
+from ..tags.models import TagBridge, Tag
 from ..accounts.models import Account
+from ..utils.validate_data import validate_json_and_required_fields
 
 
-def user_tags(request):
-    if request.method == "GET":
-        request_data = request.GET
-        response_data = {
-            "status": "",
-            "tags": []
-        }
+class TagsDetailView(View):
+    """
+    Handles HTTP requests related to Tags,
+    a GET call will retrieve tags from the specified account,
+    a POST call will store tags for the specified account.
+    """
 
-        if (request_data.get("userID") is None):
-            response_data.update({"status": "Error: Missing userID field in request query."})
-            return JsonResponse(response_data, status=400)
-            # Returns a 400 error if request query string is missing userID field
-        
+    def get(self, request, account_id):
+        """
+        Handles GET requests to retrieve tags from a specific account.
+
+        Responses:
+            - HTTP 200 (OK): Successfully retrieved all tags related to an account.
+            - HTTP 404 (Not Found): An account was not found with that id.
+
+        Parameters:
+            request: The HTTP request object.
+            account_id: The id of the account to retrieve tags from.
+
+        Returns:
+            JsonResponse: An array of tags associated with the specified account.
+        """
         try:
-            Account.objects.get(accountID=int(request_data.get("userID")))
-        except:
-            response_data.update({"status": "Error: User with given userID does not exist."})
-            return JsonResponse(response_data, status=400)
-            # Returns a 400 error if user ID does not exist
+            account = Account.objects.get(accountID=account_id)
+            tag_bridges = TagBridge.objects.filter(accountID=account)
+            tags = []
+
+            for tag_bridge in tag_bridges:
+                tag = tag_bridge.tagID
+                tag_data = {
+                    'tag_id': tag.tagID,
+                    'tag_name': tag.tagName,
+                    'is_default': tag.isDefault
+                }
+                tags.append(tag_data)
+
+            return JsonResponse({
+                'tags': tags
+            }, status=200)
+        except Account.DoesNotExist:
+            return JsonResponse({
+                'error': 'Account does not exist.'
+            }, status=404)
+
+    def post(self, request, account_id):
+        """
+        Handles POST requests to store tags for a specific account.
+
+        Responses:
+            - HTTP 201 (Created): Successfully stored a tag for the specified account.
+            - HTTP 400 (Bad Request): Has invalid method body.
+            - HTTP 404 (Not Found): An account/tag was not found with that id.
+            - HTTP 409 (Conflict): The account already has that tag.
+
+        Parameters:
+            request: The HTTP request object containing the payload 'tag_id'.
+            account_id: The id of the account to store tags to.
 
 
-        tags_entry = TagBridge.objects.filter(accountID=request_data.get("userID"))
-        user_tags = []
+        Returns:
+            JsonResponse: The account ID and the tag ID.
+        """
+        required_fields = ['tag_id']
+        try:
+            data = validate_json_and_required_fields(request.body, required_fields)
+            tag_id = data['tag_id']
+            account = Account.objects.get(accountID=account_id)
+            tag = Tag.objects.get(tagID=tag_id)
 
-        for tag in tags_entry:
-            tag_entry = tag.tagID
-            user_tags.append(tag_entry.tagName)
-        # Groups all tag names associated with the user ID into a list
-
-        response_data.update({"status": "Success", "tags": user_tags})
-
-        return JsonResponse(response_data, status=200)
+            if TagBridge.objects.filter(tagID=tag, accountID=account).exists():
+                return JsonResponse({
+                    'error': 'Account already has the tag with that id.'
+                }, status=409)
+            else:
+                TagBridge.objects.create(tagID=tag, accountID=account)
+                return JsonResponse({
+                    'account_id': account.accountID,
+                    'tag_id': tag.tagID
+                }, status=201)
+        except InvalidJsonFormat:
+            return JsonResponse({
+                'error': 'Invalid JSON format.'
+            }, status=400)
+        except MissingRequiredFields:
+            return JsonResponse({
+                'error': 'Missing required JSON fields.'
+            }, status=400)
+        except Account.DoesNotExist:
+            return JsonResponse({
+                'error': 'Account does not exist.'
+            }, status=404)
+        except Tag.DoesNotExist:
+            return JsonResponse({
+                'error': 'Tag does not exist.'
+            }, status=404)
