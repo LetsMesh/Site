@@ -107,7 +107,7 @@ const Footer = () => {
           >
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
-              <Link component={RouterLink} to={paths.logged_out_home}>
+              <Link component={RouterLink} to={paths.home}>
                 home
               </Link>
               <Link href="">about</Link>
