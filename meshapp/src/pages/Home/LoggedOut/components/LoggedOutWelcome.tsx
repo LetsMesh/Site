@@ -2,48 +2,41 @@ import React from "react";
 import { Typography, Grid, Button } from "@mui/material";
 import { paths } from "src/routes/route-paths";
 import { Link as RouterLink } from "react-router-dom";
+import { ChevronRight } from "@mui/icons-material";
 export default function welcomeMessage() {
   //contains the welcome message for the header to the left
   return (
-    <Grid
-      item
-      container
-      xs={5}
-      direction="column"
-      p={5}
-      rowGap={2}
-      alignItems="center"
-      color="#F2E8DE"
-    >
-      <Typography variant="h2" textAlign={"center"}>
+    <>
+      <Typography
+        textAlign={"center"}
+        fontFamily="cocogoose"
+        fontSize="36px"
+        color="#F2E8DE"
+        sx={{
+          fontWeight: "bold",
+        }}
+      >
         Find Your Perfect Mentor or Mentee with Mesh
       </Typography>
-      <Typography variant="body1" fontWeight={250} textAlign={"center"}>
+      <Typography
+        fontWeight={500}
+        textAlign={"center"}
+        fontFamily="cocogoose"
+        fontSize="24px"
+        color="#F2E8DE"
+      >
         Unlock Your Potential with Expert Guidance and Support.
       </Typography>
       <Button
         variant="contained"
+        color="success"
         component={RouterLink}
         to={paths.sign_up}
-        sx={{
-          "&:hover": {
-            backgroundColor: "#0e977b",
-          },
-          textDecoration: "uppercase",
-          padding: "6px 16px",
-          fontSize: "20px",
-          lineHeight: "24px",
-          maxWidth: "250px",
-          minWidth: "120px",
-          width: "30%",
-          height: "50px",
-          borderRadius: "15px",
-        }}
+        sx={{ fontWeight: "600", fontSize: "20px", padding: "6px 30px" }}
       >
-        <Typography variant="button" fontSize="20px" lineHeight="24px">
-          Sign Up
-        </Typography>
+        Sign Up
+        <ChevronRight />
       </Button>
-    </Grid>
+    </>
   );
 }
