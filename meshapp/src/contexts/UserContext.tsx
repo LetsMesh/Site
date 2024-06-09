@@ -6,8 +6,8 @@ import React, {
   ReactNode,
 } from "react";
 import { axiosInstance } from "../config/axios-config";
-import { Account } from "../types/account";
-import { LoadingState } from "../types/loading";
+import { Account } from "src/models/account";
+import { LoadingState } from "src/models/loading";
 
 interface AccountContextType {
   account: Account | null;
