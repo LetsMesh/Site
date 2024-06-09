@@ -158,7 +158,7 @@ const Footer = () => {
           justifyContent="space-between"
           alignItems="center"
           p={2}
-          color="text.main"
+          color="text.primary"
         >
           <Grid item>
             <Typography variant="h3">
