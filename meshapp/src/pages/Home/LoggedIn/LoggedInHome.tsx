@@ -1,86 +1,143 @@
 import React from "react";
-import homePage from "./components/PageContent";
-import { Theme, ThemeProvider, createTheme } from "@mui/material";
-import { deepmerge } from "@mui/utils";
 
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Stack,
+  Theme,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
+import { deepmerge } from "@mui/utils";
+import { GridContainer } from "src/components/ui/Grid";
+import { ChevronRight, ErrorOutline } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { paths } from "src/routes/route-paths";
+import group_image from "src/assets/media/group_image.png";
 export default function LoggedInHome() {
   return (
     <>
-      <ThemeProvider
-        theme={(theme: Theme) => {
-          return createTheme(deepmerge(homeTheme(), theme));
-        }}
+      <GridContainer
+        justifyContent="center"
+        alignItems="center"
+        p={{ lg: 10, md: 10, xs: 5 }}
+        sx={{ margin: "auto auto" }}
       >
-        {homePage()}
-      </ThemeProvider>
+        {/* For lg and md screens */}
+        <Grid
+          item
+          md={6}
+          lg={6}
+          display={{ xs: "none", sm: "none", md: "block" }}
+        >
+          <Stack direction="column" spacing={2}>
+            <ImageGraphic />
+            <AlertBox />
+          </Stack>
+        </Grid>
+        <Grid
+          item
+          md={6}
+          lg={6}
+          display={{ xs: "none", sm: "none", md: "block" }}
+        >
+          <WelcomeMessage />
+        </Grid>
+
+        {/* For sm and xs screens */}
+        <Grid item xs={12} display={{ xs: "block", md: "none" }}>
+          <Stack direction="column" spacing={2}>
+            <ImageGraphic />
+            <WelcomeMessage />
+            <AlertBox />
+          </Stack>
+        </Grid>
+      </GridContainer>
     </>
   );
 }
 
-function homeTheme() {
-  const theme = createTheme();
+const AlertBox = () => {
+  return (
+    <Alert severity="error" icon={<ErrorOutline sx={{ fontSize: "4vh" }} />}>
+      <Stack spacing={1} direction="column" flexWrap="wrap">
+        <Typography fontSize={"16px"}>
+          <strong>Notice</strong>
+        </Typography>
+        <Typography fontSize={"14px"}>
+          Please update your profile with the following items:
+          <br /> - Biography
+          <br /> - Years of Experience
+          <br /> - Career
+          <br /> - Interests
+        </Typography>
+      </Stack>
+    </Alert>
+  );
+};
 
-  theme.typography.h1 = {
-    "@media (width < 600px)": {
-      fontSize: "23px",
-    },
-    "@media (min-width:600px)": {
-      fontSize: "20px",
-    },
-    "@media (min-width:900px)": {
-      fontSize: "31px",
-    },
-    "@media (min-width:1200px)": {
-      fontSize: "42px",
-    },
-    "@media (min-width: 1536px)": {
-      fontSize: "55px",
-    },
-    "@media (min-width: 2000px)": {
-      fontSize: "64px",
-    },
-  };
+const ImageGraphic = () => {
+  return (
+    <Box
+      display={"flex"}
+      justifyContent="center"
+      alignItems={"center"}
+      bgcolor="#CCCCCC"
+      width={"100%"}
+    >
+      <img
+        alt="group_image"
+        srcSet={`${group_image} 500w`}
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+          display: "block",
+          margin: "auto",
+        }}
+      />
+    </Box>
+  );
+};
 
-  theme.typography.h2 = {
-    "@media (width < 600px)": {
-      fontSize: "20px",
-    },
-    "@media (min-width:600px)": {
-      fontSize: "13px",
-    },
-    "@media (min-width:900px)": {
-      fontSize: "23px",
-    },
-    "@media (min-width:1200px)": {
-      fontSize: "25px",
-    },
-    "@media (min-width: 1536px)": {
-      fontSize: "38px",
-    },
-    "@media (min-width: 2000px)": {
-      fontSize: "42px",
-    },
-  };
-
-  theme.typography.button = {
-    "@media (width < 600px)": {
-      fontSize: "13px",
-    },
-    "@media (min-width:600px)": {
-      fontSize: "10px",
-    },
-    "@media (min-width:900px)": {
-      fontSize: "15px",
-    },
-    "@media (min-width:1000px)": {
-      fontSize: "16px",
-    },
-    "@media (min-width: 1536px)": {
-      fontSize: "21px",
-    },
-    "@media (min-width: 2000px)": {
-      fontSize: "30px",
-    },
-  };
-  return theme;
-}
+const WelcomeMessage = () => {
+  const navigate = useNavigate();
+  return (
+    <Stack justifyContent="center" alignItems="center" gap="45px">
+      <Typography
+        color="#F2E8DE"
+        fontFamily="cocogoose"
+        fontWeight="700"
+        fontSize="36px"
+        textAlign="center"
+      >
+        Find Your Perfect Mentor or Mentee with Mesh
+      </Typography>
+      <Typography
+        color="#F2E8DE"
+        fontFamily="cocogoose"
+        textAlign="center"
+        fontSize="24px"
+      >
+        Unlock Your Potential with Expert Guidance and Support.
+      </Typography>
+      <Button
+        variant="contained"
+        color="success"
+        sx={{
+          width: "14em",
+          height: "3em",
+          borderRadius: 4,
+          fontWeight: "bold",
+          fontFamily: "cocogoose",
+        }}
+        onClick={() => navigate(paths.profile_swipe)}
+        endIcon={<ChevronRight />}
+      >
+        {`Start Swiping`}
+      </Button>
+    </Stack>
+  );
+};

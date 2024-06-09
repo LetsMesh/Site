@@ -31,6 +31,8 @@ export default function advertSection() {
         justifyContent="flex-start"
         flexWrap="nowrap"
         direction={index % 2 === 0 ? "row" : "row-reverse"}
+        padding={0}
+        sx={{ color: "text.primary" }}
       >
         {/* grey image container for the sprout images*/}
         <Box
@@ -84,7 +86,7 @@ export default function advertSection() {
           padding: "20px 0",
         }}
       >
-        <Typography variant="h3" textAlign={"center"}>
+        <Typography fontSize={32} fontWeight={600} textAlign={"center"}>
           {title}
         </Typography>
       </Grid>

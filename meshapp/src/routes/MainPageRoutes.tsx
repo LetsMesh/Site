@@ -1,50 +1,36 @@
-import LoggedOutPage from "../pages/Home/LoggedOut/LoggedOutHome";
-import SignUp from "../pages/SignUp";
-import Login from "../pages/Login";
-import Otp from "../pages/Home/Otp";
-import ForgotPassword from "../components/AuthForms/ForgotPasswordForm";
-import LoggedInHome from "../pages/Home/LoggedIn/LoggedInHome";
-import ProfilePage from "../pages/Profiles/ProfilePage";
-import { exampleProfile } from "../pages/Profiles/tests/profile-examples";
-import Slider from "../pages/Swiping";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link as RouterLink } from "react-router-dom";
 import { paths } from "./route-paths";
-import ThemeToggleSwitch from "../themes/ThemeToggle";
+import { PageLayout } from "../components/Layout";
+import HomePage from "../pages/Home/Page";
+import { Link } from "@mui/material";
+import SignUp from "src/pages/SignUp";
+import Login from "src/pages/Login";
+import PasswordReset from "src/components/AuthForms/ForgotPasswordForm";
+import ProfilePage from "src/pages/Profiles/ProfilePage";
+import { exampleProfile } from "src/pages/Profiles/tests/profile-examples";
+import Swiper from "src/pages/Swiping";
+// import SettingPage from "../pages/setting";
+// import MessagePage from "../pages/messaging";
 
 //contains routes for the main page
 export default function MainPageRoutes() {
   return (
     <Routes>
-      {/*Logged Out Pages*/}
-      <Route path={paths.logged_out_home} element={<LoggedOutPage />} />
-      <Route path={paths.sign_up} element={<SignUp />} />
-      <Route path={paths.login_page} element={<Login />} />
-      <Route path={paths.otp} element={<Otp />} />
-      <Route path={paths.forgot_password} element={<ForgotPassword />} />
-      {/*Logged In Pages*/}
-      <Route path={paths.logged_in_home} element={<LoggedInHome />} />
-      <Route
-        path={paths.profile_page}
-        element={<ProfilePage {...exampleProfile} />}
-      />
-      <Route path={paths.profile_swipe} element={<Slider />} />
-      {/*Temporary page to hold theme toggle switch*/}
-      <Route
-        path={paths.settings}
-        element={
-          <div
-            style={{
-              display: "flex",
-              marginTop: "100px",
-              justifyContent: "center",
-            }}
-          >
-            <ThemeToggleSwitch />
-          </div>
-        }
-      />
       {/*default route*/}
-      <Route path="*" element={<Nav />} />
+      <Route element={<PageLayout />}>
+        <Route path={paths.home} element={<HomePage />} />
+        <Route path={paths.sign_up} element={<SignUp />} />
+        <Route path={paths.login_page} element={<Login />} />
+        <Route path={paths.forgot_password} element={<PasswordReset />} />
+        {/* <Route path={paths.settings} element={<SettingPage />} />
+        <Route path={paths.messages} element={<MessagePage />} /> */}
+        <Route
+          path={paths.profile_page}
+          element={<ProfilePage {...exampleProfile} />}
+        />
+        <Route path={paths.profile_swipe} element={<Swiper />} />
+        <Route path="*" element={<Nav />} />
+      </Route>
     </Routes>
   );
 }
@@ -59,16 +45,28 @@ function Nav() {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        color: "white",
       }}
     >
-      <Link to={paths.logged_out_home}>Logged Out Home</Link>
-      <Link to={paths.sign_up}>Sign Up</Link>
-      <Link to={paths.login_page}>Login Page</Link>
-      <Link to={paths.forgot_password}>Forgot Password</Link>
-      <Link to={paths.logged_in_home}>Logged In Home</Link>
-      <Link to={paths.profile_page}>Profile Page</Link>
-      <Link to={paths.profile_swipe}>Profile Swipe</Link>
-      <Link to={paths.settings}>Settings</Link>
+      <Link component={RouterLink} to={paths.home}>
+        Home
+      </Link>
+      <Link component={RouterLink} to={paths.sign_up}>
+        Sign Up
+      </Link>
+      <Link component={RouterLink} to={paths.login_page}>
+        Login Page
+      </Link>
+      <Link component={RouterLink} to={paths.forgot_password}>
+        Forgot Password
+      </Link>
+      <Link component={RouterLink} to={paths.profile_page}>
+        Profile Page
+      </Link>
+      <Link component={RouterLink} to={paths.profile_swipe}>
+        Profile Swipe
+      </Link>
+      {/* <Link component={RouterLink} to={paths.settings}>Settings</Link> */}
     </div>
   );
 }

@@ -117,7 +117,7 @@ export default function reviewsSection() {
       sx={{ backgroundColor: "secondary.main" }}
     >
       <Grid item xs={12} color="text.main">
-        <Typography variant="h3" textAlign={"center"}>
+        <Typography fontSize={32} fontWeight={600} textAlign={"center"}>
           {title}
         </Typography>
         <Grid

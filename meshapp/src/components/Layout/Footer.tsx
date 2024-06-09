@@ -107,7 +107,7 @@ const Footer = () => {
           >
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
-              <Link component={RouterLink} to={paths.logged_out_home}>
+              <Link component={RouterLink} to={paths.home}>
                 home
               </Link>
               <Link href="">about</Link>
@@ -158,7 +158,7 @@ const Footer = () => {
           justifyContent="space-between"
           alignItems="center"
           p={2}
-          color="text.main"
+          color="text.primary"
         >
           <Grid item>
             <Typography variant="h3">
