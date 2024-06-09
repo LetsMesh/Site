@@ -11,6 +11,7 @@ export const paths = {
   profile_page: "/profile",
   sign_up: "/sign-up",
   settings: "/settings",
+  messages: "/messages",
 };
 
 export const logged_in_paths = [

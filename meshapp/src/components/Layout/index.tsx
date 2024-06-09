@@ -14,6 +14,7 @@ import TwoFactorAuthReminders from "src/components/TwoFactorAuth/TwoFactorRemind
 
 import Footer from "./Footer";
 import Header from "./Header";
+import MessageBar from "../Messages/MessageBar";
 
 export const PageLayout = () => {
   const { account, loadingState } = useAccountContext();
@@ -45,6 +46,7 @@ export const PageLayout = () => {
           <Outlet />
         </Box>
         <Footer />
+        <MessageBar />
       </Box>
     </Box>
   );

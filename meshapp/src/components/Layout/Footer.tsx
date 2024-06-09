@@ -1,4 +1,5 @@
 import {
+  Box,
   Grid,
   Link,
   Stack,
@@ -7,8 +8,11 @@ import {
   Typography,
   createTheme,
 } from "@mui/material";
-import { paths } from "src/routes/route-paths";
+import { useAccountContext } from "src/contexts/UserContext";
+import MeshLogo from "../svgs/logo";
 import { Link as RouterLink } from "react-router-dom";
+import { paths } from "src/routes/route-paths";
+import { FlexBetween } from "../ui/FlexBetween";
 
 const Footer = () => {
   let textTheme = createTheme({
@@ -18,18 +22,13 @@ const Footer = () => {
           root: {
             textDecoration: "none",
             fontSize: "11px",
-            fontWeight: "600",
-            color: "inherit",
-            "&:hover": {
-              filter: "brightness(2)",
-              transition: "200ms ease-in",
-            },
           },
         },
       },
     },
     typography: {
       h1: {
+        fontFamily: "cocogoose",
         fontWeight: "600",
         fontSize: "20px",
         lineHeight: "20px",
@@ -45,6 +44,8 @@ const Footer = () => {
       },
     },
   });
+
+  const { account } = useAccountContext();
 
   return (
     <ThemeProvider
@@ -77,8 +78,9 @@ const Footer = () => {
       <Grid
         container
         direction="column"
-        xs={12}
-        sx={{ backgroundColor: "secondary.main" }}
+        sx={{
+          ...(account && { marginBottom: "40px" }),
+        }}
       >
         {/*footer logo and links container*/}
         <Grid
@@ -86,14 +88,33 @@ const Footer = () => {
           display="flex"
           direction="row"
           justifyContent="space-between"
-          rowGap={2}
-          xs={12}
           p={2}
+          sx={{ backgroundColor: "secondary.main" }}
         >
           <Grid item>
-            <Typography color="footerLogoColor.main" variant="h1">
-              Mesh
-            </Typography>
+            <Box
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href={"/"}
+                sx={{
+                  color: "primary.main",
+                  fontFamily: "cocogoose",
+                  fontWeight: 600,
+                  fontSize: "36px",
+                  display: { xs: "flex", md: "flex" },
+                  textDecoration: "none",
+                }}
+              >
+                mesh
+              </Typography>
+              <MeshLogo sx={{ fontSize: "36px", color: "primary.main" }} />
+            </Box>
           </Grid>
 
           <Grid
@@ -103,7 +124,7 @@ const Footer = () => {
             xs={11}
             sm={6}
             sx={{ flexWrap: "nowrap" }}
-            color="text.main"
+            color="text.primary"
           >
             <Stack direction="column" rowGap={1}>
               <Typography variant="h2">General</Typography>
@@ -127,7 +148,7 @@ const Footer = () => {
                 Project Site
               </Link>
               <Link href="https://www.amazon.com/How-Talk-Your-About-Safety/dp/045149492X/?tag=judgeabook-20">
-                Discord Inv
+                Discord Server
               </Link>
               <Link href="https://media.tenor.com/ys-mxRCoXUQAAAAd/kitten-belly-dance.gif">
                 Report Bug
@@ -151,24 +172,17 @@ const Footer = () => {
           </Grid>
         </Grid>
         {/*footer copyright */}
-        <Grid
-          container
-          direction="row"
-          sx={{ flexWrap: "nowrap", backgroundColor: "cardBackground.main" }}
-          justifyContent="space-between"
-          alignItems="center"
+
+        <FlexBetween
           p={2}
           color="text.primary"
+          sx={{ backgroundColor: "cardBackground.main" }}
         >
-          <Grid item>
-            <Typography variant="h3">
-              Mesh is a part of Let's Mesh @ 2023
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="h3">This is not a real product</Typography>
-          </Grid>
-        </Grid>
+          <Typography variant="h3">
+            Mesh is a part of Let's Mesh. All rights reserved. @ 2023 - 2024
+          </Typography>
+          <Typography variant="h3">This is not a real product</Typography>
+        </FlexBetween>
       </Grid>
     </ThemeProvider>
   );
