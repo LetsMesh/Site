@@ -92,7 +92,7 @@ const ListItemComponent = ({
           onClick={handleDrawerClose}
         />
         {onExpandClick &&
-          (isExpand !== null && isExpand == true ? (
+          (isExpand !== null && isExpand === true ? (
             <ExpandLess
               sx={{ color: "text.primary" }}
               onClick={onExpandClick}
@@ -223,12 +223,12 @@ const SideMenuDrawer: React.FC<MenuDrawerProps> = ({
                       path={paths.profile_page}
                       handleDrawerClose={handleDrawerClose}
                     />
-                    {/* <ListItemComponent
+                    <ListItemComponent
                       text="Messaging"
                       Icon={MessagingIcon}
                       path={paths.messages}
                       handleDrawerClose={handleDrawerClose}
-                    /> */}
+                    />
                     <ListItemComponent
                       text="Swiping"
                       Icon={SwipingIcon}

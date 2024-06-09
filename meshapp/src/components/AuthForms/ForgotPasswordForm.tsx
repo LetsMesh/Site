@@ -26,7 +26,7 @@ export const PasswordReset = () => {
   };
 
   const onSubmit = () => {
-    if (formData.password == formData.confirmedPassword) {
+    if (formData.password === formData.confirmedPassword) {
       const res = axiosInstance
         .post(passwordResetConfirmedEndpoint, {
           newpassword: formData.confirmedPassword,
