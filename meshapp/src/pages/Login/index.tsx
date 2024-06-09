@@ -1,10 +1,9 @@
-import React from "react";
 import {
   Button,
   Divider,
   Grid,
+  Link,
   Skeleton,
-  Theme,
   Typography,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
@@ -12,23 +11,11 @@ import { deepmerge } from "@mui/utils";
 import { Link as RouterLink } from "react-router-dom";
 import { paths } from "src/routes/route-paths";
 import LoginWindow from "src/components/AuthForms/LoginForm";
-
-const buttonTheme = createTheme({
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 25,
-          width: "75%",
-          height: "4.5rem",
-          fontSize: "1.5rem",
-        },
-      },
-    },
-  },
-});
+import { useNavigate } from "react-router-dom";
+import { GridContainer, GridItem } from "../../components/ui/Grid";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   return (
     <Grid
       container
@@ -36,7 +23,7 @@ const SignUp = () => {
       spacing={5}
       sx={{ textAlign: "center", alignItems: "center" }}
     >
-      <Grid item xs width={"80%"}>
+      <Grid item xs>
         <Typography variant="h2" fontWeight={"bold"}>
           Don't have an account with us yet?
         </Typography>
@@ -44,55 +31,105 @@ const SignUp = () => {
       <Grid item xs>
         <Button
           variant="contained"
-          sx={{ width: "15em" }}
-          component={RouterLink}
-          to={paths.sign_up}
+          color="success"
+          onClick={() => navigate(paths.sign_up)}
         >
           {"Sign Up >"}
         </Button>
       </Grid>
-      <Grid item xs>
-        <Skeleton variant="rounded" height={"15em"} width={"30em"} />
-      </Grid>
+      <GridItem sx={{ alignSelf: "stretch" }}>
+        <Skeleton variant="rounded" height={"15em"} width={"100%"} />
+      </GridItem>
     </Grid>
   );
 };
 
 const Login = () => {
+  const navigate = useNavigate();
   return (
-    <ThemeProvider
-      theme={(theme: Theme) => {
-        return createTheme(deepmerge(buttonTheme, theme));
-      }}
-    >
-      <Grid container p={0} bgcolor="primary.main">
-        <Grid
-          container
-          wrap="nowrap"
-          spacing={5}
-          p={2}
+    <GridContainer bgcolor="primary.main">
+      <GridContainer
+        // wrap="nowrap"
+        spacing={5}
+        p={2}
+        sx={{
+          boxShadow: 10,
+          margin: "5em auto",
+          width: "90%",
+          bgcolor: "cardBackground.main",
+          color: "text.primary",
+          borderRadius: "15px",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <GridItem xs={5} sx={{ display: { xs: "none", md: "block" } }}>
+          <SignUp />
+        </GridItem>
+        <GridItem
+          xs={1}
           sx={{
-            boxShadow: 10,
-            margin: "10em auto",
-            maxWidth: "50%",
-            minWidth: "1000px",
-            bgcolor: "cardBackground.main",
-            color: "text.main",
-            borderRadius: 5,
+            alignSelf: "stretch",
+            display: { xs: "none", md: "block" },
           }}
         >
-          <Grid item xs>
-            <SignUp />
-          </Grid>
-          <Grid item xs={1}>
-            <Divider orientation="vertical" />
-          </Grid>
-          <Grid item xs>
-            <LoginWindow />
-          </Grid>
-        </Grid>
-      </Grid>
-    </ThemeProvider>
+          <Divider orientation="vertical" />
+        </GridItem>
+        <GridItem
+          xs
+          sx={{
+            padding: "40px 40px 0 40px",
+            width: "100%",
+            maxWidth: "360px",
+          }}
+        >
+          <LoginWindow />
+        </GridItem>
+        <GridItem
+          sx={{
+            alignSelf: "stretch",
+            display: { xs: "block", md: "none" },
+            paddingRight: "40px",
+          }}
+        >
+          <Divider orientation="horizontal" />
+        </GridItem>
+        <GridItem
+          sx={{
+            display: { xs: "block", md: "none" },
+            padding: "40px 40px 0 40px",
+            gap: "5px",
+            textAlign: "center",
+          }}
+        >
+          <Typography>
+            Don't have an account with us yet?{" "}
+            <Link
+              onClick={() => navigate(paths.sign_up)}
+              sx={{
+                fontWeight: "700",
+                cursor: "pointer",
+                textDecoration: "underline",
+                color: "text.primary",
+              }}
+            >
+              {/* In this code, {'\u00A0'} is used to insert a non-breaking space between "Sign" and "up". 
+              This will ensure that the entire "Sign up" text stays on the same line and wraps together when necessary. */}
+              Sign{"\u00A0"}up
+            </Link>
+          </Typography>
+        </GridItem>
+        <GridItem
+          sx={{
+            alignSelf: "stretch",
+            padding: "40px 40px 0 40px",
+            display: { xs: "block", md: "none" },
+          }}
+        >
+          <Skeleton variant="rounded" height={"15em"} width={"100%"} />
+        </GridItem>
+      </GridContainer>
+    </GridContainer>
   );
 };
 
