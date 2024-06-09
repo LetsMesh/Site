@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import TwoFactorAuthReminders from "./two-factor-auth/two-factor-reminder";
-import AppRoutes from "./Routing/AppRoutes";
-import ProfilePage from "./profile/profile-page";
-import { exampleProfile } from "./profile/tests/profile-examples";
-import { ThemeContextProvider } from "./theme/ThemeContextProvider";
-import { MainThemeProvider } from "./theme/MainThemeProvider";
+import { ThemeContextProvider } from "src/themes/ThemeContextProvider";
+import { MainThemeProvider } from "./themes/MainThemeProvider";
+import TwoFactorAuthReminders from "./components/TwoFactorAuth/TwoFactorReminder";
+import ProfilePage from "./pages/Profiles/ProfilePage";
+import AppRoutes from "./routes/AppRoutes";
+import { exampleProfile } from "./pages/Profiles/tests/profile-examples";
+
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>

@@ -1,5 +1,5 @@
 import { Grid, Link, Typography } from "@mui/material";
-import { paths } from "../../Routing/RoutePaths";
+import { paths } from "src/routes/route-paths";
 import { Link as RouterLink } from "react-router-dom";
 export default function LoggedOutHeader() {
   return (
