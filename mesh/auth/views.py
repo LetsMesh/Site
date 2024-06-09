@@ -45,13 +45,17 @@ def login_view(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-@require_POST
 def logout_view(request):
     """
-    Handles user logout requests.
+    Handle user logout requests.
 
-    This view expects a POST request, logs out the user by ending the session, and
-    redirects to the home page.
+    This view handles POST requests to log out the user by ending their session.
+    After logging out, it redirects the user to the home page, with the URL
+    being fetched from the environment variable `WEB_URL`. If `WEB_URL` is not
+    set, it defaults to 'http://localhost:3000'.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
 
     Returns:
         HttpResponseRedirect: A response that redirects to the home page after successful logout.
