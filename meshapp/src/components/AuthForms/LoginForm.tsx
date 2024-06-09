@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Grid,
@@ -6,40 +6,14 @@ import {
   Stack,
   Typography,
   TextField,
-  Divider,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useCookies } from "react-cookie";
+
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { GridContainer, GridItem } from "../ui/Grid";
-import LoadingProgress from "../ui/LoadingSpinner";
-import GoogleSvg from "../svgs/google";
-import DiscordSvg from "../svgs/discord";
+import { useCookies } from "react-cookie";
 import { axiosInstance } from "src/config/axios-config";
-import { useLogin } from "src/hooks/use-login";
-import { useAccountContext } from "src/contexts/UserContext";
 import isError from "src/errors/error-checker";
 import axiosErrorHandler from "src/errors/axios-error-handler";
-
-const LoginWindow = () => {
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-
-  const updateShowForgotPasswordState = () => {
-    setShowForgotPassword((prevState) => !prevState);
-  };
-  return showForgotPassword ? (
-    <ForgotPasswordScreen
-      updateShowForgotPasswordState={updateShowForgotPasswordState}
-    />
-  ) : (
-    <LoginScreen
-      updateShowForgotPasswordState={updateShowForgotPasswordState}
-    />
-  );
-};
-
-export default LoginWindow;
 
 interface ComponentProps {
   updateShowForgotPasswordState: () => void;
@@ -47,9 +21,6 @@ interface ComponentProps {
 
 const LoginScreen = (props: ComponentProps) => {
   const [formData, setFormData] = useState({ user: null, pass: null });
-  const { login, isLoading, error } = useLogin();
-  const { updateAccount: setAccount } = useAccountContext();
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     console.log(formData);
@@ -77,99 +48,84 @@ const LoginScreen = (props: ComponentProps) => {
       );
     }
   };
-
-  const handleLogin = async () => {
-    if (formData.user !== null && formData.pass !== null) {
-      const response = await login(formData.user, formData.pass);
-      if (!response || response.status !== 200) {
-        // Handle login error
-        toast.error("Invalid credentials");
-        return;
-      }
-
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const response = await axiosInstance.post("/auth/login/", {
+        email: formData.user,
+        password: formData.pass,
+      });
       if (response.data.account?.settings?.is2FAEnabled) {
         await handleTwoFactorAuth(response.data.user_id);
       } else {
-        navigate("/");
+        navigate("/logged_in_home");
       }
-
-      // Handle response here. For example, store the user data in the state or context.
-      setAccount(response.data.account);
-    } else {
-      toast.error("Invalid credentials");
+    } catch (err) {
+      const error = isError(err);
+      axiosErrorHandler(
+        new Error("A login request attempt failed", { cause: error })
+      );
     }
   };
 
-  useEffect(() => {}, [isLoading]);
-
   return (
-    <GridContainer
+    <Grid
+      item
+      container
       direction="column"
-      spacing={2}
-      sx={{ alignItems: "center", color: "text.primary" }}
+      spacing={3}
+      sx={{ alignItems: "center", color: "text.main" }}
     >
-      <GridItem>
-        <Typography
-          fontSize={"32px"}
-          sx={{ fontWeight: "bold", marginLeft: "auto", textAlign: "center" }}
-        >
+      <Grid
+        item
+        xs
+        sx={{ alignSelf: "flex-start", textAlign: "left", mx: "15%" }}
+      >
+        <Typography variant="h2" fontWeight={"bold"}>
           Login
         </Typography>
-      </GridItem>
-      <GridItem sx={{ width: "90%" }}>
+      </Grid>
+      <Grid item xs sx={{ width: "70%" }}>
         <Stack spacing={2}>
           <TextField
             id="user"
             type="text"
             onChange={handleChange}
             label="Email"
-            color="info"
           />
           <TextField
             id="pass"
             type="password"
             onChange={handleChange}
             label="Password"
-            color="info"
           />
-          {isLoading ? (
-            <LoadingProgress />
-          ) : (
-            <Button
-              variant="contained"
-              color="success"
-              sx={{
-                width: "100%",
-                fontSize: "16px",
-                alignSelf: "center",
-                textTransform: "none",
-              }}
-              onClick={handleLogin}
-            >
-              Log in
-            </Button>
-          )}
         </Stack>
-      </GridItem>
-
-      <Grid item xs sx={{ textAlign: "center", alignItems: "center" }}>
-        <Link
-          onClick={() => props.updateShowForgotPasswordState()}
-          href="#"
-          sx={{
-            fontWeight: "500",
-            textDecoration: "underline",
-            color: "text.primary",
-          }}
-        >
-          <Typography>Forgotten password?</Typography>
-        </Link>
       </Grid>
-      <GridItem sx={{ alignSelf: "stretch" }}>
-        <Divider orientation="horizontal">
-          <Typography>or</Typography>
-        </Divider>
-      </GridItem>
+      <Grid item xs sx={{ textAlign: "center", width: "100%" }}>
+        <form onSubmit={handleSubmit}>
+          <Button variant="contained" type="submit" sx={{ width: "70%" }}>
+            Login
+          </Button>
+        </form>
+      </Grid>
+      <Grid item xs sx={{ textAlign: "center", alignItems: "center" }}>
+        <Stack spacing={2}>
+          <Link
+            onClick={() => props.updateShowForgotPasswordState()}
+            href="#"
+            sx={{
+              textDecoration: "underline",
+              fontSize: "1.5em",
+              color: "text.main",
+            }}
+          >
+            Forgot Password
+          </Link>
+          <Typography variant="h5" fontWeight="bold">
+            OR
+          </Typography>
+        </Stack>
+      </Grid>
       <Grid item xs width={"100%"}>
         <Stack spacing={2} sx={{ alignItems: "center" }}>
           <Button
@@ -180,12 +136,9 @@ const LoginScreen = (props: ComponentProps) => {
               color: "black",
               whiteSpace: "nowrap",
               "&:hover": { bgcolor: "#D9D9D9" },
-              textTransform: "none",
-              gap: "8px",
             }}
           >
-            <GoogleSvg />
-            Sign in with Google
+            SIGN IN WITH GOOGLE
           </Button>
           <Button
             sx={{
@@ -195,16 +148,13 @@ const LoginScreen = (props: ComponentProps) => {
               color: "white",
               whiteSpace: "nowrap",
               "&:hover": { bgcolor: "#748ADA" },
-              textTransform: "none",
-              gap: "8px",
             }}
           >
-            <DiscordSvg />
-            Sign in with Discord
+            SIGN IN WITH DISCORD
           </Button>
         </Stack>
       </Grid>
-    </GridContainer>
+    </Grid>
   );
 };
 
@@ -241,47 +191,73 @@ const ForgotPasswordScreen = (props: ComponentProps) => {
   };
 
   return (
-    <GridContainer direction={"column"} alignItems={"center"} spacing={2} p={2}>
-      <Grid xs sx={{ textAlign: "center" }} item>
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: "bold",
-            marginLeft: "auto",
-            textAlign: "center",
-            color: "text.primary",
-          }}
-        >
-          Find Your Account
-        </Typography>
-      </Grid>
-      <GridItem sx={{ width: "100%" }}>
-        <Stack spacing={3} sx={{ alignItems: "center" }}>
-          <TextField
-            sx={{ width: "100%" }}
-            type="text"
-            label="Email"
-            {...register("email", { required: true })}
-            onChange={handleChange}
-          />
-          <GridContainer
-            alignItems={"center"}
-            gap={2}
-            justifyContent={"center"}
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      sx={{
+        textAlign: "center",
+        width: "100%",
+        margin: "auto",
+        bgcolor: "cardBackground.main",
+        color: "text.main",
+        borderRadius: 5,
+      }}
+    >
+      <Grid container spacing={3} p={2} sx={{ width: "100%", margin: "auto" }}>
+        <Grid xs sx={{ textAlign: "center" }} item>
+          <Typography
+            variant="h2"
+            sx={{ fontWeight: "bold", marginLeft: "auto", textAlign: "center" }}
           >
+            Forgot Password
+          </Typography>
+        </Grid>
+        <Grid xs item>
+          <Stack spacing={3} sx={{ alignItems: "center" }}>
+            <TextField
+              sx={{ width: "90%" }}
+              type="text"
+              label="Email"
+              {...register("email", { required: true })}
+              onChange={handleChange}
+            />
+            <Button
+              variant="contained"
+              sx={{ borderRadius: 25, width: "15em" }}
+              onClick={onClickSend}
+            >
+              Send Link to Email
+            </Button>
             <Link
-              href="#"
-              sx={{ color: "text.primary" }}
+              sx={{ color: "text.main", fontWeight: "bold" }}
               onClick={onClickReturn}
             >
               Return to Login
             </Link>
-            <Button variant="contained" onClick={onClickSend}>
-              Send Link to Email
-            </Button>
-          </GridContainer>
-        </Stack>
-      </GridItem>
-    </GridContainer>
+          </Stack>
+          <Grid></Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
+
+const LoginWindow = () => {
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+  const updateShowForgotPasswordState = () => {
+    setShowForgotPassword((prevState) => !prevState);
+  };
+  return showForgotPassword ? (
+    <ForgotPasswordScreen
+      updateShowForgotPasswordState={updateShowForgotPasswordState}
+    />
+  ) : (
+    <LoginScreen
+      updateShowForgotPasswordState={updateShowForgotPasswordState}
+    />
+  );
+};
+
+export default LoginWindow;
