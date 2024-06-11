@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { Grid, Divider, Typography, FormGroup } from "@mui/material";
 
-import { IFormInput } from "..";
+import { IFormInput } from "../Page";
 import { useState } from "react";
 import CustomStandardTextField from "./inputs/CustomStandardTextField";
 import CustomPasswordTextField from "./inputs/CustomPasswordTextField";
