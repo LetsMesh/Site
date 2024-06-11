@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import MeshLogo from "./svgs/logo";
+import { ReactComponent as MeshLogo } from "src/assets/svgs/MeshLogo.svg";
 
 export const BrandingLogo = () => {
   return (
@@ -24,7 +24,7 @@ export const BrandingLogo = () => {
       >
         mesh
       </Typography>
-      <MeshLogo sx={{ fontSize: "36px", color: "#F2E8DE" }} />
+      <MeshLogo width="50px" height="50px" color="#F2E8DE" />
     </Box>
   );
 };
