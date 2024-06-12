@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
-  createTheme,
-  ThemeProvider,
   Chip,
   Typography,
   Dialog,
@@ -24,15 +22,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { ProfileInterests } from "./types/profile";
 import "./styling/profile-page.css";
 
-const theme = createTheme({
-  palette: {
-    mode: "light",
-    primary: {
-      main: "#0b7d66",
-    },
-  },
-});
-
 // TODO: Fix the vertical center of edit icon respective to tag
 // TODO: Update styling to fit with global themes
 
@@ -49,33 +38,31 @@ const ProfileInterestsComponent = (props: ProfileInterests) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-interests-body">
-        {props.currentTags.map((tag: any, index: any) => (
-          <ProfileTag key={index} label={tag} />
-        ))}
-        <EditIcon
-          onClick={() => {
-            setOpen(true);
-          }}
-          sx={{
-            color: "#999999",
-            "&:hover": {
-              color: "#0b7d66",
-            },
-            cursor: "pointer",
-            transition: "color 0.15s ease-in-out",
-          }}
-        />
-        <ProfileInterestsEdit
-          open={open}
-          onClose={() => setOpen(false)}
-          recommendedTags={props.recommendedTags}
-          onSelectedTagsChange={props.setTags}
-          currentSelectedTags={props.currentTags}
-        />
-      </Box>
-    </ThemeProvider>
+    <Box className="profile-page-interests-body">
+      {props.currentTags.map((tag: any, index: any) => (
+        <ProfileTag key={index} label={tag} />
+      ))}
+      <EditIcon
+        onClick={() => {
+          setOpen(true);
+        }}
+        sx={{
+          color: "text.disabled",
+          "&:hover": {
+            color: "#0b7d66",
+          },
+          cursor: "pointer",
+          transition: "color 0.15s ease-in-out",
+        }}
+      />
+      <ProfileInterestsEdit
+        open={open}
+        onClose={() => setOpen(false)}
+        recommendedTags={props.recommendedTags}
+        onSelectedTagsChange={props.setTags}
+        currentSelectedTags={props.currentTags}
+      />
+    </Box>
   );
 };
 
@@ -182,12 +169,12 @@ const ProfileInterestsEdit = (props: {
 
   return (
     <Dialog open={props.open} onClose={handleClose} fullWidth maxWidth="sm">
-      <DialogTitle sx={{ backgroundColor: "#f2e8de", pb: "8px" }}>
+      <DialogTitle sx={{ backgroundColor: "primary.main", pb: "8px" }}>
         <Typography
           sx={{
             fontFamily: "cocogoose",
             fontWeight: "bold",
-            color: "#26383A",
+            color: "text.main",
             fontSize: "32px",
           }}
         >
@@ -218,7 +205,6 @@ const ProfileInterestsEdit = (props: {
             })}
           />
           <Button
-            color="primary"
             startIcon={<AddIcon />}
             onClick={() => {
               if (isCustomTag) {
@@ -230,6 +216,9 @@ const ProfileInterestsEdit = (props: {
                   : setAlertMessage("Tag already exists!");
                 setShowAlert(true);
               }
+            }}
+            sx={{
+              color: "text.main",
             }}
           >
             Add New Tag
@@ -267,10 +256,20 @@ const ProfileInterestsEdit = (props: {
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button
+          onClick={handleClose}
+          sx={{
+            color: "text.main",
+          }}
+        >
           Cancel
         </Button>
-        <Button onClick={handleSave} color="primary">
+        <Button
+          onClick={handleSave}
+          sx={{
+            color: "text.main",
+          }}
+        >
           Save
         </Button>
       </DialogActions>

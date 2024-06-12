@@ -161,6 +161,8 @@ export default function ProfileAccordion(props: {
       sx={{
         "&.MuiAccordion-root": {
           margin: 0,
+          backgroundColor: "cardBackground.main",
+          backgroundImage: "none",
         },
       }}
     >
@@ -194,8 +196,7 @@ export default function ProfileAccordion(props: {
           display="flex"
           flexDirection="row"
           alignItems={"center"}
-          color={editMode ? "#0b7d66" : "#00000061"}
-          sx={{ marginRight: "8px" }}
+          sx={{ marginRight: "8px", color: "text.disabled" }}
         >
           {
             //conditional rendering for edit/save icons based on edit mode

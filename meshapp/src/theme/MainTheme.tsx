@@ -62,6 +62,9 @@ function getPalette(mode: PaletteMode) {
           signUpDivider: {
             main: "#000000",
           },
+          profilePicEdit: {
+            main: "#74D194",
+          },
         }
       : //dark mode
         {
@@ -108,6 +111,9 @@ function getPalette(mode: PaletteMode) {
           },
           signUpDivider: {
             main: "#F1E8DF",
+          },
+          profilePicEdit: {
+            main: "#247C67",
           },
         }),
     //universal

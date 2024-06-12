@@ -19,6 +19,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 
 import "./styling/profile-page.css";
 import { axiosInstance } from "../config/axiosConfig";
+import { useThemeContext } from "../theme/ThemeContextProvider";
 
 const tooltipErrorTheme = createTheme({
   components: {
@@ -77,7 +78,10 @@ const ProfilePicture = (props: { image: string; accountID: number }) => {
       <Box className="profile-page-picture-container">
         <img className="profile-page-picture-body" src={image} alt="profile" />
       </Box>
-      <Box className="profile-page-picture-icon-container">
+      <Box
+        className="profile-page-picture-icon-container"
+        sx={{ backgroundColor: "profilePicEdit.main" }}
+      >
         <EditIcon sx={{ width: "26px", height: "26px" }} />
         {open && (
           <ProfilePictureEdit
@@ -125,6 +129,8 @@ const ProfilePictureEdit = (props: any) => {
       setShowError(true);
     }
   };
+  //need to explicitly get theme mode to style on light/dark mode for sweet alert
+  const { mode } = useThemeContext();
 
   const handleDeletePicture = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -132,12 +138,25 @@ const ProfilePictureEdit = (props: any) => {
       title: "Are you sure?",
       text: "Delete your current profile picture.",
       icon: "warning",
-      iconColor: "#0b7d66",
       showCancelButton: true,
       confirmButtonText: "Yes, remove it!",
-      confirmButtonColor: "#1db272",
       cancelButtonText: "Cancel",
-      cancelButtonColor: "#d33",
+
+      ...(mode === "light"
+        ? {
+            color: "#000000DE",
+            background: "#FFFFFF",
+            iconColor: "#74D194",
+            confirmButtonColor: "#74D194",
+            cancelButtonColor: "#d33",
+          }
+        : {
+            color: "#F2E8DE",
+            background: "#212121",
+            iconColor: "#247C67",
+            confirmButtonColor: "#247C67",
+            cancelButtonColor: "#d33",
+          }),
     }).then((result) => {
       if (result.value) {
         setImage(DEFAULT_IMAGE);
@@ -156,6 +175,11 @@ const ProfilePictureEdit = (props: any) => {
         alignItems="center"
         sx={{
           padding: "0 5px",
+          backgroundColor: "profilePicEdit.main",
+          "::after": {
+            borderColor: "transparent",
+            borderLeftColor: "profilePicEdit.main",
+          },
         }}
         onClick={handleOptionClick}
       >

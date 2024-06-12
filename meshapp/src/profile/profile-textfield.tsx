@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { TextField, Box } from "@mui/material";
+import { useState } from "react";
+import { TextField, Box, TextFieldVariants } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -16,6 +16,7 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {string} props.text - The initial text content
  * @param {number} props.charLimit - The max number of characters allowed
  * @param {function} props.handleSave - Callback to save data
+ * @param {TextFieldVariants | undefined} props.variant - the variant of the textfield, default is standard
  */
 const ProfileTextField = (props: {
   label: string;
@@ -23,6 +24,7 @@ const ProfileTextField = (props: {
   text: string;
   charLimit: number;
   handleSave: (text: string) => void;
+  variant?: TextFieldVariants | undefined;
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
@@ -47,7 +49,7 @@ const ProfileTextField = (props: {
       label={props.label}
       placeholder={props.placeholder}
       InputLabelProps={{ shrink: true }}
-      variant={"standard"}
+      variant={props.variant ? props.variant : "standard"}
       InputProps={{
         endAdornment: editMode ? (
           <Box paddingLeft={2}>
@@ -101,7 +103,7 @@ const ProfileTextField = (props: {
             borderColor: "primary.main",
           },
           "& .Mui-disabled": {
-            WebkitTextFillColor: "#000000",
+            WebkitTextFillColor: "text.main",
           },
         },
       }}
