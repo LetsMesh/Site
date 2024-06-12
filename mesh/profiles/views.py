@@ -18,7 +18,6 @@ from mesh.exceptions.InvalidJsonFormat import InvalidJsonFormat
 import os
 import uuid
 import json
-import imghdr
 from urllib.parse import urlparse
 from requests.exceptions import HTTPError
 from b2sdk.v1 import B2Api, InMemoryAccountInfo, UploadSourceBytes
@@ -127,11 +126,7 @@ class ProfilePicturesView(View):
             profile.profilePicture = image_link
             profile.save()
 
-            request_response = json.dumps(
-                {"profileID": profile.accountID.accountID, "profilePicture": image_link}
-            )
-
-            return JsonResponse(request_response, status=201, safe=False)
+            return JsonResponse({"profileID": profile.accountID.accountID, "profilePicture": image_link}, status=201, safe=False)
 
         except MultiValueDictKeyError:
             return JsonResponse({"error": "Missing required JSON fields."}, status=400)
@@ -174,7 +169,7 @@ class ProfilePicturesView(View):
 
             if check_if_file_is_not_image(image_file):
                 return JsonResponse(
-                    {"error": "Uplodaed file is not an image."}, status=400
+                    {"error": "Uploaded file is not an image."}, status=400
                 )
 
             image_file = image_file.read()
@@ -207,11 +202,7 @@ class ProfilePicturesView(View):
             profile.profilePicture = image_link
             profile.save()
 
-            request_response = json.dumps(
-                {"profileID": profile.accountID.accountID, "profilePicture": image_link}
-            )
-
-            return JsonResponse(request_response, status=200, safe=False)
+            return JsonResponse({"profileID": profile.accountID.accountID, "profilePicture": image_link}, status=200, safe=False)
 
         except MultiValueDictKeyError:
             return JsonResponse({"error": "Missing required JSON fields."}, status=400)
@@ -391,7 +382,7 @@ def generate_image_url(file_name):
 # ensure uploaded file is an image
 def check_if_file_is_not_image(file):
     ACCEPTED_FILE_TYPES = ["jpeg", "jpg", "png"]
-    file_type = imghdr.what(file)
+    file_type = file.name.split(".")[-1].lower()
 
     if file_type not in ACCEPTED_FILE_TYPES:
         return True
