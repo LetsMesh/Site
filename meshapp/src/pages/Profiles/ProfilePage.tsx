@@ -314,7 +314,6 @@ const ProfileEducation = (props: { education: Education }) => {
   //The accordions already handle editing in terms of local changes without saving,
   //so this edit handler is only for saving on the backend
 
-  //currently does nothing but will be tied to the edit idit icon
   const editEducationHandler = (accordionId: number) => {
     return () => {
       //Insert API actions here
@@ -322,8 +321,6 @@ const ProfileEducation = (props: { education: Education }) => {
   };
 
   //This delete handler should handle deletion on on the backend and locally
-
-  //currently doesn't do anything on backend but will delete locally
   const deleteEducationHandler = (accordionId: number) => {
     return () => {
       //Insert API actions here
