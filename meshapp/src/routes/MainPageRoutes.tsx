@@ -3,12 +3,12 @@ import { paths } from "./route-paths";
 import { PageLayout } from "../components/Layout";
 import HomePage from "../pages/Home/Page";
 import { Link } from "@mui/material";
-import SignUp from "src/pages/SignUp";
-import Login from "src/pages/Login";
+import SignUp from "src/pages/SignUp/Page";
+import Login from "src/pages/Login/Page";
 import PasswordReset from "src/components/AuthForms/ForgotPasswordForm";
-import ProfilePage from "src/pages/Profiles/ProfilePage";
+import ProfilePage from "src/pages/Profiles/Page";
 import { exampleProfile } from "src/pages/Profiles/tests/profile-examples";
-import Swiper from "src/pages/Swiping";
+import Swiper from "src/pages/Swiping/Page";
 // import SettingPage from "../pages/setting";
 // import MessagePage from "../pages/messaging";
 

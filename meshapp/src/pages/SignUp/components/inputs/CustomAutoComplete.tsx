@@ -6,7 +6,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
-import { IFormInput } from "../..";
+import { IFormInput } from "../../Page";
 import ErrorIcon from "@mui/icons-material/Error";
 
 //takes in boolean stating whether its required or not,

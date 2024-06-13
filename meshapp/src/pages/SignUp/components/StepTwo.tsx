@@ -10,8 +10,9 @@ import {
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import SyncIcon from "@mui/icons-material/Sync";
 import { useState } from "react";
-import { IFormInput } from "..";
+
 import { useFormContext } from "react-hook-form";
+import { IFormInput } from "../Page";
 
 const modalStyle = {
   position: "absolute",
