@@ -2,7 +2,7 @@ import { Grid, Typography, Avatar, Button, Tooltip } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import { useFormContext } from "react-hook-form";
-import { IFormInput } from "..";
+import { IFormInput } from "../Page";
 import React, { useState } from "react";
 import CustomStandardTextField from "./inputs/CustomStandardTextField";
 import CustomAutoComplete from "./inputs/CustomAutoComplete";
