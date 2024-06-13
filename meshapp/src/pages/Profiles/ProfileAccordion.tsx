@@ -9,10 +9,19 @@ import {
   groupAccordionState,
   setGroupAccordionState,
 } from "./ProfileGroupAccordion";
-import { Box, Grid } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Modal,
+  Stack,
+  Button,
+  Typography,
+} from "@mui/material";
+
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-
+import { Delete } from "@mui/icons-material";
 /**
  * A React Component that returns an accordion with two comboboxes and a description textfield.
  * Provides editing capabilities for these inputs.
@@ -20,11 +29,11 @@ import SaveIcon from "@mui/icons-material/Save";
  * Used in Profile Group Accordion (src/profile/ProfileGroupAccordion.tsx)
  *
  * @param props - Properties of the component
+ * @param {string} props.accordionId - number representing ID of this accordion
  * @param {string} props.comboOneVal - value for the first combobox within the accordion, passed down from group state array data
  * @param {string} props.comboTwoVal - value for the second combobox within the accordion, passed down from group state array data
  * @param {string} props.descPlaceholder - placeholder for description textfield
  * @param {string} props.descText - value for description textfield, passed down from group state array data
- * @param {number} props.accordionIndex - index of this accordion within the group state array
  * @param {string} props.comboOneValPlaceholder - placeholder for comboOneVal combobox
  * @param {string} props.comboTwoValPlaceholder - placeholder for comboTwoVal combobox
  * @param {Array<string>} props.comboOneValOptions - list of options to be provided to comboOneVal combobox
@@ -32,16 +41,21 @@ import SaveIcon from "@mui/icons-material/Save";
  * @param {Array<function>} props.comboOneValErrValidations - an array of functions to evaluate the first combo box value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Array<function>} props.comboTwoValErrValidations - an array of functions to evaluate the second combobox value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Array<function>} props.descErrValidations - an array of functions to evaluate the description text value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
- * @param {groupState} props.groupState - the group accordion state data for all accordions
+ * @param {Function} props.editTaskHandler = handler function that takes in an accordion's id and returns a function for editing on backend
+ * @param {Function} props.deleteTaskHandler - handler function that takes in an accordion's id and returns a function that deletes on both backend and locally
+ *  @param {groupState} props.groupState - the group accordion state data for all accordions
  * @param {setGroupState} props.setGroupState - the group accordion state setter method
  * @param {boolean} props.alwaysOpen - if this is set true, then the accordion will be permanently open and the expand icon will disappear
- */
+ * @param {Function} props.editHandler - function for saving edit on backend (is optional since this component can be used for adding or editing/deleting accordion)
+ * @param {Function} props.deleteHandler - function for deleting on backend (is optional since this component can be used for adding or editing/deleting accordion)
+ 
+*/
 export default function ProfileAccordion(props: {
   comboOneVal: string;
   comboTwoVal: string;
   descPlaceholder: string;
   descText: string;
-  accordionIndex: number;
+  accordionId: number;
   comboOneValPlaceholder: string;
   comboTwoValPlaceholder: string;
   comboOneValOptions: Array<string>;
@@ -52,6 +66,8 @@ export default function ProfileAccordion(props: {
   groupState: groupAccordionState;
   setGroupState: setGroupAccordionState;
   alwaysOpen?: boolean;
+  editHandler?: Function;
+  deleteHandler?: Function;
 }) {
   //controls whether accordion is expanded to show description or not
   const [expanded, setExpanded] = React.useState<boolean>(false);
@@ -62,8 +78,32 @@ export default function ProfileAccordion(props: {
   const handleEditClick = () => {
     setEditMode(true);
   };
+
+  //also handles saving edit on backend, if the handler exists
   const handleSaveClick = () => {
     setEditMode(false);
+    if (props.editHandler) {
+      props.editHandler();
+    }
+  };
+
+  //Delete Confirmation
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
+  const openDeleteConfirmModal = () => setDeleteConfirmOpen(true);
+  const closeDeleteConfirmModal = () => setDeleteConfirmOpen(false);
+
+  const deleteIconClickHandler = () => {
+    //pops up delete confirmation modal
+    openDeleteConfirmModal();
+  };
+
+  //when user confirms they want to delete
+  const confirmDeleteHandler = () => {
+    if (props.deleteHandler) {
+      props.deleteHandler();
+    }
+    closeDeleteConfirmModal();
   };
 
   const groupState = props.groupState;
@@ -85,15 +125,17 @@ export default function ProfileAccordion(props: {
     }
     //edit the first combo box value for the specific accordion, copy everything else
     setGroupState(
-      groupState.map((profileAccordion, index) => {
-        if (index === props.accordionIndex) {
+      groupState.map((profileAccordion) => {
+        if (profileAccordion.accordionId === props.accordionId) {
           return {
+            accordionId: props.accordionId,
             comboOneVal: newValue ? newValue : "",
             comboTwoVal: profileAccordion.comboTwoVal,
             descText: profileAccordion.descText,
           };
         }
         return {
+          accordionId: profileAccordion.accordionId,
           comboOneVal: profileAccordion.comboOneVal,
           comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
@@ -118,15 +160,17 @@ export default function ProfileAccordion(props: {
     }
     //edit the second combobox value for the specific accordion, copy everything else
     setGroupState(
-      groupState.map((profileAccordion, index) => {
-        if (index === props.accordionIndex) {
+      groupState.map((profileAccordion) => {
+        if (profileAccordion.accordionId === props.accordionId) {
           return {
+            accordionId: props.accordionId,
             comboOneVal: profileAccordion.comboOneVal,
             comboTwoVal: newValue ? newValue : "",
             descText: profileAccordion.descText,
           };
         }
         return {
+          accordionId: profileAccordion.accordionId,
           comboOneVal: profileAccordion.comboOneVal,
           comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
@@ -138,15 +182,17 @@ export default function ProfileAccordion(props: {
   //onChange handler for description
   const descOnChange = (newValue: string) => {
     setGroupState(
-      groupState.map((profileAccordion, index) => {
-        if (index === props.accordionIndex) {
+      groupState.map((profileAccordion) => {
+        if (profileAccordion.accordionId === props.accordionId) {
           return {
+            accordionId: props.accordionId,
             comboOneVal: profileAccordion.comboOneVal,
             comboTwoVal: profileAccordion.comboTwoVal,
             descText: newValue,
           };
         }
         return {
+          accordionId: profileAccordion.accordionId,
           comboOneVal: profileAccordion.comboOneVal,
           comboTwoVal: profileAccordion.comboTwoVal,
           descText: profileAccordion.descText,
@@ -156,92 +202,150 @@ export default function ProfileAccordion(props: {
   };
 
   return (
-    <Accordion
-      expanded={props.alwaysOpen ? props.alwaysOpen : expanded}
-      sx={{
-        "&.MuiAccordion-root": {
-          margin: 0,
-        },
-      }}
-    >
-      <AccordionSummary
-        expandIcon={
-          props.alwaysOpen ? null : <ExpandMoreFilled onClick={toggleExpand} />
-        }
+    <>
+      {/*Modal for confirming deletion*/}
+      <Modal
+        open={deleteConfirmOpen}
+        onClose={closeDeleteConfirmModal}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        {/*First combobox */}
-        <Box sx={{ width: "33%", flexShrink: 0 }}>
-          <ProfileAccordionComboBox
-            value={props.comboOneVal}
-            disabled={!editMode}
-            placeholderText={props.comboOneValPlaceholder}
-            options={props.comboOneValOptions}
-            onChange={comboOneValOnChange}
-            errValidations={props.comboOneValErrValidations}
-          />
-        </Box>
-        {/*Second combobox */}
-        <ProfileAccordionComboBox
-          value={props.comboTwoVal}
-          disabled={!editMode}
-          placeholderText={props.comboTwoValPlaceholder}
-          options={props.comboTwoValOptions}
-          onChange={comboTwoValOnChange}
-          errValidations={props.comboTwoValErrValidations}
-        />
-        <Grid
-          xs={0.5}
-          display="flex"
-          flexDirection="row"
-          alignItems={"center"}
-          color={editMode ? "#0b7d66" : "#00000061"}
-          sx={{ marginRight: "8px" }}
+        <Stack
+          sx={{
+            width: "300px",
+            padding: 3,
+            borderRadius: 5,
+            backgroundColor: "white",
+            gap: "20px",
+          }}
         >
-          {
-            //conditional rendering for edit/save icons based on edit mode
-            editMode ? (
-              <SaveIcon
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleSaveClick();
-                }}
-                sx={{
-                  "&:hover": {
-                    color: "#0A6B57",
-                  },
-                  cursor: "pointer",
-                  transition: "color 0.15s ease-in-out",
-                }}
-              />
-            ) : (
-              <EditIcon
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleEditClick();
-                }}
-                sx={{
-                  "&:hover": {
-                    color: "#0b7d66",
-                  },
-                  cursor: "pointer",
-                  transition: "color 0.15s ease-in-out",
-                }}
-              />
+          <Typography variant="body1" sx={{ textAlign: "center" }}>
+            Are you sure you want to delete this?
+          </Typography>
+          <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={confirmDeleteHandler}
+            >
+              <Typography variant="button" sx={{ fontWeight: "600" }}>
+                Yes
+              </Typography>
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={closeDeleteConfirmModal}
+            >
+              <Typography variant="button" sx={{ fontWeight: "600" }}>
+                No
+              </Typography>
+            </Button>
+          </Container>
+        </Stack>
+      </Modal>
+      {/*Accordion*/}
+      <Accordion
+        expanded={props.alwaysOpen ? props.alwaysOpen : expanded}
+        sx={{
+          "&.MuiAccordion-root": {
+            margin: 0,
+          },
+        }}
+      >
+        <AccordionSummary
+          expandIcon={
+            props.alwaysOpen ? null : (
+              <ExpandMoreFilled onClick={toggleExpand} />
             )
           }
-        </Grid>
-      </AccordionSummary>
-      <AccordionDetails>
-        {/*Description Text Field */}
-        <ProfileAccordionTextField
-          label={"Description"}
-          placeholder={props.descPlaceholder}
-          text={props.descText}
-          accordionIndex={props.accordionIndex}
-          errValidations={props.descErrValidations}
-          onChange={descOnChange}
-        />
-      </AccordionDetails>
-    </Accordion>
+        >
+          {/*First combobox */}
+          <Box sx={{ width: "33%", flexShrink: 0 }}>
+            <ProfileAccordionComboBox
+              value={props.comboOneVal}
+              disabled={!editMode}
+              placeholderText={props.comboOneValPlaceholder}
+              options={props.comboOneValOptions}
+              onChange={comboOneValOnChange}
+              errValidations={props.comboOneValErrValidations}
+            />
+          </Box>
+          {/*Second combobox */}
+          <ProfileAccordionComboBox
+            value={props.comboTwoVal}
+            disabled={!editMode}
+            placeholderText={props.comboTwoValPlaceholder}
+            options={props.comboTwoValOptions}
+            onChange={comboTwoValOnChange}
+            errValidations={props.comboTwoValErrValidations}
+          />
+          <Grid
+            xs={0.5}
+            display="flex"
+            flexDirection="row"
+            alignItems={"center"}
+            color={editMode ? "#0b7d66" : "#00000061"}
+            sx={{ marginRight: "8px" }}
+          >
+            {
+              //conditional rendering for edit/save icons based on edit mode
+              editMode ? (
+                <SaveIcon
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleSaveClick();
+                  }}
+                  sx={{
+                    "&:hover": {
+                      color: "#0A6B57",
+                    },
+                    cursor: "pointer",
+                    transition: "color 0.15s ease-in-out",
+                  }}
+                />
+              ) : (
+                <EditIcon
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleEditClick();
+                  }}
+                  sx={{
+                    "&:hover": {
+                      color: "#0b7d66",
+                    },
+                    cursor: "pointer",
+                    transition: "color 0.15s ease-in-out",
+                  }}
+                />
+              )
+            }
+
+            {props.deleteHandler ? (
+              <Delete
+                onClick={deleteIconClickHandler}
+                sx={{
+                  "&:hover": {
+                    color: "error.main",
+                  },
+                  cursor: "pointer",
+                  transition: "color 0.15s ease-in-out",
+                }}
+              />
+            ) : null}
+          </Grid>
+        </AccordionSummary>
+        <AccordionDetails>
+          {/*Description Text Field */}
+          <ProfileAccordionTextField
+            label={"Description"}
+            placeholder={props.descPlaceholder}
+            text={props.descText}
+            errValidations={props.descErrValidations}
+            onChange={descOnChange}
+            editHandler={props.editHandler}
+          />
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 }

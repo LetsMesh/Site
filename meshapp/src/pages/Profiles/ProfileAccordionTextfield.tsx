@@ -15,17 +15,18 @@ import ErrorIcon from "@mui/icons-material/Error";
  * @param {string} props.label - The label
  * @param {string} props.placeholder - The placeholder text
  * @param {string} props.text - The state text value from the group accordion state for the corresponding description
- * @param {number} props.accordionIndex - The index of the current Profile Accordion
  * @param {function} props.onChange - function that takes in a new text value to change the corresponding state entry
  * @param {Array<function>} props.errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
- */
+ * @param {Function} props.editHandler - function for saving edit on backend (is optional since this component can be used for adding or editing/deleting accordion)
+ 
+*/
 const ProfileAccordionTextField = (props: {
   label: string;
   placeholder: string;
   text: string;
-  accordionIndex: number;
   onChange: (newValue: string) => void;
   errValidations: Array<(value: string) => boolean | string>;
+  editHandler?: Function;
 }) => {
   //used to set edit mode
   const [editMode, setEditMode] = useState(false);
@@ -63,11 +64,15 @@ const ProfileAccordionTextField = (props: {
   };
 
   //for toggling edit mode
+  //also handles saving edit on backend, if the handler exists
   const handleEditClick = () => {
     setEditMode(true);
   };
   const handleSaveClick = () => {
     setEditMode(false);
+    if (props.editHandler) {
+      props.editHandler();
+    }
   };
 
   //for toggling whether to display error or not
