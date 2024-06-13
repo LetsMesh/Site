@@ -78,28 +78,30 @@ const LoginScreen = (props: ComponentProps) => {
     }
   };
 
-  const handleLogin = async () => {
-    if (formData.user !== null && formData.pass !== null) {
-      const response = await login(formData.user, formData.pass);
-      if (!response || response.status !== 200) {
-        // Handle login error
-        toast.error("Invalid credentials");
-        return;
-      }
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.user && formData.pass) {
+      try {
+        const response = await login(formData.user, formData.pass);
+        if (!response || response.status !== 200) {
+          toast.error("Invalid credentials");
+          return;
+        }
 
-      if (response.data.account?.settings?.is2FAEnabled) {
-        await handleTwoFactorAuth(response.data.user_id);
-      } else {
-        navigate("/");
-      }
+        if (response.data.account?.settings?.is2FAEnabled) {
+          await handleTwoFactorAuth(response.data.user_id);
+        } else {
+          navigate("/");
+        }
 
-      // Handle response here. For example, store the user data in the state or context.
-      setAccount(response.data.account);
+        setAccount(response.data.account);
+      } catch (err) {
+        toast.error("Login failed");
+      }
     } else {
       toast.error("Invalid credentials");
     }
   };
-
   useEffect(() => {}, [isLoading]);
 
   return (
@@ -117,39 +119,41 @@ const LoginScreen = (props: ComponentProps) => {
         </Typography>
       </GridItem>
       <GridItem sx={{ width: "90%" }}>
-        <Stack spacing={2}>
-          <TextField
-            id="user"
-            type="text"
-            onChange={handleChange}
-            label="Email"
-            color="info"
-          />
-          <TextField
-            id="pass"
-            type="password"
-            onChange={handleChange}
-            label="Password"
-            color="info"
-          />
-          {isLoading ? (
-            <LoadingProgress />
-          ) : (
-            <Button
-              variant="contained"
-              color="success"
-              sx={{
-                width: "100%",
-                fontSize: "16px",
-                alignSelf: "center",
-                textTransform: "none",
-              }}
-              onClick={handleLogin}
-            >
-              Log in
-            </Button>
-          )}
-        </Stack>
+        <form onSubmit={handleLogin}>
+          <Stack spacing={2}>
+            <TextField
+              id="user"
+              type="text"
+              onChange={handleChange}
+              label="Email"
+              color="info"
+            />
+            <TextField
+              id="pass"
+              type="password"
+              onChange={handleChange}
+              label="Password"
+              color="info"
+            />
+            {isLoading ? (
+              <LoadingProgress />
+            ) : (
+              <Button
+                variant="contained"
+                color="success"
+                sx={{
+                  width: "100%",
+                  fontSize: "16px",
+                  alignSelf: "center",
+                  textTransform: "none",
+                }}
+                type="submit"
+              >
+                Log in
+              </Button>
+            )}
+          </Stack>
+        </form>
       </GridItem>
 
       <Grid item xs sx={{ textAlign: "center", alignItems: "center" }}>
