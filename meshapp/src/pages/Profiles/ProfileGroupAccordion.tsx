@@ -80,6 +80,7 @@ export function ProfileGroupAccordion(props: {
         {props.groupAccordState.map((accordArgs) => {
           return (
             <ProfileAccordion
+              key={accordArgs.accordionId}
               accordionId={accordArgs.accordionId}
               comboOneVal={accordArgs.comboOneVal}
               comboTwoVal={accordArgs.comboTwoVal}
