@@ -1,17 +1,20 @@
 # mesh/conversation/views.py
-from django.shortcuts import get_object_or_404
-
-import json
-from django.http import JsonResponse, HttpResponseBadRequest
+# Django
+from django.http import JsonResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.decorators.http import require_GET
 from django.views import View
+from django.core.exceptions import ValidationError
 
+# Libraries
+import json
+
+# Models
 from .models import Conversation, Message, ConversationParticipant
 from ..accounts.models import Account
-from ..profiles.models import Profile
+
+# Utils
 from ..utils.validate_data import validate_json_and_required_fields
-from django.core.exceptions import ValidationError
 
 class ConversationsView(View):
     def post(self, request):

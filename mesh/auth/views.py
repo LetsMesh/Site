@@ -1,10 +1,15 @@
 # in auth folder: views.py  (auth.views)
 
-import json
+# Django
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout
 from django.views.decorators.http import require_POST,require_GET
 from django.views.decorators.csrf import ensure_csrf_cookie
+
+# Libraries
+import json
+
+# Models
 from mesh.accounts.models import Account
 from .backend import AccountAuthenticationBackend
 

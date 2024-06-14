@@ -1,10 +1,15 @@
+# Django
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
+# Models
 from ..accounts.models import Account
 from ..accountSettings.models import Settings
 from ..profiles.models import Profile
+
+# Libraries
 import secrets
 import os
 import time
