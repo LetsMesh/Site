@@ -36,6 +36,7 @@ export const darkTheme = createTheme({
       primary: "#F1E8DF",
       secondary: "#F2E8DE",
       disabled: "#F2E8DE61",
+      main:"#F2E8DE"
     },
     messageBackground: {
       main: "#247C67",
@@ -52,7 +53,7 @@ export const darkTheme = createTheme({
     signUpDivider: {
       main: "#F1E8DF",
     },
-    profilePicEdit: {
+    buttonBackground: {
       main: "#247C67",
     },
   },

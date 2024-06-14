@@ -80,7 +80,7 @@ const ProfilePicture = (props: { image: string; accountID: number }) => {
       </Box>
       <Box
         className="profile-page-picture-icon-container"
-        sx={{ backgroundColor: "profilePicEdit.main" }}
+        sx={{ backgroundColor: "buttonBackground.main" }}
       >
         <EditIcon sx={{ width: "26px", height: "26px" }} />
         {open && (
@@ -217,10 +217,10 @@ const ProfilePictureEdit = (props: any) => {
         alignItems="center"
         sx={{
           padding: "0 5px",
-          backgroundColor: "profilePicEdit.main",
+          backgroundColor: "buttonBackground.main",
           "::after": {
             borderColor: "transparent",
-            borderLeftColor: "profilePicEdit.main",
+            borderLeftColor: "buttonBackground.main",
           },
         }}
         onClick={handleOptionClick}

@@ -1,4 +1,5 @@
 import { PaletteColor, PaletteColorOptions } from "@mui/material";
+import { TypeText } from '@mui/material/styles';
 declare module "@mui/material/styles" {
   interface Theme {}
   interface ThemeOptions {}
@@ -13,7 +14,7 @@ declare module "@mui/material/styles" {
     footerLogoColor?: PalleteColor;
     mailIconColor?: PaletteColor;
     signUpDivider?: PaletteColor;
-    profilePicEdit?: PaletteColor;
+    buttonBackground?: PaletteColor;
   }
 
   interface PaletteOptions {
@@ -27,10 +28,10 @@ declare module "@mui/material/styles" {
     footerLogoColor?: PalleteColorOptions;
     mailIconColor?: PaletteColorOptions;
     signUpDivider?: PaletteColorOptions;
-    profilePicEdit?: PaletteColorOptions;
+    buttonBackground?: PaletteColorOptions;
+  }
 
-    text: {
-      main?: string;
-    };
+  interface TypeText {
+    main?: string;
   }
 }

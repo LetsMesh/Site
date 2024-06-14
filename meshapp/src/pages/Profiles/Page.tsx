@@ -419,7 +419,7 @@ const ProfileInterests = () => {
       <Typography
         variant="h1"
         sx={{
-          color: "text.main",
+          color: "text.primary",
           fontFamily: "cocogoose",
           fontWeight: "bold",
           marginBottom: "15px",
