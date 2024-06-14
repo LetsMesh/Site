@@ -234,6 +234,7 @@ export default function ProfileAccordion(props: {
                 variant="button"
                 sx={{
                   fontWeight: "600",
+                  color:"white"
                 }}
               >
                 Yes
@@ -244,7 +245,7 @@ export default function ProfileAccordion(props: {
               color="error"
               onClick={closeDeleteConfirmModal}
             >
-              <Typography variant="button" sx={{ fontWeight: "600" }}>
+              <Typography variant="button" sx={{ fontWeight: "600", color:"white" }}>
                 No
               </Typography>
             </Button>
