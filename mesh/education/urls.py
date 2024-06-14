@@ -8,6 +8,5 @@ urlpatterns = [
     path('', education_views.EducationView.as_view(), name="education"),
 
     # GET   /educations/:account_id/
-    path("<int:account_id>/", education_views.EducationsDetailView.as_view(),
-    name="user_educations")
+    path("<int:account_id>/", education_views.EducationsDetailView.as_view(), name="user_educations")
 ]
