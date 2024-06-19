@@ -10,7 +10,7 @@ import {
 
 import ProfileTextField from "./ProfileTextfield";
 import ProfilePicture from "./ProfilePicture";
-import { Education, Profile } from "src/models/profile";
+import { Education, Experience, Profile } from "src/models/profile";
 import ProfileInterestsComponent from "./ProfileInterests";
 import "./styling/ProfilePage.css";
 import { ProfileGroupAccordion } from "./ProfileGroupAccordion";
@@ -50,6 +50,7 @@ const theme = createTheme({
  * @param {boolean} props.isMentor - Flag indicating whether the user is a mentor
  * @param {boolean} props.isMentee - Flag indicating whether the user is a mentee
  * @param {Education} props.education - an array containing objects that each contain a degree,school, and description
+ * @param {Experience} props.experience - an array contains objects that each contain a occupation name, organization, and description
  * @param {number} props.accountID - ID of Profile account
  */
 
@@ -109,7 +110,7 @@ const ProfilePage = (props: Profile) => {
         <Grid container>
           <Grid item xs={9}>
             <Box sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
-              <ProfileExperience />
+              <ProfileExperience experience={props.experience} />
             </Box>
             <Box>
               <ProfileEducation education={props.education} />
@@ -258,8 +259,84 @@ const ProfileRole = (props: { isMentor: boolean; isMentee: boolean }) => {
   );
 };
 
-// TODO: To be fully implemented
-const ProfileExperience = (props: any) => {
+/**
+ * Displays the user's Experience history (occupation name, organization, description  )
+ *
+ * @param props - Properties of the component
+ * @param {Experience} props.experience - Array of objects that each represent a single occupation
+ *
+ */
+const ProfileExperience = (props: { experience: Experience }) => {
+  //starting error validation functions
+  const isEmpty = (inputName: string) => (val: string) =>
+    val.length > 0 || `${inputName} cannot be empty.`;
+  const whiteSpace = (inputName: string) => (val: string) =>
+    val.trim() === val ||
+    `${inputName} cannot have whitespace at beginning or end.`;
+  const charLimit = (inputName: string) => (val: string) =>
+    val.length < 100 || `${inputName} cannot be longer than 100 characters.`;
+
+  //state for Experience array
+  //for now id will just be index
+  const [experienceData, setExperienceData] = useState(
+    props.experience.map((currentEd, index) => {
+      return {
+        accordionId: index,
+        comboOneVal: currentEd.name,
+        comboTwoVal: currentEd.organization,
+        descText: currentEd.description,
+      };
+    })
+  );
+
+  //Edit and Delete education accordion handlers,
+  // takes in id number and returns a function that edits/deletes an experience accordion with that id
+
+  //The accordions already handle editing in terms of local changes without saving,
+  //so this edit handler is only for saving on the backend
+
+  const editExperienceHandler = (accordionId: number) => {
+    return () => {
+      //Insert API actions here
+    };
+  };
+
+  //This delete handler should handle deletion on on the backend and locally
+  const deleteExperienceHandler = (accordionId: number) => {
+    return () => {
+      //Insert API actions here
+
+      //local deletion
+      setExperienceData((prevExpData) =>
+        prevExpData.filter((edu) => edu.accordionId !== accordionId)
+      );
+    };
+  };
+
+  //handler for adding new accordion
+  //should handle adding on both backend and locally
+
+  const addExperienceHandler = (
+    degree: string,
+    school: string,
+    desc: string
+  ) => {
+    //insert API actions here
+
+    //local addition
+    //ideally we should get getting a new ID from the backend for this education to insert
+    //for now we'll just use current array length
+
+    setExperienceData((prevExpData) => [
+      ...prevExpData,
+      {
+        accordionId: experienceData.length,
+        comboOneVal: degree,
+        comboTwoVal: school,
+        descText: desc,
+      },
+    ]);
+  };
   return (
     <ThemeProvider theme={theme}>
       <Box className="profile-page-column-body">
@@ -272,7 +349,30 @@ const ProfileExperience = (props: any) => {
         >
           Experience
         </Typography>
-        <TestComponent />
+        <ProfileGroupAccordion
+          groupAccordState={experienceData}
+          setGroupAccordState={setExperienceData}
+          editAccordHandler={editExperienceHandler}
+          deleteAccordHandler={deleteExperienceHandler}
+          comboOneValPlaceholder="Occupation Name"
+          comboTwoValPlaceholder="Occupation Organization"
+          comboOneValOptions={["Clown", "Barista", "Jeffrey Dahmer"]}
+          comboTwoValOptions={["Mesh", "McDonalds", "Self-Employed"]}
+          descPlaceholder="Enter a description here"
+          comboOneValErrValidations={[
+            isEmpty("Occupation Name"),
+            whiteSpace("Occupation Name"),
+          ]}
+          comboTwoValErrValidations={[
+            isEmpty("Occupation Organization"),
+            whiteSpace("Occupation Organization"),
+          ]}
+          descErrValidations={[
+            whiteSpace("Description"),
+            charLimit("Description"),
+          ]}
+          addAccordHandler={addExperienceHandler}
+        />
       </Box>
     </ThemeProvider>
   );

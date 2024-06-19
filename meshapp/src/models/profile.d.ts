@@ -10,6 +10,7 @@ export type Profile = {
   isMentee: boolean;
   biography: string;
   education: Education;
+  experience: Experience;
   accountID: number;
 };
  
@@ -25,6 +26,11 @@ export type Education = Array<{
   description: string;
 }>;
 
+export type Experience = Array<{
+  name: string;
+  organization: string;
+  description: string;
+}>;
 // TODO: Include Experience and Education props as they get implemented
 //        Maybe separate these into their own types?
 
