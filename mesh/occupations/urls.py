@@ -9,6 +9,5 @@ urlpatterns = [
     path("", occupation_views.OccupationsView.as_view(), name="occupations"),
 
     # GET /occupations/:account_id
-    path("<int:account_id>/", occupation_views.OccupationsDetailView.as_view(), 
-    name="user_occupations")
+    path("<int:account_id>/", occupation_views.OccupationsDetailView.as_view(), name="user_occupations")
 ]
