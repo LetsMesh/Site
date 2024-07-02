@@ -23,6 +23,18 @@ export const exampleProfile: Profile = {
       description: "very clown",
     },
   ],
+  experience: [
+    {
+      name: "clown",
+      organization: "me",
+      description: "i blow up balloon animals for a living.",
+    },
+    {
+      name: "random job",
+      organization: "random organization",
+      description: "i sit in a 4 by 4 foot cubicle",
+    },
+  ],
 };
 
 export const exampleProfile2: Profile = {
@@ -41,6 +53,13 @@ export const exampleProfile2: Profile = {
       degree: "High School Diploma",
       school: "Generic High School",
       description: "a really boring high school",
+    },
+  ],
+  experience: [
+    {
+      name: "great job",
+      organization: "great job organization",
+      description: "hi",
     },
   ],
 };
