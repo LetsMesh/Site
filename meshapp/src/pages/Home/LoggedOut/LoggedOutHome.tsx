@@ -8,7 +8,7 @@ import LoginWindow from "src/components/AuthForms/LoginForm";
 const LoggedOutHome = () => {
   const theme = useTheme();
   return (
-    <GridContainer sx={{ margin: "0", padding: "0px", color: "text.main" }}>
+    <GridContainer sx={{ margin: "0", padding: "0px", color: "text.main" }} >
       {/*-------------------------------Login Bubble--------------------------------------*/}
       <GridContainer
         sx={{

@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  TextField,
-  Box,
-  ThemeProvider,
-  Typography,
-  Grid,
-  createTheme,
-} from "@mui/material";
+import { useState } from "react";
+import { TextField, Box, Typography, Grid } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -28,21 +21,6 @@ import MuiAlert from "@mui/material/Alert";
  * @param {number} props.charLimit - The max number of characters allowed
  * @param {string} props.fontSize - The font size
  */
-const theme = createTheme({
-  palette: {
-    mode: "light",
-    primary: {
-      main: "#0b7d66",
-    },
-  },
-  typography: {
-    h1: {
-      fontFamily: "cocogoose",
-      fontWeight: "bold",
-      color: "#26383A",
-    },
-  },
-});
 
 const ProfileHeader = (props: {
   label: string;
@@ -85,7 +63,7 @@ const ProfileHeader = (props: {
 
   // Return
   return editMode ? (
-    <ThemeProvider theme={theme}>
+    <>
       <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
         <Typography
           variant="h1"
@@ -93,6 +71,7 @@ const ProfileHeader = (props: {
             lineHeight: 1,
             display: "inline",
             fontSize: props.fontSize,
+            color: "text.main",
           }}
         >
           <TextField
@@ -116,10 +95,10 @@ const ProfileHeader = (props: {
           />
         </Typography>
       </Box>
-    </ThemeProvider>
+    </>
   ) : (
     // View Mode
-    <ThemeProvider theme={theme}>
+    <>
       <Box sx={{ pl: "40px", display: "flex", alignItems: "flex-end" }}>
         <Grid container alignItems="flex-end">
           <Box
@@ -134,6 +113,9 @@ const ProfileHeader = (props: {
                 lineHeight: 1,
                 display: "inline",
                 fontSize: props.fontSize,
+                color: "text.main",
+                fontFamily: "cocogoose",
+                fontWeight: "bold",
               }}
             >
               {text}
@@ -167,7 +149,7 @@ const ProfileHeader = (props: {
           empty, or exceed character limit of 15 or 8.
         </MuiAlert>
       </Snackbar>
-    </ThemeProvider>
+    </>
   );
 };
 
