@@ -214,20 +214,29 @@ export default function ProfileAccordion(props: {
             width: "300px",
             padding: 3,
             borderRadius: 5,
-            backgroundColor: "white",
+            backgroundColor: "cardBackground.main",
             gap: "20px",
           }}
         >
-          <Typography variant="body1" sx={{ textAlign: "center" }}>
+          <Typography
+            variant="body1"
+            sx={{ textAlign: "center", color: "text.main" }}
+          >
             Are you sure you want to delete this?
           </Typography>
           <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
             <Button
               variant="contained"
-              color="primary"
               onClick={confirmDeleteHandler}
+              sx={{ backgroundColor: "buttonBackground.main" }}
             >
-              <Typography variant="button" sx={{ fontWeight: "600" }}>
+              <Typography
+                variant="button"
+                sx={{
+                  fontWeight: "600",
+                  color:"white"
+                }}
+              >
                 Yes
               </Typography>
             </Button>
@@ -236,7 +245,7 @@ export default function ProfileAccordion(props: {
               color="error"
               onClick={closeDeleteConfirmModal}
             >
-              <Typography variant="button" sx={{ fontWeight: "600" }}>
+              <Typography variant="button" sx={{ fontWeight: "600", color:"white" }}>
                 No
               </Typography>
             </Button>
@@ -249,6 +258,8 @@ export default function ProfileAccordion(props: {
         sx={{
           "&.MuiAccordion-root": {
             margin: 0,
+            backgroundColor: "cardBackground.main",
+            backgroundImage: "none",
           },
         }}
       >
@@ -284,8 +295,7 @@ export default function ProfileAccordion(props: {
             display="flex"
             flexDirection="row"
             alignItems={"center"}
-            color={editMode ? "#0b7d66" : "#00000061"}
-            sx={{ marginRight: "8px" }}
+            sx={{ marginRight: "8px", color: "text.disabled" }}
           >
             {
               //conditional rendering for edit/save icons based on edit mode

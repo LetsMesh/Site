@@ -34,6 +34,12 @@ export const lightTheme = createTheme({
       disabled: "#00000061",
       disabledBackground: "#0000001F",
     },
+    text: {
+      primary: "#000000DE",
+      secondary: "#00000099",
+      disabled: "#00000061",
+      main:"#26383A"
+    },
     messageBackground: {
       main: "#74D194",
     },
@@ -48,6 +54,9 @@ export const lightTheme = createTheme({
     },
     signUpDivider: {
       main: "#000000",
+    },
+    buttonBackground: {
+      main: "#74D194",
     },
   },
   components: {

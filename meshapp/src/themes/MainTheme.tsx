@@ -13,11 +13,10 @@ const getDesignTokens = (mode: PaletteMode) => ({
   },
   typography: {
     fontFamily: [
-      "Cocogoose",
+      "Roboto",
       "-apple-system",
       "BlinkMacSystemFont",
       '"Segoe UI"',
-      "Roboto",
       '"Helvetica Neue"',
       "Arial",
       "sans-serif",

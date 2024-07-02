@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Grid,
-  Typography,
-  createTheme,
-  ThemeProvider,
-  Chip,
-} from "@mui/material";
+import { Box, Grid, Typography, Chip } from "@mui/material";
 
 import ProfileTextField from "./ProfileTextfield";
 import ProfilePicture from "./ProfilePicture";
@@ -17,24 +10,7 @@ import { ProfileGroupAccordion } from "./ProfileGroupAccordion";
 
 import { axiosInstance } from "src/config/axios-config";
 
-// New Imports
 import ProfileHeader from "./ProfileHeader";
-
-const theme = createTheme({
-  palette: {
-    mode: "light",
-    primary: {
-      main: "#0b7d66",
-    },
-  },
-  typography: {
-    h1: {
-      fontFamily: "cocogoose",
-      fontWeight: "bold",
-      color: "#26383A",
-    },
-  },
-});
 
 /**
  * A React component that renders a profile page.
@@ -55,8 +31,16 @@ const theme = createTheme({
 
 const ProfilePage = (props: Profile) => {
   return (
-    <Box className="profile-page-container">
-      <Box className="profile-page-header">
+    <Box
+      className="profile-page-container"
+      sx={{ backgroundColor: "cardBackground.main" }}
+    >
+      <Box
+        className="profile-page-header"
+        sx={{
+          backgroundColor: "secondary.main",
+        }}
+      >
         <ProfileHeader
           label={props.name}
           placeholder={"Nickname"}
@@ -72,7 +56,7 @@ const ProfilePage = (props: Profile) => {
           fontSize={"30px"}
         />
       </Box>
-      <Grid container sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
+      <Grid container sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Grid
           item
           xs={9}
@@ -108,7 +92,7 @@ const ProfilePage = (props: Profile) => {
       <Box sx={{ display: "flex", flexDirection: "row", minHeight: "100vh" }}>
         <Grid container>
           <Grid item xs={9}>
-            <Box sx={{ borderBottom: 1, borderColor: "#d9d9d9" }}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <ProfileExperience />
             </Box>
             <Box>
@@ -120,7 +104,7 @@ const ProfilePage = (props: Profile) => {
             xs={3}
             sx={{
               borderLeft: 1,
-              borderColor: "#d9d9d9",
+              borderColor: "divider",
             }}
           >
             <ProfileInterests />
@@ -151,13 +135,19 @@ const ProfileOccupation = (props: {
   occupationBusiness: string;
 }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-occupations">
-        <Typography variant="h1" sx={{ fontSize: "24px" }}>
-          {props.occupationTitle}, {props.occupationBusiness}
-        </Typography>
-      </Box>
-    </ThemeProvider>
+    <Box className="profile-page-occupations">
+      <Typography
+        variant="h1"
+        sx={{
+          fontSize: "24px",
+          fontFamily: "cocogoose",
+          fontWeight: "bold",
+          color: "text.main",
+        }}
+      >
+        {props.occupationTitle}, {props.occupationBusiness}
+      </Typography>
+    </Box>
   );
 };
 
@@ -209,17 +199,16 @@ const ProfileBiography = (props: { biography: string; accountID: number }) => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-biography">
-        <ProfileTextField
-          label={"Biography"}
-          placeholder={"Share your background and experiences"}
-          text={biography}
-          charLimit={300}
-          handleSave={saveBiography}
-        />
-      </Box>
-    </ThemeProvider>
+    <Box className="profile-page-biography">
+      <ProfileTextField
+        label={"Biography"}
+        placeholder={"Share your background and experiences"}
+        text={biography}
+        charLimit={300}
+        handleSave={saveBiography}
+        variant="outlined"
+      />
+    </Box>
   );
 };
 
@@ -261,20 +250,21 @@ const ProfileRole = (props: { isMentor: boolean; isMentee: boolean }) => {
 // TODO: To be fully implemented
 const ProfileExperience = (props: any) => {
   return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-column-body">
-        <Typography
-          variant="h1"
-          sx={{
-            marginBottom: "20px",
-            fontSize: "22px",
-          }}
-        >
-          Experience
-        </Typography>
-        <TestComponent />
-      </Box>
-    </ThemeProvider>
+    <Box className="profile-page-column-body">
+      <Typography
+        variant="h1"
+        sx={{
+          marginBottom: "20px",
+          fontSize: "22px",
+          fontFamily: "cocogoose",
+          fontWeight: "bold",
+          color: "text.main",
+        }}
+      >
+        Experience
+      </Typography>
+      <TestComponent />
+    </Box>
   );
 };
 
@@ -357,44 +347,45 @@ const ProfileEducation = (props: { education: Education }) => {
     ]);
   };
   return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-column-body">
-        <Typography
-          variant="h1"
-          sx={{
-            marginBottom: "20px",
-            fontSize: "22px",
-          }}
-        >
-          Education
-        </Typography>
-        <ProfileGroupAccordion
-          groupAccordState={educationData}
-          setGroupAccordState={setEducationData}
-          editAccordHandler={editEducationHandler}
-          deleteAccordHandler={deleteEducationHandler}
-          comboOneValPlaceholder="Level of Education"
-          comboTwoValPlaceholder="School"
-          comboOneValOptions={[
-            "High School Diploma",
-            "Associates Degree",
-            "Bachelors Degree",
-          ]}
-          comboTwoValOptions={["Cal Poly Pomona", "Mt. San Antonio College"]}
-          descPlaceholder="Enter a description here"
-          comboOneValErrValidations={[
-            isEmpty("Level of Education"),
-            whiteSpace("Level of Education"),
-          ]}
-          comboTwoValErrValidations={[isEmpty("School"), whiteSpace("School")]}
-          descErrValidations={[
-            whiteSpace("Description"),
-            charLimit("Description"),
-          ]}
-          addAccordHandler={AddEducationHandler}
-        />
-      </Box>
-    </ThemeProvider>
+    <Box className="profile-page-column-body">
+      <Typography
+        variant="h1"
+        sx={{
+          marginBottom: "20px",
+          fontSize: "22px",
+          fontFamily: "cocogoose",
+          fontWeight: "bold",
+          color: "text.main",
+        }}
+      >
+        Education
+      </Typography>
+      <ProfileGroupAccordion
+        groupAccordState={educationData}
+        setGroupAccordState={setEducationData}
+        editAccordHandler={editEducationHandler}
+        deleteAccordHandler={deleteEducationHandler}
+        comboOneValPlaceholder="Level of Education"
+        comboTwoValPlaceholder="School"
+        comboOneValOptions={[
+          "High School Diploma",
+          "Associates Degree",
+          "Bachelors Degree",
+        ]}
+        comboTwoValOptions={["Cal Poly Pomona", "Mt. San Antonio College"]}
+        descPlaceholder="Enter a description here"
+        comboOneValErrValidations={[
+          isEmpty("Level of Education"),
+          whiteSpace("Level of Education"),
+        ]}
+        comboTwoValErrValidations={[isEmpty("School"), whiteSpace("School")]}
+        descErrValidations={[
+          whiteSpace("Description"),
+          charLimit("Description"),
+        ]}
+        addAccordHandler={AddEducationHandler}
+      />
+    </Box>
   );
 };
 
@@ -421,24 +412,25 @@ const ProfileInterests = () => {
   ];
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box className="profile-page-column-body" sx={{ margin: "20px" }}>
-        <Typography
-          variant="h1"
-          sx={{
-            marginBottom: "15px",
-            fontSize: "26px",
-          }}
-        >
-          Interests
-        </Typography>
-        <ProfileInterestsComponent
-          currentTags={testCurrentSelected}
-          recommendedTags={testRecommended}
-          setTags={setTestCurrentSelected}
-        />
-      </Box>
-    </ThemeProvider>
+    <Box className="profile-page-column-body" sx={{ margin: "20px" }}>
+      <Typography
+        variant="h1"
+        sx={{
+          color: "text.primary",
+          fontFamily: "cocogoose",
+          fontWeight: "bold",
+          marginBottom: "15px",
+          fontSize: "26px",
+        }}
+      >
+        Interests
+      </Typography>
+      <ProfileInterestsComponent
+        currentTags={testCurrentSelected}
+        recommendedTags={testRecommended}
+        setTags={setTestCurrentSelected}
+      />
+    </Box>
   );
 };
 

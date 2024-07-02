@@ -17,3 +17,13 @@ code {
   font-family: "cocogoose";
   src: url("../public/fonts/cocogoose.ttf");
 }
+@font-face {
+  font-family: "Roboto";
+  src: url("../public/fonts/Roboto/Roboto-Regular.ttf");
+}
+
+/*need to do !important to override the set typography font families in main theme*/
+.font-cocogoose {
+  font-family: "Cocogoose", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"',
+    "Roboto", '"Helvetica Neue"', "Arial", "sans-serif" !important;
+}
