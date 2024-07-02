@@ -1,0 +1,54 @@
+name: Django CI
+
+on:
+  push:
+    paths:
+      [
+        "mesh/**",
+        "manage.py",
+        "Pipfile",
+        "Pipfile.lock",
+        ".github/workflows/**",
+      ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.11]
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: testrootpass
+          MYSQL_DATABASE: github-actions
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pipenv"
+      - name: Install pipenv
+        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+      - name: Install dependencies
+        run: pipenv install
+      - name: Run Tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_NAME: github-actions
+          DB_USER: root
+          DB_PASS: testrootpass
+          API_SECRET_KEY: testsecretkey
+        run: |
+          # Apply migrations and run tests
+          pipenv run python manage.py migrate
+          pipenv run python manage.py test --pattern="*_tests.py"
