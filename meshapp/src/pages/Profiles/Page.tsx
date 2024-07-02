@@ -10,7 +10,6 @@ import { ProfileGroupAccordion } from "./ProfileGroupAccordion";
 
 import { axiosInstance } from "src/config/axios-config";
 
-// New Imports
 import ProfileHeader from "./ProfileHeader";
 
 /**
@@ -251,7 +250,6 @@ const ProfileRole = (props: { isMentor: boolean; isMentee: boolean }) => {
 // TODO: To be fully implemented
 const ProfileExperience = (props: any) => {
   return (
-    // <ThemeProvider theme={theme}>
     <Box className="profile-page-column-body">
       <Typography
         variant="h1"
@@ -267,7 +265,6 @@ const ProfileExperience = (props: any) => {
       </Typography>
       <TestComponent />
     </Box>
-    // </ThemeProvider>
   );
 };
 
