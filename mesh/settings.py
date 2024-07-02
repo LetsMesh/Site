@@ -185,7 +185,7 @@ CHANNEL_LAYERS = {
 }
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'meshapp/build/static')
+    # os.path.join(BASE_DIR, 'meshapp/build/static')
 ]
 
 CORS_ALLOWED_ORIGINS = [
