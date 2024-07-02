@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { IFormInput } from "../..";
+import { IFormInput } from "../../Page";
 import {
   Grid,
   IconButton,

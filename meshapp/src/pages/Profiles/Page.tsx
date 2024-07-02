@@ -294,6 +294,68 @@ const ProfileEducation = (props: { education: Education }) => {
     `${inputName} cannot have whitespace at beginning or end.`;
   const charLimit = (inputName: string) => (val: string) =>
     val.length < 100 || `${inputName} cannot be longer than 100 characters.`;
+
+  //state for education array
+  //for now id will just be index
+  const [educationData, setEducationData] = useState(
+    props.education.map((currentEd, index) => {
+      return {
+        accordionId: index,
+        comboOneVal: currentEd.degree,
+        comboTwoVal: currentEd.school,
+        descText: currentEd.description,
+      };
+    })
+  );
+
+  //Edit and Delete education accordion handlers,
+  // takes in id number and returns a function that edits/deletes an education accordion with that id
+
+  //The accordions already handle editing in terms of local changes without saving,
+  //so this edit handler is only for saving on the backend
+
+  const editEducationHandler = (accordionId: number) => {
+    return () => {
+      //Insert API actions here
+    };
+  };
+
+  //This delete handler should handle deletion on on the backend and locally
+  const deleteEducationHandler = (accordionId: number) => {
+    return () => {
+      //Insert API actions here
+
+      //local deletion
+      setEducationData((prevEduData) =>
+        prevEduData.filter((edu) => edu.accordionId !== accordionId)
+      );
+    };
+  };
+
+  //handler for adding new accordion
+  //should handle adding on both backend and locally
+
+  const AddEducationHandler = (
+    degree: string,
+    school: string,
+    desc: string
+  ) => {
+    //insert API actions here
+
+    //local addition
+    //ideally we should get getting a new ID from the backend for this education to insert
+    //for now we'll just use current array length
+
+    setEducationData((prevEduData) => [
+      ...prevEduData,
+      {
+        accordionId: educationData.length,
+        comboOneVal: degree,
+        comboTwoVal: school,
+        descText: desc,
+      },
+    ]);
+  };
   return (
     <ThemeProvider theme={theme}>
       <Box className="profile-page-column-body">
@@ -307,13 +369,10 @@ const ProfileEducation = (props: { education: Education }) => {
           Education
         </Typography>
         <ProfileGroupAccordion
-          groupAccordArgs={props.education.map((currentEd) => {
-            return {
-              comboOneVal: currentEd.degree,
-              comboTwoVal: currentEd.school,
-              descText: currentEd.description,
-            };
-          })}
+          groupAccordState={educationData}
+          setGroupAccordState={setEducationData}
+          editAccordHandler={editEducationHandler}
+          deleteAccordHandler={deleteEducationHandler}
           comboOneValPlaceholder="Level of Education"
           comboTwoValPlaceholder="School"
           comboOneValOptions={[
@@ -332,6 +391,7 @@ const ProfileEducation = (props: { education: Education }) => {
             whiteSpace("Description"),
             charLimit("Description"),
           ]}
+          addAccordHandler={AddEducationHandler}
         />
       </Box>
     </ThemeProvider>

@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { IFormInput } from "../..";
+import { IFormInput } from "../../Page";
 import { InputAdornment, TextField, Tooltip } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
