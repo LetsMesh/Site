@@ -58,6 +58,7 @@ const ProfilePage = (props: Profile) => {
     <Box className="profile-page-container">
       <Box className="profile-page-header">
         <ProfileHeader
+          accountID={props.accountID}
           label={props.name}
           placeholder={"Nickname"}
           text={props.name}
@@ -65,6 +66,7 @@ const ProfilePage = (props: Profile) => {
           fontSize={"60px"}
         />
         <ProfileHeader
+          accountID={props.accountID}
           label={props.pronouns}
           placeholder={"Pronouns"}
           text={props.pronouns}

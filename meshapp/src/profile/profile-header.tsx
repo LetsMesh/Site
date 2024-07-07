@@ -14,6 +14,7 @@ import SaveIcon from "@mui/icons-material/Save";
 // Error-handling Imports
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import {axiosInstance} from "../config/axiosConfig";
 
 /**
  * A React component that renders a text field with editing capabilities.
@@ -45,6 +46,7 @@ const theme = createTheme({
 });
 
 const ProfileHeader = (props: {
+  accountID: number;
   label: string;
   placeholder: string;
   text: string;
@@ -82,6 +84,37 @@ const ProfileHeader = (props: {
     }
     setText(event.target.value);
   };
+  
+  React.useEffect(() => {
+    if (props.placeholder === "Nickname") {
+      axiosInstance.get("profiles/preferred-name/" + props.accountID)
+        .then(response => {
+          let preferredName = response.data["data"]["get"]["preferredName"]
+          if (preferredName === null) {
+            axiosInstance.get("profiles/user-name/" + props.accountID)
+              .then(response => {
+                setText(response.data["data"]["get"]["userName"])
+                return;
+              })
+              .catch(error => {
+                console.error(error)
+              })
+          }
+          setText(preferredName)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    } else if (props.placeholder === "Pronouns") {
+      axiosInstance.get("profiles/preferred-pronouns/" + props.accountID)
+        .then(response => {
+          setText(response.data["data"]["get"]["preferredPronouns"])
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
+  }, [])
 
   // Return
   return editMode ? (
