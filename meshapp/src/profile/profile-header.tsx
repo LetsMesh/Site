@@ -23,6 +23,7 @@ import {axiosInstance} from "../config/axiosConfig";
  * Used in the Profile page (src/profile/profile-page.tsx).
  *
  * @param props - Properties of the component
+ * @param {number} props.accountID - ID of Profile account
  * @param {string} props.label - The label
  * @param {string} props.placeholder - The placeholder text
  * @param {string} props.text - The initial text content
@@ -114,7 +115,7 @@ const ProfileHeader = (props: {
           console.error(error)
         })
     }
-  }, [])
+  }, [props.accountID, props.placeholder])
 
   // Return
   return editMode ? (
