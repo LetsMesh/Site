@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { TextField, Box, Typography, Grid } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,6 +7,7 @@ import SaveIcon from "@mui/icons-material/Save";
 // Error-handling Imports
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import {axiosInstance} from "../../config/axios-config";
 
 /**
  * A React component that renders a text field with editing capabilities.
@@ -28,6 +29,7 @@ const ProfileHeader = (props: {
   text: string;
   charLimit: number;
   fontSize: string;
+  accountID: number;
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
@@ -60,6 +62,37 @@ const ProfileHeader = (props: {
     }
     setText(event.target.value);
   };
+
+  React.useEffect(() => {
+    if (props.placeholder === "Nickname") {
+      axiosInstance.get("profiles/preferred-name/" + props.accountID)
+        .then(response => {
+          let preferredName = response.data["data"]["get"]["preferredName"]
+          if (preferredName === null) {
+            axiosInstance.get("profiles/user-name/" + props.accountID)
+              .then(response => {
+                setText(response.data["data"]["get"]["userName"])
+                return;
+              })
+              .catch(error => {
+                console.error(error)
+              })
+          }
+          setText(preferredName)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    } else if (props.placeholder === "Pronouns") {
+      axiosInstance.get("profiles/preferred-pronouns/" + props.accountID)
+        .then(response => {
+          setText(response.data["data"]["get"]["preferredPronouns"])
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
+  })
 
   // Return
   return editMode ? (

@@ -48,6 +48,7 @@ const ProfilePage = (props: Profile) => {
           text={props.name}
           charLimit={15}
           fontSize={"60px"}
+          accountID={props.accountID}
         />
         <ProfileHeader
           label={props.pronouns}
@@ -55,6 +56,7 @@ const ProfilePage = (props: Profile) => {
           text={props.pronouns}
           charLimit={8}
           fontSize={"30px"}
+          accountID={props.accountID}
         />
       </Box>
       <Grid container sx={{ borderBottom: 1, borderColor: "divider" }}>
