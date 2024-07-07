@@ -8,4 +8,4 @@ pipenv run python manage.py makemigrations
 pipenv run python manage.py migrate
 
 # Start Daphne server
-exec pipenv run daphne -b 0.0.0.0 -p 8000 mesh.asgi:application
+exec pipenv run uvicorn mesh.asgi:application --reload --host 0.0.0.0 --port 8000

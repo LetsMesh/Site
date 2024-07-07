@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'mesh.conversation',
     'mesh.notifications',
     'mesh.tags',
-    'mesh.occupations'
+    'mesh.occupations',
+    # channels layer for websockets
+    'channels',
 ]
 
 # TODO: https://github.com/LetsMesh/Site/issues/202
@@ -63,8 +65,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+WEB_URL = os.environ.get('WEB_URL', 'http://localhost:3000')
+
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    WEB_URL,
 ]
 
 ROOT_URLCONF = 'mesh.urls'
@@ -155,6 +160,29 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = ['mesh.auth.backend.AccountAuthenticationBackend']
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
+
+# Security settings
+CSRF_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_HTTPONLY = False # For production, set this line to True
+SESSION_COOKIE_HTTPONLY = True
+
+# Conversation websockets
+# Define the ASGI application to point to routing configuration
+ASGI_APPLICATION = 'mesh.asgi.application'
+
+# Configure the channels layer
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'meshapp/build/static')

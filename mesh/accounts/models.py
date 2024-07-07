@@ -1,5 +1,6 @@
 # in accounts folder: (accounts.models) models.py
 from django.db import models
+from django.utils import timezone
 
 class Account(models.Model):
     accountID = models.AutoField(primary_key=True)
@@ -15,6 +16,14 @@ class Account(models.Model):
         max_length=200, null=True, blank=True
     )  # One Time Password's secret key
 
+    # this property is snake cased as it is required for authentication (use `login` from `django.contrib.auth`)
+    last_login = models.DateTimeField(default=timezone.now)
+
+    @property
+    def is_authenticated(self):
+        # Assuming all Account instances represent authenticated users
+        return True
+    
     def __str__(self) -> str:
         return str(self.accountID)
     
