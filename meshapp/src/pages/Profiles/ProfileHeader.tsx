@@ -21,6 +21,7 @@ import {axiosInstance} from "../../config/axios-config";
  * @param {string} props.text - The initial text content
  * @param {number} props.charLimit - The max number of characters allowed
  * @param {string} props.fontSize - The font size
+ * @param {number} props.accountID - ID of Profile account
  */
 
 const ProfileHeader = (props: {
