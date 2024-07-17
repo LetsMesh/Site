@@ -17,6 +17,7 @@ import ProfileHeader from "./ProfileHeader";
  * Displays a user's personal, professional, and educational information.
  *
  * @param props - Properties of the component
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  * @param {string} props.name - Name of user
  * @param {string} props.pronouns - Pronouns used by user
  * @param {string} props.occupationTitle - Title of user's occupation
@@ -28,6 +29,7 @@ import ProfileHeader from "./ProfileHeader";
  * @param {Education} props.education - an array containing objects that each contain a degree,school, and description
  * @param {Experience} props.experience - an array contains objects that each contain a occupation name, organization, and description
  * @param {number} props.accountID - ID of Profile account
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  */
 
 const ProfilePage = (props: Profile) => {
@@ -48,6 +50,7 @@ const ProfilePage = (props: Profile) => {
           text={props.name}
           charLimit={15}
           fontSize={"60px"}
+          viewOnly={props.viewOnly}
         />
         <ProfileHeader
           label={props.pronouns}
@@ -55,6 +58,7 @@ const ProfilePage = (props: Profile) => {
           text={props.pronouns}
           charLimit={8}
           fontSize={"30px"}
+          viewOnly={props.viewOnly}
         />
       </Box>
       <Grid container sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -72,6 +76,7 @@ const ProfilePage = (props: Profile) => {
           <ProfileBiography
             biography={props.biography}
             accountID={props.accountID}
+            viewOnly={props.viewOnly}
           />
         </Grid>
         <Grid
@@ -86,7 +91,11 @@ const ProfilePage = (props: Profile) => {
             marginBottom: "-125px", // Adjusts container height to match transform
           }}
         >
-          <ProfilePicture image={props.image} accountID={props.accountID} />
+          <ProfilePicture
+            image={props.image}
+            accountID={props.accountID}
+            viewOnly={props.viewOnly}
+          />
           <ProfileRole isMentor={props.isMentor} isMentee={props.isMentee} />
         </Grid>
       </Grid>
@@ -94,10 +103,16 @@ const ProfilePage = (props: Profile) => {
         <Grid container>
           <Grid item xs={9}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <ProfileExperience experience={props.experience} />
+              <ProfileExperience
+                experience={props.experience}
+                viewOnly={props.viewOnly}
+              />
             </Box>
             <Box>
-              <ProfileEducation education={props.education} />
+              <ProfileEducation
+                education={props.education}
+                viewOnly={props.viewOnly}
+              />
             </Box>
           </Grid>
           <Grid
@@ -108,7 +123,7 @@ const ProfilePage = (props: Profile) => {
               borderColor: "divider",
             }}
           >
-            <ProfileInterests />
+            <ProfileInterests viewOnly={props.viewOnly} />
           </Grid>
         </Grid>
       </Box>
@@ -158,8 +173,13 @@ const ProfileOccupation = (props: {
  * @param props - Properties of the component
  * @param {string} props.biography - The initial text content of the bio
  * @param {number} props.accountID - accountID associated with the profile
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  */
-const ProfileBiography = (props: { biography: string; accountID: number }) => {
+const ProfileBiography = (props: {
+  biography: string;
+  accountID: number;
+  viewOnly: boolean;
+}) => {
   const [biography, setBiography] = useState(props.biography);
   const [isLoading, setLoading] = useState(true);
 
@@ -208,6 +228,7 @@ const ProfileBiography = (props: { biography: string; accountID: number }) => {
         charLimit={300}
         handleSave={saveBiography}
         variant="outlined"
+        viewOnly={props.viewOnly}
       />
     </Box>
   );
@@ -253,9 +274,13 @@ const ProfileRole = (props: { isMentor: boolean; isMentee: boolean }) => {
  *
  * @param props - Properties of the component
  * @param {Experience} props.experience - Array of objects that each represent a single occupation
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  *
  */
-const ProfileExperience = (props: { experience: Experience }) => {
+const ProfileExperience = (props: {
+  experience: Experience;
+  viewOnly: boolean;
+}) => {
   //starting error validation functions
   const isEmpty = (inputName: string) => (val: string) =>
     val.length > 0 || `${inputName} cannot be empty.`;
@@ -363,6 +388,7 @@ const ProfileExperience = (props: { experience: Experience }) => {
           charLimit("Description"),
         ]}
         addAccordHandler={addExperienceHandler}
+        viewOnly={props.viewOnly}
       />
     </Box>
   );
@@ -373,9 +399,13 @@ const ProfileExperience = (props: { experience: Experience }) => {
  *
  * @param props - Properties of the component
  * @param {Education} props.education - Array of objects that represent a single education
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  *
  */
-const ProfileEducation = (props: { education: Education }) => {
+const ProfileEducation = (props: {
+  education: Education;
+  viewOnly: boolean;
+}) => {
   //starting error validation functions
   const isEmpty = (inputName: string) => (val: string) =>
     val.length > 0 || `${inputName} cannot be empty.`;
@@ -484,6 +514,7 @@ const ProfileEducation = (props: { education: Education }) => {
           charLimit("Description"),
         ]}
         addAccordHandler={AddEducationHandler}
+        viewOnly={props.viewOnly}
       />
     </Box>
   );
@@ -494,8 +525,9 @@ const ProfileEducation = (props: { education: Education }) => {
 
 /**
  * Displays the user's interest tags and supports editing them.
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  */
-const ProfileInterests = () => {
+const ProfileInterests = (props: { viewOnly: boolean }) => {
   // NOTE: Used to simulate future HTTP requests - remove when API is implemented
   const [testCurrentSelected, setTestCurrentSelected] = React.useState<
     string[]
@@ -529,6 +561,7 @@ const ProfileInterests = () => {
         currentTags={testCurrentSelected}
         recommendedTags={testRecommended}
         setTags={setTestCurrentSelected}
+        viewOnly={props.viewOnly}
       />
     </Box>
   );

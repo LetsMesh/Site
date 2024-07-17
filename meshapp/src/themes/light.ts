@@ -38,7 +38,7 @@ export const lightTheme = createTheme({
       primary: "#000000DE",
       secondary: "#00000099",
       disabled: "#00000061",
-      main:"#26383A"
+      main: "#26383A",
     },
     messageBackground: {
       main: "#74D194",
@@ -57,6 +57,9 @@ export const lightTheme = createTheme({
     },
     buttonBackground: {
       main: "#74D194",
+    },
+    input: {
+      borderActive: "#0000003B",
     },
   },
   components: {

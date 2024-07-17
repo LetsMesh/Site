@@ -1,6 +1,7 @@
 // TODO: Update order of fields to match order in the Profile schema
 // NOTE: Add/modify/remove fields as needed, but consider what needs to be refactored in ../profile-page.tsx
 export type Profile = {
+  viewOnly:boolean;
   name: string;
   pronouns: string;
   occupationTitle: string;
