@@ -1,5 +1,12 @@
 import { ChangeEvent, useState } from "react";
-import { TextField, Box, Tooltip } from "@mui/material";
+import {
+  TextField,
+  Box,
+  Tooltip,
+  SxProps,
+  Theme,
+  useTheme,
+} from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -18,7 +25,8 @@ import ErrorIcon from "@mui/icons-material/Error";
  * @param {function} props.onChange - function that takes in a new text value to change the corresponding state entry
  * @param {Array<function>} props.errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Function} props.editHandler - function for saving edit on backend (is optional since this component can be used for adding or editing/deleting accordion)
- 
+ * @param {boolean} props.viewOnly - whether profile is view only or not
+
 */
 const ProfileAccordionTextField = (props: {
   label: string;
@@ -27,6 +35,7 @@ const ProfileAccordionTextField = (props: {
   onChange: (newValue: string) => void;
   errValidations: Array<(value: string) => boolean | string>;
   editHandler?: Function;
+  viewOnly?: boolean | undefined;
 }) => {
   //used to set edit mode
   const [editMode, setEditMode] = useState(false);
@@ -83,6 +92,33 @@ const ProfileAccordionTextField = (props: {
   //for storing the error message
   const [errorMessage, setErrorMessage] = useState("");
   const [text, setText] = useState(props.text);
+
+  const theme = useTheme();
+  const viewOnlyStyles: SxProps<Theme> | undefined = props.viewOnly
+    ? {
+        "& .MuiInputBase-root": {
+          "& .Mui-disabled fieldset": {
+            borderColor: "primary.main",
+          },
+          "& .Mui-disabled": {
+            color: theme.palette.text.primary,
+            WebkitTextFillColor: theme.palette.text.primary,
+          },
+        },
+      }
+    : {
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            transition: "border 0.10s ease-in-out",
+          },
+          "& .Mui-focused fieldset": {
+            borderColor: "primary.main",
+          },
+          "&:not(.Mui-disabled):hover fieldset": {
+            borderColor: "primary.main",
+          },
+        },
+      };
   return (
     <TextField
       value={text}
@@ -103,35 +139,37 @@ const ProfileAccordionTextField = (props: {
           </Tooltip>
         ),
         //conditionally renders edit/save icons based on edit mode
-        endAdornment: editMode ? (
-          <Box paddingLeft={2}>
-            <SaveIcon
-              color="primary"
-              onClick={handleSaveClick}
-              sx={{
-                "&:hover": {
-                  color: "#0A6B57",
-                },
-                cursor: "pointer",
-                transition: "color 0.15s ease-in-out",
-              }}
-            />
-          </Box>
-        ) : (
-          <Box paddingLeft={2}>
-            <EditIcon
-              onClick={handleEditClick}
-              sx={{
-                "&:hover": {
-                  color: "#0b7d66",
-                },
-                cursor: "pointer",
-                transition: "color 0.15s ease-in-out",
-              }}
-            />
-          </Box>
-        ),
-        readOnly: !editMode,
+        endAdornment:
+          !props.viewOnly &&
+          (editMode ? (
+            <Box paddingLeft={2}>
+              <SaveIcon
+                color="primary"
+                onClick={handleSaveClick}
+                sx={{
+                  "&:hover": {
+                    color: "#0A6B57",
+                  },
+                  cursor: "pointer",
+                  transition: "color 0.15s ease-in-out",
+                }}
+              />
+            </Box>
+          ) : (
+            <Box paddingLeft={2}>
+              <EditIcon
+                onClick={handleEditClick}
+                sx={{
+                  "&:hover": {
+                    color: "#0b7d66",
+                  },
+                  cursor: "pointer",
+                  transition: "color 0.15s ease-in-out",
+                }}
+              />
+            </Box>
+          )),
+        readOnly: !editMode || props.viewOnly,
         inputProps: {
           style: { fontSize: 15, caretColor: "#0b7d66" },
         },
@@ -140,22 +178,10 @@ const ProfileAccordionTextField = (props: {
       maxRows={3}
       fullWidth
       multiline
-      disabled={!editMode}
+      disabled={!editMode && !props.viewOnly}
       onChange={handleTextChange}
       variant="standard"
-      sx={{
-        "& .MuiOutlinedInput-root": {
-          "& fieldset": {
-            transition: "border 0.10s ease-in-out",
-          },
-          "&.Mui-focused fieldset": {
-            borderColor: "primary.main",
-          },
-          "&:not(.Mui-disabled):hover fieldset": {
-            borderColor: "primary.main",
-          },
-        },
-      }}
+      sx={viewOnlyStyles}
     />
   );
 };

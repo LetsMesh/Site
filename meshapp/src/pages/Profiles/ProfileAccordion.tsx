@@ -48,8 +48,8 @@ import { Delete } from "@mui/icons-material";
  * @param {boolean} props.alwaysOpen - if this is set true, then the accordion will be permanently open and the expand icon will disappear
  * @param {Function} props.editHandler - function for saving edit on backend (is optional since this component can be used for adding or editing/deleting accordion)
  * @param {Function} props.deleteHandler - function for deleting on backend (is optional since this component can be used for adding or editing/deleting accordion)
- 
-*/
+ * @param {boolean} props.viewOnly - whether profile is view only or not
+ */
 export default function ProfileAccordion(props: {
   comboOneVal: string;
   comboTwoVal: string;
@@ -68,6 +68,7 @@ export default function ProfileAccordion(props: {
   alwaysOpen?: boolean;
   editHandler?: Function;
   deleteHandler?: Function;
+  viewOnly?: boolean | undefined;
 }) {
   //controls whether accordion is expanded to show description or not
   const [expanded, setExpanded] = React.useState<boolean>(false);
@@ -204,54 +205,64 @@ export default function ProfileAccordion(props: {
   return (
     <>
       {/*Modal for confirming deletion*/}
-      <Modal
-        open={deleteConfirmOpen}
-        onClose={closeDeleteConfirmModal}
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
-        <Stack
+      {!props.viewOnly && (
+        <Modal
+          open={deleteConfirmOpen}
+          onClose={closeDeleteConfirmModal}
           sx={{
-            width: "300px",
-            padding: 3,
-            borderRadius: 5,
-            backgroundColor: "cardBackground.main",
-            gap: "20px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <Typography
-            variant="body1"
-            sx={{ textAlign: "center", color: "text.main" }}
+          <Stack
+            sx={{
+              width: "300px",
+              padding: 3,
+              borderRadius: 5,
+              backgroundColor: "cardBackground.main",
+              gap: "20px",
+            }}
           >
-            Are you sure you want to delete this?
-          </Typography>
-          <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Button
-              variant="contained"
-              onClick={confirmDeleteHandler}
-              sx={{ backgroundColor: "buttonBackground.main" }}
+            <Typography
+              variant="body1"
+              sx={{ textAlign: "center", color: "text.main" }}
             >
-              <Typography
-                variant="button"
-                sx={{
-                  fontWeight: "600",
-                  color:"white"
-                }}
+              Are you sure you want to delete this?
+            </Typography>
+            <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
+              <Button
+                variant="contained"
+                onClick={confirmDeleteHandler}
+                sx={{ backgroundColor: "buttonBackground.main" }}
               >
-                Yes
-              </Typography>
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={closeDeleteConfirmModal}
-            >
-              <Typography variant="button" sx={{ fontWeight: "600", color:"white" }}>
-                No
-              </Typography>
-            </Button>
-          </Container>
-        </Stack>
-      </Modal>
+                <Typography
+                  variant="button"
+                  sx={{
+                    fontWeight: "600",
+                    color: "white",
+                  }}
+                >
+                  Yes
+                </Typography>
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={closeDeleteConfirmModal}
+              >
+                <Typography
+                  variant="button"
+                  sx={{ fontWeight: "600", color: "white" }}
+                >
+                  No
+                </Typography>
+              </Button>
+            </Container>
+          </Stack>
+        </Modal>
+      )}
+
       {/*Accordion*/}
       <Accordion
         expanded={props.alwaysOpen ? props.alwaysOpen : expanded}
@@ -279,6 +290,7 @@ export default function ProfileAccordion(props: {
               options={props.comboOneValOptions}
               onChange={comboOneValOnChange}
               errValidations={props.comboOneValErrValidations}
+              viewOnly={props.viewOnly}
             />
           </Box>
           {/*Second combobox */}
@@ -289,60 +301,65 @@ export default function ProfileAccordion(props: {
             options={props.comboTwoValOptions}
             onChange={comboTwoValOnChange}
             errValidations={props.comboTwoValErrValidations}
+            viewOnly={props.viewOnly}
+            isSecond
           />
-          <Grid
-            xs={0.5}
-            display="flex"
-            flexDirection="row"
-            alignItems={"center"}
-            sx={{ marginRight: "8px", color: "text.disabled" }}
-          >
-            {
-              //conditional rendering for edit/save icons based on edit mode
-              editMode ? (
-                <SaveIcon
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleSaveClick();
-                  }}
-                  sx={{
-                    "&:hover": {
-                      color: "#0A6B57",
-                    },
-                    cursor: "pointer",
-                    transition: "color 0.15s ease-in-out",
-                  }}
-                />
-              ) : (
-                <EditIcon
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleEditClick();
-                  }}
-                  sx={{
-                    "&:hover": {
-                      color: "#0b7d66",
-                    },
-                    cursor: "pointer",
-                    transition: "color 0.15s ease-in-out",
-                  }}
-                />
-              )
-            }
 
-            {props.deleteHandler ? (
-              <Delete
-                onClick={deleteIconClickHandler}
-                sx={{
-                  "&:hover": {
-                    color: "error.main",
-                  },
-                  cursor: "pointer",
-                  transition: "color 0.15s ease-in-out",
-                }}
-              />
-            ) : null}
-          </Grid>
+          {!props.viewOnly && (
+            <Grid
+              xs={0.5}
+              display="flex"
+              flexDirection="row"
+              alignItems={"center"}
+              sx={{ marginRight: "8px", color: "text.disabled" }}
+            >
+              {
+                //conditional rendering for edit/save icons based on edit mode
+                editMode ? (
+                  <SaveIcon
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleSaveClick();
+                    }}
+                    sx={{
+                      "&:hover": {
+                        color: "#0A6B57",
+                      },
+                      cursor: "pointer",
+                      transition: "color 0.15s ease-in-out",
+                    }}
+                  />
+                ) : (
+                  <EditIcon
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleEditClick();
+                    }}
+                    sx={{
+                      "&:hover": {
+                        color: "#0b7d66",
+                      },
+                      cursor: "pointer",
+                      transition: "color 0.15s ease-in-out",
+                    }}
+                  />
+                )
+              }
+
+              {props.deleteHandler ? (
+                <Delete
+                  onClick={deleteIconClickHandler}
+                  sx={{
+                    "&:hover": {
+                      color: "error.main",
+                    },
+                    cursor: "pointer",
+                    transition: "color 0.15s ease-in-out",
+                  }}
+                />
+              ) : null}
+            </Grid>
+          )}
         </AccordionSummary>
         <AccordionDetails>
           {/*Description Text Field */}
@@ -353,6 +370,7 @@ export default function ProfileAccordion(props: {
             errValidations={props.descErrValidations}
             onChange={descOnChange}
             editHandler={props.editHandler}
+            viewOnly={props.viewOnly}
           />
         </AccordionDetails>
       </Accordion>

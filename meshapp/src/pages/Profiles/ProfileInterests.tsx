@@ -33,8 +33,11 @@ import "./styling/ProfilePage.css";
  * @param {string[]} props.currentTags - User's current tags
  * @param {string[]} props.recommendedTags - Recommended tags from backend
  * @param {function} props.setTags - Callback to save edit-mode changes
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  */
-const ProfileInterestsComponent = (props: ProfileInterests) => {
+const ProfileInterestsComponent = (
+  props: ProfileInterests & { viewOnly: boolean }
+) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -42,26 +45,31 @@ const ProfileInterestsComponent = (props: ProfileInterests) => {
       {props.currentTags.map((tag: any, index: any) => (
         <ProfileTag key={index} label={tag} />
       ))}
-      <EditIcon
-        onClick={() => {
-          setOpen(true);
-        }}
-        sx={{
-          color: "text.disabled",
-          "&:hover": {
-            color: "#0b7d66",
-          },
-          cursor: "pointer",
-          transition: "color 0.15s ease-in-out",
-        }}
-      />
-      <ProfileInterestsEdit
-        open={open}
-        onClose={() => setOpen(false)}
-        recommendedTags={props.recommendedTags}
-        onSelectedTagsChange={props.setTags}
-        currentSelectedTags={props.currentTags}
-      />
+      {!props.viewOnly && (
+        <>
+          <EditIcon
+            onClick={() => {
+              setOpen(true);
+            }}
+            sx={{
+              color: "text.disabled",
+              "&:hover": {
+                color: "#0b7d66",
+              },
+              cursor: "pointer",
+              transition: "color 0.15s ease-in-out",
+            }}
+          />
+
+          <ProfileInterestsEdit
+            open={open}
+            onClose={() => setOpen(false)}
+            recommendedTags={props.recommendedTags}
+            onSelectedTagsChange={props.setTags}
+            currentSelectedTags={props.currentTags}
+          />
+        </>
+      )}
     </Box>
   );
 };

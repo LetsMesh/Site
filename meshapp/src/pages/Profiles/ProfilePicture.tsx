@@ -43,8 +43,13 @@ const tooltipErrorTheme = createTheme({
  * @param props - Properties of the component
  * @param {string} props.image - A URL to user's profile image
  * @param {number} props.accountID - accountID associated with the profile
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  */
-const ProfilePicture = (props: { image: string; accountID: number }) => {
+const ProfilePicture = (props: {
+  image: string;
+  accountID: number;
+  viewOnly: boolean;
+}) => {
   const [image, setImage] = useState(props.image);
   const [showError, setShowError] = useState(false);
 
@@ -78,22 +83,25 @@ const ProfilePicture = (props: { image: string; accountID: number }) => {
       <Box className="profile-page-picture-container">
         <img className="profile-page-picture-body" src={image} alt="profile" />
       </Box>
-      <Box
-        className="profile-page-picture-icon-container"
-        sx={{ backgroundColor: "buttonBackground.main" }}
-      >
-        <EditIcon sx={{ width: "26px", height: "26px" }} />
-        {open && (
-          <ProfilePictureEdit
-            handleClose={handleClose}
-            image={image}
-            setImage={setImage}
-            showError={showError}
-            setShowError={setShowError}
-            accountID={props.accountID}
-          />
-        )}
-      </Box>
+
+      {!props.viewOnly && (
+        <Box
+          className="profile-page-picture-icon-container"
+          sx={{ backgroundColor: "buttonBackground.main" }}
+        >
+          <EditIcon sx={{ width: "26px", height: "26px" }} />
+          {open && (
+            <ProfilePictureEdit
+              handleClose={handleClose}
+              image={image}
+              setImage={setImage}
+              showError={showError}
+              setShowError={setShowError}
+              accountID={props.accountID}
+            />
+          )}
+        </Box>
+      )}
     </Box>
   );
 };
@@ -103,7 +111,8 @@ const ProfilePicture = (props: { image: string; accountID: number }) => {
  * Displays buttons that allow profile picture editing
  */
 const ProfilePictureEdit = (props: any) => {
-  const { handleClose, image, setImage, showError, setShowError, accountID } = props;
+  const { handleClose, image, setImage, showError, setShowError, accountID } =
+    props;
   const DEFAULT_IMAGE: string = ""; // TODO: Update this when a default image is setup
 
   // Prevents entire container from closing when clicking on it
@@ -192,8 +201,8 @@ const ProfilePictureEdit = (props: any) => {
         axiosInstance
           .delete("profiles/profile-picture", {
             data: {
-              accountID: accountID
-            }
+              accountID: accountID,
+            },
           })
           .then((response) => {
             console.log(response);

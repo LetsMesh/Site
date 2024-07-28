@@ -36,7 +36,7 @@ export const darkTheme = createTheme({
       primary: "#F1E8DF",
       secondary: "#F2E8DE",
       disabled: "#F2E8DE61",
-      main:"#F2E8DE"
+      main: "#F2E8DE",
     },
     messageBackground: {
       main: "#247C67",
@@ -55,6 +55,9 @@ export const darkTheme = createTheme({
     },
     buttonBackground: {
       main: "#247C67",
+    },
+    input: {
+      borderActive: "#F2E8DE3B",
     },
   },
   components: {

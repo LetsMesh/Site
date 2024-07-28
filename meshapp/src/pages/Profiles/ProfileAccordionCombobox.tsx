@@ -28,7 +28,8 @@ export type option = {
  * @param {function} props.onChange -callback to edit group accordion data for this specific combobox
  * @param {string} props.value - the current state value of this specific combobox for this accordion within the group accordion's state
  * @param {Array<function>} props.errValidations - an array of functions to evaluate the current value for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
- *
+ * @param {boolean} props.viewOnly - whether profile is view only or not
+ * @param {boolean} props.isSecond = whether this is the second combobox
  */
 export function ProfileAccordionComboBox(props: {
   disabled: boolean;
@@ -40,6 +41,8 @@ export function ProfileAccordionComboBox(props: {
   ) => void;
   value: string;
   errValidations: Array<(value: string) => boolean | string>;
+  viewOnly?: boolean | undefined;
+  isSecond?: boolean | undefined;
 }) {
   //keeps track of whether we show error or not
   const [hasError, setHasError] = useState(false);
@@ -137,7 +140,7 @@ export function ProfileAccordionComboBox(props: {
       freeSolo
       fullWidth
       readOnly={props.disabled}
-      disabled={props.disabled}
+      disabled={props.isSecond || (!props.viewOnly && props.disabled)}
       filterOptions={filterOptionHandler}
       renderOption={(props, option) => (
         <Typography {...props}> {option.label} </Typography>

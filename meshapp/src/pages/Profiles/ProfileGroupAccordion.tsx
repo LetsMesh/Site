@@ -42,6 +42,7 @@ export type setGroupAccordionState = (newState: groupAccordionState) => void;
  * @param {Array<function>} props.comboOneValErrValidations - an array of functions to evaluate the first combobox value for each accordion for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Array<function>} props.comboTwoValErrValidations - an array of functions to evaluate the second combobox value for each accordion for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
  * @param {Array<function>} props.descErrValidations - an array of functions to evaluate the description text value for each accordion for errors (takes in the string value as a parameter, returns True if there was no error or the error message if there is)
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  */
 export function ProfileGroupAccordion(props: {
   groupAccordState: groupAccordionState;
@@ -57,6 +58,7 @@ export function ProfileGroupAccordion(props: {
   comboTwoValErrValidations: Array<(value: string) => boolean | string>;
   descErrValidations: Array<(value: string) => boolean | string>;
   addAccordHandler: Function;
+  viewOnly?: boolean | undefined;
 }) {
   //state to control whether new accordion modal is open or not
   const [addOpen, setAddOpen] = useState(false);
@@ -97,34 +99,40 @@ export function ProfileGroupAccordion(props: {
               setGroupState={props.setGroupAccordState}
               editHandler={props.editAccordHandler(accordArgs.accordionId)}
               deleteHandler={props.deleteAccordHandler(accordArgs.accordionId)}
+              viewOnly={props.viewOnly}
             />
           );
         })}
       </Grid>
-      <IconButton
-        children={
-          <ControlPointIcon sx={{ fontSize: "30px", marginTop: "10px" }} />
-        }
-        onClick={showModal}
-      />
-      <NewAccordionModal
-        addOpen={addOpen}
-        hideModal={hideModal}
-        showModal={showModal}
-        newAccordData={newAccordionData}
-        setAccordData={setNewAccordionData}
-        groupState={props.groupAccordState}
-        setGroupState={props.setGroupAccordState}
-        comboOneValErrValidations={props.comboOneValErrValidations}
-        comboTwoValErrValidations={props.comboTwoValErrValidations}
-        descErrValidations={props.descErrValidations}
-        descPlaceholder={props.descPlaceholder}
-        comboOneValPlaceholder={props.comboOneValPlaceholder}
-        comboTwoValPlaceholder={props.comboTwoValPlaceholder}
-        comboOneValOptions={props.comboOneValOptions}
-        comboTwoValOptions={props.comboTwoValOptions}
-        addAccordHandler={props.addAccordHandler}
-      />
+
+      {!props.viewOnly && (
+        <>
+          <IconButton
+            children={
+              <ControlPointIcon sx={{ fontSize: "30px", marginTop: "10px" }} />
+            }
+            onClick={showModal}
+          />
+          <NewAccordionModal
+            addOpen={addOpen}
+            hideModal={hideModal}
+            showModal={showModal}
+            newAccordData={newAccordionData}
+            setAccordData={setNewAccordionData}
+            groupState={props.groupAccordState}
+            setGroupState={props.setGroupAccordState}
+            comboOneValErrValidations={props.comboOneValErrValidations}
+            comboTwoValErrValidations={props.comboTwoValErrValidations}
+            descErrValidations={props.descErrValidations}
+            descPlaceholder={props.descPlaceholder}
+            comboOneValPlaceholder={props.comboOneValPlaceholder}
+            comboTwoValPlaceholder={props.comboTwoValPlaceholder}
+            comboOneValOptions={props.comboOneValOptions}
+            comboTwoValOptions={props.comboTwoValOptions}
+            addAccordHandler={props.addAccordHandler}
+          />
+        </>
+      )}
     </Grid>
   );
 }

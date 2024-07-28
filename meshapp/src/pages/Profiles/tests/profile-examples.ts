@@ -2,6 +2,7 @@ import { Profile } from "src/models/profile";
 
 export const exampleProfile: Profile = {
   accountID: 1,
+  viewOnly:true,
   name: "Bob Yomom",
   pronouns: "she/her",
   image: "https://picsum.photos/200/300",
@@ -38,6 +39,7 @@ export const exampleProfile: Profile = {
 };
 
 export const exampleProfile2: Profile = {
+  viewOnly: false,
   accountID: 2,
   name: "Lysander Maximilian Bartholomew Fitzwilliam III Esquire IV",
   pronouns: "he/he",

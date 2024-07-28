@@ -20,6 +20,7 @@ import MuiAlert from "@mui/material/Alert";
  * @param {string} props.text - The initial text content
  * @param {number} props.charLimit - The max number of characters allowed
  * @param {string} props.fontSize - The font size
+ * @param {boolean} props.viewOnly - whether profile is view only or not
  */
 
 const ProfileHeader = (props: {
@@ -28,6 +29,7 @@ const ProfileHeader = (props: {
   text: string;
   charLimit: number;
   fontSize: string;
+  viewOnly: boolean;
 }) => {
   const [text, setText] = useState(props.text);
   const [editMode, setEditMode] = useState(false);
@@ -119,16 +121,18 @@ const ProfileHeader = (props: {
               }}
             >
               {text}
-              <EditIcon
-                onClick={handleEditClick}
-                sx={{
-                  "&:hover": {
-                    color: "#0b7d66",
-                  },
-                  cursor: "pointer",
-                  transition: "color 0.15s ease-in-out",
-                }}
-              />
+              {!props.viewOnly && (
+                <EditIcon
+                  onClick={handleEditClick}
+                  sx={{
+                    "&:hover": {
+                      color: "#0b7d66",
+                    },
+                    cursor: "pointer",
+                    transition: "color 0.15s ease-in-out",
+                  }}
+                />
+              )}
             </Typography>
           </Box>
         </Grid>
