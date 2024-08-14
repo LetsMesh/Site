@@ -58,42 +58,64 @@ class SettingsTest(TestCase):
         A GET request is sent to the '/account-settings/{account_id}/' endpoint.
         The test passes if the response status code is 200 and the settings data matches the test account.
         """
-        response = self.client.get(f"/account-settings/{self.test_settings.accountID}/")
+        
+        
+        response = self.client.get(f"/account-settings/{self.test_account.accountID}/")
         self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.content.decode("utf-8"))
+        account_setting = Settings.objects.get(accountID= self.test_settings.accountID)
+        
+        self.assertEqual(json_response.get('accountID'), account_setting.accountID.accountID)
+        self.assertEqual(json_response.get('displayTheme'), account_setting.displayTheme)
+        self.assertEqual(json_response.get('is2FAEnabled'), account_setting.is2FAEnabled)
+        self.assertEqual(json_response.get('isVerified'), account_setting.isVerified)
+        self.assertEqual(json_response.get('hasContentFilterEnabled'), account_setting.hasContentFilterEnabled)
         
     def test_display_theme(self):
         """
         Test case for getting the display theme setting of a specific account.
 
-        A GET request is sent to the '/account-settings/displayTheme/{account_id}' endpoint.
+        A GET request is sent to the '/account-settings/{account_id}?fields=displayTheme' endpoint.
         The test passes if the response status code is 200 and the 'displayTheme' value is correct.
         """
         test_user = Account.objects.get(email="settingstest@gmail.com")
-        response = self.client.get(f"/account-settings/displayTheme/{test_user.accountID}")
+        response = self.client.get(f"/account-settings/{test_user.accountID}?fields=displayTheme", follow=True)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response, {"displayTheme": "0"})
+        self.assertEquals(json_response.get('displayTheme'), "0")
 
     def test_missing_account_display_theme(self):
         """
         Test case for attempting to get the display theme setting of a non-existent account.
 
-        A GET request is sent to the '/account-settings/displayTheme/9999' endpoint with an invalid account ID.
+        A GET request is sent to the '/account-settings?fields=displayTheme/9999' endpoint with an invalid account ID.
         The test passes if the response status code is 404, indicating that the account was not found.
         """
-        response = self.client.get("/account-settings/displayTheme/9999")
+        response = self.client.get("/account-settings/9999?fields=displayTheme", follow=True)
         self.assertEqual(response.status_code, 404)
 
     def test_no_account_display_theme(self):
         """
         Test case for verifying the error message when attempting to get the display theme of a non-existent account.
 
-        A GET request is sent to the '/account-settings/displayTheme/9999' endpoint with an invalid account ID.
+        A GET request is sent to the '/account-settings?fields=displayTheme/9999' endpoint with an invalid account ID.
         The test passes if the response includes an error message indicating that the account does not exist.
         """
-        response = self.client.get("/account-settings/displayTheme/9999")
+        response = self.client.get("/account-settings/9999?fields=displayTheme", follow=True)
+        self.assertEqual(response.status_code, 404)
         json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("error"), "Account does not exist")
+        self.assertEquals(json_response.get("error"), "Setting for account not found")
+
+    def test_get_account_settings_invalid_fields(self):
+        """
+        Test case for verifying the error message when attempting to get invalid fields from an account's settings
+
+        A GET request is sent to '/account-settings?fields=invalidfields' endpoint which `invalidfields` is an invalid field.
+        """
+        response = self.client.get("/account-settings/9999?fields=invalidfields", follow=True)
+        self.assertEqual(response.status_code, 400)
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEquals(json_response.get("error"), "Invalid fields")
 
     def test_create_settings(self):
         """

@@ -2,6 +2,8 @@
 You can run this test with
 
 python manage.py test mesh.tests.accounts_tests
+
+pipenv run python manage.py test mesh.tests.accounts_tests
 '''
 
 import json
@@ -17,6 +19,7 @@ class AccountTest(TestCase):
         Set up test environment. Create a Client instance and a test account.
         """
         self.client = Client()
+        
         
         self.test_account_password='some_encrypted_pass'
         salt, hash = encrypt(self.test_account_password)
@@ -38,8 +41,11 @@ class AccountTest(TestCase):
         A GET request is sent to the '/accounts/' endpoint.
         The test passes if the response status code is 200.
         """
-        response = self.client.get('/accounts/')
+        response = self.client.get('/accounts', follow=True)
         self.assertEqual(response.status_code, 200)
+        accounts = Account.objects.all()
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(len(json_response), len(accounts))
 
     def test_get_specific_account(self):
         """
@@ -48,7 +54,9 @@ class AccountTest(TestCase):
         A GET request is sent to the '/accounts/{account_id}/' endpoint.
         The test passes if the response status code is 200.
         """
-        response = self.client.get(f'/accounts/{self.test_account.accountID}/')
+        # this needs to be set follow=True because django will permanently redirect 
+        # the request from '/accounts/{self.test_account.accountID}' to '/accounts/{self.test_account.accountID}/'
+        response = self.client.get(f'/accounts/{self.test_account.accountID}', follow=True)
         self.assertEqual(response.status_code, 200)
         
         json_response = json.loads(response.content.decode("utf-8"))
@@ -56,6 +64,10 @@ class AccountTest(TestCase):
         self.assertEqual(json_response["encryptedPass"], self.test_account.encryptedPass.decode('utf-8'))
         self.assertEqual(json_response["isMentor"], self.test_account.isMentor)
         self.assertEqual(json_response["isMentee"], self.test_account.isMentee)
+
+        # with trailing slash (now followup needed)
+        response = self.client.get(f'/accounts/{self.test_account.accountID}/')
+        self.assertEqual(response.status_code, 200)
 
     def test_post_create_account(self):
         """
@@ -135,7 +147,11 @@ class AccountTest(TestCase):
             'email': "new_account_email@email.com",
             'password': 'correct_password'
         }
-        response = self.client.post('/accounts/check-password/', json.dumps(correct_credentials), content_type='application/json')
+        response = self.client.post(
+            '/accounts/check-password/', 
+            json.dumps(correct_credentials), 
+            content_type='application/json'
+        )
         self.assertEqual(response.status_code, 200)
 
         # Incorrect credentials
@@ -143,7 +159,11 @@ class AccountTest(TestCase):
             'email': "new_account_email@email.com",
             'password': 'wrong_password'
         }
-        response = self.client.post('/accounts/check-password/', json.dumps(incorrect_credentials), content_type='application/json')
+        response = self.client.post(
+            '/accounts/check-password/', 
+            json.dumps(incorrect_credentials), 
+            content_type='application/json'
+        )
         
         self.assertEqual(response.status_code, 401)
     

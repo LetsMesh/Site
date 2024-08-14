@@ -1,10 +1,16 @@
+# Django
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 from django.core.serializers import serialize
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+
+# Libraries
 import json
 
+# Models
 from .models import Settings, Account
+
+# Utils
 from ..utils.validate_data import validate_json_and_required_fields
 
 def display_theme(request, account_id):
@@ -87,17 +93,30 @@ class SettingsView(View):
             )
 
 class SettingsDetailView(View):
+    valid_fields = ['isVerified', 'verificationToken', 'hasContentFilterEnabled', 'displayTheme', 'is2FAEnabled']    
+
     def get(self, request, account_id, *args, **kwargs):
         """
         Handles GET requests when the client fetches for a specific account settings
         """
         try: 
+            fields = request.GET.get('fields')
+            if fields:
+                fields = [field for field in fields.split(',') if field in self.valid_fields]
+            else:
+                fields = self.valid_fields
+            if len(fields) == 0:
+                return JsonResponse({'error': 'Invalid fields'}, status=400)
+            
             settings = Settings.objects.get(accountID= account_id)
-            settings_detail = serialize('json', [settings])
+            settings_detail = { field: getattr(settings, field, None) for field in fields }
+            # Add accountID to the response data
+            settings_detail['accountID'] = account_id
+        
             return JsonResponse(settings_detail, safe = False, status=200)
         
         except Settings.DoesNotExist:
-            return JsonResponse({'error': 'Settings for this account do not exist'}, status=404)
+            return JsonResponse({'error': 'Setting for account not found'}, status=404)
         
     def patch(self, request, account_id):
         """
@@ -105,16 +124,19 @@ class SettingsDetailView(View):
         """
         try:
             setting = Settings.objects.get(accountID=account_id)
-        except Settings.DoesNotExist:
-            return JsonResponse({'error': 'Settings do not exist'}, status=404)
+            data = json.loads(request.body)
 
-        data = json.loads(request.body)
-        # Here, update the setting's attributes based on the data received
-        setting.isVerified = data.get('isVerified', setting.isVerified)
-        setting.verificationToken = data.get('verificationToken', setting.verificationToken)
-        setting.hasContentFilterEnabled = data.get('hasContentFilterEnabled', setting.hasContentFilterEnabled)
-        setting.displayTheme = data.get('displayTheme', setting.displayTheme)
-        setting.is2FAEnabled = data.get('is2FAEnabled', setting.is2FAEnabled)
-        # After updating, save the setting
-        setting.save()
-        return HttpResponse(status=204)
+            for field, value in data.items():
+                if field in self.valid_fields:
+                    setattr(setting, field, value)
+            
+            # After updating, save the setting
+            setting.save()
+            return HttpResponse(status=204)
+        except Settings.DoesNotExist:
+            return JsonResponse({'error': 'Setting for account not found'}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON format."}, status=400)
+        except KeyError:
+            return JsonResponse({"error": "Invalid fields in the request."}, status=400)
+

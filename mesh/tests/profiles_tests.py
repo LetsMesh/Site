@@ -2,6 +2,9 @@
 You can run this test with
 
 python manage.py test mesh.tests.profiles_tests
+
+Inside a docker container: 
+pipenv run python manage.py test mesh.tests.profiles_tests
 '''
 import json
 import os
@@ -11,7 +14,6 @@ from django.test import TestCase, Client
 
 from mesh.accounts.models import Account
 from mesh.profiles.models import Profile
-
 
 class ProfilesTest(TestCase):
     def setUp(self):
@@ -31,10 +33,7 @@ class ProfilesTest(TestCase):
             preferredName="Profile Test",
             preferredPronouns="Patrick",
             biography="Biography Test",
-            profilePicture=SimpleUploadedFile(
-                name="profile_test_image.png",
-                content=open("media/image/test_image.png", "rb").read()
-            )
+            profilePicture=None
         )
 
     def tearDown(self):
@@ -42,112 +41,108 @@ class ProfilesTest(TestCase):
         if os.path.exists(image_path):
             os.remove(image_path)
 
-    """ 
-    Profile Picture Testing 
-    """
-    def test_profile_picture(self):
+    def test_get_profile_details_no_query(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get(f"/profiles/profile-picture/{test_user.accountID}")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("data"), {"get": {"profilePicture": "profile_test_image.png"}})
-
-    def test_no_account_profile_picture(self):
-        response = self.client.get("/profiles/profile-picture/9999")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
-  
-    """ 
-    Profile username, preferred name, and pronoun Testing 
-    """
-    def test_user_name(self):
-        test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get(f"/profiles/user-name/{test_user.accountID}")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("data"), {"get": {"userName": "profileTest"}})
-
-    def test_no_account_user_name(self):
-        response = self.client.get("/profiles/user-name/9999")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
-
-    def test_preferred_name(self):
-        test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get(f"/profiles/preferred-name/{test_user.accountID}")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("data"), {"get": {"preferredName": "Profile Test"}})
-
-    def test_no_account_preferred_name(self):
-        response = self.client.get("/profiles/preferred-name/9999")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
-
-    def test_preferred_pronouns(self):
-        test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get(f"/profiles/preferred-pronouns/{test_user.accountID}")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("data"), {"get": {"preferredPronouns": "Patrick"}})
-
-    def test_no_account_preferred_pronouns(self):
-        response = self.client.get("/profiles/preferred-pronouns/9999")
-        json_response = json.loads(response.content.decode("utf-8"))
-        self.assertEquals(json_response.get("status"), "error")
-        self.assertEquals(json_response.get("message"), "An account does not exist with this account ID.")
-
-    def test_post_user_name (self):
-        user_name_data = {"userName": "kwame brown"}
-        response = self.client.post(
-            f'/profiles/user-name/{self.test_profile.accountID}', 
-            data=user_name_data,
-            content_type='application/json'            
-        )
-        self.assertEquals(response.status_code, 200)
-
-    def test_post_preferred_name (self):
-        preferred_name_data = {"preferredName": "brown"}
-        response = self.client.post(
-            f'/profiles/preferred-name/{self.test_profile.accountID}', 
-            data=preferred_name_data, 
-            content_type='application/json'
-        )
-        self.assertEquals(response.status_code, 200)
-
-    def test_post_preferred_pronouns (self):
-        preferred_pronouns_data = {"preferredPronouns": "brown/black"}
-        response = self.client.post(
-            f'/profiles/preferred-pronouns/{self.test_profile.accountID}', 
-            data=preferred_pronouns_data, 
-            content_type='application/json'
-        )
-        self.assertEquals(response.status_code, 200)
-
-    """ 
-    Biography Testing 
-    """
-    def test_biography(self):
-        """
-        Test Case for seeing if biography can be retrieved from speicified account
-
-        A GET request is sent to the '/profiles/biography/{account_id}' endpoint.
-        The test passes if the response status code is 200.
-        """
-        test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.get(f'/profiles/biography/{test_user.accountID}')
+        response = self.client.get(f"/profiles/{test_user.accountID}", follow=True)
         self.assertEqual(response.status_code, 200)
-        
-    def test_biography_update(self):
-        """
-        Test Case for seeing if biography can be updated from specified account
-        
-        A POST request is sent to the '/profiles/biography/{account_id}' endpoint.
-        The test passes if the response status code is 200.
-        """
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(json_response.get("profile"), {'biography': 'Biography Test', 'userName': 'profileTest', 'preferredName': 'Profile Test', 'preferredPronouns': 'Patrick', 'profilePicture': None})
+    
+    def test_get_profile_details_with_query(self):
         test_user = Account.objects.get(email="profilestest@gmail.com")
-        response = self.client.post(
-            f"/profiles/biography/{test_user.accountID}",
-            data={'biography': "Testing..."}, 
-            content_type='application/json'
+        response = self.client.get(f"/profiles/{test_user.accountID}?fields=biography,userName", follow=True)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(json_response.get("profile"), {'biography': 'Biography Test', 'userName': 'profileTest'})
+
+    def test_get_profile_details_no_account(self):
+        response = self.client.get("/profiles/9999?fields=biography,userName",content_type="application/json", follow=True)
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(json_response.get("error"), "Profile not found.")
+
+    def test_patch_profile_details(self):
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        patch_data = {
+            "biography": "Updated Biography",
+            "preferredName": "Updated Name"
+        }
+        response = self.client.patch(
+            f"/profiles/{test_user.accountID}/",
+            data=json.dumps(patch_data),
+            content_type="application/json"
         )
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(json_response.get("message"), "Profile updated successfully.")
+
+        # Verify the changes
+        profile = Profile.objects.get(accountID=test_user)
+        self.assertEqual(profile.biography, "Updated Biography")
+        self.assertEqual(profile.preferredName, "Updated Name")
+
+    def test_patch_profile_details_no_account(self):
+        patch_data = {
+            "biography": "Updated Biography"
+        }
+        response = self.client.patch(
+            "/profiles/9999/",
+            data=json.dumps(patch_data),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 404)
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(json_response.get("error"), "Profile not found.")
+
+    def test_modify_user_profile_picture(self):
+        test_user = Account.objects.get(email="profilestest@gmail.com")
+        image_path = "media/image/test_image.png"
+        with open(image_path, "rb") as image:
+            response = self.client.post(
+                f"/profiles/{test_user.accountID}/profile-picture/",
+                data={ "profilePicture": image},
+                format="multipart"
+            )
+        self.assertEqual(response.status_code, 201)
+        json_response = json.loads(response.content.decode("utf-8"))
+        
+        expected_profile_id = test_user.accountID
+        self.assertEqual(json_response.get("profileID"), expected_profile_id)
+        
+        profile_picture_url = json_response.get("profilePicture")
+        self.assertIsNotNone(profile_picture_url)
+
+        import re
+        # Verify the profilePicture URL pattern
+        pattern = r'https://f005\.backblazeb2\.com/file/LetsMesh/[\w\d]+\.png'
+        self.assertTrue(re.match(pattern, profile_picture_url))
+
+        # delete user pfp
+        response = self.client.delete(f"/profiles/{test_user.accountID}/profile-picture/",)
+
+        self.assertEqual(response.status_code, 204)
+        # Verify the changes
+        profile = Profile.objects.get(accountID=test_user)
+        self.assertIsNone(profile.profilePicture)
+
+    def test_post_profile_picture_no_account(self):
+        image_path = "media/image/test_image.png"
+        with open(image_path, "rb") as image:
+            response = self.client.post(
+                f"/profiles/9999/profile-picture/",
+                data={ "profilePicture": image },
+                format="multipart"
+            )
+        self.assertEqual(response.status_code, 404)
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(json_response.get("error"), "Profile not found.")
+
+    def test_delete_profile_picture_no_account(self):
+        response = self.client.delete(
+            "/profiles/9999/profile-picture/",
+            
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 404)
+        json_response = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(json_response.get("error"), "Profile not found.")

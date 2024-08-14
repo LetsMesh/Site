@@ -1,16 +1,20 @@
+# Django
 from django.http import JsonResponse, HttpResponse
 from django.core.exceptions import ValidationError
 from django.core.serializers import serialize
-from .models import *
-import bcrypt
-import os
-
 from django.views import View
 
-from .models import Account
-from ..utils.validate_data import validate_json_and_required_fields
-from ..accountSettings.models import Settings
+# Libraries
+import bcrypt
+import os
 import json
+
+# Models
+from .models import *
+from ..accountSettings.models import Settings
+
+# Utils
+from ..utils.validate_data import validate_json_and_required_fields
 
 from mesh.accounts.services import (
     get_OTP_validity_service,
@@ -210,7 +214,7 @@ class SingleAccountView(View):
         account.delete()
         return JsonResponse({'message': f'successfully deleted Account with account_id: {account_id}'}, status=204)
 
-def check_password(request):
+def check_password(request, *args, **kwargs):
     """
     Handles a POST request to authenticate a user's credentials.
 
@@ -251,7 +255,7 @@ def check_password(request):
     else:
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
-def change_password(request):
+def change_password(request, *args, **kwargs):
     """
     Handles a PATCH request to change a user's password.
 

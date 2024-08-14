@@ -1,6 +1,6 @@
 # in accounts folder: urls.py  (accounts.urls)
 
-from django.urls import path
+from django.urls import path, include
 from . import views as accounts_views
 from .views import *
 from ..conversation.views import get_account_conversations
@@ -12,8 +12,10 @@ urlpatterns = [
     # GET    /accounts/:account_id - get account with id account_id
     # PATCH  /accounts/:account_id - update (patch) account with id account_id
     # DELETE /accounts/:account_id - delete account with id account_id
-    path('<int:account_id>/', accounts_views.SingleAccountView.as_view(), name='single_account'),
-    path('<int:account_id>/conversations/', get_account_conversations, name='account_conversations'),
+    path('<int:account_id>/', include([
+        path('', accounts_views.SingleAccountView.as_view(), name='single_account'),
+        path('conversations/', get_account_conversations, name='account_conversations'),
+    ])),
     # PATCH  /accounts/change-password - update account password
     path('change-password/', change_password, name = "change_password"),
     # POST   /accounts/check-password

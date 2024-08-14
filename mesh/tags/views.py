@@ -1,10 +1,16 @@
+# Django
 from django.http import JsonResponse
 from django.views import View
 
+# Models
+from ..accounts.models import Account
+from ..tags.models import TagBridge, Tag
+
+# Exceptions
 from ..exceptions.InvalidJsonFormat import InvalidJsonFormat
 from ..exceptions.MissingRequiredFields import MissingRequiredFields
-from ..tags.models import TagBridge, Tag
-from ..accounts.models import Account
+
+# Utils
 from ..utils.validate_data import validate_json_and_required_fields
 
 
