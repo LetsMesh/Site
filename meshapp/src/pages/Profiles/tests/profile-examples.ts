@@ -2,7 +2,7 @@ import { Profile } from "src/models/profile";
 
 export const exampleProfile: Profile = {
   accountID: 1,
-  viewOnly:true,
+  viewOnly: true,
   name: "Bob Yomom",
   pronouns: "she/her",
   image: "https://picsum.photos/200/300",

@@ -29,7 +29,6 @@ import ProfileHeader from "./ProfileHeader";
  * @param {Education} props.education - an array containing objects that each contain a degree,school, and description
  * @param {Experience} props.experience - an array contains objects that each contain a occupation name, organization, and description
  * @param {number} props.accountID - ID of Profile account
- * @param {boolean} props.viewOnly - whether profile is view only or not
  */
 
 const ProfilePage = (props: Profile) => {

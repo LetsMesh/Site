@@ -1,7 +1,7 @@
 // TODO: Update order of fields to match order in the Profile schema
 // NOTE: Add/modify/remove fields as needed, but consider what needs to be refactored in ../profile-page.tsx
 export type Profile = {
-  viewOnly:boolean;
+  viewOnly: boolean;
   name: string;
   pronouns: string;
   occupationTitle: string;
@@ -14,7 +14,7 @@ export type Profile = {
   experience: Experience;
   accountID: number;
 };
- 
+
 export type ProfileInterests = {
   currentTags: string[];
   recommendedTags: string[];
@@ -34,5 +34,3 @@ export type Experience = Array<{
 }>;
 // TODO: Include Experience and Education props as they get implemented
 //        Maybe separate these into their own types?
-
-
