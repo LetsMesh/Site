@@ -9,8 +9,7 @@ import PasswordReset from "src/components/AuthForms/ForgotPasswordForm";
 import ProfilePage from "src/pages/Profiles/Page";
 import { exampleProfile } from "src/pages/Profiles/tests/profile-examples";
 import Swiper from "src/pages/Swiping/Page";
-// import SettingPage from "../pages/setting";
-// import MessagePage from "../pages/messaging";
+import SettingPage from "../pages/Settings/Page";
 
 //contains routes for the main page
 export default function MainPageRoutes() {
@@ -22,8 +21,7 @@ export default function MainPageRoutes() {
         <Route path={paths.sign_up} element={<SignUp />} />
         <Route path={paths.login_page} element={<Login />} />
         <Route path={paths.forgot_password} element={<PasswordReset />} />
-        {/* <Route path={paths.settings} element={<SettingPage />} />
-        <Route path={paths.messages} element={<MessagePage />} /> */}
+        <Route path={paths.settings} element={<SettingPage />} />
         <Route
           path={paths.profile_page}
           element={<ProfilePage {...exampleProfile} />}
